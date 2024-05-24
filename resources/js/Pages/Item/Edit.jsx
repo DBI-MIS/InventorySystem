@@ -45,9 +45,9 @@ export default function Create({auth, item,categories, locations, brands, employ
                     <form onSubmit={onSubmit} className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
                                 {/* START */}
                                 
-                                <div className="grid grid-cols-2 gap-2 ">
+                                <div className="grid grid-cols-3 gap-2 ">
                                      {/* 1ST GRID COLUMN */}
-                                    <div className="col-span-1 grid grid-cols-1">
+                                    <div className="col-span-2 grid grid-cols-1 gap-2 content-start">
 
                                     {/* item */}
                                     <div className="mt-6 col-span-1">
@@ -98,7 +98,43 @@ export default function Create({auth, item,categories, locations, brands, employ
                                         </SelectInput>
                                         <InputError message={errors.brand_id} className="mt-2"/>
                                     </div>
+                                            {/* QUANTITY & UOM */}
+                                    <div className="mt-4 col-span-1 col-start-2 grid grid-cols-2 gap-1">
+                                    <div className="col-span-1">
+                                        <InputLabel htmlFor="item_quantity" value="Quantity"/>
+                                        <TextInput 
+                                        id="item_quantity"
+                                        type="number"
+                                        name="quantity"
+                                        value={data.quantity}
+                                        className="mt-1 block w-full"
+                                        onChange={e => setData('quantity', e.target.value)}
+                                        />
+                                        <InputError message={errors.quantity} className="mt-2"/>
+                                    </div>
+                                    <div className="col-span-1">
+                                        <InputLabel htmlFor="item_uom" value="UOM"/>
+                                        <SelectInput 
+                                        id="item_uom"
+                                        type="text"
+                                        name="uom"
+                                        
+                                        className="mt-1 block w-full"
+                                        onChange={e => setData('uom', e.target.value)} >
+                                <option value="">Select UOM </option>
+                                 <option value="m">Meters</option>
+                                 <option value="kg">Kilograms</option>
+                                 <option value="l">Liters</option>
+                                 <option value="pcs">Pieces</option>
+                                 <option value="pc">Piece</option>
+                                 <option value="set">Set</option>
+                                 <option value="sets">Sets</option>
+                            </SelectInput>
+                                        <InputError message={errors.uom} className="mt-2"/>
+                                    </div>
+                                    </div>
 
+                                            {/* SKU No. Floating */}
                                     <div className="items-end content-end absolute right-0 -top-5">
                                     <div className="mt-4 col-span-1 flex flex-row items-center" >
                                         {/* <InputLabel htmlFor="item_sku_prefix" value="SKU No."/> */}
@@ -125,16 +161,52 @@ export default function Create({auth, item,categories, locations, brands, employ
                                             </div>
                                     </div>
                                     </div>
+                                            {/* Description */}
+                                    <div className="mt-4 col-span-2 col-start-1">
+                                    <InputLabel htmlFor="item_description" value="Item Description"/>
+                                    <TextAreaInput
+                                    id="item_description"
+                                    name="description"
+                                    value={data.description}
+                                    className="mt-1 block w-full resize-none"
+                                    rows="5"
+                                    onChange={e => setData('description', e.target.value)}
+                                    />
+                                    <InputError message={errors.description} className="mt-2"/>
+                                </div>
+                                            {/* Specifications */}
+                                <div className="mt-4 col-span-2">
+                                    <InputLabel htmlFor="item_specs" value="Item Specs"/>
+                                    <TextAreaInput
+                                    id="item_description"
+                                    name="specs"
+                                    value={data.specs}
+                                    className="mt-1 block w-full resize-none"
+                                    rows="5"
+                                    onChange={e => setData('specs', e.target.value)}
+                                    />
+                                    <InputError message={errors.specs} className="mt-2"/>
+                                </div>
+                                            {/* Remarks */}
+                                <div className="mt-4 col-span-2">
+                                    <InputLabel htmlFor="item_remarks" value="Item Remarks"/>
+                                    <TextAreaInput
+                                    id="item_remarks"
+                                    name="remarks"
+                                    value={data.remarks}
+                                    className="mt-1 block w-full resize-none"
+                                    rows="5"
+                                    onChange={e => setData('remarks', e.target.value)}
+                                    />
+                                    <InputError message={errors.remarks} className="mt-2"/>
+                                </div>
 
                                     </div>
                                     {/* 2ND GRID COLUMN */} 
-                                    <div className="grid grid-cols-1">
+                                    <div className="grid grid-cols-1 content-start">
 
-                                    </div>  
-                                  
-                                   
-                                         
-                                    <div className="mt-6 col-span-1 col-start-3">
+                                        {/* Status */}
+                                    <div className="mt-6 col-span-1">
                                             <InputLabel htmlFor="item_status" value="Status"/>
                                             <TextInput
                                             id="item_status"
@@ -147,38 +219,9 @@ export default function Create({auth, item,categories, locations, brands, employ
                                             
                                             <InputError message={errors.status} className="mt-2"/>
                                     </div>
-                                    <div className="">
-                                     
-                                    </div>
-                                      
-                                    <div className="mt-4 col-span-1 col-start-2 grid grid-cols-2 gap-1">
-                                    <div className="col-span-1">
-                                        <InputLabel htmlFor="item_quantity" value="Quantity"/>
-                                        <TextInput 
-                                        id="item_quantity"
-                                        type="number"
-                                        name="quantity"
-                                        value={data.quantity}
-                                        className="mt-1 block w-full"
-                                        onChange={e => setData('quantity', e.target.value)}
-                                        />
-                                        <InputError message={errors.quantity} className="mt-2"/>
-                                    </div>
-                                    <div className="col-span-1">
-                                        <InputLabel htmlFor="item_uom" value="UOM"/>
-                                        <TextInput 
-                                        id="item_uom"
-                                        type="text"
-                                        name="uom"
-                                        value={data.uom}
-                                        className="mt-1 block w-full"
-                                        onChange={e => setData('uom', e.target.value)}
-                                        />
-                                        <InputError message={errors.uom} className="mt-2"/>
-                                    </div>
-                                    </div>
 
-                                    <div className="mt-4 col-span-1 col-start-3">
+                                            {/* Serial */}
+                                    <div className="mt-4 col-span-1">
                                         <InputLabel htmlFor="item_serial_no" value="Serial No."/>
                                         <TextInput 
                                         id="item_serial_no"
@@ -191,7 +234,8 @@ export default function Create({auth, item,categories, locations, brands, employ
                                         <InputError message={errors.serial_no} className="mt-2"/>
                                     </div>
 
-                                    <div className="mt-4 col-span-1 col-start-3">
+                                            {/* Model */}
+                                    <div className="mt-4 col-span-1">
                                         <InputLabel htmlFor="item_model_no" value="Model"/>
                                         <TextInput 
                                         id="item_model_no"
@@ -204,7 +248,8 @@ export default function Create({auth, item,categories, locations, brands, employ
                                         <InputError message={errors.model_no} className="mt-2"/>
                                     </div>
 
-                                    <div className="mt-4 col-span-1 col-start-3">
+                                            {/* Part No. */}
+                                    <div className="mt-4 col-span-1">
                                         <InputLabel htmlFor="item_part_no" value="Part No."/>
                                         <TextInput 
                                         id="item_part_no"
@@ -218,7 +263,7 @@ export default function Create({auth, item,categories, locations, brands, employ
                                     </div>
 
                                      {/* LOCATION ID */}
-                                     <div className="mt-4 col-span-1 col-start-3">
+                                     <div className="mt-4 col-span-1">
                                         <InputLabel htmlFor="item_location_id" value="Location"/>
                                         <SelectInput
                                         id="item_location_id"
@@ -234,9 +279,9 @@ export default function Create({auth, item,categories, locations, brands, employ
                                         </SelectInput>
                                         <InputError message={errors.location_id} className="mt-2"/>
                                     </div>
-                                    {/* END OF LOCATION ID */}
-
-                                    <div className="mt-4 col-span-1 col-start-3">
+                        
+                                            {/* Employee */}
+                                    <div className="mt-4 col-span-1">
                                         <InputLabel htmlFor="item_employee_id" value="Created By:"/>
                                         <SelectInput
                                         id="item_employee_id"
@@ -253,44 +298,17 @@ export default function Create({auth, item,categories, locations, brands, employ
                                         <InputError message={errors.employee_id} className="mt-2"/>
                                     </div>
 
-                                    <div className="mt-4 col-span-2 col-start-1">
-                                    <InputLabel htmlFor="item_description" value="Item Description"/>
-                                    <TextAreaInput
-                                    id="item_description"
-                                    name="description"
-                                    value={data.description}
-                                    className="mt-1 block w-full resize-none"
-                                    rows="5"
-                                    onChange={e => setData('description', e.target.value)}
-                                    />
-                                    <InputError message={errors.description} className="mt-2"/>
-                                </div>
+                                    </div>  
+                                  
+                                   
+                                         
+            
+                                      
+                                   
 
-                                <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="item_specs" value="Item Specs"/>
-                                    <TextAreaInput
-                                    id="item_description"
-                                    name="specs"
-                                    value={data.specs}
-                                    className="mt-1 block w-full resize-none"
-                                    rows="5"
-                                    onChange={e => setData('specs', e.target.value)}
-                                    />
-                                    <InputError message={errors.specs} className="mt-2"/>
-                                </div>
+                                   
 
-                                <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="item_remarks" value="Item Remarks"/>
-                                    <TextAreaInput
-                                    id="item_remarks"
-                                    name="remarks"
-                                    value={data.remarks}
-                                    className="mt-1 block w-full resize-none"
-                                    rows="5"
-                                    onChange={e => setData('remarks', e.target.value)}
-                                    />
-                                    <InputError message={errors.remarks} className="mt-2"/>
-                                </div>
+                                    
                                    
                                 </div>
                                 {/* END OF Form */}
