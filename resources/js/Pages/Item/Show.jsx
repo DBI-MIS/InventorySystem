@@ -43,12 +43,6 @@ export default function Show({auth, item,category,onlySoftDeletedItems,tryDelete
                                             <span className="font-light">{item.id}</span>
                             </div>
                             </div>  
-                            {/* <div className="mt-2 "> 
-                                <label
-                                className="font-light text-md"
-                                htmlFor="ItemId">Description :</label>
-                                <p className=""></p>
-                            </div> */}
                             <div className="flex flex-col pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Description :</dt>
                             <dd className="text-lg font-light">{item.description}</dd>
@@ -90,7 +84,7 @@ export default function Show({auth, item,category,onlySoftDeletedItems,tryDelete
                              
                             <div className="flex flex-row pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">SKU : </dt>
-                            <dd className="text-lg font-light uppercase ml-2">{item.category.sku_prefix}-{item.sku}</dd>
+                            <dd className="text-lg font-light uppercase ml-2">{item.sku_prefix}-{item.sku}</dd>
                             </div>
 
                             <div className="flex flex-col pb-3 mt-2">
@@ -105,7 +99,7 @@ export default function Show({auth, item,category,onlySoftDeletedItems,tryDelete
 
                             <div className="flex flex-col pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Category : </dt>
-                            <dd className="text-lg font-light">{item.category.name}</dd>
+                            <dd className="text-lg font-light">{item.category ? item.category.name : 'Not belong on any CAtegory'}</dd>
                             </div>
 
                             <div className="flex flex-col pb-3 mt-2">

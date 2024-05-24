@@ -155,7 +155,7 @@ const submitDelete = (id) => {
                                       </Link>
                                     </th>
                                     <td className="px-3 py-2">{item.brand.name}</td>
-                                    <td className="px-3 py-2">{item.category.name}</td>
+                                    <td className="px-3 py-2">{item.category ? item.category.name : 'Not belong on any CAtegory'}</td>
                                     <td className="px-3 py-2">{item.quantity}</td>
                                     <td className="px-3 py-2">{item.uom}</td>
                                     <td className="px-3 py-2 text-nowrap float-end">

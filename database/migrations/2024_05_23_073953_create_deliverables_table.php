@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('rs_no_id')->constrained('receivings');
             $table->foreignId('address_id')->constrained('receivings');
             $table->timestamp('dr_date')->nullable();
-            $table->string('qty');
+            $table->foreignId('item_qty')->constrained('items');
             $table->foreignId('item_name_id')->constrained('items');
             $table->foreignId('item_description_id')->constrained('items');
             $table->timestamps();

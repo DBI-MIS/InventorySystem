@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Select from "react-select"
 export default function Create({auth, receiving,mrr_item_ids}){
 
+
  // data will hold/contain the ff:
  const {data, setData, post ,errors,processing} = useForm({
     client_id: receiving.client_id || "",
@@ -37,7 +38,7 @@ export default function Create({auth, receiving,mrr_item_ids}){
          label:  databaseItemId.id,
      }))
     console.log(mrr_item_ids_parsed)
-
+    console.log("mrr item ids " + mrr_item_ids)
     const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
     const [selectedItemIds, setSelectedItemIds] = useState(selectedValueItems.map(option => option.value));
 
@@ -61,6 +62,7 @@ export default function Create({auth, receiving,mrr_item_ids}){
         const newSelectedItemIds = selectedItemIds.filter(id => !databaseItemIds.includes(parseInt(id, 10)));
         if (newSelectedItemIds.length === 0) {
           setNotification('Items are on the tables already!');
+          setSelectedOptions([]); 
           return;
         }
         // Filter the mrr_item_ids 
@@ -255,43 +257,14 @@ export default function Create({auth, receiving,mrr_item_ids}){
                                   <th className="pr-10">Sku</th>
                                   <th className="pr-10">Name</th>
                                   <th className="pr-10">MRR No.</th>
+                                  <th className="pr-10">Brand</th>
+                                  <th className="pr-10">Category</th>
                                   <th className="pr-10">Model No.</th>
                                   <th className="pr-10">Part No.</th>
                                   <th className="pr-10">Quantity</th>
-                                  <th className="pr-10">Description</th>
                                   <th className="pr-10">Action</th>
                                 </tr>
-                              </thead>
-                              <tbody>
-                              {/* {receivings && receivings.length !== 0 && (
-                                <>
-                                  {receivings.map((selectedItem, index) => (
-                                    <tr
-                                      className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700"
-                                      key={selectedItem.id}
-                                    >
-                                      <td className="px-3 py-2">{selectedItem.id}</td>
-                                      <td className="px-3 py-2">{selectedItem.sku_prefix}-{selectedItem.sku}</td>
-                                      <td className="px-3 py-2">{selectedItem.name}</td>
-                                      <td className="px-3 py-2">{selectedItem.mrr_no}</td>
-                                      <td className="px-3 py-2">{selectedItem.model_no}</td>
-                                      <td className="px-3 py-2">{selectedItem.part_no}</td>
-                                      <td className="px-3 py-2">{selectedItem.quantity} {selectedItem.uom}</td>
-                                      <td className="px-3 py-2">{selectedItem.description}</td>
-                                      <td>
-                                    
-                                       <button
-                                        onClick={() => handleRemoveSelect(selectedItem.id,index)}
-                                        className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover:rounded-full mx-1"
-                                      >
-                                        Remove
-                                      </button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </>
-                              )} */}
-                              </tbody>  
+                              </thead> 
                               {databaseItemIds && databaseItemIds.length >= 0 && ( 
                                  <tbody>
                                     {databaseItemIds.map((selectedItemId,index) => {
@@ -311,10 +284,12 @@ export default function Create({auth, receiving,mrr_item_ids}){
                                                     </Link>
                                                   </th>
                                                   <td className="px-3 py-2">{selectedItem.mrr_no}</td>
+                                                  
+                                                  <td className="px-3 py-2">{selectedItem.brand_name}</td>
+                                                  <td className="px-3 py-2">{selectedItem.category_name}</td>
                                                   <td className="px-3 py-2">{selectedItem.model_no}</td>
                                                   <td className="px-3 py-2">{selectedItem.part_no}</td>
                                                   <td className="px-3 py-2">{selectedItem.quantity} {selectedItem.uom}</td>
-                                                  <td className="px-3 py-2">{selectedItem.description}</td>
                                                   <td>
                                                     <button
                                                       onClick={() => handleRemoveExistingItem(selectedItemId, index)}

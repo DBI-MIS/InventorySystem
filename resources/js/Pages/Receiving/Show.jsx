@@ -100,11 +100,6 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">MRR NO: </dt>
                             <dd className="text-lg font-light uppercase ml-2">{receiving.mrr_no}</dd>
                             </div>
-
-                            <div className="flex flex-col pb-3 mt-2">
-                            <dt className="mb-1 text-gray-500 text-md dark:text-gray-400"> RECEIVING ITEM ID: </dt>
-                            <dd className="text-lg font-light"> eh</dd>
-                            </div>
                     
                     </dl>
                 </div>

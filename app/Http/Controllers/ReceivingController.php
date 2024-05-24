@@ -77,11 +77,9 @@ class ReceivingController extends Controller
     function generateMrrNo() {
 
         $id = Receiving::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
-        
         $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
         $sku = str_pad( $stringID, 6, '2024', STR_PAD_LEFT); 
         // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left
-        
         return $sku;
         
     }
@@ -100,16 +98,16 @@ class ReceivingController extends Controller
      */
     public function show(Receiving $receiving)
     {
-        //if group item id is empty, will throw empty array para di mag error
-        $groupItemIds = $receiving->group_item_id ?: [];
+        $groupItemIds = is_array($receiving->group_item_id) ? $receiving->group_item_id : [];
         $receiving_items = collect(); // Initialize as an empty collection for validation 
-
-      if (count($groupItemIds) > 0) {
-        // Fetch receiving items with relationships only if there are item ids
-        $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
-            ->whereIn('id', $groupItemIds)
-            ->get();
+        
+        if (count($groupItemIds) > 0) {
+            // Fetch receiving items with relationships only if there are item ids
+            $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
+                ->whereIn('id', $groupItemIds)
+                ->get();
         }
+        
 
         return inertia('Receiving/Show', [
             'receiving' => new ReceivingResource($receiving),
@@ -124,8 +122,6 @@ class ReceivingController extends Controller
      */
     public function edit(Receiving $receiving)
     {
-        // show the stored info from creation
-       $items = Item::query()->orderBy('name', 'asc')->get();
        $parsedmrr_no = json_decode($receiving, true);  // JSON string  ==> PHP associative array
 
        // Access the value of the 'id' key
@@ -142,15 +138,27 @@ class ReceivingController extends Controller
         $existingItems = Receiving::where('id', $id)->pluck('group_item_id');
         $existingGroupItems = Item::find($existingItems) 
         ->all();
-    
         // dd($existingGroupItems);
+        //  dd($mrr_item_ids);
+           // Fetch brand name and category name for mrr items
+        foreach ($mrr_item_ids as $mrr_item) {
+            $mrr_item->brand_name = $mrr_item->brand->name; //get the name under brand then s-net sa brand_name
+            $mrr_item->category_name = $mrr_item->category->name;
+            $mrr_item->sku_prefix = $mrr_item->category->sku_prefix;
+        }
+
+        // Fetch brand name and category name for existing items
+        foreach ($existingGroupItems as $existingItem) {
+            $existingItem->brand_name = $existingItem->brand->name;
+            $existingItem->category_name = $existingItem->category->name;
+            $mrr_item->sku_prefix = $mrr_item->category->sku_prefix;
+        }
 
        return inertia('Receiving/Edit',[
             //retrieve from resource collection
             'receiving' => new ReceivingResource($receiving),
-            'items' => ItemResource::collection($items),
             'mrr_item_ids' => $mrr_item_ids,
-            'existingGroupItems' =>  $existingGroupItems
+            'existingGroupItems' =>  $existingGroupItems,
        ]
        );
     }

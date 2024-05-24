@@ -181,7 +181,7 @@ const deleteItem = (item) => {
                                       </th>
                                       <td className="w-[300px] py-2">{item.mrr_no}</td>
                                       <td className="w-[300px] py-2">{item.brand.name}</td>
-                                      <td className="w-[300px] py-2"></td>
+                                      <td className="w-[300px] py-2">{item.category ? item.category.name : 'N/A'}</td>
                                       <td className="w-[100px] py-2 text-nowrap">{item.quantity} {item.uom} </td>
                                       <td className="w-[100px] py-2 text-nowrap">
                                           <div className="flex flex-row justify-end items-center">

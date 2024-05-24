@@ -10,7 +10,7 @@ export default function Create({auth, item,category, categories, locations, bran
     // data will hold/contain the ff:
    const {data, setData, post ,errors,} = useForm({
         name: item.name || "",
-        sku_prefix: item.category.sku_prefix || "",
+        sku_prefix: item.sku_prefix || "",
         sku: item.sku || "",
         brand_id: item.brand_id || "",
         category_id: item.category_id || "",

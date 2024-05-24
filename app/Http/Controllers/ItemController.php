@@ -23,7 +23,6 @@ class ItemController extends Controller
      */
     public function index()
     {
-        // $query = Item::query() ;
         $query = Item::query() ;
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -38,7 +37,7 @@ class ItemController extends Controller
            $query->where('category_id', (request("category_id")));
         }
         $items = $query->with('category')->orderBy($sortField, $sortDirection)->paginate(20);
-        
+
         return inertia("Item/Index", [
             "items" => ItemResource::collection($items),
             'queryParams' => request()-> query() ?: null,
