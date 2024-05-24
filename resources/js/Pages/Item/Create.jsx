@@ -206,19 +206,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 />
                                 <InputError message={errors.quantity} className="mt-2"/>
                             </div>
-                            {/* <div className="mt-4 col-span-1">
-                                <InputLabel htmlFor="item_uom" value="Item Units of Measurements"/>
-                                <TextInput 
-                                id="item_uom"
-                                type="text"
-                                name="uom"
-                                value={data.uom}
-                                className="mt-1 block w-full"
-                                onChange={e => setData('uom', e.target.value)}
-                                />
-                                <InputError message={errors.uom} className="mt-2"/>
-                            </div> */}
-                            <div  className="mt-4 col-span-1">
+                            <div className="mt-4 col-span-1">
                             <InputLabel htmlFor="item_brand_id" value="UOM"/>
                             <SelectInput
                               id="item_uom"
@@ -273,21 +261,17 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 <InputError message={errors.location_id} className="mt-2"/>
                             </div>
                             {/* END OF LOCATION ID */}
-
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="item_employee_id" value="Item Status"/>
-                                    <TextInput
+                            <div className="mt-4">
+                                <InputLabel htmlFor="item_employee_id" value="Item Status"/>
+                                <TextInput
                                     id="item_status"
                                     type="text"
                                     name="status"
                                     className="mt-1 block w-full"
                                     onChange={(e) => setData("status", e.target.value)}
-                                    />
-                                    
-                                    <InputError message={errors.item_status} className="mt-2"/>
-                                </div>
-                     
-                       
+                                />
+                                <InputError message={errors.item_status} className="mt-2"/>
+                            </div>
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="item_remarks" value="Item Remarks"/>
@@ -310,10 +294,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 Submit
                             </button>
                             </div>
-                       
                     </form>
-                  
-                    
                 </div>
             </div>
         </div>

@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('location_id')->default(1);
             $table->string('employee_id')->nullable();
             $table->string('remarks')->nullable();
+            // $table->foreignId('created_by')->constrained('users');
+            // $table->foreignId('updated_by')->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });

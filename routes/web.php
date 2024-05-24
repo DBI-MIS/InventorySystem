@@ -4,6 +4,7 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeliverablesController;
 use App\Http\Controllers\StockSearchController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ItemController;
@@ -36,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::resource('mrrItem', MrrItemController::class);
         Route::resource('itemMrr', ItemController::class);
         Route::resource('stocksearch', StockSearchController::class);
+        Route::resource('deliverables', DeliverablesController::class);
         // lagay name
     
     });

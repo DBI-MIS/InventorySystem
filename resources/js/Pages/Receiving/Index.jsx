@@ -1,12 +1,9 @@
 
 import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
-import TextInput from "@/Components/TextInput";
 import { Alert} from "@material-tailwind/react";
-// import React, { useEffect, useRef, useState } from "react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
-import React, { Fragment, useState } from "react";
 export default function Index({auth,receivings,  queryParams = null, success}) {
   const [open, setOpen] = React.useState(true);
 queryParams = queryParams || {};
@@ -52,35 +49,6 @@ const deleteReceiving = (receiving) => {
   router.delete(route('receiving.destroy', receiving.id))
 }
 
-    // add
-    //const[data, setData] = useState
-    // const [val, setVal]= useState([
-    // ] );
-    // const handleAdd=()=>{
-    // setVal([...val,{fname:"",lname:""}])  
-    //     const abc=[...val,[]]
-    //     setVal(abc)
-    //     alert("form submitted ")
-    //     }
-    // const handleChange=(onChangeValue, i)=>{
-    //     const inputdata=[...val]
-    //     inputdata[i]=onChangeValue.target.value;
-    //     setVal(inputdata)
-       
-    //     }
-// remove added divs
-// const handleDelete=(i)=>{
-//   const deleteVal =[...val]
-//   deleteVal.splice(i,1)
-//   setVal(deleteVal)
-//  }
-
-//  show form modal 
-// const [showModalForm, setShowModalForm]= useState(false);
-// console.log(val, "data")
-
-
-
   return (
     <AuthenticatedLayout
     user={auth.user}
@@ -105,7 +73,7 @@ const deleteReceiving = (receiving) => {
           <div className="max-w-5/6 mx-auto sm:px-6 lg:px-8 relative">
           {success && (
                  <Alert
-                 className=" z-50 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
+                 className=" absolute w-11/12 z-50 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
                  open={open}
                  onClose={() => setOpen(false)}
                  animate={{
@@ -136,6 +104,8 @@ const deleteReceiving = (receiving) => {
                               sortChanged={sortChanged}>Address</TableHeading>
                               <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Remarks</TableHeading>
+                                {/* <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Created By</TableHeading> */}
                               <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Action</TableHeading>
                               </tr>
@@ -176,6 +146,7 @@ const deleteReceiving = (receiving) => {
                                       <td className="px-3 py-2">{receiving.dr_no}</td>
                                       <td className="px-3 py-2">{receiving.address}</td>
                                       <td className="px-3 py-2">{receiving.remarks}</td>
+                                      {/* <td className="px-3 py-2">{receiving.created_by}</td> */}
                                       <td className="px-3 py-2 text-nowrap">
                                           <div className="flex">
                                               <Link href={route('receiving.edit', receiving.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 

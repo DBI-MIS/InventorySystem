@@ -94,6 +94,7 @@ class LocationController extends Controller
         $name = $location->name;
         $location->delete();
        
-        return to_route('location.index')->with('success', "Location \" $name \" was deleted!");
+        return to_route('location.index')
+        ->with('success', "Location \" $name \" was deleted!");
     }
 }

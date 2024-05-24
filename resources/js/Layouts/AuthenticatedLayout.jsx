@@ -68,6 +68,10 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('stocksearch.index')} active={route().current('stocksearch.index')}>
                                     <SearchItem className="block h-9 w-auto fill-current  " /> 
                                 </NavLink>
+                                <br />
+                                <NavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
+                                    <SearchItem className="block h-9 w-auto fill-current  " /> 
+                                </NavLink>
                                 
                                 
                             </div>

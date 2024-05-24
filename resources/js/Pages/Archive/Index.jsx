@@ -8,14 +8,24 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head,Link, router} from "@inertiajs/react";
 import { useState } from "react";
 import Modals from "@/Components/Modals";
+import { useEffect } from "react";
 
 export default function Index({auth,items, queryParams = null, success,deleteItem,item, setOpenModal}) {
 
   const [showModal, setShowModal] = useState(false);
+  const [open, setOpen] = React.useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpen(false); // Hide 
+    }, 1000);
+  
+    return () => clearTimeout(timer); // Clear the timeout when component unmounts or updates
+  }, [success]);
+
 
   queryParams = queryParams || {};
 
-const [open, setOpen] = React.useState(true);
+
   const searchFieldChanged = (name, value) => {
     if(value){
       queryParams[name] = value;
@@ -89,7 +99,7 @@ const submitDelete = (id) => {
                  <Alert
                  className=" absolute z-50 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
                  open={open}
-                 onClose={() => setOpen(true)}
+                 onClose={() => setOpen(false)}
                  animate={{
                    mount: { y: 0 },
                    unmount: { y: 100 },

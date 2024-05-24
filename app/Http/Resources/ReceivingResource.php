@@ -34,9 +34,10 @@ class ReceivingResource extends JsonResource
             'location' => new LocationResource($this->location),
             'employee_id'=> $this->employee_id,
             'employee' => new EmployeeResource($this->employee),
-            'created_at' =>  $this->created_at,
-            'updated_at' => $this->updated_at,
             'remarks'=>  $this->remarks,
+            // 'createdBy' => new UserResource($this->createdBy),
+            // 'created_by' => $this->user ? $this->user->name : null,
+             
 
         ];
     }

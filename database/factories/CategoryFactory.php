@@ -16,7 +16,7 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->unique()->randomElement([
+        $name = $this->faker->randomElement([
             'Equipments',
             'Materials',
             'Office Supplies',
@@ -24,8 +24,8 @@ class CategoryFactory extends Factory
         ]);
 
         return [
-            // 'name'=> $name,
-            'name'=> fake()->sentence(2),
+            'name'=> $name,
+            // 'name'=> fake()->sentence(2),
             'description'=> fake()->realText(),
             'sku_prefix'=> 'AAA',
            

@@ -52,11 +52,12 @@ class DatabaseSeeder extends Seeder
          ->create();
 
          Category::factory()
-         ->count(3)
+         ->count(4)
          ->state(new Sequence(
             ['sku_prefix' => 'AAA'],
             ['sku_prefix' => 'BBB'],
             ['sku_prefix' => 'CCC'],
+            ['sku_prefix' => 'DDD'],
          ))
          ->create();
 

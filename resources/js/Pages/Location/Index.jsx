@@ -5,9 +5,20 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
+import { useEffect } from "react";
+import { useState } from "react";
 export default function Index({auth, locations, queryParams = null, success}) {
-  const [open, setOpen] = React.useState(true);
-queryParams = queryParams || {};
+  
+  const [open, setOpen] = useState(true);
+// useEffect(() => {
+//   const timer = setTimeout(() => {
+//     setOpen(false); // Hide the success message after 2 seconds
+//   }, 1000);
+
+//   return () => clearTimeout(timer); // Clear the timeout when component unmounts or updates
+// }, [success]);
+
+  queryParams = queryParams || {};
 
   const searchFieldChanged = (name, value) => {
     if(value){

@@ -15,6 +15,7 @@ use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
+use Illuminate\Support\Facades\Auth;
 
 class ReceivingController extends Controller
 {
@@ -88,7 +89,11 @@ class ReceivingController extends Controller
      */
     public function store(StoreReceivingRequest $request)
     {
+       
         $data = $request->validated();
+        // $data['created_by'] = Auth()->user()->id;
+        // $data['created_by'] = Auth::id();
+        // $data['updated_by'] = Auth::id();
         Receiving::create($data);
         return redirect()->route('receiving.index')->with('success', "Receiving added successfully");
     }
@@ -151,7 +156,7 @@ class ReceivingController extends Controller
         foreach ($existingGroupItems as $existingItem) {
             $existingItem->brand_name = $existingItem->brand->name;
             $existingItem->category_name = $existingItem->category->name;
-            $mrr_item->sku_prefix = $mrr_item->category->sku_prefix;
+            $existingItem->sku_prefix = $existingItem->category->sku_prefix;
         }
 
        return inertia('Receiving/Edit',[

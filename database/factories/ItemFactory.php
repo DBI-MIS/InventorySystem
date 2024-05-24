@@ -21,7 +21,7 @@ class ItemFactory extends Factory
             'name'=> fake()->sentence('2'),
             'mrr_no'=> rand(1, 10),
             'brand_id'=>rand(1, 10),
-            'category_id'=>rand(1, 10),
+            'category_id'=>rand(1, 4),
             'receiving_item_id'=>rand(1, 10),
             'description'=> fake()->realText(),
             'specs'=> fake()->realText(),

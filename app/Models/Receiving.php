@@ -24,6 +24,7 @@ class Receiving extends Model
         'location_id',
         'employee_id',
         'remarks',
+        'created_by',
     
     ];
 
@@ -44,6 +45,14 @@ class Receiving extends Model
     public function brand(){
         return $this->hasManyThrough(Brand::class,Item::class);
     } 
+    // public function createdBy(){
+    //     //relation of uodated and createdby
+    //     return $this->belongsTo(User::class,'created_by');
+    // }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class, 'created_by');
+    // }
     
 }
 

@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('ref_id')->nullable();
             // $table->string('receiving_id')->nullable();
             // $table->foreignId('item_id')->nullable();
-           
+            $table->foreignId('created_by')->constrained('users');
+            // $table->foreignId('updated_by')->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });
