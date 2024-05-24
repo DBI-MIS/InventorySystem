@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreReceivingRequest extends FormRequest
 {
@@ -21,7 +22,13 @@ class StoreReceivingRequest extends FormRequest
      */
     public function rules(): array
     {  return [
-        "mrr_no" => ['nullable', 'max:255'],
+        "mrr_no" => [
+            'nullable',
+            Rule::unique('receivings', 'mrr_no')->ignore($this->receiving),
+        ],
+            //Rule::unique('receivings')->ignore($receiving->id),
+        // Rule::unique('receivings', 'mrr_no')->ignore($this->receiving),
+       // 'mrr_no' => "nulllable|unique:receivings,mrr_no,{$this->route($key)}",
         'igroup_item_id' => [
             'nullable',
             'exists:items,id'],

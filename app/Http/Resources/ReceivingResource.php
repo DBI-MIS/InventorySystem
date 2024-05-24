@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use App\Models\Receiving;
 use App\Models\ReceivingItem;
 use Illuminate\Http\Request;
@@ -29,11 +30,6 @@ class ReceivingResource extends JsonResource
             'si_no'=> $this->si_no,
             'dr_no'=> $this->dr_no,
             'address'=> $this->address,
-            // 'reference_no'=> $this->reference_no,
-            // 'receiving_id'=> $this->receiving_id,
-            // 'receiving' => new ReceivingResource($this->receiving),
-            // 'receiving_item_id'=> $this->receiving_item_id,
-            // 'receiving_item' => new ReceivingItemResource($this->receiving_item),
             'location_id'=> $this->location_id,
             'location' => new LocationResource($this->location),
             'employee_id'=> $this->employee_id,

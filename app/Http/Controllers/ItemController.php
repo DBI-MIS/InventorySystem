@@ -12,6 +12,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Location;
+use App\Models\Receiving;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -23,7 +24,7 @@ class ItemController extends Controller
     public function index()
     {
         // $query = Item::query() ;
-          $query = Item::query() ;
+        $query = Item::query() ;
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
         if (request("name")) {
@@ -36,15 +37,14 @@ class ItemController extends Controller
         if(request("category_id")){
            $query->where('category_id', (request("category_id")));
         }
-       
-        $items = $query->orderBy($sortField, $sortDirection)
-        ->paginate(20);
+        $items = $query->with('category')->orderBy($sortField, $sortDirection)->paginate(20);
         
         return inertia("Item/Index", [
             "items" => ItemResource::collection($items),
             'queryParams' => request()-> query() ?: null,
             'success' => session('success'),
              ]);
+
 
         
        
@@ -64,7 +64,7 @@ class ItemController extends Controller
         //  for sku code
          $sku = $this->generateSkuId();
          $input['sku'] = $sku;
-
+         $mrrData = Receiving::select('mrr_no')->distinct()->get(); //get only unique values
          
         return Inertia("Item/Create",[
             'brands' => BrandResource::collection($brands),
@@ -73,6 +73,7 @@ class ItemController extends Controller
             'locations' =>  LocationResource::collection($locations),
             'sku' =>$sku,
             'mrr_no' => session('mrr_no'),
+            'mrrData' =>  $mrrData,
         ]);
 
     }
@@ -86,6 +87,7 @@ class ItemController extends Controller
         return $sku;
         
     }
+  
     /**
      * Store a newly created resource in storage.
      */

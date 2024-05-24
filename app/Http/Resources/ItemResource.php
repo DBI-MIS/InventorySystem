@@ -19,7 +19,7 @@ class ItemResource extends JsonResource
     {
         return[
             'id' => $this->id,
-            'sku_prefix' => $this->category->sku_prefix,
+            'sku_prefix' => $this->category ? $this->category->sku_prefix : null,
             'sku' => $this->sku,
             'name' => $this->name,
             'mrr_no'=> $this->mrr_no,
@@ -28,7 +28,6 @@ class ItemResource extends JsonResource
             'category_id' => $this->category_id,
             'category' => new CategoryResource($this->category),
             'receiving_item_id' => $this->receiving_item_id,
-            'receivingItem' => new ReceivingItemResource($this->receivingItem),
             'description' => $this->description,
             'specs' => $this->specs,
             'part_no' => $this->part_no,

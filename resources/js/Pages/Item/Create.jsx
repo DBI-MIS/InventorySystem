@@ -7,7 +7,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm} from "@inertiajs/react";
 
 
-export default function Create({auth,brands,sku, categories,employees,locations,success,}){
+export default function Create({auth,brands,sku, categories,employees,locations,success,mrrData}){
 
    const {data, setData, post,errors,reset} = useForm({
         name: '',
@@ -66,15 +66,21 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                             </div>
                             <div className="mt-4  col-span-2">
                                     <InputLabel htmlFor="item_mrr_no" value="MRR No."/>
-                                    <TextInput 
-                                    id="item_mrr_no"
-                                    type="text"
-                                    name="mrr_no"
-                                    value={data.mrr_no}
-                                    className="mt-1 block w-full"
-                                    isFocused={true}
-                                    onChange={e => setData('mrr_no', e.target.value)}
-                                     />
+                                    <SelectInput
+                                        value={data.mrr_no}
+                                        onChange={e => setData('mrr_no',e.target.value)}
+                                        id="receiving_mrr_no"
+                                        name="mrr_no"
+                                        className="mt-1 block w-full"
+                                 >
+                                <option value="">Select Mrr No</option>
+                                {mrrData.map((data, index) => (
+                                    <option key={index} value={data.mrr_no}>
+                                        {data.mrr_no}
+                                    </option>
+                                ))}
+                            </SelectInput>
+                                   
                                    
                                 </div>
                           <div className=" mt-4  col-span-q ">
@@ -220,10 +226,13 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                               className="mt-1 block w-full"
                               onChange={e => setData('uom', e.target.value)} >
                                 <option value="">Select UOM </option>
-                                 <option value="meters">Meters</option>
-                                 <option value="kilograms">Kilograms</option>
-                                 <option value="liters">Liters</option>
-                                 <option value="pieces">Pieces</option>
+                                 <option value="m">Meters</option>
+                                 <option value="kg">Kilograms</option>
+                                 <option value="l">Liters</option>
+                                 <option value="pcs">Pieces</option>
+                                 <option value="pc">Piece</option>
+                                 <option value="set">Set</option>
+                                 <option value="sets">Sets</option>
                             </SelectInput>
                             <InputError message={errors.uom} className="mt-2"/>
                             <h1 id="hello"></h1>

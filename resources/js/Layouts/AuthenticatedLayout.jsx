@@ -12,6 +12,7 @@ import Nemployee from '@/Components/Nemployee';
 import Narchive from '@/Components/Narchive';
 import Nreceiving from '@/Components/Nreceiving';
 import Nbrand from '@/Components/Nbrand';
+import SearchItem from '@/Components/SearchItem';
 import DbitransparentLogo from '@/Components/DbitranparentLogo';
 
 export default function Authenticated({ user, header, children }) {
@@ -64,13 +65,8 @@ export default function Authenticated({ user, header, children }) {
                                     <Nreceiving className="block h-9 w-auto fill-current " /> 
                                 </NavLink>
                                 <br />
-                                {/* nagttry lang ako ng functions kung gagana hahaha */}
-                                <NavLink href={route('receivingItem.index')} active={route().current('receivingItem.index')}>
-                                    <Nreceiving className="block h-9 w-auto fill-current " /> 
-                                </NavLink>
-                                <br />
-                                <NavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
-                                    <Nreceiving className="block h-9 w-auto fill-current " /> 
+                                <NavLink href={route('stocksearch.index')} active={route().current('stocksearch.index')}>
+                                    <SearchItem className="block h-9 w-auto fill-current  " /> 
                                 </NavLink>
                                 
                                 
@@ -139,6 +135,11 @@ export default function Authenticated({ user, header, children }) {
                         <ResponsiveNavLink href={route('receiving.index')} active={route().current('receiving.index')}>
                                     <Nreceiving className="block h-9 w-auto fill-current " /> 
                         </ResponsiveNavLink>
+                        <br />
+                        <ResponsiveNavLink href={route('stocksearch.index')} active={route().current('stocksearch.index')}>
+                                    <SearchItem className="block h-9 w-auto fill-current " /> 
+                        </ResponsiveNavLink>
+                        
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">

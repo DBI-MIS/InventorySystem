@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Restore;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Item extends Model
 {
@@ -58,10 +57,6 @@ class Item extends Model
     public function receiving(){
         return $this->belongsTo(Receiving::class);
     }
-    // public function receiving_item(){
-    //     return $this->belongsTo(ReceivingItem::class);
-    // }
-
  /**
      * The attributes that should be mutated to dates.
      *

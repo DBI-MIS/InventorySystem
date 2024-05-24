@@ -19,8 +19,10 @@ class ReceivingFactory extends Factory
      */
     public function definition(): array
     {
+
+        $mrr_no = $this->faker->unique()->numberBetween(1, 50);
         return [
-            'mrr_no'=>rand(1, 10),
+            'mrr_no'=> $mrr_no,
             'group_item_id'=>rand(1, 30),
             'client_id'=>rand(1, 10),
             'si_no'=>rand(1, 10),

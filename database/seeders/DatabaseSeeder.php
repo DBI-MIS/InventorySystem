@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Deliverables;
+use App\Models\StockSearch;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
@@ -12,6 +12,7 @@ use App\Models\Material;
 use App\Models\Receiving;
 use App\Models\ReceivingItem;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -51,7 +52,12 @@ class DatabaseSeeder extends Seeder
          ->create();
 
          Category::factory()
-         ->count(10)
+         ->count(3)
+         ->state(new Sequence(
+            ['sku_prefix' => 'AAA'],
+            ['sku_prefix' => 'BBB'],
+            ['sku_prefix' => 'CCC'],
+         ))
          ->create();
 
          
@@ -65,6 +71,11 @@ class DatabaseSeeder extends Seeder
 
          Item::factory()
          ->count(30)
+        //  ->state(new Sequence(
+        //     ['uom' => 'pcs'],
+        //     ['uom' => 'kgs'],
+        //     ['uom' => 'sets'],
+        //  ))
          ->create();
 
          
@@ -72,9 +83,6 @@ class DatabaseSeeder extends Seeder
          ->count(50)
          ->create();
          
-         ReceivingItem::factory()
-         ->count(20)
-         ->create();
          
 foreach(Item::all() as $item){
     foreach(Receiving::all() as $receiving){

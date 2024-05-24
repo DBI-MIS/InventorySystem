@@ -7,13 +7,6 @@ import { Alert} from "@material-tailwind/react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
 import React, { Fragment, useState } from "react";
-import { data } from "autoprefixer";
-import ModalForm from "@/Components/ModalForm";
-import InputLabel from "@/Components/InputLabel";
-import SelectInput from "@/Components/SelectInput";
-import InputError from "@/Components/InputError";
-import TextAreaInput from "@/Components/TextAreaInput";
-// import React from "react";
 export default function Index({auth,receivings,  queryParams = null, success}) {
   const [open, setOpen] = React.useState(true);
 queryParams = queryParams || {};
@@ -131,29 +124,20 @@ const deleteReceiving = (receiving) => {
                               sortChanged={sortChanged}>ID</TableHeading>
                               <TableHeading  className="pr-10"  name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>MMR No. </TableHeading>
-                               <TableHeading  className="pr-10"  name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Item IDs </TableHeading>
+                               {/* <TableHeading  className="pr-10"  name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Item IDs </TableHeading> */}
                                     <TableHeading  className="pr-10"  name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Client ID </TableHeading>
                                 <TableHeading  className="pr-10"   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>S.I. No.</TableHeading>
                                 <TableHeading  className="pr-2"   name="brand_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>D.R No.</TableHeading>
-                               {/* <TableHeading  className="pr-2"   name="brand_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Reference No.</TableHeading> */}
-                                {/* <TableHeading className="pr-10"  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>receiving_item_id</TableHeading> */}
                                <TableHeading className="pr-10"  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Address</TableHeading>
                               <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Remarks</TableHeading>
                               <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Action</TableHeading>
-                           
-                               {/*<TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Location</TableHeading>
-                                <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Employee</TableHeading> */}
                               </tr>
                             </thead>
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -180,16 +164,16 @@ const deleteReceiving = (receiving) => {
                                           
                                       </td>
                                       <td className="px-3 py-2">
-                                        {receiving.mrr_no}
+                                      <Link href={route('receiving.show', receiving.id)}>
+                                      {receiving.mrr_no}
+                                        </Link>
                                       </td>
-                                      <td className="px-3 py-2">
+                                      {/* <td className="px-3 py-2">
                                         {receiving.group_item_id}
-                                      </td>
+                                      </td> */}
                                       <td className="px-3 py-2">{receiving.client_id}</td>
                                       <td className="px-3 py-2">{receiving.si_no}</td>
                                       <td className="px-3 py-2">{receiving.dr_no}</td>
-                                      {/* <td className="px-3 py-2">{receiving.receiving_item.reference_no}</td> */}
-                                      {/* <td className="px-3 py-2">{ receiving.receiving_item_id}-{receiving.receiving_item_ref_id}</td>  */}
                                       <td className="px-3 py-2">{receiving.address}</td>
                                       <td className="px-3 py-2">{receiving.remarks}</td>
                                       <td className="px-3 py-2 text-nowrap">
@@ -208,9 +192,6 @@ const deleteReceiving = (receiving) => {
                                               </button>
                                           </div>
                                     </td>
-                                      {/*<td className="px-3 py-2">{receiving.location.name}</td>
-                                      <td className="px-3 py-2">{receiving.employee.name}</td> */}
-                                     
                                   </tr>
                               ))}
                             </tbody>
@@ -223,29 +204,8 @@ const deleteReceiving = (receiving) => {
                  <Pagination links={receivings.meta.links} />
               </div>
               <div>
-                {/* add form */}
-                     
-              
-                     
                   </div>
           </div>
-          {/* <button onClick={()=>handleAdd()}
-             className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover: rounded-full  hover:underline mx-1"> 
-             Add
-            </button> */}
-            {/* {val.map((data,i)=>{
-                return(
-                <div>
-                     <input
-                     name="fname" value={data.fname} onChange={e=>handleChange(e,i)} />
-                                 
-                     <button
-                     onClick={()=>handleDelete(i)}
-                    
-                    >remove</button>
-                </div>
-               )
-              })} */}
       </div>
     </AuthenticatedLayout>
   )

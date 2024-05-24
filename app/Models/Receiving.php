@@ -38,12 +38,12 @@ class Receiving extends Model
     public function employee(){
         return $this->belongsTo(Employee::class);
     } 
-    public function receiving_item(){
-        return $this->belongsTo(ReceivingItem::class);
-    }
-    // public function ref_id(){
-    //     return $this->belongsTo(Category::class,'ref_id');
-    // }
+    public function category(){
+        return $this->hasManyThrough(Category::class, Item::class);
+    } 
+    public function brand(){
+        return $this->hasManyThrough(Brand::class,Item::class);
+    } 
     
 }
 

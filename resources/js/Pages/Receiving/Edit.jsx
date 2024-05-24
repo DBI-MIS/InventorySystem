@@ -1,13 +1,10 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import SelectInput from "@/Components/SelectInput";
-import TableHeading from "@/Components/TableHeading";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
-// import Select from "react-select/dist/declarations/src/Select";
 import Select from "react-select"
 export default function Create({auth, receiving,mrr_item_ids}){
 
@@ -24,106 +21,89 @@ export default function Create({auth, receiving,mrr_item_ids}){
     remarks: receiving. remarks || "",
         _method: "PUT", 
     });
-
-  
-    // const [ databaseItemIds, setdatabaseItemIds] = useState(receiving.group_item_id) // value of that array item ids from the database is 4,9,12,16
     const [databaseItemIds, setDatabaseItemIds] = useState(Array.isArray(receiving.group_item_id) ? receiving.group_item_id : []);
-
     const mrr_item_ids_parsed = mrr_item_ids.map(item => ({ ...item, id: parseInt(item.id) }));
     const [notification, setNotification] = useState('');
-    const [selectedItemIds, setSelectedItemIds] = useState([]);
     const [allSelectedItemIds, setAllSelectedItemIds] = useState([]);
     const [receivings, setReceivings] = useState([]);
-    const options = [
-      {value: "india", label:"India"},
-      {value: "srilanka", label:"Sri Lanka"},
-      {value: "banglades", label:"Banglades"},
-      {value: "indonesia", label:"Indonesia"},
-      ];
 
-      const[selectedOptions, setSelectedOptions] = useState([]);
-      const handleChange = (selectedOption)=>{
+    const  options = mrr_item_ids.map(item => ({
+      value: item.id,
+      label: item.name
+    }));
+
+    const selectedValueItems = databaseItemIds.map(databaseItemId => ({
+         value: databaseItemId.id,
+         label:  databaseItemId.id,
+     }))
+    console.log(mrr_item_ids_parsed)
+
+    const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
+    const [selectedItemIds, setSelectedItemIds] = useState(selectedValueItems.map(option => option.value));
+
+    useEffect(() => {
+      setSelectedItemIds(selectedOptions.map(option => option.value));
+    }, [selectedOptions]);
+
+      const handleSelectChange = (selectedOption) => {
         setSelectedOptions(selectedOption);
-      }
-  console.log("values in receiving item ids : " + databaseItemIds)
-  console.log("data" + data)
-
-console.log(mrr_item_ids_parsed)
-  const handleSelectChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
-    setSelectedItemIds(selectedOptions);
-  };
-
-  const handleAddSelect = (e) => {
-    e.preventDefault();
-    const newSelectedItemIds = selectedItemIds.filter(id => !allSelectedItemIds.includes(parseInt(id, 10)));
-    const duplicateItemIds = selectedItemIds.filter(id => allSelectedItemIds.includes(parseInt(id, 10)));
-
-    if (duplicateItemIds.length > 0) {
-      setNotification(`Item IDs ${duplicateItemIds.join(', ')} are already added.`);
-      return;
-    }
-
-    if (newSelectedItemIds.length === 0) return;
-
-    const selectedItems = mrr_item_ids.filter(item => newSelectedItemIds.includes(item.id.toString()));
-    setReceivings(prevReceivings => [...prevReceivings, ...selectedItems]);
-
-    const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
-    const newAllSelectedItemIds = [...allSelectedItemIds, ...intSelectedItemIds];
-    const newDatabaseItemIds = [...databaseItemIds, ...intSelectedItemIds];
-
-    setAllSelectedItemIds(newAllSelectedItemIds);
-    setDatabaseItemIds(newDatabaseItemIds);
-    setData('group_item_id', newDatabaseItemIds);
-
-    setSelectedItemIds([]);
-    setNotification('');
-  };
-
-  useEffect(() => {
-    setData('group_item_id', allSelectedItemIds);
-  }, [allSelectedItemIds]);
-
-  console.log("receivings" + receivings)
- 
-    console.log("set of data" + data);
-    console.log(mrr_item_ids);
-     
-
-  const handleRemoveSelect = (idToRemove, index) => {
-   // alert(index);
-
-    //mutate
-    const newPrevIds = [...allSelectedItemIds];
-    // Remove the item at the specified index using splice method
-    newPrevIds.splice(index, 1);
-   // alert(newPrevIds);
-    // Update the state with the new array of item IDs
-    setAllSelectedItemIds(newPrevIds);
-    // Update the state 
-    setReceivings(prevReceivings => prevReceivings.filter(item => item.id !== idToRemove));
-  };
-
-    
+        const selectedOptionss =  Array.from(selectedOption, (option) => option.value);
+        setSelectedItemIds(selectedOptionss);
+        setSelectedOptions(selectedOption);
+        //checking values
+        // alert("selectedOptionss" + selectedOptionss);
+      };
+      console.log("selected Item ids" + selectedItemIds)
+      const handleAddSelect = (e) => {
+        e.preventDefault();
+      
+        // Filter out the selected items that are already present in the databaseItemIds 
+        const newSelectedItemIds = selectedItemIds.filter(id => !databaseItemIds.includes(parseInt(id, 10)));
+        if (newSelectedItemIds.length === 0) {
+          setNotification('Items are on the tables already!');
+          return;
+        }
+        // Filter the mrr_item_ids 
+        const selectedItems = mrr_item_ids.filter(item => newSelectedItemIds.includes(item.id.toString()));
+      
+        // Update the receivings state with new selected items
+        setReceivings(prevReceivings => [...prevReceivings, ...selectedItems]);
+      
+        // Convert selected item IDs to integers
+        const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
+      
+        // Update allSelectedItemIds and databaseItemIds with new selected items
+        const newAllSelectedItemIds = [...allSelectedItemIds, ...intSelectedItemIds];
+        const newDatabaseItemIds = [...databaseItemIds, ...intSelectedItemIds];
+      
+        setAllSelectedItemIds(newAllSelectedItemIds);
+        setDatabaseItemIds(newDatabaseItemIds);
+      
+        // Update the form data with new group item IDs, eto yung asa tables
+        setData('group_item_id', newDatabaseItemIds);
+      
+        // Clear 
+        setSelectedItemIds([]);
+        setSelectedOptions([]); 
+        setNotification('');
+      };
       useEffect(() => {
         setData('group_item_id', databaseItemIds);
       }, [databaseItemIds]);
-    
+
+      // checking of values
+      console.log("selected Item ids", selectedItemIds);
+      console.log("receivings", receivings);
+      console.log("allSelectedItemIds", allSelectedItemIds);
+      console.log("databaseItemIds", databaseItemIds);
+      console.log("data", data);
+
     //delete button of the existing item on the table
     const handleRemoveExistingItem = ( selectedItemId, index) => {
-      //alert(index)
-      
-       // e.preventDefault();
         const remainIds = [...databaseItemIds];
-        //alert("database ids:" + remainIds)
         remainIds.splice(index, 1);
-        // const updatedItems = data.group_item_id.filter(id => id !== selectedItemId);
-       // alert('Updated items:'+  remainIds);
-        setdatabaseItemIds(remainIds)
-          // setData('group_item_id', remainIds);
-        // const newAllSelectedItemIds = allSelectedItemIds.filter(id => id !== selectedItemId);
-        // setAllSelectedItemIds(newAllSelectedItemIds);
+        setDatabaseItemIds(remainIds);
+        setAllSelectedItemIds(remainIds);
     };
     useEffect(() => {
         console.log('Current data:', data); 
@@ -150,131 +130,101 @@ console.log(mrr_item_ids_parsed)
                   <div className="flex">
                     <div className="w-full">
                       <div className="mt-4  col-span-3">
-                                    <InputLabel htmlFor="receiving_client_id" value="Client Id"/>
-                                    <TextInput 
-                                        id="receiving_client_id"
-                                        type="text"
-                                        name="client_id"
-                                        value={data.client_id}
-                                        className="mt-1 block w-full"
-                                        isFocused={true}
-                                        onChange={e => setData('client_id', e.target.value)}
-                                        />
-                                        <InputError message={errors.client_id} className="mt-2"/>
+                          <InputLabel htmlFor="receiving_client_id" value="Client Id"/>
+                          <TextInput 
+                              id="receiving_client_id"
+                              type="text"
+                               name="client_id"
+                              value={data.client_id}
+                               className="mt-1 block w-full"
+                              isFocused={true}
+                              onChange={e => setData('client_id', e.target.value)}
+                          />
+                          <InputError message={errors.client_id} className="mt-2"/>
                       </div>
                       <div className="grid grid-cols-6 gap-2">
-                                    <div className=" mt-4  col-span-2 ">
-                                        <InputLabel htmlFor="mrr_no" value="MRR No."/>
-                                            <TextInput 
-                                                id="mrr_no"
-                                                type="text"
-                                                name="mrr_no"
-                                                readOnly
-                                                value={data.mrr_no}
-                                                className="mt-1 block w-full"
-                                                onChange={e => setData('mrr_no', e.target.value)}
-                                            />
-                                    </div>
-                                    <div className="mt-4  col-span-2">
-                                        <InputLabel htmlFor="receiving_si_no" value="SI No."/>
-                                        <TextInput 
-                                            id="receiving_si_no"
-                                            type="text"
-                                            name="si_no"
-                                            value={data.si_no}
-                                            className="mt-1 block w-full"
-                                            isFocused={true}
-                                            onChange={e => setData('si_no', e.target.value)}
-                                        />
-                                        <InputError message={errors.si_no} className="mt-2"/>
-                                    </div>
-                                    <div className="mt-4  col-span-2">
-                                        <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
-                                        <TextInput 
-                                            id="receiving_dr_no"
-                                            type="text"
-                                            name="dr_no"
-                                            value={data.dr_no}
-                                            className="mt-1 block w-full"
-                                            isFocused={true}
-                                            onChange={e => setData('dr_no', e.target.value)}
-                                        />
-                                        <InputError message={errors.dr_no} className="mt-2"/>
-                                    </div>
+                            <div className=" mt-4  col-span-2 ">
+                              <InputLabel htmlFor="mrr_no" value="MRR No."/>
+                                  <TextInput 
+                                      id="mrr_no"
+                                      type="text"
+                                      name="mrr_no"
+                                      readOnly
+                                      value={data.mrr_no}
+                                      className="mt-1 block w-full"
+                                      onChange={e => setData('mrr_no', e.target.value)}
+                                  />
+                            </div>
+                            <div className="mt-4  col-span-2">
+                              <InputLabel htmlFor="receiving_si_no" value="SI No."/>
+                              <TextInput 
+                                  id="receiving_si_no"
+                                  type="text"
+                                  name="si_no"
+                                  value={data.si_no}
+                                  className="mt-1 block w-full"
+                                  isFocused={true}
+                                  onChange={e => setData('si_no', e.target.value)}
+                              />
+                              <InputError message={errors.si_no} className="mt-2"/>
+                            </div>
+                            <div className="mt-4  col-span-2">
+                                <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
+                                <TextInput 
+                                    id="receiving_dr_no"
+                                    type="text"
+                                    name="dr_no"
+                                    value={data.dr_no}
+                                    className="mt-1 block w-full"
+                                    isFocused={true}
+                                    onChange={e => setData('dr_no', e.target.value)}
+                                />
+                                <InputError message={errors.dr_no} className="mt-2"/>
+                            </div>
                       </div>
                       <div className="mt-4">
-                                    <InputLabel htmlFor="receiving_address" value="Receiving Address"/>
-                                    <TextAreaInput
-                                        id="receiving_address"
-                                        name="address"
-                                        value={data.address}
-                                        className="mt-1 block w-full"
-                                        onChange={e => setData('address', e.target.value)}
-                                    />
-                                    <InputError message={errors.address} className="mt-2"/>
-                      </div>  
-                      <div>
-                        <h5>Multi select dropdown items</h5>
-                        <Select
-                          value={selectedOptions}
-                          onChange={handleChange}
-                          className="mt-1 block w-full"
-                          isMulti={true}
-                          options={options}
-                         >
-                          {/* {mrr_item_ids.map((item) => (
-                            <option value={item.id} key={item.id}>
-                              {item.name}
-                            </option>
-                          ))} */}
-                        </Select>
-
-                      </div>
+                          <InputLabel htmlFor="receiving_address" value="Receiving Address"/>
+                          <TextAreaInput
+                              id="receiving_address"
+                              name="address"
+                              value={data.address}
+                              className="mt-1 block w-full"
+                              onChange={e => setData('address', e.target.value)}
+                          />
+                          <InputError message={errors.address} className="mt-2"/>
+                      </div> 
                       <div className="mt-4">
-                        <InputLabel htmlFor="receiving_remarks" value="Receiving Remarks"/>
-                        <TextAreaInput
-                          id="receiving_remarks"
-                          name="remarks"
-                          value={data.remarks}
-                          className="mt-1 block w-full"
-                          onChange={e => setData('remarks', e.target.value)}
-                        />
+                          <InputLabel htmlFor="receiving_remarks" value="Receiving Remarks"/>
+                          <TextAreaInput
+                            id="receiving_remarks"
+                            name="remarks"
+                            value={data.remarks}
+                            className="mt-1 block w-full"
+                            onChange={e => setData('remarks', e.target.value)}
+                          />
                           <InputError message={errors.remarks} className="mt-2"/>
                       </div>
-{/* {receivings && receivings.length !== 0 && ( */}
-                      <div>
-                         <div> 
-                        
-                            <div className="mt-20 mx-8">
-                            {notification && (
-                            <div className="text-red-600 font-semibold mt-2">
-                              {notification}
-                            </div>
-                          )}
-                                  <h1>Items</h1>
-                                  <div className="grid grid-cols-9 gap-2 mt-2">
-                                    <div className="col-span-8 w-full">
-                                      <select
-                                        value={selectedItemIds}
-                                        onChange={handleSelectChange}
-                                        className="mt-1 block w-full"
-                                        multiple
-                                      >
-                                        {mrr_item_ids.map((item) => (
-                                          <option value={item.id} key={item.id}>
-                                            {item.name}
-                                          </option>
-                                        ))}
-                                      </select>
-                                    </div>
-                                  </div>
-                            </div>
-                            <div className="flex justify-center">
+                      <div className=" mt-4">
+                          <InputLabel htmlFor="group_item_id" value=" Group of Items"/>
+                          <div className=" grid grid-cols-12 gap-5">
+                              <div className="col-span-10 xs:col-span-8">
+                                  <Select
+                                      value={selectedOptions}
+                                      onChange={handleSelectChange}
+                                      className="mt-1 block w-full"
+                                      isMulti={true}
+                                      options={options}
+                                      isSearchable={true}
+                                      placeholder="Select Items"
+                                  >
+                                  </Select>
+                              </div>
+                              <div className="col-span-2 xs:col-span-4">
                                   <button
-                                    className="flex m-5 text-xl flex-nowrap gap-2 border rounded-full font-semibold bg-green-500 py-2 px-10 text-white shadow transition-all hover:bg-green-700"
+                                    className="flex flex-nowrap gap-2 font-semibold  bg-green-500 py-2 px-8 text-white rounded shadow transition-all hover:bg-green-700"
                                     onClick={handleAddSelect}
                                   >
-                                    Add Items
+                                  Add Items
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -282,15 +232,22 @@ console.log(mrr_item_ids_parsed)
                                       strokeWidth={1.5}
                                       stroke="currentColor"
                                       className="font-bold w-6 h-6"
-                                    >
+                                     >
                                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
                                   </button>
-      
-                            </div>
-                         
-                         </div>
-                        
+                              </div>
+                          </div>
+                          <div className="mt-2 mx-2">
+                            {notification && (
+                              <div className="text-red-600 font-semibold mt-2">
+                                {notification}
+                              </div>
+                            )}
+                          </div>
+                      </div>
+{/* {receivings && receivings.length !== 0 && ( */}
+                      <div className="mt-20">
                             <table className="min-w-full bg-white">
                               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                 <tr>
@@ -346,7 +303,7 @@ console.log(mrr_item_ids_parsed)
                                                     {selectedItem.id}
                                                   </td>
                                                   <td className="px-3 py-2">
-                                                                                    {selectedItem.sku_prefix}-{selectedItem.sku}
+                                                     {selectedItem.sku_prefix}-{selectedItem.sku}
                                                   </td>
                                                   <th className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
                                                     <Link href={route('item.show', selectedItem.id)}>
@@ -359,15 +316,14 @@ console.log(mrr_item_ids_parsed)
                                                   <td className="px-3 py-2">{selectedItem.quantity} {selectedItem.uom}</td>
                                                   <td className="px-3 py-2">{selectedItem.description}</td>
                                                   <td>
-                                            <button
-                                              onClick={() => handleRemoveExistingItem(selectedItemId, index)}
-                                              // handleRemoveExistingItem(index,selectedItem)}
-                                              className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover:rounded-full mx-1"
-                                            >
-                                              Remove
-                                            </button>
-                                          </td>
-                                              </tr>
+                                                    <button
+                                                      onClick={() => handleRemoveExistingItem(selectedItemId, index)}
+                                                      className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover:rounded-full mx-1"
+                                                    >
+                                                      Remove
+                                                    </button>
+                                                  </td>
+                                                </tr>
                                                );
                                        }
                                        else 
@@ -375,21 +331,25 @@ console.log(mrr_item_ids_parsed)
                                          return <p key={selectedItemId}>Item Not Found</p>;
                                        }
                                     })}
-                                  </tbody>   
+                                 </tbody>   
                               )}                  
                             </table>
                            
-                          </div>
-                        <div className="mt-20 text-right">
-                                        <Link href={route('receiving.index')}
-                                        className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
-                                        >
-                                        Cancel
-                                        </Link>
-                                        <button type="submit" disabled={processing} className="bg-green-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-green-600">
-                                            Submit
-                                        </button>
-                        </div>
+                      </div>
+                      <div className="mt-20 text-right">
+                            <Link href={route('receiving.index')}
+                              className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
+                            >
+                            Cancel
+                            </Link>
+                            <button 
+                              type="submit" 
+                              disabled={processing} 
+                              className="bg-green-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-green-600"
+                            >
+                                Submit
+                            </button>
+                      </div>
                     </div>
                   </div>
               </form>

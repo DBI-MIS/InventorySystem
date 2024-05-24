@@ -5,7 +5,7 @@ import Authenticated from '@/Layouts/AuthenticatedLayout'
 import { Head, router } from '@inertiajs/react'
 import React from 'react'
 
-export default function Index({ auth, deliverables, items, queryParams = null, }) {
+export default function Index({ auth, stocksearch, totalitems, totalitems1, paginationLinks, queryParams = null }) {
 
   queryParams = queryParams || {};
 
@@ -17,7 +17,7 @@ export default function Index({ auth, deliverables, items, queryParams = null, }
       delete queryParams[name];
     }
     // change the url path everytime option changes
-    router.get(route('deliverables.index'), queryParams)
+    router.get(route('stocksearch.index'), queryParams)
   };
 
   const onKeyPress = (name, e) => {
@@ -36,24 +36,18 @@ const sortChanged = (name) => {
       queryParams.sort_field = name;
       queryParams.sort_direction = 'asc';
   }
-  router.get(route("deliverables.index"), queryParams)
+  router.get(route("stocksearch.index"), queryParams)
 };
-
-const nameQuantities = {};
-
-items.data.forEach((item) => {
-  if (nameQuantities[item.name]) {
-    // If the name exists in nameQuantities, add the quantity to the existing total
-    nameQuantities[item.name].total += item.quantity;
-  } else {
-    // If the name is not yet in nameQuantities, add it with the quantity
-    nameQuantities[item.name] = { total: item.quantity, processed: false };
-  }
-});
-
   return (
     <Authenticated
     user={auth.user}
+    header={
+      <div className="flex justify-between categories-center relative">
+        <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight">Search Item</h2>
+      
+     
+      </div>
+  }
     >
       
       <Head title="Delivery Receipt" />
@@ -66,16 +60,18 @@ items.data.forEach((item) => {
                   <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                           <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                   <tr className="text-nowrap ">
-                                      <TableHeading className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ID</TableHeading>
                                       <TableHeading className="pr-10" name="item"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ITEM</TableHeading>
                                       <TableHeading className="pr-10" name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>QUANTITY</TableHeading>
                                   </tr>
                           </thead>
                           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                   <tr className="text-nowrap ">
-                                        <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3 w-full" >
-                                          <TextInput  className="max-w-full" defaultValue={queryParams.name} placeholder="Item Name " onBlur={(e) => searchFieldChanged('name', e.target.value)} onKeyPress={(e) => onKeyPress('name', e )}/>
+                                        <TextInput  className="w-[500px]" 
+                                  defaultValue={queryParams.name}
+                                  placeholder="Search Item Name Here" 
+                                  onBlur={(e) => searchFieldChanged('name', e.target.value)}
+                                  onKeyPress={(e) => onKeyPress('name', e )}/>
                                         </th>
                                         
                                         <th className="px-3 py-3"></th>
@@ -84,15 +80,10 @@ items.data.forEach((item) => {
                                   </tr>
                           </thead>
                           <tbody>
-                            {items.data.filter((item, index, self) => index === self.findIndex((t) => (
-                              t.name === item.name
-                            ))
-                          )
-                          .map((item)=>(
-                              <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={item.id}>
-                                <td className="px-3 py-2">{item.id}</td>
-                                <td className="px-3 py-2">{item.name}</td>
-                                <td className="px-3 py-2">{nameQuantities{item.quantity}}</td>
+                            {totalitems.map((totalitem)=>(
+                              <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={totalitems.name}>
+                                <td className="px-3 py-2">{totalitem.name}</td>
+                                <td className="px-3 py-2">{totalitem.total_quantity} {totalitem.uom}</td>
                               </tr>
                             ))}
                           </tbody>  
@@ -100,7 +91,7 @@ items.data.forEach((item) => {
 
                   </div>
                 </div>
-                <Pagination links={items.meta.links} />
+                   <Pagination links={paginationLinks} />
             </div>
         </div>
     </div>

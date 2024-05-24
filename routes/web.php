@@ -4,7 +4,7 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DeliverablesController;
+use App\Http\Controllers\StockSearchController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LocationController;
@@ -27,8 +27,6 @@ Route::middleware(['auth', 'verified'])->group(function(){
         ->name('dashboard');
     
         Route::resource('item', ItemController::class);
-        // Route::get('/itemMrr', [ItemController::class, 'itemMrr'])->name('itemMrr');
-        Route::post('/receivingItem', [ReceivingItem::class, 'store'])->name('receivingItem.store');
         Route::resource('category', CategoryController::class);
         Route::resource('brand', BrandController::class);
         Route::resource('location', LocationController::class);
@@ -36,9 +34,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::resource('archive', ArchiveController::class)->withTrashed();
         Route::resource('receiving', ReceivingController::class);
         Route::resource('mrrItem', MrrItemController::class);
-        Route::resource('receivingItem', ReceivingItemController::class);
         Route::resource('itemMrr', ItemController::class);
-        Route::resource('deliverables', DeliverablesController::class);
+        Route::resource('stocksearch', StockSearchController::class);
         // lagay name
     
     });

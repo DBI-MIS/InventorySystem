@@ -28,7 +28,7 @@ class ItemFactory extends Factory
             'part_no'=> random_int('10','20 '),
             'serial_no'=> random_int('10','20'),
             'model_no'=> random_int('10','20'),
-            'uom'=>fake()->sentence('1'),
+            'uom'=> 'pcs',
             'quantity'=>random_int('5','10'),
             'location_id'=>rand(1, 10),
             'employee_id'=>rand(1, 10),
