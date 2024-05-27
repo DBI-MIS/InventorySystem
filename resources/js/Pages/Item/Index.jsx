@@ -6,6 +6,7 @@ import { Alert} from "@material-tailwind/react";
 import React, { useEffect, useRef, useState } from "react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
+import SelectInput from "@/Components/SelectInput";
 export default function Index({auth,items, queryParams = null, success}) {
 
 const [open, setOpen] = useState(true);
@@ -24,12 +25,27 @@ queryParams = queryParams || {};
 
     const lowerCaseName = name.toLowerCase();
 
-    if(value){
-      queryParams[lowerCaseName] = value;
+    if (name === "brand_id" || name === 'category_id') {
+      if (value) {
+        queryParams[name] = value;
+      } else {
+        delete queryParams[name];
+      }
+    } else {
+      if (value) {
+        queryParams[lowerCaseName] = value;
+      } else {
+        delete queryParams[lowerCaseName];
+      }
     }
-    else{
-      delete queryParams[lowerCaseName];
-    }
+
+    // if(value){
+    //   queryParams[lowerCaseName] = value;
+    // }
+    // else{
+    //   delete queryParams[lowerCaseName];
+    // }
+
     // change the url path everytime option changes
     router.get(route('item.index'), queryParams)
   };
@@ -67,7 +83,7 @@ queryParams = queryParams || {};
     router.get(route('item.index'), queryParams)
   }
 
-  // const uniqueCategories = Array.from(new Set(items.data.map(category=> category.id)))
+  // const uniqueCategories = Array.from(new Set(items.data.map(category => category.id)))
   //       .map(uniqueId => items.data.find(category => category.id === uniqueId));
 
 const deleteItem = (item) => {
@@ -121,14 +137,14 @@ const deleteItem = (item) => {
                           <div className="absolute pointer-events-none right-2"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
                           </div>
                           {/* <SelectInput className="w-[300px] mx-2"
-                          defaultValue={queryParams.sku_prefix}
+                          defaultValue={queryParams.category.id}
                             onChange={(e) => {
                             const value = e.target.value;
                             if (value === "reset") {
                             // Logic to reset the query parameter
-                            searchFieldChanged('category_id', '');
+                            searchFieldChanged('category.id', '');
                             } else {
-                          searchFieldChanged('category_id', value);
+                          searchFieldChanged('category.id', value);
                             }
                               }}
                                 >
@@ -138,6 +154,8 @@ const deleteItem = (item) => {
                                         <option value={category.id} key={category.id}>{category.name}</option>
                                     ))}
                                 </SelectInput> */}
+
+
                           <TextInput  className="w-[500px]" 
                                   defaultValue={queryParams.name}
                                   placeholder="Search Item Name Here" 
@@ -160,7 +178,7 @@ const deleteItem = (item) => {
                               sortChanged={sortChanged}>Sku </TableHeading>
                                 <TableHeading  className=""   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Name</TableHeading>
-                                 <TableHeading  className=""   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                 <TableHeading  className=""   name="receiving_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>MRR No.</TableHeading>
                                 <TableHeading  className=""   name="brand_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Brand</TableHeading>
@@ -186,6 +204,7 @@ const deleteItem = (item) => {
                                         {item.name}
                                         </Link>
                                       </th>
+                                      {/* <td className="w-[300px] py-2">{item.mrr_no}</td> */}
                                       <td className="w-[300px] py-2">{item.mrr_no}</td>
                                       <td className="w-[300px] py-2">{item.brand.name}</td>
                                       <td className="w-[300px] py-2">{item.category ? item.category.name : 'N/A'}</td>

@@ -16,11 +16,46 @@ class EmployeeFactory extends Factory
      */
     public function definition(): array
     {
+
+        $name = $this->faker->unique()->randomElement([
+            'Roy',
+            'Leo',
+            'Ronaldo',
+            'Cess',
+        ]);
+
+        $company = $this->faker->randomElement([
+            'DBI',
+            'Globaltronics',
+            'PARC',
+            'Nutriceutical',
+            'Others',
+        ]);
+
+        $department = $this->faker->randomElement([
+            'Warehouse',
+            'MIS',
+            'DBE',
+            'TSD',
+            'Sales',
+            'Accounting',
+            'Admin',
+            'Executive',
+            'Audit',
+            'Purchasing',
+        ]);
+
+        $remarks = $this->faker->randomElement([
+            'Active',
+            'Inactive',
+            'Resigned',
+        ]);
+
         return [
-            'name'=> fake()->sentence('1'),
-            'company'=> fake()->sentence('1'),
-            'department'=> fake()->sentence('1'),
-            'remarks'=> fake()->sentence('3'),
+            'name'=> $name,
+            'company'=> $company,
+            'department'=> $department,
+            'remarks'=> $remarks,
         ];
     }
 }

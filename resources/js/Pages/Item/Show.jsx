@@ -17,7 +17,7 @@ export default function Show({auth, item,category,onlySoftDeletedItems,tryDelete
         >
         <Head title={`Item "${item.name}" `}/>
         <div className="py-6 capitalize">
-            <div className="w-5/6 mx-auto sm:px-6 lg:px-8 grid grid-cols-3 font-bold gap-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div className="w-5/6 mx-auto px-2 grid grid-cols-3 font-bold gap-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div>
                       {  onlySoftDeletedItems }
                     </div>
@@ -78,25 +78,26 @@ export default function Show({auth, item,category,onlySoftDeletedItems,tryDelete
                         
                 </div>
                 {/* card #2 */}
-                <div className="col-span-1">
+                <div className="col-span-1 relative">
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
 
-                            <div  className="flex flex-row justify-between items-center">
+                          
                            
                             <div className="flex flex-row pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">SKU : </dt>
                             <dd className="text-lg font-light uppercase ml-2">{item.sku_prefix}-{item.sku}</dd>
                             
                             </div>
-                            <div><Link href={route('item.edit', item.id)} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
+                            <div className="absolute right-2 top-2 text-no-wrap"
+                            ><Link href={route('item.edit', item.id)} className="bg-blue-500 py-2 px-3 text-white rounded shadow transition-all hover:bg-blue-700 text-nowrap">
                                  Edit Entry
                                 </Link>
                                 </div>
-                            </div>
+                            
 
                             <div className="flex flex-col pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Status : </dt>
-                            <dd className="text-lg font-light">N/A {item.status}</dd>
+                            <dd className="text-lg font-light">{item.status}</dd>
                             </div>
 
                             <div className="flex flex-col pb-3 mt-2">

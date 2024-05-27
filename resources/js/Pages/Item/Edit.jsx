@@ -13,6 +13,7 @@ export default function Create({auth, item,categories, locations, brands, employ
         sku: item.sku || "",
         brand_id: item.brand_id || "",
         category_id: item.category_id || "",
+        category_name: item.category_name || "",
         description: item.description || "",
         specs: item.specs || "",
         part_no: item.part_no || "",
@@ -73,7 +74,7 @@ export default function Create({auth, item,categories, locations, brands, employ
                                             defaultValue={data.category_id}
                                             className="mt-1 block w-full"
                                             onChange={(e) => setData("category_id", e.target.value)}>
-                                                <option value="">Select Category </option>
+                                                <option value='category.id'>Select Category </option>
                                                 {categories.data.map((category)=>(
                                                     <option value={category.id} key={category.id}>{category.name}</option>
                                                     ))}
@@ -90,7 +91,7 @@ export default function Create({auth, item,categories, locations, brands, employ
                                         className="mt-1 block w-full"
                                         defaultValue={data.brand_id}
                                         onChange={(e) => setData("brand_id", e.target.value)}>
-                                            <option value="">Select Project </option>
+                                            <option value='brand.id'>Select Brand</option>
                                             {brands.data.map((brand)=>(
                                                 <option value={brand.id} key={brand.id}>{brand.name}</option>
 
@@ -118,17 +119,18 @@ export default function Create({auth, item,categories, locations, brands, employ
                                         id="item_uom"
                                         type="text"
                                         name="uom"
+                                        defaultValue={data.uom}
                                         
                                         className="mt-1 block w-full"
                                         onChange={e => setData('uom', e.target.value)} >
                                 <option value="">Select UOM </option>
-                                 <option value="m">Meters</option>
-                                 <option value="kg">Kilograms</option>
-                                 <option value="l">Liters</option>
-                                 <option value="pcs">Pieces</option>
-                                 <option value="pc">Piece</option>
-                                 <option value="set">Set</option>
-                                 <option value="sets">Sets</option>
+                                 <option value="Meters">Meters</option>
+                                 <option value="Kilograms">Kilograms</option>
+                                 <option value="Liters">Liters</option>
+                                 <option value="Pieces">Pieces</option>
+                                 <option value="Piece">Piece</option>
+                                 <option value="Set">Set</option>
+                                 <option value="Sets">Sets</option>
                             </SelectInput>
                                         <InputError message={errors.uom} className="mt-2"/>
                                     </div>

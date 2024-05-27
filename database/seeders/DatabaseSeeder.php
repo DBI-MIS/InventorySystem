@@ -48,35 +48,29 @@ class DatabaseSeeder extends Seeder
          // create fake projects and task
         
          Brand::factory()
-         ->count(10)
+         ->count(7)
          ->create();
 
          Category::factory()
-         ->count(4)
-         ->state(new Sequence(
-            ['sku_prefix' => 'AAA'],
-            ['sku_prefix' => 'BBB'],
-            ['sku_prefix' => 'CCC'],
-            ['sku_prefix' => 'DDD'],
-         ))
+         ->count(5)
+        //  ->state(new Sequence(
+        //     ['sku_prefix' => 'AAA'],
+        //     ['sku_prefix' => 'BBB'],
+        //     ['sku_prefix' => 'CCC'],
+        //  ))
          ->create();
 
          
          Employee::factory()
-         ->count(10)
+         ->count(4)
          ->create();
        
          Location::factory()
-         ->count(10)
+         ->count(5)
          ->create();
 
          Item::factory()
          ->count(30)
-        //  ->state(new Sequence(
-        //     ['uom' => 'pcs'],
-        //     ['uom' => 'kgs'],
-        //     ['uom' => 'sets'],
-        //  ))
          ->create();
 
          

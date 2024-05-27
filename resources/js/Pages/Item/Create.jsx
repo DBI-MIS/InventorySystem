@@ -30,6 +30,8 @@ export default function Create({auth,brands,sku, categories,employees,locations,
         post(route("item.store"));
     }
     console.log(data)
+
+
     return(
         <AuthenticatedLayout
         user={auth.user}

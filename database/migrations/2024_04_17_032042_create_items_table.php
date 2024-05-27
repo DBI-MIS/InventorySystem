@@ -16,7 +16,7 @@ return new class extends Migration
             // $table->string('sku_prefix')->nullable();
             $table->string('sku');
             $table->string('name');
-            $table->string('mrr_no')->nullable();
+            $table->string('receiving_id')->nullable();
             $table->string('brand_id')->nullable();
             $table->string('category_id')->nullable();
             $table->string('receiving_item_id')->nullable();

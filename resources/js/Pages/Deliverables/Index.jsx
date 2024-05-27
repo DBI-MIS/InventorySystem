@@ -1,4 +1,5 @@
 import TableHeading from "@/Components/TableHeading";
+import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 
@@ -72,6 +73,29 @@ const sortChanged = (name) => {
                         </tr>
 
                      </thead>
+                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                  <tr className="text-nowrap ">
+                                        <th className="px-3 py-3" >
+                                        <TextInput  className="w-[500px]" 
+                                  defaultValue={queryParams.name}
+                                  placeholder="Search Item Name Here" 
+                                  onBlur={(e) => searchFieldChanged('name', e.target.value)}
+                                  onKeyPress={(e) => onKeyPress('name', e )}/>
+                                        </th>
+                                        
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+
+                                        
+                                        
+                                  </tr>
+                          </thead>
 
                 </table>
 

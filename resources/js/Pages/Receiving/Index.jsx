@@ -4,6 +4,7 @@ import TableHeading from "@/Components/TableHeading";
 import { Alert} from "@material-tailwind/react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
+import React from "react";
 export default function Index({auth,receivings,  queryParams = null, success}) {
   const [open, setOpen] = React.useState(true);
 queryParams = queryParams || {};

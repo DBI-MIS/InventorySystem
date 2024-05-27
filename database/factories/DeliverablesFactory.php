@@ -18,14 +18,14 @@ class DeliverablesFactory extends Factory
     {
         return [
             'project'=> fake()->sentence('2'),
-            'receiving_id'=> rand(1, 1000),
+            'receiving_id'=> rand(1, 10),
             'dr_no'=> random_int('10', '20'),
-            'rs_no_id'=> rand(1, 1000),
+            'rs_no_id'=> rand(1, 10),
             'address_id'=> fake()->sentence(),
             'dr_date'=> fake()->dateTimeThisM()->format('Y-m-d H:i:s'),
-            'item_qty'=> rand(1, 1000),
-            'project'=> fake()->sentence('2'),
-            'item_description_id'=>fake()->realText(),
+
+
+            
         ];
     }
 }

@@ -16,8 +16,18 @@ class BrandFactory extends Factory
      */
     public function definition(): array
     {
+        $brands = $this->faker->unique()->randomElement([
+            'Dunham-Bush',
+            'Haier',
+            'Danfoss',
+            'Moontech',
+            'Truwater',
+            'Generic',
+            'No Brand',
+        ]);
+
         return [
-            'name'=> fake()->sentence('1'),
+            'name'=> $brands,
             'description'=> fake()->realText(),
            
         ];

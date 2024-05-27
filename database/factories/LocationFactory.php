@@ -16,10 +16,19 @@ class LocationFactory extends Factory
      */
     public function definition(): array
     {
+
+        $name = $this->faker->unique()->randomElement([
+            'DBI',
+            'Globaltronics',
+            'PARC',
+            'Nutriceutical',
+            'Others',
+        ]);
+
         return [
-            'name'=> fake()->sentence('1'),
-            'company'=> fake()->realText(),
-            'address'=> fake()->sentence('1'),
+            'name'=> $name,
+            'company'=> fake()->company(),
+            'address'=> fake()->address(),
         ];
     }
 }
