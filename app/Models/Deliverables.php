@@ -17,6 +17,7 @@ class Deliverables extends Model
         'address_id',
         'dr_date',
         'item_qty',
+        'item_unit',
         'item_name_id',
         'item_description_id',
     ];
@@ -35,6 +36,9 @@ class Deliverables extends Model
     }
     public function itemName(){
         return $this->belongsTo(Item::class, 'item_name_id');
+    }
+    public function itemUnit(){
+        return $this->belongsTo(Item::class, 'item_unit');
     }
     public function itemDescription(){
         return $this->belongsTo(Item::class, 'item_description_id');

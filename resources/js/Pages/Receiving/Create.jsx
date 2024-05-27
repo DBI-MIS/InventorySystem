@@ -1,14 +1,19 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import SelectInput from "@/Components/SelectInput";
+import SelectInputMultiple from "@/Components/SelectInputMultiple";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
-export default function Create({auth,success, mrr_no}){
+import { Head, Link, router, useForm } from "@inertiajs/react";
+import { useState } from "react";
+import Select from "react-select"
+export default function Create({auth,success, mrr_no,items}){
+
    const {data, setData, post,errors} = useForm({
         client_id: '',
         mrr_no: '',
-        group_item_id: '',
+       group_item_id: '',
         reference_no: '123',
         receiving_item_id: '11',
         si_no:'',
@@ -16,13 +21,32 @@ export default function Create({auth,success, mrr_no}){
         address:'',
         remarks:'',
     })
+    const  options = items.data.map(item => ({ //values from the db
+        value: item.id,
+        label: item.name
+      }));
+      const [selectedOptions, setSelectedOptions] = useState([]);
+    
+      const handleSelectChange = (selectedOptions) => {
+        setSelectedOptions(selectedOptions);
+
+        const selectedValues = selectedOptions.map(option => option.value);
+
+        setData("group_item_id", selectedValues);
+    };
+
     const onSubmit = (e) =>{
         e.preventDefault();
         post(route("receiving.store"));
  }
     //for checking values on the data
     console.log(data); 
-
+    const AssignReceiving = (receiving,e) => {
+        // console.log(receiving)
+       e.preventDefault();
+        router.post(route('assignItem', receiving.id))
+      }
+      
     return(
         <AuthenticatedLayout
         user={auth.user}
@@ -100,6 +124,28 @@ export default function Create({auth,success, mrr_no}){
                                             <InputError message={errors.dr_no} className="mt-2"/>
                                         </div>
                                     </div>
+                                    
+                                     <div className="mt-4">
+                                        <InputLabel htmlFor="receiving Items" value="Group of Items"/>
+                                            <div className="col-span-10 xs:col-span-8">
+                                                <Select
+                                                    value={selectedOptions}
+                                                    onChange={handleSelectChange}
+                                                    className="mt-1 block w-full"
+                                                    isMulti={true}
+                                                    options={options}
+                                                    isSearchable={true}
+                                                    placeholder="Select Items"
+                                                >
+                                                </Select>
+                                            </div>
+                                        <h1>
+                                            se
+                                        </h1>
+                                     </div>
+
+
+                                    
                                     <div className="mt-4">
                                         <InputLabel htmlFor="receiving_address" value="Receiving Address"/>
                                         <TextAreaInput

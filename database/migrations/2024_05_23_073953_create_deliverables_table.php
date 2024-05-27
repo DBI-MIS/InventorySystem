@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('project');
             $table->foreignId('receiving_id')->constrained('receivings');
             $table->string('dr_no')->unique();
-            $table->foreignId('rs_no_id')->constrained('receivings');
+            $table->string('rs_no')->unique();
             $table->foreignId('address_id')->constrained('receivings');
             $table->timestamp('dr_date')->nullable();
             $table->foreignId('item_qty')->constrained('items');
+            $table->foreignId('item_unit')->constrained('items');
             $table->foreignId('item_name_id')->constrained('items');
             $table->foreignId('item_description_id')->constrained('items');
             $table->timestamps();

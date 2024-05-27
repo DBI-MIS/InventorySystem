@@ -22,7 +22,9 @@ class ItemController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    {  
+        //   $receivingPivot = Item::with('receivings')->get();
+        // dd($receivingPivot);
         $query = Item::query() ;
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -64,7 +66,6 @@ class ItemController extends Controller
          $sku = $this->generateSkuId();
          $input['sku'] = $sku;
          $mrrData = Receiving::select('mrr_no')->distinct()->get(); //get only unique values
-         
         return Inertia("Item/Create",[
             'brands' => BrandResource::collection($brands),
             'categories' =>  CategoryResource::collection($categories),

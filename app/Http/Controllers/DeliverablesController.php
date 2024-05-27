@@ -6,6 +6,9 @@ use App\Models\Deliverables;
 use App\Http\Requests\StoreDeliverablesRequest;
 use App\Http\Requests\UpdateDeliverablesRequest;
 use App\Http\Resources\DeliverablesResource;
+use App\Models\Item;
+use App\Models\Receiving;
+use Inertia\Inertia;
 
 class DeliverablesController extends Controller
 {
@@ -40,7 +43,13 @@ class DeliverablesController extends Controller
      */
     public function create()
     {
-        //
+        $items = Item::all(); // Assuming you have an Item model
+    $receivings = Receiving::all(); // Assuming you have a Detail model
+
+    return Inertia::render("Deliverables/Create", [
+        'items' => $items,
+        'receivings' => $receivings,
+    ]);
     }
 
     /**

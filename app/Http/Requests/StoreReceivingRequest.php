@@ -29,7 +29,7 @@ class StoreReceivingRequest extends FormRequest
             //Rule::unique('receivings')->ignore($receiving->id),
         // Rule::unique('receivings', 'mrr_no')->ignore($this->receiving),
        // 'mrr_no' => "nulllable|unique:receivings,mrr_no,{$this->route($key)}",
-        'igroup_item_id' => [
+        'group_item_id' => [
             'nullable',
             'exists:items,id'],
         "client_id" => ['nullable', 'max:255'],

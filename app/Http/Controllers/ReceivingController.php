@@ -15,6 +15,7 @@ use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReceivingController extends Controller
@@ -37,6 +38,9 @@ class ReceivingController extends Controller
             $query->where('category_id', (request("category_id")));
          }
         
+         $receivingPivot = Item::with('receivings')->get();
+        //  dd($receivingPivot);
+
          $receivings = $query->orderBy($sortField, $sortDirection)
          ->paginate(10);
          
@@ -50,15 +54,18 @@ class ReceivingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
     public function create()
     {
+
+        
        //
        $items = Item::query()->orderBy('name', 'asc')->get();
        $brands = Brand::query()->orderBy('name', 'asc')->get();
        $categories = Category::query()->orderBy('name', 'asc')->get();
        $employees = Employee::query()->orderBy('name', 'asc')->get();
        $locations = Location::query()->orderBy('name', 'asc')->get();
-
+  
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
         $input['mrr_no'] =  $mrr_no;
@@ -87,14 +94,36 @@ class ReceivingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    //  public function assignItem(Request $request, $itemId, $receivingId){
+    //     $item = Item::findorFail($itemId);
+    //     $receiving = Receiving::findorFail($receivingId);
+     
+
+    //     $receiving->items()->attach($item);
+    //     return response()->json(['message' => 'Item assigned successfully']);
+    //  }
     public function store(StoreReceivingRequest $request)
     {
-       
+
         $data = $request->validated();
+        $items = $data['group_item_id'];
+        // $items =[2,3,5];
+        // $item_ids = [];
+
+//         foreach ($data as $item) {
+//             if (isset($item['group_item_id'])) {
+//                 $item_ids[] = $item['group_item_id'];
+//             }
+           
+// }    
+// dd($items);
+// dd($data);
         // $data['created_by'] = Auth()->user()->id;
         // $data['created_by'] = Auth::id();
         // $data['updated_by'] = Auth::id();
-        Receiving::create($data);
+        $receiving =Receiving::create($data);
+        $receiving->items()->attach($items);  
         return redirect()->route('receiving.index')->with('success', "Receiving added successfully");
     }
 
@@ -127,43 +156,43 @@ class ReceivingController extends Controller
      */
     public function edit(Receiving $receiving)
     {
-       $parsedmrr_no = json_decode($receiving, true);  // JSON string  ==> PHP associative array
+    //    $parsedmrr_no = json_decode($receiving, true);  // JSON string  ==> PHP associative array
 
-       // Access the value of the 'id' key
-        $mrr_no= $parsedmrr_no['mrr_no'];
-        $mrrItems = Item::where('mrr_no', $mrr_no)->pluck('id');
-        $mrr_item_ids = Item::find($mrrItems) 
-        ->all();
+    //    // Access the value of the 'id' key
+    //     $mrr_no= $parsedmrr_no['mrr_no'];
+    //     $mrrItems = Item::where('mrr_no', $mrr_no)->pluck('id');
+    //     $mrr_item_ids = Item::find($mrrItems) 
+    //     ->all();
    
-        // JSON string  ==> PHP associative array
-        $parsedId = json_decode($receiving, true);
+    //     // JSON string  ==> PHP associative array
+    //     $parsedId = json_decode($receiving, true);
     
-        // Access the value of the 'id' key
-        $id = $parsedId['id'];
-        $existingItems = Receiving::where('id', $id)->pluck('group_item_id');
-        $existingGroupItems = Item::find($existingItems) 
-        ->all();
+    //     // Access the value of the 'id' key
+    //     $id = $parsedId['id'];
+    //     $existingItems = Receiving::where('id', $id)->pluck('group_item_id');
+    //     $existingGroupItems = Item::find($existingItems) 
+    //     ->all();
         // dd($existingGroupItems);
         //  dd($mrr_item_ids);
            // Fetch brand name and category name for mrr items
-        foreach ($mrr_item_ids as $mrr_item) {
-            $mrr_item->brand_name = $mrr_item->brand->name; //get the name under brand then s-net sa brand_name
-            $mrr_item->category_name = $mrr_item->category->name;
-            $mrr_item->sku_prefix = $mrr_item->category->sku_prefix;
-        }
+        // foreach ($mrr_item_ids as $mrr_item) {
+        //     $mrr_item->brand_name = $mrr_item->brand->name; //get the name under brand then s-net sa brand_name
+        //     $mrr_item->category_name = $mrr_item->category->name;
+        //     $mrr_item->sku_prefix = $mrr_item->category->sku_prefix;
+        // }
 
-        // Fetch brand name and category name for existing items
-        foreach ($existingGroupItems as $existingItem) {
-            $existingItem->brand_name = $existingItem->brand->name;
-            $existingItem->category_name = $existingItem->category->name;
-            $existingItem->sku_prefix = $existingItem->category->sku_prefix;
-        }
+        // // Fetch brand name and category name for existing items
+        // foreach ($existingGroupItems as $existingItem) {
+        //     $existingItem->brand_name = $existingItem->brand->name;
+        //     $existingItem->category_name = $existingItem->category->name;
+        //     $existingItem->sku_prefix = $existingItem->category->sku_prefix;
+        // }
 
        return inertia('Receiving/Edit',[
             //retrieve from resource collection
             'receiving' => new ReceivingResource($receiving),
-            'mrr_item_ids' => $mrr_item_ids,
-            'existingGroupItems' =>  $existingGroupItems,
+            // 'mrr_item_ids' => $mrr_item_ids,
+            // 'existingGroupItems' =>  $existingGroupItems,
        ]
        );
     }

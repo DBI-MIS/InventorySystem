@@ -189,7 +189,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                         
                         <div className="col-span-1 grid grid-cols-2 ">
 
-                        <div className="mt-6 col-span-1">
+                        {/* <div className="mt-6 col-span-1">
                                     <InputLabel htmlFor="item_mrr_no" value="MRR No."/>
                                     <SelectInput
                                         value={data.mrr_no}
@@ -207,7 +207,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                             </SelectInput>
                                    
                                    
-                                </div>
+                                </div> */}
                                 <div className="mt-6 col-span-q ">
                                  <TextInput 
                                     id="item_sku"

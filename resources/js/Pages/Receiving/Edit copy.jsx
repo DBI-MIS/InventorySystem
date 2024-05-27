@@ -22,94 +22,95 @@ export default function Create({auth, receiving,mrr_item_ids}){
     remarks: receiving. remarks || "",
         _method: "PUT", 
     });
-    const [databaseItemIds, setDatabaseItemIds] = useState(Array.isArray(receiving.group_item_id) ? receiving.group_item_id : []);
-    const mrr_item_ids_parsed = mrr_item_ids.map(item => ({ ...item, id: parseInt(item.id) }));
-    const [notification, setNotification] = useState('');
-    const [allSelectedItemIds, setAllSelectedItemIds] = useState([]);
-    const [receivings, setReceivings] = useState([]);
 
-    const  options = mrr_item_ids.map(item => ({
-      value: item.id,
-      label: item.name
-    }));
+    // const [databaseItemIds, setDatabaseItemIds] = useState(Array.isArray(receiving.group_item_id) ? receiving.group_item_id : []);
+    // const mrr_item_ids_parsed = mrr_item_ids.map(item => ({ ...item, id: parseInt(item.id) }));
+    // const [notification, setNotification] = useState('');
+    // const [allSelectedItemIds, setAllSelectedItemIds] = useState([]);
+    // const [receivings, setReceivings] = useState([]);
 
-    const selectedValueItems = databaseItemIds.map(databaseItemId => ({
-         value: databaseItemId.id,
-         label:  databaseItemId.id,
-     }))
-    console.log(mrr_item_ids_parsed)
-    console.log("mrr item ids " + mrr_item_ids)
-    const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
-    const [selectedItemIds, setSelectedItemIds] = useState(selectedValueItems.map(option => option.value));
+    // const  options = mrr_item_ids.map(item => ({
+    //   value: item.id,
+    //   label: item.name
+    // }));
 
-    useEffect(() => {
-      setSelectedItemIds(selectedOptions.map(option => option.value));
-    }, [selectedOptions]);
+    // const selectedValueItems = databaseItemIds.map(databaseItemId => ({
+    //      value: databaseItemId.id,
+    //      label:  databaseItemId.id,
+    //  }))
+    // console.log(mrr_item_ids_parsed)
+    // console.log("mrr item ids " + mrr_item_ids)
+    // const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
+    // const [selectedItemIds, setSelectedItemIds] = useState(selectedValueItems.map(option => option.value));
 
-      const handleSelectChange = (selectedOption) => {
-        setSelectedOptions(selectedOption);
-        const selectedOptionss =  Array.from(selectedOption, (option) => option.value);
-        setSelectedItemIds(selectedOptionss);
-        setSelectedOptions(selectedOption);
-        //checking values
-        // alert("selectedOptionss" + selectedOptionss);
-      };
-      console.log("selected Item ids" + selectedItemIds)
-      const handleAddSelect = (e) => {
-        e.preventDefault();
-      
-        // Filter out the selected items that are already present in the databaseItemIds 
-        const newSelectedItemIds = selectedItemIds.filter(id => !databaseItemIds.includes(parseInt(id, 10)));
-        if (newSelectedItemIds.length === 0) {
-          setNotification('Items are on the tables already!');
-          setSelectedOptions([]); 
-          return;
-        }
-        // Filter the mrr_item_ids 
-        const selectedItems = mrr_item_ids.filter(item => newSelectedItemIds.includes(item.id.toString()));
-      
-        // Update the receivings state with new selected items
-        setReceivings(prevReceivings => [...prevReceivings, ...selectedItems]);
-      
-        // Convert selected item IDs to integers
-        const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
-      
-        // Update allSelectedItemIds and databaseItemIds with new selected items
-        const newAllSelectedItemIds = [...allSelectedItemIds, ...intSelectedItemIds];
-        const newDatabaseItemIds = [...databaseItemIds, ...intSelectedItemIds];
-      
-        setAllSelectedItemIds(newAllSelectedItemIds);
-        setDatabaseItemIds(newDatabaseItemIds);
-      
-        // Update the form data with new group item IDs, eto yung asa tables
-        setData('group_item_id', newDatabaseItemIds);
-      
-        // Clear 
-        setSelectedItemIds([]);
-        setSelectedOptions([]); 
-        setNotification('');
-      };
-      useEffect(() => {
-        setData('group_item_id', databaseItemIds);
-      }, [databaseItemIds]);
+    // useEffect(() => {
+    //   setSelectedItemIds(selectedOptions.map(option => option.value));
+    // }, [selectedOptions]);
 
-      // checking of values
-      console.log("selected Item ids", selectedItemIds);
-      console.log("receivings", receivings);
-      console.log("allSelectedItemIds", allSelectedItemIds);
-      console.log("databaseItemIds", databaseItemIds);
-      console.log("data", data);
+    //   const handleSelectChange = (selectedOption) => {
+    //     setSelectedOptions(selectedOption);
+    //     const selectedOptionss =  Array.from(selectedOption, (option) => option.value);
+    //     setSelectedItemIds(selectedOptionss);
+    //     setSelectedOptions(selectedOption);
+    //     //checking values
+    //     // alert("selectedOptionss" + selectedOptionss);
+    //   };
+    //   console.log("selected Item ids" + selectedItemIds)
+    //   const handleAddSelect = (e) => {
+    //     e.preventDefault();
+      
+    //     // Filter out the selected items that are already present in the databaseItemIds 
+    //     const newSelectedItemIds = selectedItemIds.filter(id => !databaseItemIds.includes(parseInt(id, 10)));
+    //     if (newSelectedItemIds.length === 0) {
+    //       setNotification('Items are on the tables already!');
+    //       setSelectedOptions([]); 
+    //       return;
+    //     }
+    //     // Filter the mrr_item_ids 
+    //     const selectedItems = mrr_item_ids.filter(item => newSelectedItemIds.includes(item.id.toString()));
+      
+    //     // Update the receivings state with new selected items
+    //     setReceivings(prevReceivings => [...prevReceivings, ...selectedItems]);
+      
+    //     // Convert selected item IDs to integers
+    //     const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
+      
+    //     // Update allSelectedItemIds and databaseItemIds with new selected items
+    //     const newAllSelectedItemIds = [...allSelectedItemIds, ...intSelectedItemIds];
+    //     const newDatabaseItemIds = [...databaseItemIds, ...intSelectedItemIds];
+      
+    //     setAllSelectedItemIds(newAllSelectedItemIds);
+    //     setDatabaseItemIds(newDatabaseItemIds);
+      
+    //     // Update the form data with new group item IDs, eto yung asa tables
+    //     setData('group_item_id', newDatabaseItemIds);
+      
+    //     // Clear 
+    //     setSelectedItemIds([]);
+    //     setSelectedOptions([]); 
+    //     setNotification('');
+    //   };
+    //   useEffect(() => {
+    //     setData('group_item_id', databaseItemIds);
+    //   }, [databaseItemIds]);
 
-    //delete button of the existing item on the table
-    const handleRemoveExistingItem = ( selectedItemId, index) => {
-        const remainIds = [...databaseItemIds];
-        remainIds.splice(index, 1);
-        setDatabaseItemIds(remainIds);
-        setAllSelectedItemIds(remainIds);
-    };
-    useEffect(() => {
-        console.log('Current data:', data); 
-    }, [data]);
+    //   // checking of values
+    //   console.log("selected Item ids", selectedItemIds);
+    //   console.log("receivings", receivings);
+    //   console.log("allSelectedItemIds", allSelectedItemIds);
+    //   console.log("databaseItemIds", databaseItemIds);
+    //   console.log("data", data);
+
+    // //delete button of the existing item on the table
+    // const handleRemoveExistingItem = ( selectedItemId, index) => {
+    //     const remainIds = [...databaseItemIds];
+    //     remainIds.splice(index, 1);
+    //     setDatabaseItemIds(remainIds);
+    //     setAllSelectedItemIds(remainIds);
+    // };
+    // useEffect(() => {
+    //     console.log('Current data:', data); 
+    // }, [data]);
 
     //submit button
     const onSubmit = (e) =>{
@@ -145,7 +146,7 @@ export default function Create({auth, receiving,mrr_item_ids}){
                           <InputError message={errors.client_id} className="mt-2"/>
                       </div>
                       <div className="grid grid-cols-6 gap-2">
-                            <div className=" mt-4  col-span-2 ">
+                            {/* <div className=" mt-4  col-span-2 ">
                               <InputLabel htmlFor="mrr_no" value="MRR No."/>
                                   <TextInput 
                                       id="mrr_no"
@@ -156,7 +157,7 @@ export default function Create({auth, receiving,mrr_item_ids}){
                                       className="mt-1 block w-full"
                                       onChange={e => setData('mrr_no', e.target.value)}
                                   />
-                            </div>
+                            </div> */}
                             <div className="mt-4  col-span-2">
                               <InputLabel htmlFor="receiving_si_no" value="SI No."/>
                               <TextInput 

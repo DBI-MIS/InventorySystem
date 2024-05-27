@@ -16,10 +16,8 @@ return new class extends Migration
             // $table->string('sku_prefix')->nullable();
             $table->string('sku');
             $table->string('name');
-            $table->string('receiving_id')->nullable();
             $table->string('brand_id')->nullable();
             $table->string('category_id')->nullable();
-            $table->string('receiving_item_id')->nullable();
             $table->longText('description')->charset('binary')->nullable();
             $table->string('specs')->nullable();
             $table->string('part_no')->nullable();

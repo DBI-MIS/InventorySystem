@@ -9,7 +9,7 @@ class Receiving extends Model
 {
     protected $casts = [ 
         'id' => 'string' ,
-        'group_item_id' => 'array',
+         'group_item_id' => 'array',
 ];
     use HasFactory;
 
@@ -30,9 +30,9 @@ class Receiving extends Model
 
 
 
-    public function items(){
-        return $this->hasMany(Item::class);
-    }
+    // public function items(){
+    //     return $this->hasMany(Item::class);
+    // }
     public function location(){
         return $this->belongsTo(Location::class);
     }
@@ -45,6 +45,9 @@ class Receiving extends Model
     public function brand(){
         return $this->hasManyThrough(Brand::class,Item::class);
     } 
+    public function items(){
+        return $this->belongsToMany(Item::class, 'item_receiving')->withTimestamps();
+    }
     // public function createdBy(){
     //     //relation of uodated and createdby
     //     return $this->belongsTo(User::class,'created_by');

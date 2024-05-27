@@ -142,10 +142,8 @@ class ItemFactory extends Factory
         return [
             'sku'=> rand(6000,6300),
             'name'=> $products,
-            'receiving_id'=> rand(1, 10),
             'brand_id'=>rand(1,7),
             'category_id'=>rand(1,4),
-            'receiving_item_id'=>rand(1, 10),
             'description'=> fake()->realText(),
             'specs'=> fake()->realText(),
             'part_no'=> fake()->regexify('[0-9]{20}'),

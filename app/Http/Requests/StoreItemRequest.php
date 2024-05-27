@@ -26,7 +26,6 @@ class StoreItemRequest extends FormRequest
           "sku_prefix" => ['nullable', 'max:255'],
           "sku" => ['nullable', 'max:255'],
           "name" => ['required', 'max:255'],
-          "mrr_no" => ['required', 'max:255'],
           'brand_id' => [
             'required',
             'exists:brands,id',

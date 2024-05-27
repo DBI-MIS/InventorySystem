@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::resource('itemMrr', ItemController::class);
         Route::resource('stocksearch', StockSearchController::class);
         Route::resource('deliverables', DeliverablesController::class);
+        Route::post('/receivings/{receivingId}/items/{itemId}',[ ReceivingController::class,'assignItem' ]);
         // lagay name
     
     });
