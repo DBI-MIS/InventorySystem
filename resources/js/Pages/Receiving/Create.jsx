@@ -139,9 +139,12 @@ export default function Create({auth,success, mrr_no,items}){
                                                 >
                                                 </Select>
                                             </div>
-                                        <h1>
-                                            se
-                                        </h1>
+                                            <div className="mt-2">
+                                                {selectedOptions.map(option => (
+                                                        <h1 key={option.value}>{option.value}-{option.label}</h1>
+                                                    ))}
+                                            </div>
+                                           
                                      </div>
 
 
