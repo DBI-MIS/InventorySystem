@@ -36,7 +36,8 @@ export default function Create({auth, receiving,mrr_item_ids}){
     const selectedValueItems = databaseItemIds.map(databaseItemId => ({
          value: databaseItemId.id,
          label:  databaseItemId.id,
-     }))
+     }));
+     
     console.log(mrr_item_ids_parsed)
     console.log("mrr item ids " + mrr_item_ids)
     const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
