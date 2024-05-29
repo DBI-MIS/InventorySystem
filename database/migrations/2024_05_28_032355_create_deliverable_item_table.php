@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('deliverable_item', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Item::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Deliverables::class)->constrained()->onDelete('cascade');
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
+            $table->foreignId('deliverables_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

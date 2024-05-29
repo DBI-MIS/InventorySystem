@@ -20,7 +20,6 @@ class Receiving extends Model
         'si_no',
         'dr_no',
         'address',
-        // 'receiving_item_id',
         'location_id',
         'employee_id',
         'remarks',

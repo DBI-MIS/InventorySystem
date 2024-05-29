@@ -25,7 +25,6 @@ class ReceivingResource extends JsonResource
             'id' => $this->id,
             'mrr_no'=> $this->mrr_no,
             'group_item_id' => $this->group_item_id,
-            // 'items'=> ItemResource::collection($this->whenLoaded('items')),
             'client_id'=> $this->client_id,
             // 'client' => new ClientResource($this->client),
             'si_no'=> $this->si_no,

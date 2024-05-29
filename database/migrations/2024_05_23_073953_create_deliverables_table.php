@@ -19,10 +19,7 @@ return new class extends Migration
             $table->string('rs_no')->nullable();
             $table->string('address')->nullable();
             $table->string('dr_date')->nullable();
-            $table->string('item_qty')->nullable();
-            $table->string('item_unit')->nullable();
-            $table->foreignId('item_id')->constrained('items');
-            $table->string('item_description')->nullable();
+            $table->string('list_item_id')->nullable();
             $table->timestamps();
         });
     }

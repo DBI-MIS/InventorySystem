@@ -1,7 +1,5 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import SelectInput from "@/Components/SelectInput";
-import SelectInputMultiple from "@/Components/SelectInputMultiple";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -14,22 +12,23 @@ export default function Create({auth,success, mrr_no,items}){
    const {data, setData, post,errors} = useForm({
         client_id: '',
         mrr_no: '',
-       group_item_id: '',
-        reference_no: '123',
-        receiving_item_id: '11',
+        group_item_id: '',
         si_no:'',
         dr_no:'',
         address:'',
         remarks:'',
     })
+
     const  options = items.data.map(item => ({ //values from the db
         value: item.id,
         label: item.name
       }));
-      const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) }));
+
+      const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
       const [selectedOptions, setSelectedOptions] = useState([]);
     
       const handleSelectChange = (selectedOptions) => {
+        
         setSelectedOptions(selectedOptions);
 
         const selectedValues = selectedOptions.map(option => parseInt(option.value));
@@ -40,14 +39,14 @@ export default function Create({auth,success, mrr_no,items}){
     const onSubmit = (e) =>{
         e.preventDefault();
         post(route("receiving.store"));
- }
+     }
     //for checking values on the data
     console.log(data); 
-    const AssignReceiving = (receiving,e) => {
-        // console.log(receiving)
-       e.preventDefault();
-        router.post(route('assignItem', receiving.id))
-      }
+    // const AssignReceiving = (receiving,e) => {
+    //     // console.log(receiving)
+    //    e.preventDefault();
+    //     router.post(route('assignItem', receiving.id))
+    //   }
       
     return(
         <AuthenticatedLayout
@@ -84,7 +83,9 @@ export default function Create({auth,success, mrr_no,items}){
                                         />
                                         <InputError message={errors.client_id} className="mt-2"/>
                                     </div>
+
                                     <div className="grid grid-cols-6 gap-2">
+                                       
                                         <div className=" mt-4  col-span-2 ">
                                             <InputLabel htmlFor="mrr_no" value="MRR No."/>
                                             <div className=" flex h-[11]">
@@ -126,6 +127,7 @@ export default function Create({auth,success, mrr_no,items}){
                                             <InputError message={errors.dr_no} className="mt-2"/>
                                         </div>
                                     </div>
+
                                     <div className="mt-4">
                                         <InputLabel htmlFor="receiving_address" value="Receiving Address"/>
                                         <TextAreaInput
@@ -137,6 +139,7 @@ export default function Create({auth,success, mrr_no,items}){
                                         />
                                         <InputError message={errors.address} className="mt-2"/>
                                     </div>  
+
                                     <div className="mt-4">
                                         <InputLabel htmlFor="receiving_remarks" value="Receiving Remarks"/>
                                         <TextAreaInput
@@ -148,7 +151,6 @@ export default function Create({auth,success, mrr_no,items}){
                                         />
                                         <InputError message={errors.remarks} className="mt-2"/>
                                     </div>
-                                    
                                     
                                     <div className="mt-4">
                                         <InputLabel htmlFor="receiving Items" value="Group of Items"/>
@@ -181,9 +183,9 @@ export default function Create({auth,success, mrr_no,items}){
                                                 </thead> 
                                                 {selectedOptions && selectedOptions.length >= 0 && ( 
                                                     <tbody>
+
                                                         {selectedOptions.map(option => {
                                                         const selectedItem = allItems.find(item => item.id === parseInt(option.value));
-                                                         
                                                         return (
                                                             <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
                                                             <td className="px-3 py-2">{selectedItem.id}</td>
@@ -200,18 +202,13 @@ export default function Create({auth,success, mrr_no,items}){
                                                             <td className="px-3 py-2">{selectedItem.quantity} {selectedItem.uom}</td>
                                                             </tr>
                                                         );
-                                                      
                                                     })}
                                                     </tbody>
                                                 )}                         
                                                 </table>
-                                            
-                                             </div>
-                                           
+                                            </div>
                                      </div>
-
-
-                                    
+                                     
                                     <div className="mt-20 text-right">
                                         <Link href={route('receiving.index')}
                                             className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"

@@ -135,7 +135,7 @@ const deleteReceiving = (receiving) => {
                                           
                                       </td>
                                       <td className="px-3 py-2">
-                                      <Link href={route('receiving.show', receiving.id)}>
+                                      <Link href={route('receiving.show', receiving.id)} >
                                       {receiving.mrr_no}
                                         </Link>
                                       </td>

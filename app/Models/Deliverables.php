@@ -7,39 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Deliverables extends Model
 {
+
+    protected $casts = [
+        'id' => 'string',
+        'list_item_id' => 'array',
+
+    ];
+
     use HasFactory;
 
     protected $fillable = [
         'project',
+        'group_item_id',
         'dr_no',
         'rs_no',
         'address',
         'dr_date',
-        'item_qty',
-        'item_unit',
-        'item_id',
-        'item_description',
+        'project_id',
+        'address_id',
+        'rs_no_id',
     ];
 
-    public function receiving(){
-        return $this->belongsTo(Receiving::class);
-    }
 
     public function item()
     {
         return $this->belongsTo(Item::class);
-    }
-    public function receivingAddress(){
-        return $this->belongsTo(Receiving::class, 'address');
-    }
-    public function itemQuantity(){
-        return $this->belongsTo(Item::class, 'item_qty');
-    }
-    public function itemUnit(){
-        return $this->belongsTo(Item::class, 'item_unit');
-    }
-    public function itemDescription(){
-        return $this->belongsTo(Item::class, 'item_description');
     }
 
     public function itemsDeliverables(){

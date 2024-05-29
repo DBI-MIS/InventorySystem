@@ -37,6 +37,12 @@ class ReceivingController extends Controller
          if(request("category_id")){
             $query->where('category_id', (request("category_id")));
          }
+    
+        //  $id = 51;
+        // $receiving = Receiving::find($id);
+        // $existingItems = $receiving->items;
+        
+        // dd($existingItems);
         
          $receivingPivot = Item::with('receivings')->get();
         //  dd($receivingPivot);
@@ -110,17 +116,6 @@ class ReceivingController extends Controller
         $items = $data['group_item_id'];
         $receiving =Receiving::create($data);
         $receiving->items()->attach($items);  
-        // $items =[2,3,5];
-        // $item_ids = [];
-
-//         foreach ($data as $item) {
-//             if (isset($item['group_item_id'])) {
-//                 $item_ids[] = $item['group_item_id'];
-//             }
-           
-// }    
-// dd($items);
-// dd($data);
         // $data['created_by'] = Auth()->user()->id;
         // $data['created_by'] = Auth::id();
         // $data['updated_by'] = Auth::id();
@@ -142,8 +137,7 @@ class ReceivingController extends Controller
                 ->whereIn('id', $groupItemIds)
                 ->get();
         }
-
-     
+        // dd($receiving_items);
         return inertia('Receiving/Show', [
             'receiving' => new ReceivingResource($receiving),
             'queryParams' => request()->query() ?: null,
@@ -165,7 +159,6 @@ class ReceivingController extends Controller
             $item->sku_prefix = $item->category->sku_prefix;
         }
         // dd($items);
-        // JSON string  ==> PHP associative array
         $parsedId = json_decode($receiving, true);
     
         // Access the value of the 'id' key
@@ -175,13 +168,12 @@ class ReceivingController extends Controller
         //   dd($existingItems);
         $existingItemIds= $receiving->items()->pluck('items.id'); //get item ids
         
-        // Convert array of strings to array of integers
+        // Convert array strings => array of integers
         $existingItemIds = array_map('intval', $existingItemIds->toArray());
 
        
        return inertia('Receiving/Edit',[
         'items' => ItemResource::collection($items),
-            //retrieve from resource collection
             'receiving' => new ReceivingResource($receiving),
             'existingItems' =>  $existingItems,
             'existingItemIds' => $existingItemIds
@@ -196,16 +188,15 @@ class ReceivingController extends Controller
     public function update(UpdateReceivingRequest $request, Receiving $receiving)
     {
         $data = $request->validated();
-        // // Ensure group_item_id is properly managed if it exists in the data
-        // if (isset($data['group_item_id'])) {
-        //     $data['group_item_id'] = json_encode($data['group_item_id']);  // Convert the array to JSON
-        // }
-       
-         $items = $data['group_item_id'];
+        // if existing ang group_item_id
+        if (isset($data['group_item_id'])) {
+           $items = $data['group_item_id'];
          $receiving->update($data);
-        $receiving->items()->sync($items); 
+         $receiving->items()->sync($items); 
+        }
+        
         return to_route('receiving.index')
-            ->with('success', "Receiving \"{$receiving->name}\" was updated");
+            ->with('success', "Receiving \"{$receiving->id}\" was updated");
     }
 
     /**

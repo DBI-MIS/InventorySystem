@@ -11,6 +11,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MrrItemController;
+use App\Http\Controllers\PDFController;
+use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceivingController;
 use App\Http\Controllers\ReceivingItemController;
@@ -39,6 +41,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::resource('stocksearch', StockSearchController::class);
         Route::resource('deliverables', DeliverablesController::class);
         Route::post('/receivings/{receivingId}/items/{itemId}',[ ReceivingController::class,'assignItem' ]);
+        Route::resource('preview', PreviewController::class);
+        Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;
         // lagay name
     
     });

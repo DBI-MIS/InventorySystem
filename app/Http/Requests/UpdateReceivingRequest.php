@@ -30,9 +30,6 @@ class UpdateReceivingRequest extends FormRequest
             "si_no" => ['required', 'max:255'],
             "dr_no" => ['required', 'max:255'],
             "address" => ['nullable','string'],
-            // 'receiving_item_id' => [
-            //     'required',
-            //     'exists:receiving_items,id'],
             "remarks" => ['nullable','string'],
         ];
     }

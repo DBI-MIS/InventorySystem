@@ -6,8 +6,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import Select from "react-select"
-export default function Create({auth,existingItems,existingItemIds, receiving,mrr_item_ids,items}){
-
+export default function Create({auth,existingItems,existingItemIds,receiving,items}){
 
  // data will hold/contain the ff:
  const {data, setData, post ,errors,processing} = useForm({
@@ -21,13 +20,13 @@ export default function Create({auth,existingItems,existingItemIds, receiving,mr
     remarks: receiving. remarks || "",
         _method: "PUT", 
     });
-    console.log(data)
+
     const [databaseItemIds, setDatabaseItemIds] = useState(Array.isArray(existingItemIds) ? existingItemIds : []);
     const existingItemss  = items.data.map(item => ({ ...item, id: parseInt(item.id) }));
     const [notification, setNotification] = useState('');
     const [allSelectedItemIds, setAllSelectedItemIds] = useState([]);
     const [receivings, setReceivings] = useState([]);
-
+   
     const  options = items.data.map(item => ({ //values from the db
       value: item.id,
       label: item.name
@@ -37,8 +36,9 @@ export default function Create({auth,existingItems,existingItemIds, receiving,mr
          value: databaseItemId.id,
          label:  databaseItemId.id,
      }));
- const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
-    const [selectedItemIds, setSelectedItemIds] = useState(selectedValueItems.map(option => option.value));
+
+     const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
+     const [selectedItemIds, setSelectedItemIds] = useState(selectedValueItems.map(option => option.value));
 
     useEffect(() => {
       setSelectedItemIds(selectedOptions.map(option => option.value));
@@ -53,23 +53,21 @@ export default function Create({auth,existingItems,existingItemIds, receiving,mr
         // alert("selectedOptionss" + selectedOptionss);
       };
       console.log("selected Item ids" + selectedItemIds)
+      
       const handleAddSelect = (e) => {
         e.preventDefault();
-      
-        // Filter out the selected items that are already present in the databaseItemIds 
+        // checking if items are already present in the databaseItemIds 
         const newSelectedItemIds = selectedItemIds.filter(id => !databaseItemIds.includes(parseInt(id, 10)));
         if (newSelectedItemIds.length === 0) {
           setNotification('Items are on the tables already!');
           setSelectedOptions([]); 
           return;
         }
-        // Filter the mrr_item_ids 
         const selectedItems = existingItems.filter(item => newSelectedItemIds.includes(item.id.toString()));
       
         // Update the receivings state with new selected items
         setReceivings(prevReceivings => [...prevReceivings, ...selectedItems]);
       
-        // Convert selected item IDs to integers
         const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
       
         // Update allSelectedItemIds and databaseItemIds with new selected items
@@ -78,8 +76,6 @@ export default function Create({auth,existingItems,existingItemIds, receiving,mr
       
         setAllSelectedItemIds(newAllSelectedItemIds);
         setDatabaseItemIds(newDatabaseItemIds);
-      
-        // Update the form data with new group item IDs, eto yung asa tables
         setData('group_item_id', newDatabaseItemIds);
       
         // Clear 
@@ -90,15 +86,14 @@ export default function Create({auth,existingItems,existingItemIds, receiving,mr
       useEffect(() => {
         setData('group_item_id', databaseItemIds);
       }, [databaseItemIds]);
+
       // checking of values
       console.log("selected Item ids", selectedItemIds);
       console.log("receivings", receivings);
-      console.log("items", items);
       console.log("existing Items", existingItemss);
       console.log("selectedOptions", selectedOptions);
       console.log("allSelectedItemIds", allSelectedItemIds);
       console.log("databaseItemIds", databaseItemIds);
-      console.log("data", data);
 
     //delete button of the existing item on the table
     const handleRemoveExistingItem = ( selectedItemId, index) => {
@@ -240,6 +235,7 @@ export default function Create({auth,existingItems,existingItemIds, receiving,mr
                                   </button>
                               </div>
                           </div>
+                          {/* WARNING MESSAGE WHEN ADDING DUPLICATE ITEMS */}
                           <div className="mt-2 mx-2">
                             {notification && (
                               <div className="text-red-600 font-semibold mt-2">
@@ -248,9 +244,8 @@ export default function Create({auth,existingItems,existingItemIds, receiving,mr
                             )}
                           </div>
                       </div>
-{/* {receivings && receivings.length !== 0 && ( */}
                       <div className="mt-5">
-                      <h1 className="text-2xl text-center p-5 font-semibold">LIST OF MRR ITEMS</h1>
+                          <h1 className="text-2xl text-center p-5 font-semibold">LIST OF MRR ITEMS</h1>
                             <table className="min-w-full bg-white">
                               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                 <tr>
@@ -295,13 +290,12 @@ export default function Create({auth,existingItems,existingItemIds, receiving,mr
                                         </tr>
                                       );
                                     } else {
-                                      return null; // Remove the else block to avoid unnecessary rendering
+                                      return null; 
                                     }
                                   })}
                                 </tbody>
                               )}                         
                             </table>
-                           
                       </div>
                       <div className="mt-20 text-right">
                             <Link href={route('receiving.index')}

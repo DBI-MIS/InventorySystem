@@ -9,6 +9,7 @@ use App\Http\Resources\DeliverablesResource;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Models\Receiving;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DeliverablesController extends Controller
@@ -18,24 +19,50 @@ class DeliverablesController extends Controller
      */
     public function index()
     {
-        $query = Deliverables::query();
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "asc");
+        // $deliverable = Deliverables::query()->where('list_item_id')->get()->dd();
 
-        if (request("name")) {
-            $query->where("name", "like", "%". request("name") ."%");
-        }
+        // $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
+        // ->whereIn('id', $deliverable)
+        // ->get();
+        
+        $deliverables = Deliverables::all();
 
-        $deliverabless= $query->orderBy($sortField, $sortDirection)
-        ->paginate(10)
-        ->onEachSide(1);
+        // Loop through each user to retrieve pivot data
+        foreach ($deliverables as $deliverable) {
+            // Retrieve pivot data using raw SQL query
+            $pivotData = DB::table('deliverable_item')
+                            ->where('deliverables_id', $deliverable->id)
+                            ->join('items', 'deliverable_item.item_id', '=', 'items.id')
+                            ->select('deliverable_item.*', 'items.name as deliverable_item')
+                            ->get();
+    
+            // Attach the pivot data to the user object
+            $deliverable->pivotData = $pivotData;
 
-        return inertia("Deliverables/Index",[
+        // $query = Deliverables::query();
+        // $sortField = request("sort_field", 'created_at');
+        // $sortDirection = request("sort_direction", "asc");
+
+        // if (request("name")) {
+        //     $query->where("name", "like", "%". request("name") ."%");
+        // }
+
+        
+
+        // $deliverabless= $query->orderBy($sortField, $sortDirection)
+        // ->paginate(10)
+        // ->onEachSide(1);
+
+        // return inertia("Deliverables/Index",[
             
-            "deliverabless" => DeliverablesResource::collection($deliverabless),
-            'queryParams' => request()->query() ?: null,
+        //     "deliverabless" => DeliverablesResource::collection($deliverabless),
+        //     'queryParams' => request()->query() ?: null,
 
-        ] );
+        // ] );
+    }
+
+    // Pass the users data to the view
+    return inertia('Deliverables/index', compact('deliverables'));
 
     }
 
@@ -57,12 +84,14 @@ class DeliverablesController extends Controller
     public function store(StoreDeliverablesRequest $request)
     {
         $data = $request->validated();
+        $items = $data['list_item_id'];
+        $deliverable=Deliverables::create($data);
+        $deliverable->itemsDeliverables()->attach($items);
 
-        Deliverables::create($data);
 
          
 
-         return to_route('deliverables.index')->with('success', 'Delivery Receipt was created');
+        return redirect()->route('deliverables.index');
     }
 
     /**

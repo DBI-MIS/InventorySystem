@@ -3,7 +3,7 @@ import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Index({ auth, deliverabless, queryParams = null }) {
+export default function Index({ auth, deliverabless, deliverables, queryParams = null }) {
 
     queryParams = queryParams || {};
 
@@ -142,7 +142,7 @@ const sortChanged = (name) => {
                                   </tr>
                           </thead> */}
                           <tbody>
-                            {deliverabless.data.map((deliverable)=>(
+                            {deliverables.data.map((deliverable)=>(
                               <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={deliverable.id}>
                                 <td className="px-3 py-2">{deliverable.name}</td>
                                 <td className="px-3 py-2">{deliverable.project}</td>

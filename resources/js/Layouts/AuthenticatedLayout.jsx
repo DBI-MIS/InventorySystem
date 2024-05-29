@@ -136,7 +136,7 @@ export default function Authenticated({ user, header, children }) {
                                     <Narchive className="block h-9 w-auto fill-current " />
                         </ResponsiveNavLink>
                                 <br />                
-                        <ResponsiveNavLink href={route('receiving.index')} active={route().current('receiving.index')}>
+                        <ResponsiveNavLink href={route('receiving.index')}  active={route().current('receiving.index')}>
                                     <Nreceiving className="block h-9 w-auto fill-current " /> 
                         </ResponsiveNavLink>
                         <br />

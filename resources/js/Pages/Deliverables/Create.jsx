@@ -3,37 +3,49 @@ import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
+import Select from "react-select";
 
 export default function Create({ auth, items }) {
 
-  const {data, setData, post,errors,reset} = useForm({
+    
+
+  const {data, setData, post,errors} = useForm({
     project: '',
     address: '',
     dr_no: '',
     rs_no: '',
     dr_date: '',
-    item_qty: '',
-    item_unit: '',
-    item_description: '',
+    list_item_id: '',
     
 });
 
-const [selectedItem, setSelectedItem] = useState(null);
+console.log(data)
+
+const  options = items.data.map(item => ({ //values from the db
+    value: item.id,
+    label: item.name
+  }));
+
+  const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleSelectChange = (selectedOptions) => {
+    
+    setSelectedOptions(selectedOptions);
+
+    const selectedValues = selectedOptions.map(option => parseInt(option.value));
+
+    setData("list_item_id", selectedValues);
+};
+
 
 
   const onSubmit = (e) =>{
     // post function declared above
     e.preventDefault();
     post(route("deliverables.store"));
-};
-
-const handleItemChange = (e) => {
-    const itemId = e.target.value;
-    const item = items.data.find(i => i.id == itemId);
-    setSelectedItem(item || null);
-    setData("item_id", itemId);
 };
 
     return (
@@ -50,18 +62,14 @@ const handleItemChange = (e) => {
             <div className="py-12">
     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-        <form onSubmit={onSubmit} className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
-                        
-                         {/* START */}
-                         <div className="grid grid-cols-6 gap-2">
-
-                         {/* 1ST GRID COLUMN */}
-                         <div className="col-span-5 grid grid-cols-2 gap-2 content-start">
-
-                         <div className="mt-6 col-span-2">
-                                        <InputLabel htmlFor="project" value="Project"/>
-                                        <TextInput
-                                        id="project"
+        <form onSubmit={onSubmit} 
+                        className="p-4 sm:p8  bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
+                           <div className="flex">
+                                <div className="w-full">
+                                    <div className="mt-4  col-span-3">
+                                        <InputLabel htmlFor="receiving_project" value="Project."/>
+                                        <TextInput 
+                                        id="receiving_project"
                                         type="text"
                                         name="project"
                                         value={data.project}
@@ -71,10 +79,11 @@ const handleItemChange = (e) => {
                                         />
                                         <InputError message={errors.project} className="mt-2"/>
                                     </div>
-                                    <div className="mt-1 col-span-2">
-                                        <InputLabel htmlFor="address" value="Address"/>
-                                        <TextInput
-                                        id="address"
+
+                                    <div className="mt-4  col-span-3">
+                                        <InputLabel htmlFor="receiving_address" value="Address."/>
+                                        <TextInput 
+                                        id="receiving_address"
                                         type="text"
                                         name="address"
                                         value={data.address}
@@ -84,148 +93,113 @@ const handleItemChange = (e) => {
                                         />
                                         <InputError message={errors.address} className="mt-2"/>
                                     </div>
-                                    <div className="mt-1 col-span-2">
-                                        <InputLabel htmlFor="address" value="#"/>
-                                        <TextInput
-                                        id=""
-                                        type="text"
-                                        name=""
-                                        value={data.address}
-                                        className="mt-1 block w-full"
-                                        isFocused={true}
-                                        onChange={e => setData('', e.target.value)}
-                                        />
-                                        <InputError message={errors.address} className="mt-2"/>
-                                    </div>
-                                    <div className="mt-1 col-span-2">
-                                        <InputLabel htmlFor="item_qty" value="QTY"/>
-                                        <TextInput
-                                        id="item_qty"
-                                        type="text"
-                                        name="item_qty"
-                                        value={data.item_qty}
-                                        className="mt-1 block w-full"
-                                        isFocused={true}
-                                        onChange={e => setData('item_qty', e.target.value)}
-                                        />
-                                        <InputError message={errors.item_qty} className="mt-2"/>
-                                    </div>
-                                    <div className="mt-1 col-span-2">
-                                        <InputLabel htmlFor="item_unit" value="UNIT"/>
-                                        <TextInput
-                                        id="item_unit"
-                                        type="text"
-                                        name="item_unit"
-                                        value={data.item_unit}
-                                        className="mt-1 block w-full"
-                                        isFocused={true}
-                                        onChange={e => setData('item_unit', e.target.value)}
-                                        />
-                                        <InputError message={errors.item_unit} className="mt-2"/>
-                                    </div>
-                                    <div className="mt-1 col-span-2">
-                                        <InputLabel htmlFor="item_id" value="ITEM NAME"/>
-                                        <SelectInput 
-                                            name="item_id"
-                                            id="item_id"
-                                            className="mt-1 block w-full"
-                                            onChange={handleItemChange}
+
+                                    <div className="grid grid-cols-6 gap-2">
+                                       
+                                        <div className=" mt-4  col-span-2 ">
+                                            <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
                                             
+                                            <TextInput 
+                                                id="receiving_dr_no"
+                                                type="text"
+                                                name="dr_no"
+                                                value={data.dr_no} 
+                                                className="mt-1 block w-full"
+                                                isFocused={true}
+                                                onChange={e => setData('dr_no', e.target.value)}
+                                                />
+                                                <InputError message={errors.dr_no} className="mt-2"/>
+                                            
+                                        </div>
+                                        <div className="mt-4  col-span-2">
+                                            <InputLabel htmlFor="receiving_rs_no" value="RS No."/>
+                                            <TextInput 
+                                                id="receiving_rs_no"
+                                           type="text"
+                                           name="rs_no"
+                                           value={data.rs_no}
+                                           className="mt-1 block w-full"
+                                                isFocused={true}
+                                                onChange={e => setData('rs_no', e.target.value)}
+                                            />
+                                            <InputError message={errors.rs_no} className="mt-2"/>
+                                        </div>
+                                        <div className="mt-4  col-span-2">
+                                            <InputLabel htmlFor="receiving_dr_date" value="Date."/>
+                                            <TextInput 
+                                                id="receiving_dr_date"
+                                                type="date"
+                                                name="dr_date"
+                                                value={data.dr_date}
+                                                className="mt-1 block w-full"
+                                                isFocused={true}
+                                                onChange={e => setData('dr_date', e.target.value)}
+                                            />
+                                            <InputError message={errors.dr_date} className="mt-2"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="mt-4">
+                                        <InputLabel htmlFor="receiving Items" value="Group of Items"/>
+                                            <div className="col-span-10 xs:col-span-8">
+                                                <Select
+                                                    value={selectedOptions}
+                                                    onChange={handleSelectChange}
+                                                    className="mt-1 block w-full"
+                                                    isMulti={true}
+                                                    options={options}
+                                                    isSearchable={true}
+                                                    placeholder="Select Items"
+                                                >
+                                                </Select>
+                                            </div>
+                                            <div className="mt-5">
+                                                <h1 className="text-2xl text-center p-5 font-semibold">DELIVERY RECEIPT</h1>
+                                                <table className="min-w-full bg-white">
+                                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                                    <tr>
+                                                    <th className="pr-10">ID</th>
+                                                    <th className="pr-10">QTY</th>
+                                                    <th className="pr-10">UNIT</th>
+                                                    <th className="pr-10">ITEM NAME</th>
+                                                    <th className="pr-10">ITEM DESCRIPTION</th>
+                                                    </tr>
+                                                </thead> 
+                                                {selectedOptions && selectedOptions.length >= 0 && ( 
+                                                    <tbody>
+
+                                                        {selectedOptions.map(option => {
+                                                        const selectedItem = allItems.find(item => item.id === parseInt(option.value));
+                                                        return (
+                                                            <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
+                                                            <td className="px-3 py-2">{selectedItem.id}</td>
+                                                            <td className="px-3 py-2">{selectedItem.quantity}</td>
+                                                            <td className="px-3 py-2">{selectedItem.uom}</td>
+                                                            <td className="px-3 py-2">{selectedItem.name}</td>
+                                                            <td className="px-3 py-2">{selectedItem.description}</td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                    </tbody>
+                                                )}                         
+                                                </table>
+                                            </div>
+                                     </div>
+                                     <br /><br /><br />
+                                     
+                                    <div className="mt-20 text-right">
+                                        <Link href={route('deliverables.index')}
+                                            className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
                                         >
-                                            <option value="">Select Item</option>
-                                            {items.data.map((item) => (
-                                            <option value={item.id} key={item.id}>
-                                            {item.name}
-                                            </option>
-                                    ))}
-
-                                        </SelectInput>
-                                        <InputError message={errors.item_name} className="mt-2"/>
+                                        Cancel
+                                        </Link>
+                                        <button className="bg-green-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-green-600">
+                                            Submit
+                                        </button>
                                     </div>
-                                    {selectedItem && (
-                                <div className="mt-4 bg-gray-100 p-4 rounded shadow">
-                                    <p><strong>User Details:</strong></p>
-                                    <p>QTY: {selectedItem.quantity}</p>
-                                    <p>UNIT: {selectedItem.uom}</p>
-                                    <p>ITEM NAME: {selectedItem.name}</p>
-                                    <p>ITEM DESCRIPTION: {selectedItem.description}</p>
-                                    {/* Add more fields as necessary */}
                                 </div>
-                            )}
-                                    <div className="mt-1 col-span-2">
-                                        <InputLabel htmlFor="item_description" value="ITEM DESCRIPTION"/>
-                                        <TextInput
-                                        id="item_description"
-                                        type="text"
-                                        name="item_description"
-                                        value={data.item_description}
-                                        className="mt-1 block w-full"
-                                        isFocused={true}
-                                        onChange={e => setData('item_description', e.target.value)}
-                                        />
-                                        <InputError message={errors.item_description} className="mt-2"/>
-                                    </div>
-                                    
-                                    
-                                    
-
-                                    
-                                    
-
-                          </div>
-
-                          <div className="col-span-1 grid grid-cols-1 content-start">
-                        
-                        <div className="col-span-1 grid grid-cols-2 ">
-
-                        <div className="mt-6 col-span-2">
-                                <InputLabel htmlFor="dr_no" value="DR No.:"/>
-                                <TextInput
-                                    id="dr_no"
-                                    type="text"
-                                    name="dr_no"
-                                    className="mt-1 block w-full"
-                                    onChange={(e) => setData("dr_no", e.target.value)}
-                                />
-                                <InputError message={errors.dr_no} className="mt-2"/>
-                            </div>
-                            <div className="mt-3 col-span-2">
-                                <InputLabel htmlFor="rs_no" value="RS No.:"/>
-                                <TextInput
-                                    id="rs_no"
-                                    type="text"
-                                    name="rs_no"
-                                    className="mt-1 block w-full"
-                                    onChange={(e) => setData("rs_no", e.target.value)}
-                                />
-                                <InputError message={errors.rs_no} className="mt-2"/>
-                            </div>
-
-                        <div className=" mt-3  col-span-2">
-                                    <InputLabel htmlFor="dr_date" value="Date" />
-                                    <div className=" flex h-[11]">
-
-                                    <TextInput
-                                    id="dr_date"
-                                    type="date"
-                                    name="dr_date"
-                                    value={data.dr_date}
-                                    className="mt-1 block w-full"
-                                    isFocused={true}
-                                    onChange={(e) => setData("dr_date", e.target.value)}
-                                    />
-                                    <InputError message={errors.dr_date} className="mt-2" />
-
-                                    </div>
-                                    </div>
-
-                        </div>
-                        </div>
-
-                          </div>
-                          
-                          
-        </form>
+                           </div>
+                    </form>
             
 
         </div>

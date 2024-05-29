@@ -27,7 +27,6 @@ class ReceivingFactory extends Factory
             'client_id'=>rand(1, 10),
             'si_no'=>rand(1, 10),
             'dr_no'=>fake()->regexify('[0-9]{6}'),
-            // 'receiving_item_id'=>rand(1,20),
             'address'=>fake()->address(),
             'location_id'=> 1,
             'employee_id'=> 1,

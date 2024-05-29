@@ -48,22 +48,15 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
         <AuthenticatedLayout 
         user={auth.user}
         header={
-            <div className="flex receivings-center bg-white justify-between">
-               <div className="flex justify-between items-center">
-                  <h2 className="font-extrabold text-2xl text-blue-700 underline leading-snug">D.B International Sales & Services Inc.</h2>
-               </div>
-              <div>
+            <div className="flex receivings-center justify-between">
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {`Material Receiving Report " ${receiving.id} " `}
-               </h2>
-              </div>
-            
+            {`Material Receiving Report " ${receiving.id} " `}
+            </h2>
             </div>
             }
         >
         <Head title={`Receiving "${receiving.id}" `}/>
-       
-        {/* <div className="flex float-end mb-5 px-10 gap-2 ">
+        <div className="flex float-end mb-5 px-10 gap-2 ">
             <Link href={route('preview.index',receiving.id)}
            className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
               Preview MRR
@@ -71,71 +64,12 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
            <Link href={route('generate-pdf.generatePDF')} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
                Print MRR
            </Link>
-          </div> */}
-        <div className="py-2 bg-white capitalize">
-      
-            <div className=" max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3  gap-2">
-              <div className=" overflow-hidden shadow-sm sm:rounded-lg col-span-3 ">
-                  <h3>430 Lt. Artiaga St., San Juan Metro Manila, Philippines 1500</h3>
-                  <h3>Tel. No.: (+63)8723-4461 to 64, Fax No.:(+632)8723-2782, (+632) 8723-4467</h3>
-
-                  <div class="mt-10 grid grid-cols-3 gap-2 leading-9">
-                      <div className="mx-2">
-                        <div >
-                         <label
-                         className="font-light mx-2  text-md "
-                         htmlFor="ReceivingId">
-                         Supplier: 
-                         </label>  
-                          <span>{receiving.client_id}</span> 
-                        </div>
-                      <div >
-                        <label
-                          className="font-light mx-2  text-md"
-                            htmlFor="ReceivingId">SI No :</label>  
-                        <span>{receiving.si_no}</span>
-                      </div>
-                      <div>
-                        <label
-                            className="font-light mx-2  text-md"
-                              htmlFor="ReceivingId">Address :</label>  
-                          <span>{receiving.address}</span>
-                      </div>
-                      </div>
-                      <div>
-                        <div>
-                          <label
-                              className="font-light mx-2  text-md"
-                                htmlFor="ReceivingId">DR No. :</label>  
-                            <span>{receiving.dr_no}</span>
-                        </div>
-                        <div>
-                          <label
-                              className="font-light mx-2  text-md"
-                                htmlFor="ReceivingId">MRR No. :</label>  
-                            <span>{receiving.mrr_no}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div>
-                            <label
-                                className="font-light mx-2 text-md"
-                                  htmlFor="ReceivingId">RR No. :</label>  
-                              <span>RR NO</span>
-                          </div>
-                          <div>
-                            <label
-                                className="font-light mx-2  text-md"
-                                  htmlFor="ReceivingId">Date :</label>  
-                              <span>date</span>
-                          </div>
-                      </div>
-                    
-                  </div>
-              
-                </div>
+          </div>
+        <div className="py-12 capitalize">
+          
+            <div className="mt-5 max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3 font-bold gap-2">
                 {/* card #1 */}
-                {/* <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg col-span-2 ">
+                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg col-span-2 ">
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                         <div className="flex flex-row justify-between">
                           <div className="flex flex-col pb-3 mt-2">
@@ -158,9 +92,9 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                           <dd className="text-lg font-light">{receiving.mrr_no}</dd>
                         </div>
                       </dl>
-                </div> */}
+                </div>
                 {/* card #2 */}
-                {/* <div className="bg-white  dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg ml-2 col-span-1">
+                <div className="bg-white  dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg ml-2 col-span-1">
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                   
                             <div className="flex flex-col pb-3 mt-2">
@@ -178,10 +112,10 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                             </div>
                     
                     </dl>
-                </div> */}
+                </div>
                 {/* card #3 */}
-                {/* <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
-                          
+                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
+                            {/* card5 */}
                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-2 h-[200px]">
                         <div className="p-6 ">
                                     <label
@@ -194,7 +128,7 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                                     htmlFor="ReceivingId">Remarks :</label>  <span>{receiving.remarks}</span>
                             </div>
                         </div>
-                </div> */}
+                </div>
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
                          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                   <div className="p-6 text-gray-900 dark:text-gray-100">
@@ -202,18 +136,33 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                               <tr className="text-nowrap ">
-                                <th class=" border text-left px-8 py-4">ID #</th>
-                                <th class=" border text-left px-8 py-4">SKU</th>
-                                <th class=" border text-left px-8 py-4">Quantity</th>
-                                <th class=" border text-left px-8 py-4">Unit #</th>
-                                <th class=" border text-left px-8 py-4">Item Name</th>
-                                <th class=" border text-left px-8 py-4">Description</th>
+                              <TableHeading  className="pr-10"  name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>ID</TableHeading>
+                              <TableHeading  className="pr-10"  name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Sku </TableHeading>
+                                <TableHeading  className="pr-10"   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Name</TableHeading>
+                                <TableHeading  className="pr-2"   name="brand_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Brand</TableHeading>
+                                <TableHeading className="pr-10"  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Category</TableHeading>
+                              <TableHeading className="pr-10"  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Location</TableHeading>
+                                <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Quantity</TableHeading>
                               </tr>
                             </thead>
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                               <tr className="text-nowrap ">
                                 <th className="px-3 py-3"></th>
                                 <th className="px-3 py-3"></th>
+                                <th className="px-3 py-3 w-full" >
+                                  <TextInput  className="max-w-full" 
+                                  defaultValue={queryParams.name}
+                                  placeholder="Item Name " 
+                                  onBlur={(e) => searchFieldChanged('name', e.target.value)}
+                                  onKeyPress={(e) => onKeyPress('name', e )}/>
+                                </th>
                                 <th className="px-3 py-3"></th>
                                 <th className="px-3 py-3"></th>
                                 <th className="px-3 py-3"></th>
@@ -232,29 +181,29 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                                         <td className="px-3 py-2 text-nowrap">
                                         {receiving_item.category ? receiving_item.category.sku_prefix : ''}-{receiving_item.sku}
                                         </td>
-                                        <td className="px-3 py-2 text-nowrap">
-                                          {receiving_item.quantity}
-                                        </td>
-                                        <td className="px-3 py-2 text-nowrap">
-                                          {receiving_item.uom}
-                                        </td>
                                         <th className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
                                           <Link href={route('item.show', receiving_item.id)}>
                                           {receiving_item.name}
                                           </Link>
                                         </th>
-                                        <td className="px-3 py-2 text-wrap">
-                                          {receiving_item.description}
+                                        <td className="px-3 py-2 text-nowrap">
+                                          {receiving_item.brand ?receiving_item.brand.name : 'No Brand Name'}
                                         </td>
+                                        <td className="px-3 py-2 text-nowrap">
+                                          {receiving_item.category ?receiving_item.category.name : 'No Category Name'}
+                                        </td>
+                                        <td className="px-3 py-2"> {receiving_item.location ? receiving_item.location.name : 'No Location'}</td>
+                                        <td className="px-3 py-2 text-nowrap">{receiving_item.quantity} {receiving_item.uom} </td>
                                     </tr>
                                 ))}
                                 </>
                                )}
                             </tbody>
                         </table>
-                      
                       </div> 
                  </div>
+                 {/* pagination not visible */}
+                 {/* <Pagination links={receiving_items.meta.links} /> */}
               </div>
                     
               </div>

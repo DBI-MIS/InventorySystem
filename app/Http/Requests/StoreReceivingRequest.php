@@ -26,9 +26,6 @@ class StoreReceivingRequest extends FormRequest
             'nullable',
             Rule::unique('receivings', 'mrr_no')->ignore($this->receiving),
         ],
-            //Rule::unique('receivings')->ignore($receiving->id),
-        // Rule::unique('receivings', 'mrr_no')->ignore($this->receiving),
-       // 'mrr_no' => "nulllable|unique:receivings,mrr_no,{$this->route($key)}",
         'group_item_id' => [
             'nullable',
             'exists:items,id'],
@@ -36,19 +33,6 @@ class StoreReceivingRequest extends FormRequest
         "si_no" => ['required', 'max:255'],
         "dr_no" => ['required', 'max:255'],
         "address" => ['nullable','string'],
-        // "reference_no" => ['nullable','max:255'],
-        // 'item_id' => [
-        //   'required',
-        //   'exists:items,id'],
-        // 'receiving_item_id' => [
-        //     'required',
-        //     'exists:receiving_items,id'],
-        // "location_id" => ['required',
-        // 'exists:locations,id',
-        // ],
-        // "employee_id" => ['required',
-        // 'exists:employees,id',
-        // ],
         "remarks" => ['nullable','string'],
     ];
     }
