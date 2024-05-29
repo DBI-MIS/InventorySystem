@@ -4,6 +4,7 @@ import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Create({ auth, items }) {
 
@@ -17,14 +18,23 @@ export default function Create({ auth, items }) {
     item_unit: '',
     item_description: '',
     
-})
+});
+
+const [selectedItem, setSelectedItem] = useState(null);
 
 
   const onSubmit = (e) =>{
     // post function declared above
     e.preventDefault();
     post(route("deliverables.store"));
-}
+};
+
+const handleItemChange = (e) => {
+    const itemId = e.target.value;
+    const item = items.data.find(i => i.id == itemId);
+    setSelectedItem(item || null);
+    setData("item_id", itemId);
+};
 
     return (
         <Authenticated
@@ -113,15 +123,35 @@ export default function Create({ auth, items }) {
                                         />
                                         <InputError message={errors.item_unit} className="mt-2"/>
                                     </div>
-                                    <div className="mt-1 col-span-10">
-                                        <InputLabel htmlFor="item_name" value="ITEM NAME"/>
+                                    <div className="mt-1 col-span-2">
+                                        <InputLabel htmlFor="item_id" value="ITEM NAME"/>
                                         <SelectInput 
+                                            name="item_id"
+                                            id="item_id"
+                                            className="mt-1 block w-full"
+                                            onChange={handleItemChange}
                                             
                                         >
+                                            <option value="">Select Item</option>
+                                            {items.data.map((item) => (
+                                            <option value={item.id} key={item.id}>
+                                            {item.name}
+                                            </option>
+                                    ))}
 
                                         </SelectInput>
                                         <InputError message={errors.item_name} className="mt-2"/>
                                     </div>
+                                    {selectedItem && (
+                                <div className="mt-4 bg-gray-100 p-4 rounded shadow">
+                                    <p><strong>User Details:</strong></p>
+                                    <p>QTY: {selectedItem.quantity}</p>
+                                    <p>UNIT: {selectedItem.uom}</p>
+                                    <p>ITEM NAME: {selectedItem.name}</p>
+                                    <p>ITEM DESCRIPTION: {selectedItem.description}</p>
+                                    {/* Add more fields as necessary */}
+                                </div>
+                            )}
                                     <div className="mt-1 col-span-2">
                                         <InputLabel htmlFor="item_description" value="ITEM DESCRIPTION"/>
                                         <TextInput
