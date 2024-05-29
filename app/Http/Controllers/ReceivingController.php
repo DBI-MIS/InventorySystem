@@ -108,6 +108,8 @@ class ReceivingController extends Controller
 
         $data = $request->validated();
         $items = $data['group_item_id'];
+        $receiving =Receiving::create($data);
+        $receiving->items()->attach($items);  
         // $items =[2,3,5];
         // $item_ids = [];
 
@@ -122,8 +124,7 @@ class ReceivingController extends Controller
         // $data['created_by'] = Auth()->user()->id;
         // $data['created_by'] = Auth::id();
         // $data['updated_by'] = Auth::id();
-        $receiving =Receiving::create($data);
-        $receiving->items()->attach($items);  
+       
         return redirect()->route('receiving.index')->with('success', "Receiving added successfully");
     }
 
@@ -141,13 +142,13 @@ class ReceivingController extends Controller
                 ->whereIn('id', $groupItemIds)
                 ->get();
         }
-        
 
+     
         return inertia('Receiving/Show', [
             'receiving' => new ReceivingResource($receiving),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
-            'receiving_items' => $receiving_items,
+            'receiving_items' =>  $receiving_items
         ]);
     }
 
@@ -156,43 +157,34 @@ class ReceivingController extends Controller
      */
     public function edit(Receiving $receiving)
     {
-    //    $parsedmrr_no = json_decode($receiving, true);  // JSON string  ==> PHP associative array
-
-    //    // Access the value of the 'id' key
-    //     $mrr_no= $parsedmrr_no['mrr_no'];
-    //     $mrrItems = Item::where('mrr_no', $mrr_no)->pluck('id');
-    //     $mrr_item_ids = Item::find($mrrItems) 
-    //     ->all();
-   
-    //     // JSON string  ==> PHP associative array
-    //     $parsedId = json_decode($receiving, true);
+        $items = Item::query()->orderBy('name', 'asc')->get();
+        // Fetch brand name and category name for existing items
+        foreach ($items as $item) {
+            $item->brand_name = $item->brand->name;
+            $item->category_name = $item->category->name;
+            $item->sku_prefix = $item->category->sku_prefix;
+        }
+        // dd($items);
+        // JSON string  ==> PHP associative array
+        $parsedId = json_decode($receiving, true);
     
-    //     // Access the value of the 'id' key
-    //     $id = $parsedId['id'];
-    //     $existingItems = Receiving::where('id', $id)->pluck('group_item_id');
-    //     $existingGroupItems = Item::find($existingItems) 
-    //     ->all();
-        // dd($existingGroupItems);
-        //  dd($mrr_item_ids);
-           // Fetch brand name and category name for mrr items
-        // foreach ($mrr_item_ids as $mrr_item) {
-        //     $mrr_item->brand_name = $mrr_item->brand->name; //get the name under brand then s-net sa brand_name
-        //     $mrr_item->category_name = $mrr_item->category->name;
-        //     $mrr_item->sku_prefix = $mrr_item->category->sku_prefix;
-        // }
+        // Access the value of the 'id' key
+        $id = $parsedId['id'];
+        $receiving = Receiving::find($id);
+        $existingItems = $receiving->items;
+        //   dd($existingItems);
+        $existingItemIds= $receiving->items()->pluck('items.id'); //get item ids
+        
+        // Convert array of strings to array of integers
+        $existingItemIds = array_map('intval', $existingItemIds->toArray());
 
-        // // Fetch brand name and category name for existing items
-        // foreach ($existingGroupItems as $existingItem) {
-        //     $existingItem->brand_name = $existingItem->brand->name;
-        //     $existingItem->category_name = $existingItem->category->name;
-        //     $existingItem->sku_prefix = $existingItem->category->sku_prefix;
-        // }
-
+       
        return inertia('Receiving/Edit',[
+        'items' => ItemResource::collection($items),
             //retrieve from resource collection
             'receiving' => new ReceivingResource($receiving),
-            // 'mrr_item_ids' => $mrr_item_ids,
-            // 'existingGroupItems' =>  $existingGroupItems,
+            'existingItems' =>  $existingItems,
+            'existingItemIds' => $existingItemIds
        ]
        );
     }
@@ -204,21 +196,16 @@ class ReceivingController extends Controller
     public function update(UpdateReceivingRequest $request, Receiving $receiving)
     {
         $data = $request->validated();
-        // Ensure group_item_id is properly managed if it exists in the data
-        if (isset($data['group_item_id'])) {
-            $data['group_item_id'] = json_encode($data['group_item_id']);  // Convert the array to JSON
-        }
-        Receiving::upsert(
-            [$data],
-            ['mrr_no'],  // Unique key to determine insert or update
-            ['group_item_id','updated_at']  // Fields to update
-        );
-    
-        // Retrieve the updated record
-        $updatedReceiving = Receiving::where('mrr_no', $data['mrr_no'])->first();
-    
+        // // Ensure group_item_id is properly managed if it exists in the data
+        // if (isset($data['group_item_id'])) {
+        //     $data['group_item_id'] = json_encode($data['group_item_id']);  // Convert the array to JSON
+        // }
+       
+         $items = $data['group_item_id'];
+         $receiving->update($data);
+        $receiving->items()->sync($items); 
         return to_route('receiving.index')
-            ->with('success', "Receiving \"{$updatedReceiving->name}\" was updated");
+            ->with('success', "Receiving \"{$receiving->name}\" was updated");
     }
 
     /**

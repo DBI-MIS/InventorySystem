@@ -11,37 +11,39 @@ class Deliverables extends Model
 
     protected $fillable = [
         'project',
-        'receiving_id',
         'dr_no',
         'rs_no',
-        'address_id',
+        'address',
         'dr_date',
         'item_qty',
         'item_unit',
-        'item_name_id',
-        'item_description_id',
+        'item_id',
+        'item_description',
     ];
 
     public function receiving(){
         return $this->belongsTo(Receiving::class);
     }
-    public function item(){
+
+    public function item()
+    {
         return $this->belongsTo(Item::class);
     }
     public function receivingAddress(){
-        return $this->belongsTo(Receiving::class, 'address_id');
+        return $this->belongsTo(Receiving::class, 'address');
     }
     public function itemQuantity(){
         return $this->belongsTo(Item::class, 'item_qty');
-    }
-    public function itemName(){
-        return $this->belongsTo(Item::class, 'item_name_id');
     }
     public function itemUnit(){
         return $this->belongsTo(Item::class, 'item_unit');
     }
     public function itemDescription(){
-        return $this->belongsTo(Item::class, 'item_description_id');
+        return $this->belongsTo(Item::class, 'item_description');
+    }
+
+    public function itemsDeliverables(){
+        return $this->belongsToMany(Item::class, 'deliverable_item')->withTimestamps();
     }
 
     

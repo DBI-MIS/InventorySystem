@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Deliverables;
 use App\Models\StockSearch;
 use App\Models\Employee;
 use App\Models\Item;
@@ -76,13 +77,26 @@ class DatabaseSeeder extends Seeder
          Receiving::factory()
          ->count(50)
          ->create();
+
+        //  Deliverables::factory()
+        //  ->count(20)
+        //  ->create();
          
          
 foreach(Item::all() as $item){
     foreach(Receiving::all() as $receiving){
     $item->receivings()->attach($receiving->id);
     }
-    } 
+    }
+    
+    foreach(Item::all() as $item){
+        foreach(Deliverables::all() as $deliverable){
+        $item->deliverable_items()->attach($deliverable->id);
+        }
+        }
+
+
+    
     }
     
 }

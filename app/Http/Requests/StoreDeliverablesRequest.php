@@ -11,7 +11,7 @@ class StoreDeliverablesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreDeliverablesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "project" => ['required','max:255'],
+            "dr_no" => ['required','max:255'],
+            "rs_no" => ['required','max:255'],
+            "address" => ['required','max:255'],
+            "dr_date" => ['nullable','date'],
+            "item_qty" => ['required','max:255'],
+            "item_unit" => ['required','max:255'],
+            "item_name" => ['required', 'exists:items,id'],
+            "item_description" => ['nullable','string'],
         ];
     }
 }

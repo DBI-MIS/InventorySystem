@@ -4,8 +4,8 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link, router}  from "@inertiajs/react";
 export default function Show({auth, receiving,receiving_items,queryParams}){
-    console.log(receiving)
-    console.log( receiving_items)
+    console.log("receiving" + receiving)
+    console.log( "receiving_items" + receiving_items)
     queryParams = queryParams || {};
   const searchFieldChanged = (name, value, ) => {
     if(value){
@@ -163,6 +163,7 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                               {receiving_items && receiving_items.length !== 0 && (
                                 <>
                                 {receiving_items.map((receiving_item)=>(
+                                
                                     <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={receiving_item.id}>
                                         <td className="px-3 py-2">
                                             {receiving_item.id}

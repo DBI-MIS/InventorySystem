@@ -27,12 +27,7 @@ class Receiving extends Model
         'created_by',
     
     ];
-
-
-
-    // public function items(){
-    //     return $this->hasMany(Item::class);
-    // }
+    
     public function location(){
         return $this->belongsTo(Location::class);
     }

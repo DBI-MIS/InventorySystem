@@ -148,12 +148,12 @@ const sortChanged = (name) => {
                                 <td className="px-3 py-2">{deliverable.project}</td>
                                 <td className="px-3 py-2">{deliverable.dr_no}</td>
                                 <td className="px-3 py-2">{deliverable.rs_no}</td>
-                                <td className="px-3 py-2">{deliverable.address_id}</td>
+                                <td className="px-3 py-2">{deliverable.address}</td>
                                 <td className="px-3 py-2">{deliverable.dr_date}</td>
                                 <td className="px-3 py-2">{deliverable.item_qty}</td>
                                 <td className="px-3 py-2">{deliverable.item_unit}</td>
-                                <td className="px-3 py-2">{deliverable.item_name_id}</td>
-                                <td className="px-3 py-2">{deliverable.item_description_id}</td>
+                                <td className="px-3 py-2">{deliverable.item_name}</td>
+                                <td className="px-3 py-2">{deliverable.item_description}</td>
                               </tr>
                               
                             ))}

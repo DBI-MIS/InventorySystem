@@ -6,6 +6,7 @@ use App\Models\Deliverables;
 use App\Http\Requests\StoreDeliverablesRequest;
 use App\Http\Requests\UpdateDeliverablesRequest;
 use App\Http\Resources\DeliverablesResource;
+use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Models\Receiving;
 use Inertia\Inertia;
@@ -43,13 +44,11 @@ class DeliverablesController extends Controller
      */
     public function create()
     {
-        $items = Item::all(); // Assuming you have an Item model
-    $receivings = Receiving::all(); // Assuming you have a Detail model
+        $items = Item::query()->orderBy('name', 'asc')->get();
 
-    return Inertia::render("Deliverables/Create", [
-        'items' => $items,
-        'receivings' => $receivings,
-    ]);
+        return inertia("Deliverables/Create", [
+            "items" => ItemResource::collection($items)
+        ]);
     }
 
     /**
@@ -57,7 +56,13 @@ class DeliverablesController extends Controller
      */
     public function store(StoreDeliverablesRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        Deliverables::create($data);
+
+         
+
+         return to_route('deliverables.index')->with('success', 'Delivery Receipt was created');
     }
 
     /**

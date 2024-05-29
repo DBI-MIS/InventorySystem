@@ -15,15 +15,14 @@ return new class extends Migration
         Schema::create('deliverables', function (Blueprint $table) {
             $table->id();
             $table->string('project');
-            $table->foreignId('receiving_id')->constrained('receivings');
-            $table->string('dr_no')->unique();
-            $table->string('rs_no')->unique();
-            $table->foreignId('address_id')->constrained('receivings');
-            $table->timestamp('dr_date')->nullable();
-            $table->foreignId('item_qty')->constrained('items');
-            $table->foreignId('item_unit')->constrained('items');
-            $table->foreignId('item_name_id')->constrained('items');
-            $table->foreignId('item_description_id')->constrained('items');
+            $table->string('dr_no')->nullable();
+            $table->string('rs_no')->nullable();
+            $table->string('address')->nullable();
+            $table->string('dr_date')->nullable();
+            $table->string('item_qty')->nullable();
+            $table->string('item_unit')->nullable();
+            $table->foreignId('item_id')->constrained('items');
+            $table->string('item_description')->nullable();
             $table->timestamps();
         });
     }

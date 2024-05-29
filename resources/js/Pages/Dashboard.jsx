@@ -23,7 +23,7 @@ export default function Dashboard({ auth, totalName, totalQuantity }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                         <h3 className='text-green-600 font-semibold text-2xl'>
-                                Total Qty
+                                Total Item Qty
                             </h3>
                             <span className='mr-2'>{ totalQuantity }</span>
                             

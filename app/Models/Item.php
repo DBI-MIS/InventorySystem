@@ -50,14 +50,11 @@ class Item extends Model
     public function employee(){
         return $this->belongsTo(Employee::class);
     }
-    // public function receivings(){
-    //     return $this->belongsToMany(Receiving::class);
-    // }
-    // public function receiving(){
-    //     return $this->belongsTo(Receiving::class);
-    // }
     public function receivings(){
         return $this->belongsToMany(Receiving::class, 'item_receiving')->withTimestamps();
+    }
+    public function deliverable_items(){
+        return $this->belongsToMany(Deliverables::class, 'deliverable_item')->withTimestamps();
     }
  /**
      * The attributes that should be mutated to dates.

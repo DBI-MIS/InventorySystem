@@ -122,7 +122,7 @@ export default function Create({auth, receiving,mrr_item_ids}){
         user={auth.user}
         header={
           <div className="flex justify-between receivings-center">
-            <h2 className="font-semibold text-xl text-white dark:text-gray-200 leading-tight">Edit Receiving {receiving.name}</h2>
+            <h2 className="font-semibold text-xl text-blue-600 dark:text-gray-200 leading-tight">Edit Receiving {receiving.name}</h2>
           </div>} >
       <Head title="Receivings" />
       <div className="py-12">

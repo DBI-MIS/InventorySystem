@@ -17,12 +17,12 @@ class DeliverablesFactory extends Factory
     public function definition(): array
     {
         return [
-            'project'=> fake()->sentence('2'),
-            'receiving_id'=> rand(1, 10),
+            'project'=> fake()->sentence('1'),
+            'item_id'=>random_int('10', '20'),
             'dr_no'=> random_int('10', '20'),
-            'rs_no_id'=> rand(1, 10),
-            'address_id'=> fake()->sentence(),
-            'dr_date'=> fake()->dateTimeThisM()->format('Y-m-d H:i:s'),
+            'rs_no'=> rand(1, 10),
+            'address'=> fake()->sentence(),
+            'dr_date'=> now(),
 
 
             
