@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use App\Models\Receiving;
 use App\Http\Requests\StoreReceivingRequest;
@@ -63,8 +62,6 @@ class ReceivingController extends Controller
 
     public function create()
     {
-
-        
        //
        $items = Item::query()->orderBy('name', 'asc')->get();
        $brands = Brand::query()->orderBy('name', 'asc')->get();
@@ -137,7 +134,7 @@ class ReceivingController extends Controller
                 ->whereIn('id', $groupItemIds)
                 ->get();
         }
-        // dd($receiving_items);
+        // dd($receiving);
         return inertia('Receiving/Show', [
             'receiving' => new ReceivingResource($receiving),
             'queryParams' => request()->query() ?: null,
@@ -209,5 +206,25 @@ class ReceivingController extends Controller
         return to_route('receiving.index')
        ->with('success', "Receiving \"$id\" was deleted");
     
+    }
+    public function myReceiving(Receiving $receivingId) {
+        // dd($receivingId);
+        $groupItemIds = is_array($receivingId->group_item_id) ? $receivingId->group_item_id : [];
+        $receiving_items = collect(); // Initialize as an empty collection for validation 
+        
+        if (count($groupItemIds) > 0) {
+            // Fetch receiving items with relationships only if there are item ids
+            $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
+                ->whereIn('id', $groupItemIds)
+                ->get();
+        }
+
+        return inertia("Receiving/PrintReceiving", [
+            'receiving' => new ReceivingResource($receivingId),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
+            'receiving_items' =>  $receiving_items
+            
+        ]);
     }
 }

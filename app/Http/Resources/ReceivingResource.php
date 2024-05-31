@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Receiving;
 use App\Models\ReceivingItem;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -35,6 +36,7 @@ class ReceivingResource extends JsonResource
             'employee_id'=> $this->employee_id,
             'employee' => new EmployeeResource($this->employee),
             'remarks'=>  $this->remarks,
+            'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
             // 'createdBy' => new UserResource($this->createdBy),
             // 'created_by' => $this->user ? $this->user->name : null,
              

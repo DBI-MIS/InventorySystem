@@ -139,7 +139,6 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                  <option value="sets">Sets</option>
                             </SelectInput>
                             <InputError message={errors.uom} className="mt-2"/>
-                            <h1 id="hello"></h1>
                         </div>
                         </div>
                         
@@ -248,7 +247,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                             </div>
 
                             <div className="mt-4 col-span-1">
-                                <InputLabel htmlFor="item_model_no" value="Model"/>
+                                <InputLabel htmlFor="item_model_no" value="Model No."/>
                                 <TextInput 
                                 id="item_model_no"
                                 type="text"

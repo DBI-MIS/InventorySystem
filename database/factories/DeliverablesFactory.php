@@ -23,6 +23,7 @@ class DeliverablesFactory extends Factory
             'rs_no'=> rand(1, 10),
             'address'=> fake()->address(),
             'dr_date'=> now(),
+            'dr_qty' => rand(1, 10),
 
 
             

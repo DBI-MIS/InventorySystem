@@ -10,8 +10,8 @@ export default function Create({auth}){
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
         name: '',
-        description: '',
-        sku_prefix: ''
+        company: '',
+        address: ''
     })
 
     const onSubmit = (e) =>{
@@ -68,7 +68,7 @@ export default function Create({auth}){
                             value={data.address}
                             className="mt-1 block w-full"
                             isFocused={true}
-                            onChange={e => setData("sku_prefix", e.target.value)}
+                            onChange={e => setData("address", e.target.value)}
                             />
                             <InputError message={errors.address} className="mt-2"/>
                         </div>

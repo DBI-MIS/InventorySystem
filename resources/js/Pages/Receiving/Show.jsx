@@ -48,9 +48,9 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
         <AuthenticatedLayout 
         user={auth.user}
         header={
-            <div className="flex receivings-center bg-white justify-between">
+            <div className="flex receivings-centerjustify-between">
                <div className="flex justify-between items-center">
-                  <h2 className="font-extrabold text-2xl text-blue-700 underline leading-snug">D.B International Sales & Services Inc.</h2>
+                  
                </div>
               <div>
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -63,79 +63,13 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
         >
         <Head title={`Receiving "${receiving.id}" `}/>
        
-        {/* <div className="flex float-end mb-5 px-10 gap-2 ">
-            <Link href={route('preview.index',receiving.id)}
-           className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
-              Preview MRR
-           </Link>
-           <Link href={route('generate-pdf.generatePDF')} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
-               Print MRR
-           </Link>
-          </div> */}
-        <div className="py-2 bg-white capitalize">
+        
+        <div className="py-2capitalize">
       
             <div className=" max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3  gap-2">
-              <div className=" overflow-hidden shadow-sm sm:rounded-lg col-span-3 ">
-                  <h3>430 Lt. Artiaga St., San Juan Metro Manila, Philippines 1500</h3>
-                  <h3>Tel. No.: (+63)8723-4461 to 64, Fax No.:(+632)8723-2782, (+632) 8723-4467</h3>
-
-                  <div class="mt-10 grid grid-cols-3 gap-2 leading-9">
-                      <div className="mx-2">
-                        <div >
-                         <label
-                         className="font-light mx-2  text-md "
-                         htmlFor="ReceivingId">
-                         Supplier: 
-                         </label>  
-                          <span>{receiving.client_id}</span> 
-                        </div>
-                      <div >
-                        <label
-                          className="font-light mx-2  text-md"
-                            htmlFor="ReceivingId">SI No :</label>  
-                        <span>{receiving.si_no}</span>
-                      </div>
-                      <div>
-                        <label
-                            className="font-light mx-2  text-md"
-                              htmlFor="ReceivingId">Address :</label>  
-                          <span>{receiving.address}</span>
-                      </div>
-                      </div>
-                      <div>
-                        <div>
-                          <label
-                              className="font-light mx-2  text-md"
-                                htmlFor="ReceivingId">DR No. :</label>  
-                            <span>{receiving.dr_no}</span>
-                        </div>
-                        <div>
-                          <label
-                              className="font-light mx-2  text-md"
-                                htmlFor="ReceivingId">MRR No. :</label>  
-                            <span>{receiving.mrr_no}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div>
-                            <label
-                                className="font-light mx-2 text-md"
-                                  htmlFor="ReceivingId">RR No. :</label>  
-                              <span>RR NO</span>
-                          </div>
-                          <div>
-                            <label
-                                className="font-light mx-2  text-md"
-                                  htmlFor="ReceivingId">Date :</label>  
-                              <span>date</span>
-                          </div>
-                      </div>
-                    
-                  </div>
-              
-                </div>
+            
                 {/* card #1 */}
-                {/* <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg col-span-2 ">
+                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg col-span-2 ">
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                         <div className="flex flex-row justify-between">
                           <div className="flex flex-col pb-3 mt-2">
@@ -158,11 +92,15 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                           <dd className="text-lg font-light">{receiving.mrr_no}</dd>
                         </div>
                       </dl>
-                </div> */}
+                </div>
                 {/* card #2 */}
-                {/* <div className="bg-white  dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg ml-2 col-span-1">
+                <div className="bg-white  dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg ml-2 col-span-1">
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                  
+                          <div className="flex float-end mb-5 px-10 gap-2 ">
+                              <Link href={route('receiving.myReceiving', receiving.id)} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
+                                  Print MRR
+                              </Link>
+                          </div>
                             <div className="flex flex-col pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">S.I NUMBER : </dt>
                             <dd className="text-lg font-light">{receiving.si_no}</dd>
@@ -178,9 +116,9 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                             </div>
                     
                     </dl>
-                </div> */}
+                </div>
                 {/* card #3 */}
-                {/* <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
+                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
                           
                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-2 h-[200px]">
                         <div className="p-6 ">
@@ -194,7 +132,7 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                                     htmlFor="ReceivingId">Remarks :</label>  <span>{receiving.remarks}</span>
                             </div>
                         </div>
-                </div> */}
+                </div>
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
                          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                   <div className="p-6 text-gray-900 dark:text-gray-100">

@@ -7,28 +7,29 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import Select from "react-select";
 
-export default function Create({ auth, items }) {
+export default function Create({ auth, deliverablesss }) {
 
     
-
+    
   const {data, setData, post,errors} = useForm({
     project: '',
     address: '',
     dr_no: '',
     rs_no: '',
     dr_date: '',
+    dr_qty: '',
     list_item_id: '',
     
 });
 
 console.log(data)
 
-const  options = items.data.map(item => ({ //values from the db
+const  options = deliverablesss.data.map(item => ({ //values from the db
     value: item.id,
     label: item.name
   }));
 
-  const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
+  const allItems = deliverablesss.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleSelectChange = (selectedOptions) => {
@@ -94,7 +95,7 @@ const  options = items.data.map(item => ({ //values from the db
                                         <InputError message={errors.address} className="mt-2"/>
                                     </div>
 
-                                    <div className="grid grid-cols-6 gap-2">
+                                    <div className="grid grid-cols-8 gap-2">
                                        
                                         <div className=" mt-4  col-span-2 ">
                                             <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
@@ -123,6 +124,19 @@ const  options = items.data.map(item => ({ //values from the db
                                                 onChange={e => setData('rs_no', e.target.value)}
                                             />
                                             <InputError message={errors.rs_no} className="mt-2"/>
+                                        </div>
+                                        <div className="mt-4  col-span-2">
+                                            <InputLabel htmlFor="receiving_dr_qty" value="Qty."/>
+                                            <TextInput 
+                                                id="receiving_dr_qty"
+                                                type="number"
+                                                name="dr_qty"
+                                                value={data.dr_qty}
+                                                className="mt-1 block w-full"
+                                                isFocused={true}
+                                                onChange={e => setData('dr_qty', e.target.value)}
+                                            />
+                                            <InputError message={errors.dr_qty} className="mt-2"/>
                                         </div>
                                         <div className="mt-4  col-span-2">
                                             <InputLabel htmlFor="receiving_dr_date" value="Date."/>

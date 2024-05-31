@@ -25,6 +25,7 @@ class DeliverablesResource extends JsonResource
             'address' => $this->address,
             // 'address' => new ReceivingResource($this->address),
             'dr_date' => (new Carbon($this->dr_date))->format('Y-m-d'),
+            'dr_qty' => $this->dr_qty,
             'list_item_id' => $this->item_id,
             
           

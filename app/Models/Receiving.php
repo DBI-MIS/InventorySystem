@@ -10,6 +10,7 @@ class Receiving extends Model
     protected $casts = [ 
         'id' => 'string' ,
          'group_item_id' => 'array',
+         'created_at' => 'date: m-d-Y'
 ];
     use HasFactory;
 
@@ -41,6 +42,9 @@ class Receiving extends Model
     } 
     public function items(){
         return $this->belongsToMany(Item::class, 'item_receiving')->withTimestamps();
+    }
+    public function client(){
+        return $this->hasOne(Client::class);
     }
     // public function createdBy(){
     //     //relation of uodated and createdby

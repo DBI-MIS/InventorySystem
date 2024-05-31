@@ -18,11 +18,12 @@ class Deliverables extends Model
 
     protected $fillable = [
         'project',
-        'group_item_id',
-        'dr_no',
+        'list_item_id',
         'rs_no',
+        'dr_no',
         'address',
         'dr_date',
+        'dr_qty',
         'project_id',
         'address_id',
         'rs_no_id',

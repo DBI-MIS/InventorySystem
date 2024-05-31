@@ -144,7 +144,7 @@ class ItemFactory extends Factory
             'name'=> $products,
             'brand_id'=>rand(1,7),
             'category_id'=>rand(1,4),
-            'description'=> fake()->realText(),
+            'description'=> fake()->sentence('4'),
             'specs'=> fake()->realText(),
             'part_no'=> fake()->regexify('[0-9]{20}'),
             'serial_no'=> fake()->regexify('[0-9]{12}'),

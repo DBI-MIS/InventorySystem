@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('model_no')->nullable();
             $table->string('uom');
             $table->integer('quantity');
+            $table->integer('qty_out')->default(0);
             $table->string('location_id')->nullable();
             $table->string('employee_id')->nullable();
             $table->string('status')->nullable();

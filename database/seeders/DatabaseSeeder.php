@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\Deliverables;
 use App\Models\StockSearch;
 use App\Models\Employee;
@@ -72,10 +73,13 @@ class DatabaseSeeder extends Seeder
          Item::factory()
          ->count(30)
          ->create();
-
          
          Receiving::factory()
          ->count(50)
+         ->create();
+
+         Client::factory()
+         ->count(20)
          ->create();
 
         //  Deliverables::factory()

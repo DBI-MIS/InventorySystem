@@ -19,50 +19,50 @@ class DeliverablesController extends Controller
      */
     public function index()
     {
-        // $deliverable = Deliverables::query()->where('list_item_id')->get()->dd();
+        $query = Deliverables::query() ;
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
 
-        // $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
-        // ->whereIn('id', $deliverable)
-        // ->get();
-        
-        $deliverables = Deliverables::all();
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
 
-        // Loop through each user to retrieve pivot data
-        foreach ($deliverables as $deliverable) {
-            // Retrieve pivot data using raw SQL query
-            $pivotData = DB::table('deliverable_item')
-                            ->where('deliverables_id', $deliverable->id)
-                            ->join('items', 'deliverable_item.item_id', '=', 'items.id')
-                            ->select('deliverable_item.*', 'items.name as deliverable_item')
-                            ->get();
+        $deliverablePivot = Item::query()->with('deliverable_items')->get();
+
     
-            // Attach the pivot data to the user object
-            $deliverable->pivotData = $pivotData;
-
-        // $query = Deliverables::query();
-        // $sortField = request("sort_field", 'created_at');
-        // $sortDirection = request("sort_direction", "asc");
-
-        // if (request("name")) {
-        //     $query->where("name", "like", "%". request("name") ."%");
-        // }
-
+    
+        // dd( $deliverabless);
+        
+        // dd( $item_ids );
+        
+        // dd($deliverableListItems);
+        // $existingItems =  $deliverableListItem->items;
+        // foreach ($deliverabless as $deliverable) {
+                   
+        //             foreach ($deliverable->list_item_id as $item) {
+                           
+               
+        //         // echo "Created At: " . $item->deliverable_items->created_at . "\n";
+        //         // echo "Updated At: " . $item->pivot->updated_at . "\n";
+        //     }}
+            // dd($deliverable);
         
 
-        // $deliverabless= $query->orderBy($sortField, $sortDirection)
-        // ->paginate(10)
-        // ->onEachSide(1);
+        
+ 
 
-        // return inertia("Deliverables/Index",[
-            
-        //     "deliverabless" => DeliverablesResource::collection($deliverabless),
-        //     'queryParams' => request()->query() ?: null,
+        $deliverabless =  $query->orderBy($sortField, $sortDirection)
+        ->paginate(10)
+        ->onEachSide(1);
 
-        // ] );
-    }
+    return inertia("Deliverables/Index",[
+        "deliverabless" => DeliverablesResource::collection($deliverabless),
+        'queryParams' => request()->query() ?: null,
+
+    ] );
 
     // Pass the users data to the view
-    return inertia('Deliverables/index', compact('deliverables'));
+    // return inertia('Deliverables/index', compact('deliverables'));
 
     }
 
@@ -71,10 +71,10 @@ class DeliverablesController extends Controller
      */
     public function create()
     {
-        $items = Item::query()->orderBy('name', 'asc')->get();
+        $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
 
         return inertia("Deliverables/Create", [
-            "items" => ItemResource::collection($items)
+            "deliverablesss" => ItemResource::collection($deliverablesss)
         ]);
     }
 
@@ -97,9 +97,25 @@ class DeliverablesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Deliverables $deliverables)
+    public function show(Deliverables $deliverable)
     {
-        //
+
+        // dd($deliverable);
+        $listItemIds = is_array($deliverable->list_item_id) ? $deliverable->list_item_id : [];
+        $deliverables_items = collect(); // Initialize as an empty collection for validation 
+        
+        if (count($listItemIds) > 0) {
+            // Fetch receiving items with relationships only if there are item ids
+            $deliverables_items = Item::query()
+                ->whereIn('id', $listItemIds)
+                ->get();
+        }
+        // dd($receiving_items);
+        return inertia('Deliverables/Show', [
+            'deliverable' => new DeliverablesResource($deliverable),
+            'queryParams' => request()->query() ?: null,
+            'deliverables_items' =>  $deliverables_items
+        ]);
     }
 
     /**
@@ -107,7 +123,26 @@ class DeliverablesController extends Controller
      */
     public function edit(Deliverables $deliverables)
     {
-        //
+        $itemss = Item::query()->orderBy('name', 'asc')->get();
+
+        $parsedID = json_decode($deliverables, true);
+
+        $id = $parsedID['id'];
+        $deliverablessss = Deliverables::find($id);
+        $existingItemss = $deliverablessss->items;
+
+        $existingItemsIds= $deliverablessss->items()->pluck('items.id');
+
+        $existingItemsIds = array_map('intval', $existingItemsIds->toArray());
+
+        return inertia('Deliverables/Edit',[
+            'itemss' => ItemResource::collection($itemss),
+            'deliverablessss' => new DeliverablesResource($deliverablessss),
+            'existingItemss' => $existingItemss,
+            'existingItemsIds' => $existingItemsIds
+
+        ]);
+
     }
 
     /**

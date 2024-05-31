@@ -14,6 +14,7 @@ import Nreceiving from '@/Components/Nreceiving';
 import Nbrand from '@/Components/Nbrand';
 import SearchItem from '@/Components/SearchItem';
 import DbitransparentLogo from '@/Components/DbitranparentLogo';
+import Nclient from '@/Components/Nclient';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -23,7 +24,6 @@ export default function Authenticated({ user, header, children }) {
             <nav className="bg-main border-b border-gray-100">
                 <div className="max-w-7xl  px-1 ">
                     <div className="">
-                   
                         <div className='flex flex-col'>
                             {/*Logo*/}
                             <div className="shrink-0 flex items-center p-1 mt-6 mb-12">
@@ -55,6 +55,10 @@ export default function Authenticated({ user, header, children }) {
                                 <br />
                                 <NavLink href={route('employee.index')} active={route().current('employee.index')}>
                                     <Nemployee className="block h-9 w-auto fill-current " />
+                                </NavLink>
+                                <br />
+                                <NavLink href={route('client.index')} active={route().current('client.index')}>
+                                    <Nclient className="block h-9 w-auto fill-current " /> 
                                 </NavLink>
                                 <br />
                                 <NavLink href={route('archive.index')} active={route().current('archive.index')}>

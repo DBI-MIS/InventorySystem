@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliverablesController;
 use App\Http\Controllers\StockSearchController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceivingController;
 use App\Http\Controllers\ReceivingItemController;
+use App\Models\Receiving;
 use App\Models\ReceivingItem;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::resource('employee', EmployeeController::class);
         Route::resource('archive', ArchiveController::class)->withTrashed();
         Route::resource('receiving', ReceivingController::class);
+        Route::resource('client', ClientController::class);
         Route::resource('mrrItem', MrrItemController::class);
         Route::resource('itemMrr', ItemController::class);
         Route::resource('stocksearch', StockSearchController::class);
@@ -43,6 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::post('/receivings/{receivingId}/items/{itemId}',[ ReceivingController::class,'assignItem' ]);
         Route::resource('preview', PreviewController::class);
         Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;
+        Route::get('/receiving/my-receiving/{receivingId}', [ReceivingController::class, 'myReceiving'])->name('receiving.myReceiving');
+
         // lagay name
     
     });

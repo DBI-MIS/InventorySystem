@@ -6,7 +6,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import Select from "react-select"
-export default function Create({auth,existingItems,existingItemIds,receiving,items}){
+export default function Edit({auth,existingItems,existingItemIds,receiving,items}){
 
  // data will hold/contain the ff:
  const {data, setData, post ,errors,processing} = useForm({
