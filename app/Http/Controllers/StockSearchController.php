@@ -116,6 +116,7 @@ $totalitems->getCollection()->transform(function ($item) {
 // Transform pagination metadata to match Inertia's structure
 $paginationMeta = $totalitems->toArray();
 $paginationLinks = $totalitems->toArray()['links'];
+// dd($paginationLinks);
 unset($paginationMeta['links']);
 
 return inertia("StockSearch/Index", [

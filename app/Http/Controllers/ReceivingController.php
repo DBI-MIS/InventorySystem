@@ -129,6 +129,7 @@ class ReceivingController extends Controller
      */
     public function show(Receiving $receiving)
     {
+        //  $perPage = 15;
         $groupItemIds = is_array($receiving->group_item_id) ? $receiving->group_item_id : [];
         $receiving_items = collect(); // Initialize as an empty collection for validation 
         
@@ -137,13 +138,24 @@ class ReceivingController extends Controller
             $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
                 ->whereIn('id', $groupItemIds)
                 ->get();
+                // ->paginate($perPage);
+
         }
-        // dd($receiving);
+        //  $paginationData = [
+        //      'currentPage' => $receiving_items->currentPage(),
+        //      'lastPage' => $receiving_items->lastPage(),
+        //      'total' => $receiving_items->total(),
+        //      'perPage' => $perPage,
+        //      'links' => $receiving_items->links()->toArray(),
+        //  ];
+        
+
         return inertia('Receiving/Show', [
             'receiving' => new ReceivingResource($receiving),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
-            'receiving_items' =>  $receiving_items
+            // 'paginationData' => $paginationData,
+            'receiving_items' => $receiving_items, 
         ]);
     }
 

@@ -1,0 +1,21 @@
+
+import React from "react";
+import { Link } from "@inertiajs/react";
+
+const PaginationReceiving =  ({ links }) => {
+    return (
+        <nav className="text-center mt-4">
+            {links.map((link, index) => (
+                <Link
+                    preserveScroll
+                    href={link.url || ""}
+                    key={index}
+                    className={"inline-block py-2 px-3 rounded-lg text-gray-600 text-sm " + (link.active ? "bg-gray-950 " : "") + (link.url ? "text-gray-500 cursor-not-allowed" : "hover:bg-gray-950")}
+                    dangerouslySetInnerHTML={{ __html: link.label }}
+                />
+            ))}
+        </nav>
+    );
+}
+
+// export default Pagination;

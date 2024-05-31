@@ -1,11 +1,13 @@
 import Pagination from "@/Components/Pagination";
+// import PaginationReceiving from "@/Components/PaginationReceiving";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link, router}  from "@inertiajs/react";
-export default function Show({auth, receiving,receiving_items,queryParams}){
+export default function Show({auth, receiving,receiving_items,queryParams,paginationData,paginationLinks}){
     console.log("receiving" + receiving)
     console.log( "receiving_items" + receiving_items)
+    console.log("links" + paginationLinks)
     queryParams = queryParams || {};
   const searchFieldChanged = (name, value, ) => {
     if(value){
@@ -49,95 +51,85 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
         user={auth.user}
         header={
             <div className="flex receivings-centerjustify-between">
-               <div className="flex justify-between items-center">
-                  
-               </div>
-              <div>
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+              <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight capitalize">
                     {`Material Receiving Report " ${receiving.id} " `}
                </h2>
-              </div>
             
             </div>
             }
         >
         <Head title={`Receiving "${receiving.id}" `}/>
-       
-        
-        <div className="py-2capitalize">
-      
-            <div className=" max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3  gap-2">
-            
+
+        <div className="py-6 capitalize">
+            <div className="w-5/6 mx-auto sm:px-6 lg:px-8 grid grid-cols-3 font-bold gap-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+           
                 {/* card #1 */}
-                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg col-span-2 ">
-                    <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                        <div className="flex flex-row justify-between">
-                          <div className="flex flex-col pb-3 mt-2">
-                            <label
-                            className="font-bold text-lg"
-                            htmlFor="ReceivingId"></label>
-                          </div>
-                          <div className="w-[90px]">
-                              <label className="font-light text-md"
-                              >Receiving ID: </label>
-                              <span className="font-light">{receiving.id}</span>
-                          </div>
-                        </div>
-                        <div className="flex flex-col pb-3 mt-2">
-                          <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">CLIENT NAME: </dt>
-                          <dd className="text-lg font-light">{receiving.client_id}</dd>
-                        </div>
-                        <div className="flex flex-col pb-3 mt-2">
-                          <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">MRR ID : </dt>
-                          <dd className="text-lg font-light">{receiving.mrr_no}</dd>
-                        </div>
-                      </dl>
-                </div>
-                {/* card #2 */}
-                <div className="bg-white  dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg ml-2 col-span-1">
-                    <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                          <div className="flex float-end mb-5 px-10 gap-2 ">
-                              <Link href={route('receiving.myReceiving', receiving.id)} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
-                                  Print MRR
-                              </Link>
-                          </div>
-                            <div className="flex flex-col pb-3 mt-2">
-                            <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">S.I NUMBER : </dt>
-                            <dd className="text-lg font-light">{receiving.si_no}</dd>
+                <div className="col-span-2 ">
+              
+                        <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                            <div className="flex flex-row justify-between">
+                              <div className="flex flex-col pb-3 mt-2">
+                              <label
+                              className="font-bold text-lg"
+                              htmlFor="ReceivingId">MRR Number</label>
+                              <span className="text-2xl font-semibold ">{receiving.mrr_no}</span>
+                              </div>
+                              <div className="flex flex-col gap-3 receivings-end">
+                                  <div>
+                                  <label className="font-light text-md">Receiving ID: </label>
+                                  <span className="font-light">{receiving.id}</span>
+                                  </div>       
+                              </div>
+                            </div>
+                            <div className="flex flex-col pb-3 mt-12">
+                              <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">CLIENT NAME: </dt>
+                              <dd className="text-lg font-light">{receiving.client_id}</dd>
                             </div>
 
-                            <div className="flex flex-col pb-3 mt-2">
-                            <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">D.R NUMBER : </dt>
-                            <dd className="text-lg font-light">{receiving.dr_no}</dd>
+                            <div className="flex flex-col pb-3 mt-6">
+                            <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Address: </dt>
+                            <dd className="text-lg font-light">{receiving.address}</dd>
                             </div>
-                            <div className="flex flex-row pb-3 mt-2">
-                            <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">MRR NO: </dt>
-                            <dd className="text-lg font-light uppercase ml-2">{receiving.mrr_no}</dd>
-                            </div>
-                    
+                        </dl>
+                </div>
+                {/* card #2 */}
+                <div className="col-span-1">
+                    <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                          
+                        <div className="float-end mt-5">
+                            <Link href={route('receiving.edit', receiving.id)} className="bg-blue-500 py-[0.8rem] px-8 text-white rounded shadow transition-all hover:bg-blue-700">
+                                 Edit Entry
+                            </Link>
+                        </div>
+                        <div className="flex flex-col pb-3 mt-[6.4rem]">
+                          <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">SI Number: </dt>
+                          <dd className="text-lg font-light"><span className="">{receiving.si_no}</span></dd>
+                        </div>
+                            
+                        <div className="flex flex-col pb-3 mt-6">
+                          <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">DR Number: </dt>
+                          <dd className="text-lg font-light"><span className="">{receiving.dr_no}</span></dd>
+                        </div>
                     </dl>
                 </div>
                 {/* card #3 */}
-                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
-                          
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-2 h-[200px]">
-                        <div className="p-6 ">
-                                    <label
-                                    className="font-light text-md"
-                                    htmlFor="ReceivingId">Address :</label>  <span>{receiving.address}</span>
-                            </div>
-                            <div className="px-6 py-2 ">
-                                    <label
-                                    className="font-light text-md"
-                                    htmlFor="ReceivingId">Remarks :</label>  <span>{receiving.remarks}</span>
-                            </div>
-                        </div>
+                <div className="col-span-3">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-2 h-[140px]">
+                         <div className="px-6 ">
+                                <label
+                                className="font-light text-gray-700 text-md"
+                                htmlFor="ReceivingId">Remarks :</label>  <span>{receiving.remarks}</span>
+                         </div>
+                     </div>               
                 </div>
-                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
-                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                  <div className="p-6 text-gray-900 dark:text-gray-100">
+            </div>
+            <div className="w-5/6 mx-auto sm:px-6 lg:px-8 mt-2 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
+              
+              <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                  <div className="py-6 px-2 text-gray-900 dark:text-gray-100">
                       <div className="overflow-auto">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+
                             <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                               <tr className="text-nowrap ">
                                 <th class=" border text-left px-8 py-4">ID #</th>
@@ -148,6 +140,7 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                                 <th class=" border text-left px-8 py-4">Description</th>
                               </tr>
                             </thead>
+
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                               <tr className="text-nowrap ">
                                 <th className="px-3 py-3"></th>
@@ -158,6 +151,7 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                                 <th className="px-3 py-3 text-right"></th>
                               </tr>
                             </thead>
+
                             <tbody>
                               {receiving_items && receiving_items.length !== 0 && (
                                 <>
@@ -168,17 +162,17 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                                             {receiving_item.id}
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
-                                        {receiving_item.category ? receiving_item.category.sku_prefix : ''}-{receiving_item.sku}
+                                            {receiving_item.category ? receiving_item.category.sku_prefix : ''}-{receiving_item.sku}
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
-                                          {receiving_item.quantity}
+                                            {receiving_item.quantity}
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
-                                          {receiving_item.uom}
+                                            {receiving_item.uom}
                                         </td>
                                         <th className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
                                           <Link href={route('item.show', receiving_item.id)}>
-                                          {receiving_item.name}
+                                             {receiving_item.name}
                                           </Link>
                                         </th>
                                         <td className="px-3 py-2 text-wrap">
@@ -190,11 +184,9 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                                )}
                             </tbody>
                         </table>
-                      
                       </div> 
                  </div>
-              </div>
-                    
+                 {/* <PaginationReceiving links={paginationData.links} /> */}
               </div>
             </div>
         </div>

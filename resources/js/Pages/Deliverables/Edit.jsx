@@ -1,3 +1,4 @@
+import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useForm } from "@inertiajs/inertia-react"
 import { useEffect } from "react";
 import { useState } from "react";
@@ -101,6 +102,10 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
 
 
     return (
-        <div></div>
+        <Authenticated
+        
+        >
+
+        </Authenticated>
     )
 }
