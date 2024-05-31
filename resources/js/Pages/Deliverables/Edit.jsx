@@ -20,6 +20,15 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
     const [allSelectedItemIds, setAllSelectedItemIds] = useState([]);
     const [deliverables, setDeliverables] = useState({});
 
+    const options = items.data.map(item => ({
+        value: item.id,
+        label: item.name
+    }));
+
+    const selectedValueItems = databaseItemIds.map(databaseItemIds=> ({
+        
+    }))
+
 
 
     return (

@@ -1,12 +1,13 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import Select from "react-select"
-export default function Create({auth,success, mrr_no,items}){
+export default function Create({auth,success, mrr_no,items,clients}){
 
     console.log(items);
    const {data, setData, post,errors} = useForm({
@@ -71,17 +72,19 @@ export default function Create({auth,success, mrr_no,items}){
                            <div className="flex">
                                 <div className="w-full">
                                     <div className="mt-4  col-span-3">
-                                        <InputLabel htmlFor="receiving_client_id" value="Client Id"/>
-                                        <TextInput 
+                                    <InputLabel htmlFor="receiving_client_id" value="Client Name"/>
+                                        <SelectInput
                                         id="receiving_client_id"
-                                        type="text"
                                         name="client_id"
-                                        value={data.client_id}
                                         className="mt-1 block w-full"
-                                        isFocused={true}
-                                        onChange={e => setData('client_id', e.target.value)}
-                                        />
-                                        <InputError message={errors.client_id} className="mt-2"/>
+                                        onChange={(e) => setData("client_id", e.target.value)}>
+                                            <option value="">Select client </option>
+                                            {clients.data.map((client)=>(
+                                                <option value={client.id} key={client.id}>{client.name}</option>
+
+                                            ))}
+                                        </SelectInput>
+                                        <InputError message={errors.brand_id} className="mt-2"/>
                                     </div>
 
                                     <div className="grid grid-cols-6 gap-2">
@@ -93,7 +96,6 @@ export default function Create({auth,success, mrr_no,items}){
                                                 id="receiving_mrr_no"
                                                 type="text"
                                                 name="mrr_no"
-                                                readOnly
                                                 placeholder={mrr_no}
                                                 value={data.mrr_no=mrr_no} 
                                                 className=" block w-full"

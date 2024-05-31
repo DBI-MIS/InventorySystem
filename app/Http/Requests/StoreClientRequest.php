@@ -26,7 +26,7 @@ class StoreClientRequest extends FormRequest
             "address" => ['required', 'max:255'],
             "contact_person"=> ['required', 'max:255'],
             "contact_no"=> ['required', 'max:11'],
-            "tin_no"=> ['required', 'max:20'],
+            "tin_no"=> ['required', 'max:12'],
             "status"=> ['required', 'max:20'],
             "remarks"=> ['nullable','string'],
         ];

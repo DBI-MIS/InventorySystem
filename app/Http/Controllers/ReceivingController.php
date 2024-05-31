@@ -5,12 +5,14 @@ use App\Http\Requests\StoreReceivingRequest;
 use App\Http\Requests\UpdateReceivingRequest;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ClientResource;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\LocationResource;
 use App\Http\Resources\ReceivingResource;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
@@ -68,6 +70,7 @@ class ReceivingController extends Controller
        $categories = Category::query()->orderBy('name', 'asc')->get();
        $employees = Employee::query()->orderBy('name', 'asc')->get();
        $locations = Location::query()->orderBy('name', 'asc')->get();
+       $clients = Client::query()->orderBy('name', 'asc')->get();
   
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
@@ -77,11 +80,12 @@ class ReceivingController extends Controller
         //dd($name)
 
       return Inertia("Receiving/Create",[
-       'items' => ItemResource::collection($items),
+         'items' => ItemResource::collection($items),
           'brands' => BrandResource::collection($brands),
           'categories' =>  CategoryResource::collection($categories),
           'employees' =>  EmployeeResource::collection($employees),
           'locations' =>  LocationResource::collection($locations),
+          'clients' => ClientResource::collection($clients),
           'mrr_no' =>  $mrr_no
       ]);
     }
@@ -89,9 +93,9 @@ class ReceivingController extends Controller
 
         $id = Receiving::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
         $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
-        $sku = str_pad( $stringID, 6, '2024', STR_PAD_LEFT); 
+        $mrr_no = str_pad( $stringID, 6, '2024', STR_PAD_LEFT); 
         // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left
-        return $sku;
+        return $mrr_no;
         
     }
     /**
@@ -149,6 +153,7 @@ class ReceivingController extends Controller
     public function edit(Receiving $receiving)
     {
         $items = Item::query()->orderBy('name', 'asc')->get();
+        $clients = Client::query()->orderBy('name', 'asc')->get();
         // Fetch brand name and category name for existing items
         foreach ($items as $item) {
             $item->brand_name = $item->brand->name;
@@ -171,6 +176,7 @@ class ReceivingController extends Controller
        
        return inertia('Receiving/Edit',[
         'items' => ItemResource::collection($items),
+        'clients' => ClientResource::collection($clients),
             'receiving' => new ReceivingResource($receiving),
             'existingItems' =>  $existingItems,
             'existingItemIds' => $existingItemIds

@@ -1,18 +1,19 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import Select from "react-select"
-export default function Edit({auth,existingItems,existingItemIds,receiving,items}){
+export default function Edit({auth,existingItems,existingItemIds,receiving,items,clients}){
 
  // data will hold/contain the ff:
  const {data, setData, post ,errors,processing} = useForm({
     client_id: receiving.client_id || "",
     group_item_id: existingItemIds || "",
-    reference_no: receiving.reference_no || "",
+    mrr_no: receiving.mrr_no || "",
     receiving_item_id: receiving.receiving_item_id || "",
     si_no: receiving.si_no || "",
     dr_no: receiving.dr_no || "",
@@ -127,17 +128,20 @@ export default function Edit({auth,existingItems,existingItemIds,receiving,items
                   <div className="flex">
                     <div className="w-full">
                       <div className="mt-4  col-span-3">
-                          <InputLabel htmlFor="receiving_client_id" value="Client Id"/>
-                          <TextInput 
-                              id="receiving_client_id"
-                              type="text"
-                               name="client_id"
-                              value={data.client_id}
-                               className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('client_id', e.target.value)}
-                          />
-                          <InputError message={errors.client_id} className="mt-2"/>
+                      <InputLabel htmlFor="receiving_client_id" value="Client Name"/>
+                                        <SelectInput
+                                        id="receiving_client_id"
+                                        name="client_id"
+                                        defaultValue={data.client_id}
+                                        className="mt-1 block w-full"
+                                        onChange={(e) => setData("client_id", e.target.value)}>
+                                            <option value="">Select client </option>
+                                            {clients.data.map((client)=>(
+                                                <option value={client.id} key={client.id}>{client.name}</option>
+
+                                            ))}
+                                        </SelectInput>
+                                        <InputError message={errors.brand_id} className="mt-2"/>
                       </div>
                       <div className="grid grid-cols-6 gap-2">
                             <div className=" mt-4  col-span-2 ">

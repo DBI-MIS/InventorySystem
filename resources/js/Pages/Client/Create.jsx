@@ -5,7 +5,7 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-export default function Create({auth,clients,employees,success}){
+export default function Create({auth,employees,success}){
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
         name: '',
@@ -16,7 +16,7 @@ export default function Create({auth,clients,employees,success}){
         status: '',
         remarks: '',
     })
-
+    
     const onSubmit = (e) =>{
         // post function declared above
         e.preventDefault();
@@ -109,12 +109,10 @@ export default function Create({auth,clients,employees,success}){
                                 <InputLabel htmlFor="client_contact_no" value="Contact No."/>
                                 <TextInput
                                 type="number"
-                                maxLength={11}
                                 id="client_contact_no"
                                 name="contact_no"
                                 value={data.contact_no}
                                 className="mt-1 block w-full"
-                                isFocused={true}
                                 onChange={e => setData('contact_no', e.target.value)}
                                 />
                                 <InputError message={errors.contact_no} className="mt-2"/>
