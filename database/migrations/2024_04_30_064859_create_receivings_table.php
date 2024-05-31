@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('mrr_no')->unique();
             $table->string('group_item_id')->nullable();
-            $table->string('client_id');
+            $table->string('client_id')->nullable();
             $table->string('si_no')->nullable();
             $table->string('address')->nullable();
             $table->string('dr_no')->nullable();

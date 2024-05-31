@@ -178,8 +178,6 @@ const deleteItem = (item) => {
                               sortChanged={sortChanged}>Sku </TableHeading>
                                 <TableHeading  className=""   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Name</TableHeading>
-                                 <TableHeading  className=""   name="receiving_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>MRR No.</TableHeading>
                                 <TableHeading  className=""   name="brand_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Brand</TableHeading>
                                 <TableHeading className=""  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
@@ -204,8 +202,6 @@ const deleteItem = (item) => {
                                         {item.name}
                                         </Link>
                                       </th>
-                                      {/* <td className="w-[300px] py-2">{item.mrr_no}</td> */}
-                                      <td className="w-[300px] py-2">{item.mrr_no}</td>
                                       <td className="w-[300px] py-2">{item.brand.name}</td>
                                       <td className="w-[300px] py-2">{item.category ? item.category.name : 'N/A'}</td>
                                       <td className="w-[100px] py-2 text-nowrap">{item.quantity} {item.uom} </td>

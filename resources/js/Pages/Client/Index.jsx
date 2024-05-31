@@ -72,7 +72,7 @@ const deleteClient = (client) => {
   }
     >
       {/* head displayed together with the appname */}
-       <Head title="Categories" />
+       <Head title="Clients" />
       <div className="py-5">
       <div className="max-w-5/6 mx-auto sm:px-6 lg:px-8 relative">
             <div className="max-w-5/6">

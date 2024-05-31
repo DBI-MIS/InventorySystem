@@ -5,6 +5,7 @@ import { Alert} from "@material-tailwind/react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
 import React from "react";
+import TextInput from "@/Components/TextInput";
 export default function Index({auth,receivings,  queryParams = null, success}) {
   const [open, setOpen] = React.useState(true);
 queryParams = queryParams || {};
@@ -56,63 +57,66 @@ const deleteReceiving = (receiving) => {
     header={
       <div className="flex justify-between receivings-center">
         <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight">Material Receiving Report</h2>
-              <Link href={route('receiving.create')} className="flex flex-nowrap gap-2 font-semibold bg-green-500 py-2 px-4 text-white rounded shadow transition-all hover:bg-green-700">
-                 Add New
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                  </svg>
-            </Link>
-            {/* <Link href={route('receiving.preview')} className="flex flex-nowrap gap-2 font-semibold bg-green-500 py-2 px-4 text-white rounded shadow transition-all hover:bg-green-700">
-                Print
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                  </svg>
-            </Link> */}
-             
-             
    
       </div>
   }
     >
-      {/* head displayed together with the appname */}
        <Head title="Receivings" />
-      <div className="py-12">
+       <div className="py-5">
           <div className="max-w-5/6 mx-auto sm:px-6 lg:px-8 relative">
-          {success && (
-                 <Alert
-                 className=" absolute w-11/12 z-50 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
-                 open={open}
-                 onClose={() => setOpen(false)}
-                 animate={{
-                   mount: { y: 0 },
-                   unmount: { y: 100 },
-                 }}
-               > {success}</Alert>
-            )}
+            <div className="max-w-5/6">
+              {success && (
+                  <Alert
+                  className=" absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  animate={{
+                    mount: { y: 0 },
+                    unmount: { y: 100 },
+                  }}
+                > {success}</Alert>
+              )}
+            </div>
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                   <div className="p-6 text-gray-900 dark:text-gray-100">
                       <div className="overflow-auto">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <div className="w-full flex flex-row justify-between items-center mb-2">
+                            <div>
+                              <Link href={route('receiving.create')} className="flex flex-nowrap gap-2 font-semibold bg-blue-500 py-2 px-4 text-white rounded shadow transition-all hover:bg-blue-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg> New Item
+                              </Link>
+                            </div>
+                            <div className="flex flex-row items-center relative">
+                              <div className="absolute pointer-events-none right-2">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+                              </div>
+                              <TextInput  className="w-[500px]" 
+                                      defaultValue={queryParams.name}
+                                      placeholder="Search Receiving Here" 
+                                      onBlur={(e) => searchFieldChanged('name', e.target.value)}
+                                      onKeyPress={(e) => onKeyPress('name', e )}/>
+                            </div>
+                          </div>
+                    
+                          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
                             <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                               <tr className="text-nowrap ">
                               <TableHeading  className="pr-10"  name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>ID</TableHeading>
                               <TableHeading  className="pr-10"  name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>MMR No. </TableHeading>
-                               {/* <TableHeading  className="pr-10"  name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Item IDs </TableHeading> */}
                                     <TableHeading  className="pr-10"  name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Client ID </TableHeading>
+                              sortChanged={sortChanged}>Client Name</TableHeading>
                                 <TableHeading  className="pr-10"   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>S.I. No.</TableHeading>
                                 <TableHeading  className="pr-2"   name="brand_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>D.R No.</TableHeading>
                                <TableHeading className="pr-10"  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Address</TableHeading>
-                              <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Remarks</TableHeading>
-                                {/* <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Created By</TableHeading> */}
+                              {/* <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Remarks</TableHeading> */}
                               <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Action</TableHeading>
                               </tr>
@@ -121,13 +125,7 @@ const deleteReceiving = (receiving) => {
                               <tr className="text-nowrap ">
                                 <th className="px-3 py-3"></th>
                                 <th className="px-3 py-3"></th>
-                                {/* <th className="px-3 py-3 w-full" >
-                                  <TextInput  className="max-w-full" 
-                                  defaultValue={queryParams.name}
-                                  placeholder="Receiving Name " 
-                                  onBlur={(e) => searchFieldChanged('name', e.target.value)}
-                                  onKeyPress={(e) => onKeyPress('name', e )}/>
-                                </th> */}
+                              
                                 <th className="px-3 py-3 text-right"></th>
                               </tr>
                             </thead>
@@ -145,14 +143,11 @@ const deleteReceiving = (receiving) => {
                                       {receiving.mrr_no}
                                         </Link>
                                       </td>
-                                      {/* <td className="px-3 py-2">
-                                        {receiving.group_item_id}
-                                      </td> */}
-                                      <td className="px-3 py-2">{receiving.client_id}</td>
-                                      <td className="px-3 py-2">{receiving.si_no}</td>
-                                      <td className="px-3 py-2">{receiving.dr_no}</td>
+                                      <td className="px-3 py-2 text-nowrap">{receiving.client_id}</td>
+                                      <td className="px-3 py-2 text-nowrap">{receiving.si_no}</td>
+                                      <td className="px-3 py-2 text-nowrap">{receiving.dr_no}</td>
                                       <td className="px-3 py-2">{receiving.address}</td>
-                                      <td className="px-3 py-2">{receiving.remarks}</td>
+                                      {/* <td className="px-3 py-2">{receiving.remarks}</td> */}
                                       {/* <td className="px-3 py-2">{receiving.created_by}</td> */}
                                       <td className="px-3 py-2 text-nowrap">
                                           <div className="flex">

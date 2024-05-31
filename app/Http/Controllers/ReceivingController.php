@@ -70,7 +70,7 @@ class ReceivingController extends Controller
        $categories = Category::query()->orderBy('name', 'asc')->get();
        $employees = Employee::query()->orderBy('name', 'asc')->get();
        $locations = Location::query()->orderBy('name', 'asc')->get();
-       $clients = Client::query()->orderBy('name', 'asc')->get();
+       $clients =  Client::select('name')->distinct()->orderBy('name', 'asc')->get();
   
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
@@ -153,7 +153,8 @@ class ReceivingController extends Controller
     public function edit(Receiving $receiving)
     {
         $items = Item::query()->orderBy('name', 'asc')->get();
-        $clients = Client::query()->orderBy('name', 'asc')->get();
+        $clients = Client::select('name')->distinct()->orderBy('name', 'asc')->get();
+        // dd($clients);
         // Fetch brand name and category name for existing items
         foreach ($items as $item) {
             $item->brand_name = $item->brand->name;

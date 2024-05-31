@@ -19,7 +19,8 @@ class ClientController extends Controller
         $sortDirection = request("sort_direction", "desc");
         
         if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
+            $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
+            // $query->where("name", "like", "%" . request("name") . "%");
         }
         $clients = $query->orderBy($sortField, $sortDirection)
         ->paginate(20);
