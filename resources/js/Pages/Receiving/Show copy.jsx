@@ -1,11 +1,15 @@
-import Pagination from "@/Components/Pagination";
+
+import PaginationReceiving from "@/Components/PaginationReceiving";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link, router}  from "@inertiajs/react";
-export default function Show({auth, receiving,receiving_items,queryParams}){
+export default function Show({auth, receiving,receiving_items,paginationData, queryParams}){
     console.log("receiving" + receiving)
     console.log( "receiving_items" + receiving_items)
+
+    receiving_items = Array.isArray(receiving_items) ? receiving_items : [];
+
     queryParams = queryParams || {};
   const searchFieldChanged = (name, value, ) => {
     if(value){
@@ -77,11 +81,7 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                             className="font-bold text-lg"
                             htmlFor="ReceivingId"></label>
                           </div>
-                          <div className="w-[90px]">
-                              <label className="font-light text-md"
-                              >Receiving ID: </label>
-                              <span className="font-light">{receiving.id}</span>
-                          </div>
+                        
                         </div>
                         <div className="flex flex-col pb-3 mt-2">
                           <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">CLIENT NAME: </dt>
@@ -106,6 +106,11 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">D.R NUMBER : </dt>
                             <dd className="text-lg font-light">{receiving.dr_no}</dd>
                             </div>
+                            <div className="w-[90px]">
+                              <label className="font-light text-md"
+                              >Receiving ID: </label>
+                              <span className="font-light">{receiving.id}</span>
+                          </div>
                             <div className="flex flex-row pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">MRR NO: </dt>
                             <dd className="text-lg font-light uppercase ml-2">{receiving.mrr_no}</dd>
@@ -203,7 +208,7 @@ export default function Show({auth, receiving,receiving_items,queryParams}){
                       </div> 
                  </div>
                  {/* pagination not visible */}
-                 {/* <Pagination links={receiving_items.meta.links} /> */}
+                 <PaginationReceiving links={paginationData.links} />
               </div>
                     
               </div>

@@ -182,6 +182,9 @@ export default function Create({auth,success, mrr_no,items,clients}){
                                                     placeholder="Select Items"
                                                 >
                                                 </Select>
+                                                {/* add new item form modal  */}
+                                                <button>Add New Item</button> 
+                                                
                                             </div>
                                             <div className="mt-5">
                                                 <h1 className="text-2xl text-center p-5 font-semibold">LIST OF MRR ITEMS</h1>

@@ -127,38 +127,37 @@ class ReceivingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Receiving $receiving)
-    {
-        //  $perPage = 15;
-        $groupItemIds = is_array($receiving->group_item_id) ? $receiving->group_item_id : [];
-        $receiving_items = collect(); // Initialize as an empty collection for validation 
-        
-        if (count($groupItemIds) > 0) {
-            // Fetch receiving items with relationships only if there are item ids
-            $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
-                ->whereIn('id', $groupItemIds)
-                ->get();
-                // ->paginate($perPage);
 
-        }
-        //  $paginationData = [
-        //      'currentPage' => $receiving_items->currentPage(),
-        //      'lastPage' => $receiving_items->lastPage(),
-        //      'total' => $receiving_items->total(),
-        //      'perPage' => $perPage,
-        //      'links' => $receiving_items->links()->toArray(),
-        //  ];
-        
+public function show(Receiving $receiving, Request $request)
+{
+    $perPage = 10;
+    $groupItemIds = is_array($receiving->group_item_id) ? $receiving->group_item_id : [];
+    $receiving_items = collect(); // Initialize as an empty collection for validation 
 
-        return inertia('Receiving/Show', [
-            'receiving' => new ReceivingResource($receiving),
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            // 'paginationData' => $paginationData,
-            'receiving_items' => $receiving_items, 
-        ]);
+    if (count($groupItemIds) > 0) {
+        $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
+            ->whereIn('id', $groupItemIds)
+            ->paginate($perPage);
     }
 
+    $paginationData = [
+        'currentPage' => $receiving_items->currentPage(),
+        'lastPage' => $receiving_items->lastPage(),
+        'total' => $receiving_items->total(),
+        'perPage' => $perPage,
+        'links' => $receiving_items->linkCollection()->toArray(),
+    ];
+
+    return inertia('Receiving/Show', [
+        'receiving' => new ReceivingResource($receiving),
+        'queryParams' => $request->query() ?: null,
+        'success' => session('success'),
+        'paginationData' => $paginationData,
+        'receiving_items' => $receiving_items->items(), // Ensure this is an array
+    ]);
+}
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -173,15 +172,18 @@ class ReceivingController extends Controller
             $item->category_name = $item->category->name;
             $item->sku_prefix = $item->category->sku_prefix;
         }
-        // dd($items);
+        // dd($receiving);
         $parsedId = json_decode($receiving, true);
     
         // Access the value of the 'id' key
         $id = $parsedId['id'];
+        
         $receiving = Receiving::find($id);
         $existingItems = $receiving->items;
         //   dd($existingItems);
-        $existingItemIds= $receiving->items()->pluck('items.id'); //get item ids
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+        $existingItemIds= $receiving->items()->pluck('items.id');
         
         // Convert array strings => array of integers
         $existingItemIds = array_map('intval', $existingItemIds->toArray());

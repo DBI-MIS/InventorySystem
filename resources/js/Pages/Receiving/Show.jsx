@@ -1,4 +1,5 @@
 import Pagination from "@/Components/Pagination";
+import PaginationReceiving from "@/Components/PaginationReceiving";
 // import PaginationReceiving from "@/Components/PaginationReceiving";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
@@ -8,6 +9,9 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
     console.log("receiving" + receiving)
     console.log( "receiving_items" + receiving_items)
     console.log("links" + paginationLinks)
+
+    
+    receiving_items = Array.isArray(receiving_items) ? receiving_items : [];
     queryParams = queryParams || {};
   const searchFieldChanged = (name, value, ) => {
     if(value){
@@ -74,12 +78,12 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                               htmlFor="ReceivingId">MRR Number</label>
                               <span className="text-2xl font-semibold ">{receiving.mrr_no}</span>
                               </div>
-                              <div className="flex flex-col gap-3 receivings-end">
+                              {/* <div className="flex flex-col gap-3 receivings-end">
                                   <div>
                                   <label className="font-light text-md">Receiving ID: </label>
                                   <span className="font-light">{receiving.id}</span>
                                   </div>       
-                              </div>
+                              </div> */}
                             </div>
                             <div className="flex flex-col pb-3 mt-12">
                               <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">CLIENT NAME: </dt>
@@ -97,11 +101,15 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                           
                         <div className="float-end mt-5">
-                            <Link href={route('receiving.edit', receiving.id)} className="bg-blue-500 py-[0.8rem] px-8 text-white rounded shadow transition-all hover:bg-blue-700">
-                                 Edit Entry
+                            <Link href={route('receiving.myReceiving',receiving.id)} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
+                                Print MRR
                             </Link>
                         </div>
                         <div className="flex flex-col pb-3 mt-[6.4rem]">
+                          <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Receiving ID: </dt>
+                          <dd className="text-lg font-light"><span className="">{receiving.id}</span></dd>
+                        </div>
+                        <div className="flex flex-col pb-3 mt-5">
                           <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">SI Number: </dt>
                           <dd className="text-lg font-light"><span className="">{receiving.si_no}</span></dd>
                         </div>
@@ -110,6 +118,7 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                           <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">DR Number: </dt>
                           <dd className="text-lg font-light"><span className="">{receiving.dr_no}</span></dd>
                         </div>
+                        
                     </dl>
                 </div>
                 {/* card #3 */}
@@ -186,7 +195,7 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                         </table>
                       </div> 
                  </div>
-                 {/* <PaginationReceiving links={paginationData.links} /> */}
+                 <PaginationReceiving links={paginationData.links} />
               </div>
             </div>
         </div>

@@ -51,14 +51,14 @@ export default function Edit({auth,existingItems,existingItemIds,receiving,items
       setSelectedItemIds(selectedOptions.map(option => option.value));
     }, [selectedOptions]);
 
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const [totalItems, setTotalItems] = useState('');
-    // const [totalPages, setTotalPages] = useState('');
-    // const itemsPerPage = 10; // Adjust as needed
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalItems, setTotalItems] = useState('');
+    const [totalPages, setTotalPages] = useState('');
+    const itemsPerPage = 10; // Adjust as needed
 
-    // // Get current items based on currentPage
-    // const indexOfLastItem = currentPage * itemsPerPage;
-    // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    // Get current items based on currentPage
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
       const handleSelectChange = (selectedOption) => {
         setSelectedOptions(selectedOption);
         setCurrentPage(selectedOption)
@@ -69,6 +69,10 @@ export default function Edit({auth,existingItems,existingItemIds,receiving,items
         // alert("selectedOptionss" + selectedOptionss);
       };
     
+  
+      // Change page
+      const paginate = (pageNumber) => setCurrentPage(pageNumber);
+      
       console.log("selected Item ids" + selectedItemIds)
       
       const handleAddSelect = (e) => {
@@ -94,8 +98,8 @@ export default function Edit({auth,existingItems,existingItemIds,receiving,items
         setAllSelectedItemIds(newAllSelectedItemIds);
         setDatabaseItemIds(newDatabaseItemIds);
         setData('group_item_id', newDatabaseItemIds);
-        // setTotalItems(databaseItemIds.length); // Total number of items
-        // setTotalPages(Math.ceil(totalItems / itemsPerPage)); // Calculate total pages
+        setTotalItems(databaseItemIds.length); // Total number of items
+        setTotalPages(Math.ceil(totalItems / itemsPerPage)); // Calculate total pages
         // Clear 
         setSelectedItemIds([]);
         setSelectedOptions([]); 
@@ -146,7 +150,7 @@ const onPrevPage = (e) => {
         user={auth.user}
         header={
           <div className="flex justify-between items-center"  >
-          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Receiving {receiving.id}</h2>
+          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Receiving {receiving.id}</h2>
         </div>
       } >
       <Head title="Receivings" />
@@ -313,7 +317,7 @@ const onPrevPage = (e) => {
                               </thead> 
                               {databaseItemIds && databaseItemIds.length >= 0 && ( 
                                  <tbody>
-                                    {databaseItemIds.map((selectedItemId,index) => {
+                                    {databaseItemIds.slice(indexOfFirstItem, indexOfLastItem).map((selectedItemId,index) => {
                                       const selectedItem = existingItemss.find(item => item.id === selectedItemId);
                                         if (selectedItem) {
                                       return (
@@ -347,14 +351,14 @@ const onPrevPage = (e) => {
                               )}                         
                             </table>
                       </div>
-                       {/* <div>
+                       <div>
                         <PaginationEdit
                           currentPage={currentPage}
                           totalPages={totalPages}
                           onNextPage={onNextPage}
                           onPrevPage={onPrevPage}
                         />
-                      </div> */}
+                      </div>
                               
             
                         </div>

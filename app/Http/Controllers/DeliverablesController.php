@@ -121,17 +121,18 @@ class DeliverablesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Deliverables $deliverables)
+    public function edit(Deliverables $deliverable)
     {
+        // dd($deliverable);
         $itemss = Item::query()->orderBy('name', 'asc')->get();
 
-        $parsedID = json_decode($deliverables, true);
-
+        $parsedID = json_decode($deliverable, true);
         $id = $parsedID['id'];
+
         $deliverablessss = Deliverables::find($id);
         $existingItemss = $deliverablessss->items;
 
-        $existingItemsIds= $deliverablessss->items()->pluck('items.id');
+        $existingItemsIds= $deliverablessss->itemsDeliverables()->pluck('items.id');
 
         $existingItemsIds = array_map('intval', $existingItemsIds->toArray());
 
@@ -148,9 +149,21 @@ class DeliverablesController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    protected $list_item_id = [];
+
     public function update(UpdateDeliverablesRequest $request, Deliverables $deliverables)
     {
-        //
+        $data = $request->validated();
+
+        if(isset($data['list_item_id'])) {
+            $items = $data['list_item_id'];
+            $deliverables->update($data);
+            $deliverables->items()->sync($items);
+        }
+
+        return to_route('deliverables.index')
+           ->with('success', "Deliverables \" {$deliverables->id} \" was updated ");
+        
     }
 
     /**
