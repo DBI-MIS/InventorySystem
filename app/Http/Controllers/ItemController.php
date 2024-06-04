@@ -91,9 +91,10 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request)
+    public function store(StoreItemRequest $formData)
     {
-        $data = $request->validated();
+        dd($formData);
+        $data = $formData->validated();
         // dd($data);
         Item::create($data);
         return to_route('item.index')->with('success', 'Item was created');
@@ -132,7 +133,14 @@ class ItemController extends Controller
         
            
     }
-    
+    public function storeItem(StoreItemRequest $request)
+    {
+        $data = $request->validated();
+        // dd($data);
+        Item::create($data);
+        return to_route('item.index')->with('success', 'Item was created');
+        // Determine where to redirect based on the source
+    }
     /**
      * Display the specified resource.
      */
@@ -202,8 +210,26 @@ class ItemController extends Controller
     }
     public function itemMrr(StoreItemRequest $request)
     {
-        $data = $request->validated();
-        Item::create($data);
-           return to_route('receivingItem.index')->with('success', 'Selecting Receiving Items successful!');
+          
+          $firstName = $request->input('firstName');
+          $lastName = $request->input('lastName');
+          $email = $request->input('email');
+          
+          
+         // return response()->json(['success' => true]);
+        // $validatedData = $request->validated();
+        // dd($validatedData);
+        // $item = Item::create($validatedData);//
+        return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
+    }
+    public function submit(StoreItemRequest $request)
+    {
+        // dd($request);
+        $validatedData = $request->validated();
+        dd($validatedData);
+        $item = Item::create($validatedData);
+        dd($item);
+        return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
+        // return response()->json(['success' => true]);
     }
 }

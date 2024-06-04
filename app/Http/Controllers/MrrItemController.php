@@ -79,7 +79,7 @@ class MrrItemController extends Controller
         //     // $tryDeleted,
             
         // ]);
-        return redirect()->route('receivingItem.index')->with('success', 'Item was created');
+        return redirect()->route('receiving.create')->with('success', 'Item was created');
       
     }
 

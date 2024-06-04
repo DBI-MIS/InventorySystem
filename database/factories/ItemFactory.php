@@ -142,7 +142,7 @@ class ItemFactory extends Factory
         return [
             'sku'=> rand(6000,6300),
             'name'=> $products,
-            'brand_id'=>rand(1,7),
+            'brand_id'=>rand(1,15),
             'category_id'=>rand(1,4),
             'description'=> fake()->sentence('4'),
             'specs'=> fake()->realText(),
@@ -156,7 +156,7 @@ class ItemFactory extends Factory
             'status'=> $status,
             'created_at' => time(),
             'updated_at' => time(),
-            'remarks'=> fake()->realText(),
+            'remark'=> fake()->realText(),
         ];
     }
 }

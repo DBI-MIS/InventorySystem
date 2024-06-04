@@ -207,48 +207,46 @@ const onPrevPage = (e) => {
 
                             <div className="mt-4 col-span-1">
                                 <InputLabel htmlFor="mrr_no" value="MRR No."/>
-                                                <div className=" flex h-[11]">
-                                                <TextInput 
-                                                    id="receiving_mrr_no"
-                                                    type="text"
-                                                    name="mrr_no"
-                                                    readOnly
-                                                    value={data.mrr_no} 
-                                                    className=" block w-full"
+                                 <div className=" flex h-[11]">
+                                <TextInput 
+                                     id="receiving_mrr_no"
+                                     type="text"
+                                     name="mrr_no"
+                                     readOnly
+                                     value={data.mrr_no} 
+                                     className=" block w-full"
                                                     />
-                                                </div>
-                                </div>
+                                 </div>
+                            </div>
 
                                 <div className="mt-4 col-span-1">
                                 <InputLabel htmlFor="receiving_si_no" value="SI No."/>
-                                                <TextInput 
-                                                    id="receiving_si_no"
-                                                    type="text"
-                                                    name="si_no"
-                                                    value={data.si_no}
-                                                    className="mt-1 block w-full"
-                                                    isFocused={true}
-                                                    onChange={e => setData('si_no', e.target.value)}
-                                                />
-                                                <InputError message={errors.si_no} className="mt-2"/>
+                                <TextInput 
+                                     id="receiving_si_no"
+                                    type="text"
+                                    name="si_no"
+                                     value={data.si_no}
+                                     className="mt-1 block w-full"
+                                    isFocused={true}
+                                     onChange={e => setData('si_no', e.target.value)}
+                                 />
+                                 <InputError message={errors.si_no} className="mt-2"/>
                                 </div>
 
                                 <div className="mt-4 col-span-1">
                                 <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
-                                                <TextInput 
-                                                    id="receiving_dr_no"
-                                                    type="text"
-                                                    name="dr_no"
-                                                    value={data.dr_no}
-                                                    className="mt-1 block w-full"
-                                                    isFocused={true}
-                                                    onChange={e => setData('dr_no', e.target.value)}
-                                                />
-                                                <InputError message={errors.dr_no} className="mt-2"/>
+                                      <TextInput 
+                                           id="receiving_dr_no"
+                                           type="text"
+                                           name="dr_no"
+                                           value={data.dr_no}
+                                           className="mt-1 block w-full"
+                                           isFocused={true}
+                                          onChange={e => setData('dr_no', e.target.value)}
+                                      />
+                                    <InputError message={errors.dr_no} className="mt-2"/>
                                 </div>
-                                
                             </div>
-                            
     
                         </div>
                         {/* GROUP ITEM LIST */}
@@ -306,7 +304,6 @@ const onPrevPage = (e) => {
                                   <th className="pr-10">Name</th>
                                   <th className="pr-10">Brand</th>
                                   <th className="pr-10">Category</th>
-                                  {/* <th className="pr-10">Model No.</th> */}
                                   <th className="pr-10">Quantity</th>
                                   <th className="pr-10">Action</th>
                                 </tr>
@@ -327,7 +324,6 @@ const onPrevPage = (e) => {
                                           </th>
                                           <td className="px-3 py-2">{selectedItem.brand.name}</td>
                                           <td className="px-3 py-2">{selectedItem.category.name}</td>
-                                          {/* <td className="px-3 py-2">{selectedItem.model_no}</td> */}
                                           <td className="px-3 py-2">{selectedItem.quantity} {selectedItem.uom}</td>
                                           <td>
                                             <button

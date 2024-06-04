@@ -30,6 +30,11 @@ module.exports = withMT( {
                 "header": "#2d5bb7",
                 "main": "#3366cc"
                 
+            },
+            fontSize: {
+                "s":"10px",
+                "m":"11px",
+                "sml":"12px"
             }
 
 

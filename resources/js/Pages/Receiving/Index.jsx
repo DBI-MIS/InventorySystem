@@ -9,21 +9,21 @@ import TextInput from "@/Components/TextInput";
 export default function Index({auth,receivings,  queryParams = null, success}) {
   const [open, setOpen] = React.useState(true);
 queryParams = queryParams || {};
-  const searchFieldChanged = (name, value, ) => {
+  const searchFieldChanged = (mrr_no, value, ) => {
     if(value){
-      queryParams[name] = value;
+      queryParams[mrr_no] = value;
     }
     else{
-      delete queryParams[name];
+      delete queryParams[mrr_no];
     }
     // change the url path everytime option changes
     router.get(route('receiving.index'), queryParams)
   };
 
-  const onKeyPress = (name, e) => {
+  const onKeyPress = (mrr_no, e) => {
     if(e.key !== 'Enter') return;
 
-    searchFieldChanged(name, e.target.value);
+    searchFieldChanged(mrr_no, e.target.value);
   }
   console.log(receivings)
 // sorting functions
@@ -93,10 +93,10 @@ const deleteReceiving = (receiving) => {
                                 <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
                               </div>
                               <TextInput  className="w-[500px]" 
-                                      defaultValue={queryParams.name}
+                                      defaultValue={queryParams.mrr_no}
                                       placeholder="Search Receiving Here" 
-                                      onBlur={(e) => searchFieldChanged('name', e.target.value)}
-                                      onKeyPress={(e) => onKeyPress('name', e )}/>
+                                      onBlur={(e) => searchFieldChanged('mrr_no', e.target.value)}
+                                      onKeyPress={(e) => onKeyPress('mrr_no', e )}/>
                             </div>
                           </div>
                     
@@ -106,7 +106,7 @@ const deleteReceiving = (receiving) => {
                               <TableHeading  className="pr-10"  name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>ID</TableHeading>
                               <TableHeading  className="pr-10"  name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>MMR No. </TableHeading>
+                              sortChanged={sortChanged}>MRR No. </TableHeading>
                                     <TableHeading  className="pr-10"  name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Client Name</TableHeading>
                                 <TableHeading  className="pr-10"   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
@@ -138,10 +138,11 @@ const deleteReceiving = (receiving) => {
                                         </Link>
                                           
                                       </td>
-                                      <td className="px-3 py-2">
-                                      <Link href={route('receiving.show', receiving.id)} >
+                                      <td className="px-3 py-2 hover:underline">
+                                        <b><Link href={route('receiving.show', receiving.id)} >
                                       {receiving.mrr_no}
-                                        </Link>
+                                        </Link></b>
+                                      
                                       </td>
                                       <td className="px-3 py-2 text-nowrap">{receiving.client_id}</td>
                                       <td className="px-3 py-2 text-nowrap">{receiving.si_no}</td>

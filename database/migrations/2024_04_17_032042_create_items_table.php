@@ -28,8 +28,8 @@ return new class extends Migration
             $table->integer('qty_out')->default(0);
             $table->string('location_id')->nullable();
             $table->string('employee_id')->nullable();
-            $table->string('status')->nullable();
-            $table->string('remarks')->nullable();
+            $table->string('status')->default('null');
+            $table->string('remark')->nullable();
             $table->softDeletes();
             $table->timestamps();
             //ID

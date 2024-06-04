@@ -195,7 +195,7 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                         </table>
                       </div> 
                  </div>
-                 <PaginationReceiving links={paginationData.links} />
+                 {/* <PaginationReceiving links={paginationData.links} /> */}
               </div>
             </div>
         </div>

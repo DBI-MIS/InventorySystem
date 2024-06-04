@@ -23,34 +23,34 @@ class StoreItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-          "sku_prefix" => ['nullable', 'max:255'],
-          "sku" => ['nullable', 'max:255'],
-          "name" => ['required', 'max:255'],
+          "sku_prefix" => [ 'max:255'],
+          "sku" => [ 'max:255'],
+          "name" => [ 'max:255'],
           'brand_id' => [
-            'required',
+            
             'exists:brands,id',
         ],
-          "category_id" => ['required',
+          "category_id" => [
           'exists:categories,id',
         ],
       //   "receving_item_id" => ['required',
       //   'exists:receving_items,id',
       //  ],
-          "description" => ['nullable','string'],
-          "specs" => ['nullable','string'],
-          "part_no" => ['nullable', 'max:255'],
-          "serial_no" => ['nullable', 'max:255'],
-          "model_no" => ['nullable', 'max:255'],
-          "uom" => ['required', 'max:20'],
-          "quantity" => ['required', 'max:255'],
+          "description" => ['string'],
+          "specs" => ['string'],
+          "part_no" => [ 'max:255'],
+          "serial_no" => [ 'max:255'],
+          "model_no" => [ 'max:255'],
+          "uom" => [ 'max:20'],
+          "quantity" => [ 'max:255'],
           "location_id" => [
-            'required',
+            
           'exists:locations,id',],
-          "employee_id" => ['required',
+          "employee_id" => [
           'exists:employees,id',
           ],
-          'status' => ['nullable','max:255'],
-          "remarks" => ['nullable','string'],
+          'status' => ['max:255'],
+          "remark" => ['max:255'],
       ];
   }
 }

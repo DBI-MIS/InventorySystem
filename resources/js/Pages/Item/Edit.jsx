@@ -24,7 +24,7 @@ export default function Create({auth, item,categories, locations, brands, employ
         location_id: item.location_id || "",
         employee_id: item.employee_id || "",
         status: item.status || "",
-        remarks: item.remarks || "",
+        remark: item.remark || "",
         _method: "PUT", 
     });
     const onSubmit = (e) =>{
@@ -191,16 +191,16 @@ export default function Create({auth, item,categories, locations, brands, employ
                                 </div>
                                             {/* Remarks */}
                                 <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="item_remarks" value="Item Remarks"/>
+                                    <InputLabel htmlFor="item_remark" value="Item Remarks"/>
                                     <TextAreaInput
-                                    id="item_remarks"
-                                    name="remarks"
-                                    value={data.remarks}
+                                    id="item_remark"
+                                    name="remark"
+                                    value={data.remark}
                                     className="mt-1 block w-full resize-none"
                                     rows="5"
-                                    onChange={e => setData('remarks', e.target.value)}
+                                    onChange={e => setData('remark', e.target.value)}
                                     />
-                                    <InputError message={errors.remarks} className="mt-2"/>
+                                    <InputError message={errors.remark} className="mt-2"/>
                                 </div>
 
                                     </div>

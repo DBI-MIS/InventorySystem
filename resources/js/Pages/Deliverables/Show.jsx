@@ -91,11 +91,11 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
           {/* card #2 */}
           <div className="bg-white  dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg ml-2 col-span-1">
               <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                    {/* <div className="flex float-end mb-5 px-10 gap-2 ">
-                        <Link href={route('receiving.myReceiving', receiving.id)} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
-                            Print MRR
+                     <div className="flex float-end mb-5 px-10 gap-2 ">
+                        <Link href={route('deliverable.myDeliverable', deliverable.id)} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
+                            Print DR
                         </Link>
-                    </div> */}
+                    </div>
                       <div className="flex flex-col pb-3 mt-2">
                       <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">DR NO.:  </dt>
                       <dd className="text-lg font-light">{deliverable.dr_no}</dd>

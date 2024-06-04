@@ -137,7 +137,7 @@ export default function Show({auth, item,category,onlySoftDeletedItems,tryDelete
                             <div className="p-6 ">
                                     <label
                                     className="font-light text-md"
-                                    htmlFor="ItemId">Remarks :</label>  <span>{item.remarks}</span>
+                                    htmlFor="ItemId">Remarks :</label>  <span>{item.remark}</span>
                             </div>
                         </div>
                                     

@@ -24,6 +24,9 @@ class DeliverablesFactory extends Factory
             'address'=> fake()->address(),
             'dr_date'=> now(),
             'dr_qty' => rand(1, 10),
+            'created_at' => time(),
+            'updated_at' => time(),
+            'remarks'=> fake()->realText(),
 
 
             

@@ -3,21 +3,19 @@ import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { useForm } from "@inertiajs/inertia-react"
-import { Head, Link } from "@inertiajs/react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { Head, Link, useForm  } from "@inertiajs/react";
+import { useState, useEffect } from "react";
 import Select from "react-select";
 
-export default function Edit({ auth, existingItemss, existingItemsIds, deliverablessss, itemss}){
+export default function Edit({ auth, existingItemss, existingItemsIds, deliverable, itemss}){
 
     const {data, setData, post, errors, processing} = useForm({
-        project: deliverablessss.project || "",
-        address: deliverablessss.address || "",
-        dr_no:     deliverablessss.dr_no || "",
-        rs_no:     deliverablessss.rs_no || "",
-        dr_date: deliverablessss.dr_date || "",
-        dr_qty:   deliverablessss.dr_qty || "",
+        project: deliverable.project || "",
+        address: deliverable.address || "",
+        dr_no:     deliverable.dr_no || "",
+        rs_no:     deliverable.rs_no || "",
+        dr_date: deliverable.dr_date || "",
+        dr_qty:   deliverable.dr_qty || "",
         list_item_id:   existingItemsIds || "",
         _method: "PUT",
     });
@@ -26,7 +24,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
     const existingItemsss = itemss.data.map(item => ({ ...item, id: parseInt(item.id) }));
     const [notification, setNotification] = useState('');
     const [allSelectedItemIds, setAllSelectedItemIds] = useState([]);
-    const [deliverables, setDeliverables] = useState({});
+    const [deliverables, setDeliverables] = useState([]);
 
     const options = itemss.data.map(item => ({
         value: item.id,
@@ -62,8 +60,10 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
             setSelectedOptions([]);
             return;
         }
-        const selectedItems = existingItemss.filter(item => newSelectedItemIds.includes(item.id.toString()));
 
+        console.log("check value :" + newSelectedItemIds );
+        const selectedItems = existingItemss.filter(item => newSelectedItemIds.includes(item.id.toString()));
+        
         setDeliverables(prevDeliverables => [...prevDeliverables, ...selectedItems]);
 
         const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
@@ -103,7 +103,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
 
       const onSubmit = (e) =>{
         e.preventDefault();
-        post(route("deliverables.update",deliverablessss.id));
+        post(route("deliverables.update",deliverable.id));
       }
 
 
@@ -112,7 +112,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
       user={auth.user}
       header={
         <div className="flex justify-between items-center"  >
-          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Delivery Receipt</h2>
+          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Delivery Receipt {deliverable.id}</h2>
         </div>
       }
       >
@@ -212,7 +212,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
                                   </div>
                                   
                                   <div className="mt-4">
-                                      <InputLabel htmlFor="receiving Items" value="Group of Items"/>
+                                      <InputLabel htmlFor="list_item_id" value="Group of Items"/>
                                           <div className="col-span-10 xs:col-span-8">
                                               <Select
                                                   value={selectedOptions}

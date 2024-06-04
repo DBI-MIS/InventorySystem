@@ -3,26 +3,28 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
+import { Alert } from "@material-tailwind/react";
+import React from "react";
 
-export default function Index({ auth, deliverabless, queryParams = null }) {
-
+export default function Index({ auth, deliverabless, queryParams = null, success }) {
+  const [open, setOpen] = React.useState(true);
     queryParams = queryParams || {};
 
-  const searchFieldChanged = (name, value, ) => {
+  const searchFieldChanged = (project, value, ) => {
     if(value){
-      queryParams[name] = value;
+      queryParams[project] = value;
     }
     else{
-      delete queryParams[name];
+      delete queryParams[project];
     }
     // change the url path everytime option changes
     router.get(route('deliverables.index'), queryParams)
   };
 
-  const onKeyPress = (name, e) => {
+  const onKeyPress = (project, e) => {
     if (e.key !== 'Enter') return;
 
-    searchFieldChanged(name, e.target.value);
+    searchFieldChanged(project, e.target.value);
 };
 const sortChanged = (name) => { 
   if (name === queryParams.sort_field) {
@@ -38,12 +40,20 @@ const sortChanged = (name) => {
   router.get(route("deliverables.index"), queryParams)
 };
 
-const deleteDeliverables = (deliverables) => {
+const deleteReceiving = (deliverables) => {
+  // console.log(receiving)
+  if(!window.confirm("Are you sure you want to delete  the receiving")){
+    return;
+  }
+  router.delete(route('deliverables.destroy', deliverables.id))
+}
+
+const deleteDeliverables = (deliverable) => {
   // console.log(receiving)
   if(!window.confirm("Are you sure you want to delete  the deliverables")){
     return;
   }
-  router.delete(route('deliverables.destroy', deliverables.id))
+  router.delete(route('deliverables.destroy', deliverable.id))
 }
 
     return(
@@ -59,6 +69,20 @@ const deleteDeliverables = (deliverables) => {
 
             <div className="py-12">
         <div className="max-w-5/6 mx-auto sm:px-6 lg:px-8 ">
+        <div className="max-w-5/6">
+              {success && (
+                  <Alert
+                  className=" absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  animate={{
+                    mount: { y: 0 },
+                    unmount: { y: 100 },
+                  }}
+                > {success}</Alert>
+              )}
+            </div>
+        
             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                   <div className="overflow-auto">
@@ -94,10 +118,10 @@ const deleteDeliverables = (deliverables) => {
 
 
                           <TextInput  className="w-[500px]" 
-                                  defaultValue={queryParams.name}
+                                  defaultValue={queryParams.project}
                                   placeholder="Search Item Name Here" 
-                                  onBlur={(e) => searchFieldChanged('name', e.target.value)}
-                                  onKeyPress={(e) => onKeyPress('name', e )}/>
+                                  onBlur={(e) => searchFieldChanged('project', e.target.value)}
+                                  onKeyPress={(e) => onKeyPress('project', e )}/>
                                   
                                 
                           </div>
@@ -153,7 +177,7 @@ const deleteDeliverables = (deliverables) => {
                             {deliverabless.data.map((deliverable)=>(
                               <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={deliverable.id}>
                                   <td className="px-3 py-2">{deliverable.id}</td>
-                                  <td className="px-3 py-2"><Link href={route('deliverables.show', deliverable.id)}> {deliverable.project} </Link></td>
+                                  <td className="px-3 py-2 hover:underline"><b><Link href={route('deliverables.show', deliverable.id)}> {deliverable.project} </Link></b></td>
                                   <td className="px-3 py-2">{deliverable.dr_no}</td>
                                   <td className="px-3 py-2">{deliverable.rs_no}</td>
                                   <td className="px-3 py-2">{deliverable.address}</td>
@@ -167,7 +191,7 @@ const deleteDeliverables = (deliverables) => {
                                                   </svg>
                                               </Link>
                                               <button 
-                                                  onClick={(e) =>deleteReceiving(deliverable)}
+                                                  onClick={(e) =>deleteDeliverables(deliverable)}
                                                   className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover: rounded-full  hover:underline mx-1"> 
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                                                   <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />

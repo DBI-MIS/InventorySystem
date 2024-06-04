@@ -13,7 +13,6 @@ class Item extends Model
         'sku_prefix',
         'sku',
         'name',
-        'mrr_no',
         'brand_id',
         'category_id',
         'description',
@@ -26,7 +25,7 @@ class Item extends Model
         'location_id',
         'employee_id',
         'status',
-        'remarks',
+        'remark',
     
     ];
     public function brand(){

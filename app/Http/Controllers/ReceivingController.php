@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreItemRequest;
 use App\Models\Receiving;
 use App\Http\Requests\StoreReceivingRequest;
 use App\Http\Requests\UpdateReceivingRequest;
@@ -29,8 +31,8 @@ class ReceivingController extends Controller
          $query = Receiving::query() ;
          $sortField = request("sort_field", 'created_at');
          $sortDirection = request("sort_direction", "desc");
-         if (request("name")) {
-             $query->where("name", "like", "%" . request("name") . "%");
+         if (request("mrr_no")) {
+             $query->where("mrr_no", "like", "%" . request("mrr_no") . "%");
          }
          if(request("uom")){
              $query->where("uom", request("uom"));
@@ -71,7 +73,9 @@ class ReceivingController extends Controller
        $employees = Employee::query()->orderBy('name', 'asc')->get();
        $locations = Location::query()->orderBy('name', 'asc')->get();
        $clients =  Client::select('name')->distinct()->orderBy('name', 'asc')->get();
-  
+       $sku = $this->generateSkuId();
+       $input['sku'] = $sku;
+       $mrrData = Receiving::select('mrr_no')->distinct()->get();
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
         $input['mrr_no'] =  $mrr_no;
@@ -86,8 +90,19 @@ class ReceivingController extends Controller
           'employees' =>  EmployeeResource::collection($employees),
           'locations' =>  LocationResource::collection($locations),
           'clients' => ClientResource::collection($clients),
-          'mrr_no' =>  $mrr_no
+          'mrr_no' =>  $mrr_no,
+          'skuu' => $sku
       ]);
+    }
+    function generateSkuId() {
+        // $id = "9";
+        // $user->orders()->where('service_id', $request->service_id)->orderBy('id', 'DESC')->first();
+        $id = Item::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
+            $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
+        $sku = str_pad( $stringID, 6, '0', STR_PAD_LEFT); 
+        // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left
+        return $sku;
+        
     }
     function generateMrrNo() {
 
@@ -123,7 +138,14 @@ class ReceivingController extends Controller
        
         return redirect()->route('receiving.index')->with('success', "Receiving added successfully");
     }
-
+    public function storeItem(StoreItemRequest $request)
+    {
+        $data = $request->validated();
+        // dd($data);
+        Item::create($data);
+        return to_route('receiving.create')->with('success', 'Item was created');
+        // Determine where to redirect based on the source
+    }
     /**
      * Display the specified resource.
      */
@@ -137,23 +159,24 @@ public function show(Receiving $receiving, Request $request)
     if (count($groupItemIds) > 0) {
         $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
             ->whereIn('id', $groupItemIds)
-            ->paginate($perPage);
+            ->get()
+        ;
     }
 
-    $paginationData = [
-        'currentPage' => $receiving_items->currentPage(),
-        'lastPage' => $receiving_items->lastPage(),
-        'total' => $receiving_items->total(),
-        'perPage' => $perPage,
-        'links' => $receiving_items->linkCollection()->toArray(),
-    ];
+    // $paginationData = [
+    //     'currentPage' => $receiving_items->currentPage(),
+    //     'lastPage' => $receiving_items->lastPage(),
+    //     'total' => $receiving_items->total(),
+    //     'perPage' => $perPage,
+    //     'links' => $receiving_items->linkCollection()->toArray(),
+    // ];
 
     return inertia('Receiving/Show', [
         'receiving' => new ReceivingResource($receiving),
         'queryParams' => $request->query() ?: null,
         'success' => session('success'),
-        'paginationData' => $paginationData,
-        'receiving_items' => $receiving_items->items(), // Ensure this is an array
+        // 'paginationData' => $paginationData,
+        'receiving_items' => $receiving_items // Ensure this is an array
     ]);
 }
 
@@ -184,7 +207,7 @@ public function show(Receiving $receiving, Request $request)
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
         $existingItemIds= $receiving->items()->pluck('items.id');
-        
+        // dd($existingItemIds);
         // Convert array strings => array of integers
         $existingItemIds = array_map('intval', $existingItemIds->toArray());
 
@@ -247,5 +270,15 @@ public function show(Receiving $receiving, Request $request)
             'receiving_items' =>  $receiving_items
             
         ]);
+    }
+    public function submitItem(StoreItemRequest $request)
+    {
+        // dd($request);
+        $validatedData = $request->validated();
+        dd($validatedData);
+        $item = Item::create($validatedData);
+        dd($item);
+        return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
+        // return response()->json(['success' => true]);
     }
 }

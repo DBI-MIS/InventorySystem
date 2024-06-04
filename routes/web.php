@@ -17,6 +17,7 @@ use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceivingController;
 use App\Http\Controllers\ReceivingItemController;
+use App\Models\Item;
 use App\Models\Receiving;
 use App\Models\ReceivingItem;
 use Illuminate\Foundation\Application;
@@ -47,8 +48,13 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::resource('preview', PreviewController::class);
         Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;
         Route::get('/receiving/my-receiving/{receivingId}', [ReceivingController::class, 'myReceiving'])->name('receiving.myReceiving');
-
+        Route::get('/deliverables/my-deliverable/{deliverableId}', [DeliverablesController::class, 'myDeliverable'])->name('deliverable.myDeliverable');
+        Route::post('receiving/create', [ItemController::class,'storeItem'])->name('item.storeItem');
+        Route::post('receiving/create', [ItemController::class,'itemMrr'])->name('item.itemMrr');
+        Route::post('/item/submit', [ItemController::class, 'submit'])->name('item.submit');
+        Route::post('receiving/submit', [ReceivingController::class, 'submitItem'])->name('receiving.submitItem');
         // lagay name
+        // itemMrr
     
     });
     

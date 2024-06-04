@@ -39,7 +39,7 @@ class ItemResource extends JsonResource
             'location' => new LocationResource($this->location),
             'employee' => new EmployeeResource($this->brand),
             'status' => $this->status,
-            'remarks' => $this->remarks,
+            'remark' => $this->remark,
         ];
     }
 }

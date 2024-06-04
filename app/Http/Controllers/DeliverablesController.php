@@ -23,8 +23,8 @@ class DeliverablesController extends Controller
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
+        if (request("project")) {
+            $query->where("project", "like", "%" . request("project") . "%");
         }
 
         $deliverablePivot = Item::query()->with('deliverable_items')->get();
@@ -58,6 +58,7 @@ class DeliverablesController extends Controller
     return inertia("Deliverables/Index",[
         "deliverabless" => DeliverablesResource::collection($deliverabless),
         'queryParams' => request()->query() ?: null,
+        'success' => session('success'),
 
     ] );
 
@@ -91,7 +92,7 @@ class DeliverablesController extends Controller
 
          
 
-        return redirect()->route('deliverables.index');
+        return redirect()->route('deliverables.index')->with('success', "Deliverables added successfully");
     }
 
     /**
@@ -114,6 +115,7 @@ class DeliverablesController extends Controller
         return inertia('Deliverables/Show', [
             'deliverable' => new DeliverablesResource($deliverable),
             'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
             'deliverables_items' =>  $deliverables_items
         ]);
     }
@@ -129,16 +131,19 @@ class DeliverablesController extends Controller
         $parsedID = json_decode($deliverable, true);
         $id = $parsedID['id'];
 
-        $deliverablessss = Deliverables::find($id);
-        $existingItemss = $deliverablessss->items;
+        $deliverable = Deliverables::find($id);
+        $existingItemss = $deliverable->itemsDeliverables;
 
-        $existingItemsIds= $deliverablessss->itemsDeliverables()->pluck('items.id');
+        // dd($existingItemss);
+
+        $existingItemsIds= $deliverable->itemsDeliverables()->pluck('items.id');
+        // dd($existingItemsIds);
 
         $existingItemsIds = array_map('intval', $existingItemsIds->toArray());
 
         return inertia('Deliverables/Edit',[
             'itemss' => ItemResource::collection($itemss),
-            'deliverablessss' => new DeliverablesResource($deliverablessss),
+            'deliverable' => new DeliverablesResource($deliverable),
             'existingItemss' => $existingItemss,
             'existingItemsIds' => $existingItemsIds
 
@@ -151,26 +156,50 @@ class DeliverablesController extends Controller
      */
     protected $list_item_id = [];
 
-    public function update(UpdateDeliverablesRequest $request, Deliverables $deliverables)
+    public function update(UpdateDeliverablesRequest $request, Deliverables $deliverable)
     {
         $data = $request->validated();
 
         if(isset($data['list_item_id'])) {
-            $items = $data['list_item_id'];
-            $deliverables->update($data);
-            $deliverables->items()->sync($items);
+            $itemss = $data['list_item_id'];
+            $deliverable->update($data);
+            $deliverable->itemsDeliverables()->sync($itemss);
         }
 
         return to_route('deliverables.index')
-           ->with('success', "Deliverables \" {$deliverables->id} \" was updated ");
+           ->with('success', "Deliverables \"{$deliverable->id}\" was updated ");
         
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Deliverables $deliverables)
+    public function destroy(Deliverables $deliverable)
     {
-        //
+        $id = $deliverable->id;
+        $deliverable->delete();
+        return to_route('deliverables.index')
+       ->with('success', "Deliverables \"$id\" was deleted");
+    }
+
+    public function myDeliverable(Deliverables $deliverableId) {
+        //  dd($deliverableId);
+        $listItemIds = is_array($deliverableId->list_item_id) ? $deliverableId->list_item_id : [];
+        $deliverable_items = collect(); // Initialize as an empty collection for validation 
+        
+        if (count($listItemIds) > 0) {
+            // Fetch receiving items with relationships only if there are item ids
+            $deliverable_items = Item::with(['brand', 'category', 'employee', 'location'])
+                ->whereIn('id', $listItemIds)
+                ->get();
+        }
+
+        return inertia("Deliverables/PrintDeliverables", [
+            'deliverable' => new DeliverablesResource($deliverableId),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
+            'deliverable_items' =>  $deliverable_items
+            
+        ]);
     }
 }

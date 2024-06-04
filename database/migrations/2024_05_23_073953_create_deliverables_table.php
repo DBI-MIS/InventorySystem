@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('dr_date')->nullable();
             $table->string('dr_qty')->nullable();
+            $table->string('remarks')->nullable();
+            $table->string('status')->default('null');
             $table->string('list_item_id')->nullable();
             $table->timestamps();
         });

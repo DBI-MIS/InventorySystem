@@ -11,6 +11,7 @@ class Deliverables extends Model
     protected $casts = [
         'id' => 'string',
         'list_item_id' => 'array',
+        'created_at' => 'date: m-d-Y'
 
     ];
 
@@ -27,6 +28,9 @@ class Deliverables extends Model
         'project_id',
         'address_id',
         'rs_no_id',
+        'remarks',
+        'created_by'
+        
     ];
 
 

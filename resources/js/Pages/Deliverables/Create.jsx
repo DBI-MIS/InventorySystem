@@ -19,6 +19,7 @@ export default function Create({ auth, deliverablesss }) {
     dr_date: '',
     dr_qty: '',
     list_item_id: '',
+    remarks:'',
     
 });
 

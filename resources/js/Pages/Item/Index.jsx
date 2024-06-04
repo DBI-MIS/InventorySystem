@@ -202,7 +202,7 @@ const deleteItem = (item) => {
                                         {item.name}
                                         </Link>
                                       </th>
-                                      <td className="w-[300px] py-2">{item.brand.name}</td>
+                                      <td className="w-[300px] py-2">{item.brand ? item.brand.name : 'N/A'}</td>
                                       <td className="w-[300px] py-2">{item.category ? item.category.name : 'N/A'}</td>
                                       <td className="w-[100px] py-2 text-nowrap">{item.quantity} {item.uom} </td>
                                       <td className="w-[100px] py-2 text-nowrap">

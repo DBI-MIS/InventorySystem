@@ -27,10 +27,8 @@ class UpdateDeliverablesRequest extends FormRequest
             "rs_no" => ['required','max:255'],
             "address" => ['required','max:255'],
             "dr_date" => ['nullable','date'],
-            "item_qty" => ['required','max:255'],
-            "item_unit" => ['required','max:255'],
-            "item_id" => ['required', 'exists:items,id'],
-            "item_description" => ['nullable','string'],
+            "dr_qty" => ['nullable','max:255'],
+            "list_item_id" => ['required', 'exists:items,id'],
         ];
     }
 }
