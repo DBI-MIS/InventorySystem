@@ -34,7 +34,7 @@ export default function PrintDeliverables({ deliverable,deliverable_items,queryP
                 <div class="flex flex-row justify-between">
                     <div class="font-light text-xs md:text-sm">
                     <div>
-                <span className="px-[3px]"> <b>Project:</b></span> <span className="mx-2">{deliverable.project}</span>
+                <span className="px-[3px]"> <b>Project:</b></span> <span className="mx-2">{deliverable.client.name}</span>
                 </div>
                 <br />
                 <div>

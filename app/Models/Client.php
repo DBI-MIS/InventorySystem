@@ -21,4 +21,9 @@ class Client extends Model
         return $this->belongsTo(Employee::class);
     }
 
+    public function deliverables()
+    {
+        return $this->hasMany(Deliverables::class);
+    }
+
 }

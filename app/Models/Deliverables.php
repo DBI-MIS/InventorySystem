@@ -18,7 +18,6 @@ class Deliverables extends Model
     use HasFactory;
 
     protected $fillable = [
-        'project',
         'list_item_id',
         'rs_no',
         'dr_no',

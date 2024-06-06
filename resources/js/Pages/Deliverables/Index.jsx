@@ -139,7 +139,7 @@ const deleteDeliverables = (deliverable) => {
                         <tr className="text-nowrap ">
 
                             <TableHeading className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ID</TableHeading>
-                            <TableHeading className="pr-10" name="project"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>PROJECT</TableHeading>
+                            <TableHeading className="pr-10" name="client"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>PROJECT</TableHeading>
                             <TableHeading className="pr-10" name="dr_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DR NO.:</TableHeading>
                             <TableHeading className="pr-10" name="rs_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>RS NO.:</TableHeading>
                             <TableHeading className="pr-10" name="address_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ADDRESS</TableHeading>
@@ -179,7 +179,7 @@ const deleteDeliverables = (deliverable) => {
                             {deliverabless.data.map((deliverable)=>(
                               <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={deliverable.id}>
                                   <td className="px-3 py-2">{deliverable.id}</td>
-                                  <td className="px-3 py-2 hover:underline"><b><Link href={route('deliverables.show', deliverable.id)}> {deliverable.project} </Link></b></td>
+                                  <td className="px-3 py-2 hover:underline"><b><Link href={route('deliverables.show', deliverable.id)}> {deliverable.client.name} </Link></b></td>
                                   <td className="px-3 py-2">{deliverable.dr_no}</td>
                                   <td className="px-3 py-2">{deliverable.rs_no}</td>
                                   <td className="px-3 py-2">{deliverable.address}</td>

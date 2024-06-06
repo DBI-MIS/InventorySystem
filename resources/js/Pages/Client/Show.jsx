@@ -1,4 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { CLIENT_STATUS_CLASS_MAP, CLIENT_STATUS_TEXT_MAP } from "@/constants";
 import {Head, Link}  from "@inertiajs/react";
 export default function Show({auth, client, }){
     console.log(client)
@@ -73,7 +74,9 @@ export default function Show({auth, client, }){
 
                             <div className="flex flex-col pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Status : </dt>
-                            <dd className="text-lg font-light">{client.status}</dd>
+                            <dd className="text-lg font-light"><span className={"px-2 py-1 font-semibold tracking-wide rounded text-white " + CLIENT_STATUS_CLASS_MAP[client.status]} >
+                                {CLIENT_STATUS_TEXT_MAP[client.status]}
+                                </span></dd>
                             </div>
 
                            

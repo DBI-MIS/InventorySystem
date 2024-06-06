@@ -136,25 +136,6 @@ const deleteItem = (item) => {
                           <div className="flex flex-row items-center relative">
                           <div className="absolute pointer-events-none right-2"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
                           </div>
-                          {/* <SelectInput className="w-[300px] mx-2"
-                          defaultValue={queryParams.category.id}
-                            onChange={(e) => {
-                            const value = e.target.value;
-                            if (value === "reset") {
-                            // Logic to reset the query parameter
-                            searchFieldChanged('category.id', '');
-                            } else {
-                          searchFieldChanged('category.id', value);
-                            }
-                              }}
-                                >
-                                    <option value=" ">Select Category</option>
-                                    <option value="reset">All</option>
-                                    {uniqueCategories.map((item) => (
-                                        <option value={category.id} key={category.id}>{category.name}</option>
-                                    ))}
-                                </SelectInput> */}
-
 
                           <TextInput  className="w-[500px]" 
                                   defaultValue={queryParams.name}

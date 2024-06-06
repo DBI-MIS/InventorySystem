@@ -14,14 +14,18 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $query = Client::query();
+        
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
+        $query = Client::query();
         
         if (request("name")) {
             $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
             // $query->where("name", "like", "%" . request("name") . "%");
         }
+        if(request("status")){
+            $query->where("status", request("status"));
+        };
         $clients = $query->orderBy($sortField, $sortDirection)
         ->paginate(20);
 

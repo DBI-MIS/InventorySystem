@@ -17,7 +17,6 @@ class DeliverablesFactory extends Factory
     public function definition(): array
     {
         return [
-            'project'=> fake()->sentence('1'),
             'list_item_id'=>rand(1, 30),
             'dr_no'=> random_int('10', '20'),
             'rs_no'=> rand(1, 10),

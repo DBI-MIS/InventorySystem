@@ -19,7 +19,6 @@ class DeliverablesResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'project' => $this->project,
             'client_id' => $this->client_id,
             'client' => new ClientResource($this->client),
             'dr_no' => $this->dr_no,

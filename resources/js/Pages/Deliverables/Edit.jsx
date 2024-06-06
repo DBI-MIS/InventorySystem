@@ -7,10 +7,9 @@ import { Head, Link, useForm  } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-export default function Edit({ auth, existingItemss, existingItemsIds, deliverable, itemss}){
+export default function Edit({ auth, existingItemss, existingItemsIds, clients, deliverable, itemss}){
 
     const {data, setData, post, errors, processing} = useForm({
-        project: deliverable.project || "",
         address: deliverable.address || "",
         dr_no:     deliverable.dr_no || "",
         rs_no:     deliverable.rs_no || "",
@@ -127,23 +126,31 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
                          <div className="flex">
                               <div className="w-full">
                                   <div className="mt-4  col-span-3">
-                                      <InputLabel htmlFor="receiving_project" value="Project."/>
-                                      <TextInput 
-                                      id="receiving_project"
-                                      type="text"
-                                      name="project"
-                                      value={data.project}
+                                      <InputLabel htmlFor="deliverables_client_id" value="Project."/>
+
+                                      <SelectInput
+                                      name="client_id"
+                                      id="deliverables_client_id"
+                                      value={data.client_id}
                                       className="mt-1 block w-full"
-                                      isFocused={true}
-                                      onChange={e => setData('project', e.target.value)}
-                                      />
-                                      <InputError message={errors.project} className="mt-2"/>
+                                      onChange={(e) => setData("client_id", e.target.value)}
+                                      >
+                                        
+                                        <option value="">Select Project</option>
+                                        {clients.data.map((client) => (
+                                          <option value={client.id} key={client.id}>
+                                            {client.name}
+                                          </option>
+                                        ))}
+
+                                      </SelectInput>
+                                      <InputError message={errors.client_id} className="mt-2"/>
                                   </div>
 
                                   <div className="mt-4  col-span-3">
-                                      <InputLabel htmlFor="receiving_address" value="Address."/>
+                                      <InputLabel htmlFor="deliverables_address" value="Address."/>
                                       <TextInput 
-                                      id="receiving_address"
+                                      id="deliverables_address"
                                       type="text"
                                       name="address"
                                       value={data.address}
@@ -157,10 +164,10 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
                                   <div className="grid grid-cols-8 gap-2">
                                      
                                       <div className=" mt-4  col-span-2 ">
-                                          <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
+                                          <InputLabel htmlFor="deliverables_dr_no" value="DR No."/>
                                           
                                           <TextInput 
-                                              id="receiving_dr_no"
+                                              id="deliverables_dr_no"
                                               type="text"
                                               name="dr_no"
                                               value={data.dr_no} 
@@ -172,9 +179,9 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
                                           
                                       </div>
                                       <div className="mt-4  col-span-2">
-                                          <InputLabel htmlFor="receiving_rs_no" value="RS No."/>
+                                          <InputLabel htmlFor="deliverables_rs_no" value="RS No."/>
                                           <TextInput 
-                                              id="receiving_rs_no"
+                                              id="deliverables_rs_no"
                                          type="text"
                                          name="rs_no"
                                          value={data.rs_no}
@@ -185,9 +192,9 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
                                           <InputError message={errors.rs_no} className="mt-2"/>
                                       </div>
                                       <div className="mt-4  col-span-2">
-                                          <InputLabel htmlFor="receiving_dr_qty" value="Qty."/>
+                                          <InputLabel htmlFor="deliverables_dr_qty" value="Qty."/>
                                           <TextInput 
-                                              id="receiving_dr_qty"
+                                              id="deliverables_dr_qty"
                                               type="number"
                                               name="dr_qty"
                                               value={data.dr_qty}
@@ -198,9 +205,9 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
                                           <InputError message={errors.dr_qty} className="mt-2"/>
                                       </div>
                                       <div className="mt-4  col-span-2">
-                                          <InputLabel htmlFor="receiving_dr_date" value="Date."/>
+                                          <InputLabel htmlFor="deliverables_dr_date" value="Date."/>
                                           <TextInput 
-                                              id="receiving_dr_date"
+                                              id="deliverables_dr_date"
                                               type="date"
                                               name="dr_date"
                                               value={data.dr_date}

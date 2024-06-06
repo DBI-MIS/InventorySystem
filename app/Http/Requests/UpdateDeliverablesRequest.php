@@ -22,7 +22,6 @@ class UpdateDeliverablesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "project" => ['required','max:255'],
             "dr_no" => ['required','max:255'],
             "rs_no" => ['required','max:255'],
             "address" => ['required','max:255'],

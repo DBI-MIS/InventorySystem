@@ -25,8 +25,8 @@ class DeliverablesController extends Controller
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
-        if (request("project")) {
-            $query->where("project", "like", "%" . request("project") . "%");
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
         }
 
         $deliverablePivot = Item::query()->with('deliverable_items')->get();
@@ -75,8 +75,8 @@ class DeliverablesController extends Controller
     public function create()
     {
         $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
-        $clients = Client::query()->orderBy('name', 'asc')->get();
-        // $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
+        // $clients = Client::query()->orderBy('name', 'asc')->get();
+        $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
         return inertia("Deliverables/Create", [
             "deliverablesss" => ItemResource::collection($deliverablesss),
             "clients" => ClientResource::collection($clients)
@@ -94,7 +94,7 @@ class DeliverablesController extends Controller
         $deliverable=Deliverables::create($data);
         $deliverable->itemsDeliverables()->attach($items);
 
-
+        
          
 
         return redirect()->route('deliverables.index')->with('success', "Deliverables added successfully");
@@ -132,6 +132,7 @@ class DeliverablesController extends Controller
     {
         // dd($deliverable);
         $itemss = Item::query()->orderBy('name', 'asc')->get();
+        $clients = Client::query()->orderBy('name', 'asc')->get();
 
         $parsedID = json_decode($deliverable, true);
         $id = $parsedID['id'];
@@ -148,6 +149,7 @@ class DeliverablesController extends Controller
 
         return inertia('Deliverables/Edit',[
             'itemss' => ItemResource::collection($itemss),
+            'clients' => ClientResource::collection($clients),
             'deliverable' => new DeliverablesResource($deliverable),
             'existingItemss' => $existingItemss,
             'existingItemsIds' => $existingItemsIds

@@ -52,6 +52,7 @@ export default function Create({auth,employees,success}){
                                     <TextInput 
                                     id="client_name"
                                     type="text"
+                                    placeholder="Enter Client Name ..."
                                     name="name"
                                     value={data.name}
                                     className="mt-1 block w-full"
@@ -66,6 +67,7 @@ export default function Create({auth,employees,success}){
                                     <TextInput 
                                     id="client_address"
                                     type="text"
+                                    placeholder="Enter Client Full Address "
                                     name="address"
                                     value={data.address}
                                     className="mt-1 block w-full"
@@ -80,6 +82,7 @@ export default function Create({auth,employees,success}){
                                     <TextInput
                                     id="client_contact_person"
                                     name="contact_person"
+                                    placeholder="Enter Name of the Contact Person"
                                     value={data.contact_person}
                                     className="mt-1 block w-full"
                                     isFocused={true}
@@ -92,6 +95,7 @@ export default function Create({auth,employees,success}){
                                     <InputLabel htmlFor="client_remarks" value="Remarks"/>
                                     <TextAreaInput
                                     id="client_remarks"
+                                    placeholder="Enter Client Remarks..."
                                     name="remarks"
                                     value={data.remarks}
                                     className="mt-1 block w-full resize-none"
@@ -111,6 +115,7 @@ export default function Create({auth,employees,success}){
                                 type="number"
                                 id="client_contact_no"
                                 name="contact_no"
+                                placeholder="Enter Contact Number"
                                 value={data.contact_no}
                                 className="mt-1 block w-full"
                                 onChange={e => setData('contact_no', e.target.value)}
@@ -124,6 +129,7 @@ export default function Create({auth,employees,success}){
                                 type="number"
                                 id="client_tin_no"
                                 name="contact_no"
+                                placeholder="Entr TIN Number"
                                 value={data.tin_no}
                                 className="mt-1 block w-full"
                                 isFocused={true}

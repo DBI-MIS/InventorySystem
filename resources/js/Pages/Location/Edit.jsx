@@ -14,7 +14,6 @@ export default function Create({auth, location }){
     });
 
     const onSubmit = (e) =>{
-        // post function declared above
         e.preventDefault();
         post(route("location.update",location.id));
     }
@@ -22,17 +21,18 @@ export default function Create({auth, location }){
         <AuthenticatedLayout
         user={auth.user}
         header={
-          <div className="flex justify-between items-center">
-            <h2 className="font-semibold text-xl text-white dark:text-gray-200 leading-tight">Edit location {location.name}</h2>
+            <div className="flex justify-between items-center"  >
+            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Location {location.name}</h2>
           </div>
         }
         >
-             <Head title="Locations" />
-      <div className="py-12">
-          <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <Head title="Locations" />
+         <div className="py-12">
+            <div className="w-5/6 mx-auto sm:px-6 lg:px-8">
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-              <form onSubmit={onSubmit} 
-                    className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
+                    <form onSubmit={onSubmit}  
+                        className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" >
+
                         <div className="mt-4">
                             <InputLabel htmlFor="location_name" value="Location Name"/>
                             <TextInput 
@@ -46,6 +46,7 @@ export default function Create({auth, location }){
                             />
                             <InputError message={errors.name} className="mt-2"/>
                         </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="location_company" value="Location Company"/>
                             <TextAreaInput
@@ -58,6 +59,7 @@ export default function Create({auth, location }){
                             />
                             <InputError message={errors.company} className="mt-2"/>
                         </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="location_address" value="Address"/>
                             <TextInput 
@@ -71,6 +73,7 @@ export default function Create({auth, location }){
                             />
                             <InputError message={errors.address} className="mt-2"/>
                         </div>
+
                         <div className="mt-4 text-right">
                             <Link href={route('location.index')}
                             className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
@@ -80,7 +83,6 @@ export default function Create({auth, location }){
                             <button className="bg-green-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-green-600">
                                 Submit
                             </button>
-                            
                         </div>
                     </form>
                 </div>

@@ -68,9 +68,9 @@ class ClientFactory extends Factory
             'TIN555666'
         ]); 
         $status = $this->faker->randomElement([
-            'Active',
-            'Inactive', 
-            'Pending']);
+            'active',
+            'inactive', 
+            'pending']);
         $remarks = $this->faker->randomElement([
             'This client has been with us for over five years and has always been reliable.',
             'High priority client that requires frequent follow-ups.',

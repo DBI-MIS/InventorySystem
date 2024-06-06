@@ -80,7 +80,7 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
                   </div>
                   <div className="flex flex-col pb-3 mt-2">
                     <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">PROJECT : </dt>
-                    <dd className="text-lg font-light">{deliverable.project}</dd>
+                    <dd className="text-lg font-light">{deliverable.client.name}</dd>
                   </div>
                   <div className="flex flex-col pb-3 mt-2">
                     <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">ADDRESS : </dt>

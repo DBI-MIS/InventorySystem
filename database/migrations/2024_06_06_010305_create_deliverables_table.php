@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Client;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('deliverables', function (Blueprint $table) {
             $table->id();
-            $table->string('project');
             $table->string('dr_no')->nullable();
             $table->string('rs_no')->nullable();
             $table->string('address')->nullable();
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('remarks')->nullable();
             $table->string('status')->default('null');
             $table->string('list_item_id')->nullable();
+            // $table->foreignIdFor(Client::class)->constrained();
             $table->foreignId('client_id')->constrained('clients');
             $table->timestamps();
         });

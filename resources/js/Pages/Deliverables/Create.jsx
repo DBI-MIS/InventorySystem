@@ -14,7 +14,6 @@ export default function Create({ auth, deliverablesss, clients }) {
     console.log(clients);
     
   const {data, setData, post,errors} = useForm({
-    project: '',
     address: '',
     dr_no: '',
     rs_no: '',
@@ -44,22 +43,18 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
     setData("list_item_id", selectedValues);
 };
 
-// const handleClientChange = (e) => {
-//     const selectedClientId = e.target.value;
-//     // setData("project", selectedClientId);
-//     const selectedClient = clients.data.find(client => client.id === parseInt(selectedClientId));
+ const handleClientChange = (e) => {
+     const selectedClientId = e.target.value;
+     
+     const selectedClient = clients.data.find(client => client.id === parseInt(selectedClientId));
 
-//     setData(prevData => ({
-//         ...prevData,
-//         'project': selectedClientId,
-//         'projectName': selectedClient ? selectedClient.name : '',
-//         "address": selectedClient ? selectedClient.address : ''
-//     }));
-//     //  setData("project", selectedClientId);
-//     // useEffect(() => {
-//     //     setData('project', selectedClientId);
-//     //   }, [selectedClientId]);
-// };
+     setData({
+        ...data,
+        client_id: selectedClientId,
+        address: selectedClient ? selectedClient.address : ''
+     });
+       
+ };
 
 
 
@@ -89,18 +84,22 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                            <div className="flex">
                                 <div className="w-full">
                                 <div className="mt-4  col-span-3">
-                                        <InputLabel htmlFor="deliverables_project" value="Project."/>
+                                        <InputLabel htmlFor="deliverables_client_id" value="Project."/>
                                         <SelectInput 
-                                        id="deliverables_project"
-                                        name="project"
+                                        id="deliverables_client_id"
+                                        name="client_id"
                                         className="mt-1 block w-full"
-                                        onChange={(e) => setData("project", e.target.value)}>
+                                        onChange={handleClientChange}
+                                        value={data.client_id}
+                                        >
                                             <option value="">Select project</option>
                                             {clients.data.map((client)=>(
-                                                <option value={client.id} key={client.id}>{client.name}</option>
+                                                <option value={client.id} key={client.id}>
+                                                    {client.name}
+                                                    </option>
                                             ))}
                                         </SelectInput>
-                                        <InputError message={errors.project} className="mt-2"/>
+                                        <InputError message={errors.client_id} className="mt-2"/>
                                     </div>
 
 
@@ -113,6 +112,7 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                         value={data.address}
                                         className="mt-1 block w-full"
                                         isFocused={true}
+                                        readOnly
                                         onChange={e => setData('address', e.target.value)}
                                         />
                                         <InputError message={errors.address} className="mt-2"/>

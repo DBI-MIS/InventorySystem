@@ -15,6 +15,7 @@ import Nbrand from '@/Components/Nbrand';
 import SearchItem from '@/Components/SearchItem';
 import DbitransparentLogo from '@/Components/DbitranparentLogo';
 import Nclient from '@/Components/Nclient';
+import Deliver from '@/Components/Deliver';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -74,7 +75,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 <br />
                                 <NavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
-                                    <SearchItem className="block h-9 w-auto fill-current  " /> 
+                                    <Deliver className="block h-9 w-auto fill-current  " /> 
                                 </NavLink>
                                 
                                 
@@ -147,6 +148,11 @@ export default function Authenticated({ user, header, children }) {
                         <ResponsiveNavLink href={route('stocksearch.index')} active={route().current('stocksearch.index')}>
                                     <SearchItem className="block h-9 w-auto fill-current " /> 
                         </ResponsiveNavLink>
+                        <br />
+                        <ResponsiveNavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
+                                    <Deliver className="block h-9 w-auto fill-current  " /> 
+                        </ResponsiveNavLink>
+
                         
                     </div>
 
