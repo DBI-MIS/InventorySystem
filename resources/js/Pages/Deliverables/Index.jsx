@@ -120,10 +120,10 @@ const deleteDeliverables = (deliverable) => {
 
 
                           <TextInput  className="w-[500px]" 
-                                  defaultValue={queryParams.project}
-                                  placeholder="Search Item Name Here" 
-                                  onBlur={(e) => searchFieldChanged('project', e.target.value)}
-                                  onKeyPress={(e) => onKeyPress('project', e )}/>
+                                  defaultValue={queryParams.dr_no}
+                                  placeholder="Search Dr No. Here" 
+                                  onBlur={(e) => searchFieldChanged('dr_no', e.target.value)}
+                                  onKeyPress={(e) => onKeyPress('dr_no', e )}/>
                                   
                                 
                           </div>
@@ -139,12 +139,12 @@ const deleteDeliverables = (deliverable) => {
                         <tr className="text-nowrap ">
 
                             <TableHeading className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ID</TableHeading>
-                            <TableHeading className="pr-10" name="client"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>PROJECT</TableHeading>
+                            <th className="pr-10" name="client">PROJECT</th>
                             <TableHeading className="pr-10" name="dr_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DR NO.:</TableHeading>
                             <TableHeading className="pr-10" name="rs_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>RS NO.:</TableHeading>
-                            <TableHeading className="pr-10" name="address_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ADDRESS</TableHeading>
+                            <th className="pr-10" name="address_id">ADDRESS</th>
                             <TableHeading className="pr-10" name="dr_date"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DATE</TableHeading>
-                            <TableHeading className="pr-10" name="item_qty"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>QTY</TableHeading>
+                            <th className="pr-10" name="item_qty">QTY</th>
                            
 
                         </tr>
@@ -179,12 +179,12 @@ const deleteDeliverables = (deliverable) => {
                             {deliverabless.data.map((deliverable)=>(
                               <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={deliverable.id}>
                                   <td className="px-3 py-2">{deliverable.id}</td>
-                                  <td className="px-3 py-2 hover:underline"><b><Link href={route('deliverables.show', deliverable.id)}> {deliverable.client.name} </Link></b></td>
-                                  <td className="px-3 py-2">{deliverable.dr_no}</td>
-                                  <td className="px-3 py-2">{deliverable.rs_no}</td>
-                                  <td className="px-3 py-2">{deliverable.address}</td>
-                                  <td className="px-3 py-2 text-nowrap">{deliverable.dr_date}</td>
-                                  <td className="px-3 py-2 text-nowrap">{deliverable.dr_qty}</td>
+                                  <td className="px-3 py-2 hover:underline"><b><Link href={route('deliverables.show', deliverable.id)}> {deliverable.client.name ?? "No Client Name"} </Link></b></td>
+                                  <td className="px-3 py-2">{deliverable.dr_no ?? "No DR No"}</td>
+                                  <td className="px-3 py-2">{deliverable.rs_no ?? "No RS Number"}</td>
+                                  <td className="px-3 py-2">{deliverable.address ?? "No Deliverable Address"}</td>
+                                  <td className="px-3 py-2 text-nowrap">{deliverable.dr_date ?? "No DR Date"}</td>
+                                  <td className="px-3 py-2 text-nowrap">{deliverable.dr_qty ?? "No DR Quantity"}</td>
                                   <td className="px-3 py-2 text-nowrap">
                                           <div className="flex">
                                               <Link href={route('deliverables.edit', deliverable.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 

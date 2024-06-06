@@ -45,13 +45,14 @@ export default function Create({auth,success}){
                             <div className="col-span-3 mt-4">
                                 <InputLabel htmlFor="category_name" value="Category Name"/>
                                 <TextInput 
-                                id="category_name"
-                                type="text"
-                                name="name"
-                                value={data.name}
-                                className="mt-1 block w-full"
-                                isFocused={true}
-                                onChange={e => setData('name', e.target.value)}
+                                    id="category_name"
+                                    type="text"
+                                    placeholder=" Enter Category Name"
+                                    name="name"
+                                    value={data.name}
+                                    className="mt-1 block w-full"
+                                    isFocused={true}
+                                    onChange={e => setData('name', e.target.value)}
                                 />
                                 <InputError message={errors.name} className="mt-2"/>
                             </div>
@@ -59,14 +60,15 @@ export default function Create({auth,success}){
                             <div className="mt-4 col-span-2">
                                 <InputLabel htmlFor="category_sku_prefix" value="Sku Prefix"/>
                                 <TextInput 
-                                id="category_sku_prefix"
-                                type="text"
-                                name="sku_prefix"
-                                value={data.sku_prefix}
-                                className="mt-1 block w-full"
-                                maxLength={3}
-                                isFocused={true}
-                                onChange={e => setData("sku_prefix", e.target.value)}
+                                    id="category_sku_prefix"
+                                    type="text"
+                                    name="sku_prefix"
+                                    placeholder="Enter Sku Prefix"
+                                    value={data.sku_prefix}
+                                    className="mt-1 block w-full"
+                                    maxLength={3}
+                                    isFocused={true}
+                                    onChange={e => setData("sku_prefix", e.target.value)}
                                 />
                                 <span className="font-light text-xs md:text-sm text-red-600"><b>Note: SKU PREFIX should be 3 letters only.</b></span>
                                 <InputError message={errors.sku_prefix} className="mt-2"/>
@@ -77,15 +79,14 @@ export default function Create({auth,success}){
                             <div className="mt-4">
                             <InputLabel htmlFor="category_description" value="Category Decription"/>
                             <TextAreaInput
-                            id="category_description"
-                            name="description"
-                            placeholder="Enter Category Description..."
-                            value={data.description}
-                            className="mt-1 block w-full"
-                            isFocused={true}
-                            onChange={e => setData('description', e.target.value)}
+                                id="category_description"
+                                name="description"
+                                placeholder="Enter Category Description"
+                                value={data.description}
+                                className="mt-1 block w-full"
+                                isFocused={true}
+                                onChange={e => setData('description', e.target.value)}
                             />
-                            {/* ready component from laravel breeze */}
                             <InputError message={errors.description} className="mt-2"/>
                         </div>
                         <div className="mt-10 text-right">

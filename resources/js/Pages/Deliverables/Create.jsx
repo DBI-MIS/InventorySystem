@@ -5,7 +5,6 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-select";
 

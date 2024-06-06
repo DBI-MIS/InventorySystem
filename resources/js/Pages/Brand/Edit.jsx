@@ -13,7 +13,6 @@ export default function Create({auth, brand }){
     });
 
     const onSubmit = (e) =>{
-        // post function declared above
         e.preventDefault();
         post(route("brand.update",brand.id));
     }
@@ -26,7 +25,7 @@ export default function Create({auth, brand }){
           </div>
         }
         >
-             <Head title="Brands" />
+    <Head title="Brands" />
       <div className="py-12">
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

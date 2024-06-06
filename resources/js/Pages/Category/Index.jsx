@@ -9,6 +9,7 @@ import {Head,Link, router} from "@inertiajs/react" ;
 export default function Index({auth, categories, queryParams = null, success}) {
 
   const [open, setOpen] = React.useState(true);
+  
 queryParams = queryParams || {};
 
   const searchFieldChanged = (name, value) => {
@@ -111,24 +112,37 @@ const deleteCategory = (category) => {
                       </div>
 
                   <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                  
-                  
                       <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                         <tr className="text-nowrap items-center">
                          <TableHeading  
-                         className=""  
-                         name="id"
-                         sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                         sortChanged={sortChanged}
+                          className=""  
+                          name="id"
+                          sort_field={queryParams.sort_field}
+                          sort_direction={queryParams.sort_direction}
+                          sortChanged={sortChanged}
                          >ID</TableHeading>
-                          <TableHeading  className=""   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                         sortChanged={sortChanged}>Name</TableHeading>
-                         <TableHeading  className=""   name="description"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                         sortChanged={sortChanged}>Description</TableHeading>
-                          <TableHeading className=""   name="sku_prefix"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                         sortChanged={sortChanged}>Sku Prefix</TableHeading>
-                          <th className="text-right">Actions</th>
+                        <TableHeading  
+                          className=""   
+                          name="name"
+                          sort_field={queryParams.sort_field}
+                          sort_direction={queryParams.sort_direction}
+                          sortChanged={sortChanged}
+                        >Name</TableHeading>
+                         <TableHeading  
+                          className=""   
+                          name="description"
+                          sort_field={queryParams.sort_field}
+                          sort_direction={queryParams.sort_direction}
+                          sortChanged={sortChanged}
+                        >Description</TableHeading>
+                        <TableHeading 
+                          className=""   
+                          name="sku_prefix"
+                          sort_field={queryParams.sort_field}
+                          sort_direction={queryParams.sort_direction}
+                          sortChanged={sortChanged}
+                        >Sku Prefix</TableHeading>
+                        <th className="text-right">Actions</th>
                         
                         </tr>
                       </thead>
@@ -140,26 +154,25 @@ const deleteCategory = (category) => {
                                 {category.id}
                             </td>
                              <th className="py-2 text-gray-700 text-nowrap">
-                              {category.name}
+                              {category.name ?? "No Category Name"}
                             </th>
-                             <td className="py-2 ">{category.description}</td>
-                             <td className="py-2">{category.sku_prefix}</td>
+                             <td className="py-2 ">{category.description ?? "No Category Description"}</td>
+                             <td className="py-2">{category.sku_prefix ?? "No Sku Prefix"}</td>
                              <td className="py-2">
-                                  <div className="flex flex-row justify-end items-center">
-                                        <Link href={route('category.edit', category.id)} className="text-blue-600 mx-1 hover:text-gray-600"> 
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                                              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                                            </svg>
-                                        </Link>
-                                        <button 
-                                        onClick={(e) =>deleteCategory(category)}
-                                        className="text-red-600 mx-1 hover:text-gray-600"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                          <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
-                                        </svg>
-                                        </button>
-                                  </div>  
-                            
+                               <div className="flex flex-row justify-end items-center">
+                                  <Link href={route('category.edit', category.id)} className="text-blue-600 mx-1 hover:text-gray-600"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                       <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                     </svg>
+                                 </Link>
+                                <button 
+                                  onClick={(e) =>deleteCategory(category)}
+                                  className="text-red-600 mx-1 hover:text-gray-600"> 
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                                  </svg>
+                               </button>
+                               </div>
                               </td>
                            </tr>
                         ))}
@@ -168,7 +181,6 @@ const deleteCategory = (category) => {
                     </table>
                   </div> 
                  </div>
-                 {/* pagination not visible */}
                  <Pagination links={categories.meta.links} />
               </div>
           </div>

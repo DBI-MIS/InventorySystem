@@ -18,7 +18,6 @@ export default function Create({auth,employees,success}){
     })
     
     const onSubmit = (e) =>{
-        // post function declared above
         e.preventDefault();
         post(route("client.store"));
     }
@@ -31,7 +30,7 @@ export default function Create({auth,employees,success}){
           </div>
         }
         >
-             <Head title="Clients" />
+         <Head title="Clients" />
       <div className="py-6">
       {success && (
                 <div className="bg-green-500 mb-4 py-2 px-4 text-white rounded">

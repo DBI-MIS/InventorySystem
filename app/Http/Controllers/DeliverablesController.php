@@ -25,8 +25,8 @@ class DeliverablesController extends Controller
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
+        if (request("dr_no")) {
+            $query->where("dr_no", "like", "%" . request("dr_no") . "%");
         }
 
         $deliverablePivot = Item::query()->with('deliverable_items')->get();

@@ -14,7 +14,6 @@ export default function Create({auth, category }){
     });
 
     const onSubmit = (e) =>{
-        // post function declared above
         e.preventDefault();
         post(route("category.update",category.id));
     }
@@ -27,8 +26,8 @@ export default function Create({auth, category }){
           </div>
         }
         >
-             <Head title="Categories" />
-      <div className="py-12">
+         <Head title="Categories" />
+        <div className="py-12">
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
               <form onSubmit={onSubmit} 
@@ -67,6 +66,7 @@ export default function Create({auth, category }){
                             value={data.sku_prefix}
                             className="mt-1 block w-full"
                             isFocused={true}
+                            maxLength={3}
                             onChange={e => setData("sku_prefix", e.target.value)}
                             />
                             <InputError message={errors.sku_prefix} className="mt-2"/>
@@ -84,7 +84,7 @@ export default function Create({auth, category }){
                         </div>
                     </form>
                 </div>
-            </div>
+          </div>
         </div>
         </AuthenticatedLayout>
     )
