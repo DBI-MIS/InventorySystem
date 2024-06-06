@@ -14,6 +14,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, deliverab
         address: deliverable.address || "",
         dr_no:     deliverable.dr_no || "",
         rs_no:     deliverable.rs_no || "",
+        client_id: deliverable.client_id || "",
         dr_date: deliverable.dr_date || "",
         dr_qty:   deliverable.dr_qty || "",
         list_item_id:   existingItemsIds || "",

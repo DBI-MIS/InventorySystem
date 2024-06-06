@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreFormDataRequest;
 use App\Http\Requests\StoreItemRequest;
 use App\Models\Receiving;
 use App\Http\Requests\StoreReceivingRequest;
@@ -271,14 +272,25 @@ public function show(Receiving $receiving, Request $request)
             
         ]);
     }
-    public function submitItem(StoreItemRequest $request)
+    public function submitItem(StoreFormDataRequest $formData)
     {
-        // dd($request);
-        $validatedData = $request->validated();
-        dd($validatedData);
-        $item = Item::create($validatedData);
-        dd($item);
-        return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
-        // return response()->json(['success' => true]);
-    }
+         // dd($formData);
+         $validatedData = $formData->validated();
+         // dd($validatedData);
+        Item::create($validatedData);
+        $item = Item::query()->latest('created_at')->first();
+     //    dd($item);
+         $newItem = $item->id;
+         // dd($newItem );
+         // return redirect()->route('receiving.create')->with($item);
+         // return redirect()->back()->with('newItem', $newItem);
+         // return Inertia( "Receiving/Create");
+         // return Redirect::back()->with('newItem', $newItem);
+      
+         return inertia("Receiving/Create", [
+             'newItem' => $item->id]);
+             
+     // });
+     }
+    
 }

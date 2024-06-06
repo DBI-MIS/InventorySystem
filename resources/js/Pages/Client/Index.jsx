@@ -127,13 +127,13 @@ const deleteClient = (client) => {
                          sortChanged={sortChanged}>Name</TableHeading>
                          {/* <TableHeading  className=""   name="description"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                          sortChanged={sortChanged}>Address</TableHeading> */}
-                          <TableHeading className=""   name="sku_prefix"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                          <TableHeading className=""   name="contact_person"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                          sortChanged={sortChanged}>Contact Person</TableHeading>
-                            <TableHeading  className=""   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                            <TableHeading  className=""   name="contact_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                          sortChanged={sortChanged}>Contact No</TableHeading>
                          {/* <TableHeading  className=""   name="description"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                          sortChanged={sortChanged}>Tin No</TableHeading> */}
-                          <TableHeading className=""   name="sku_prefix"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                          <TableHeading className=""   name="status"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                          sortChanged={sortChanged}>Status</TableHeading>
                           {/* <TableHeading className=""   name="sku_prefix"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                          sortChanged={sortChanged}>Remarks</TableHeading> */}

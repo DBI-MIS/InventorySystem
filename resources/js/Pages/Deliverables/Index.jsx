@@ -7,24 +7,26 @@ import { Alert } from "@material-tailwind/react";
 import React from "react";
 
 export default function Index({ auth, deliverabless, queryParams = null, success }) {
+
+  console.log(deliverabless);
   const [open, setOpen] = React.useState(true);
     queryParams = queryParams || {};
 
-  const searchFieldChanged = (project, value, ) => {
+  const searchFieldChanged = (name, value, ) => {
     if(value){
-      queryParams[project] = value;
+      queryParams[name] = value;
     }
     else{
-      delete queryParams[project];
+      delete queryParams[name];
     }
     // change the url path everytime option changes
     router.get(route('deliverables.index'), queryParams)
   };
 
-  const onKeyPress = (project, e) => {
+  const onKeyPress = (name, e) => {
     if (e.key !== 'Enter') return;
 
-    searchFieldChanged(project, e.target.value);
+    searchFieldChanged(name, e.target.value);
 };
 const sortChanged = (name) => { 
   if (name === queryParams.sort_field) {

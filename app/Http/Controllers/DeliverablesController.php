@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Deliverables;
 use App\Http\Requests\StoreDeliverablesRequest;
 use App\Http\Requests\UpdateDeliverablesRequest;
+use App\Http\Resources\ClientResource;
 use App\Http\Resources\DeliverablesResource;
 use App\Http\Resources\ItemResource;
+use App\Models\Client;
 use App\Models\Item;
 use App\Models\Receiving;
 use Illuminate\Support\Facades\DB;
@@ -73,9 +75,11 @@ class DeliverablesController extends Controller
     public function create()
     {
         $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
-
+        $clients = Client::query()->orderBy('name', 'asc')->get();
+        // $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
         return inertia("Deliverables/Create", [
-            "deliverablesss" => ItemResource::collection($deliverablesss)
+            "deliverablesss" => ItemResource::collection($deliverablesss),
+            "clients" => ClientResource::collection($clients)
         ]);
     }
 
@@ -85,6 +89,7 @@ class DeliverablesController extends Controller
     public function store(StoreDeliverablesRequest $request)
     {
         $data = $request->validated();
+        
         $items = $data['list_item_id'];
         $deliverable=Deliverables::create($data);
         $deliverable->itemsDeliverables()->attach($items);

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('remarks')->nullable();
             $table->string('status')->default('null');
             $table->string('list_item_id')->nullable();
+            $table->foreignId('client_id')->constrained('clients');
             $table->timestamps();
         });
     }

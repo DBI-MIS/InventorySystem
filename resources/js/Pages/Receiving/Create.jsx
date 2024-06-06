@@ -5,15 +5,25 @@ import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Inertia } from "@inertiajs/inertia";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-select"
-export default function Create({auth,success, mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
-
+import { usePage } from '@inertiajs/inertia-react';
+import React from "react";
+export default function Create({auth,success,compact,response ,mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
+    // console.log(compact);
+    //   console.log("newly Added : " + newItem)
+    const { flash } = usePage();
+    const [successMessage, setSuccessMessage] = React.useState(null);
+  
+    React.useEffect(() => {
+      setSuccessMessage(flash.message); 
+    }, [flash]);
     console.log(items);
     // MAIN FORM OF RECEIVING
-   const {data, setData, post,errors} = useForm({
+   const {data, setData,post,errors} = useForm({
         client_id: '',
         mrr_no: '',
         group_item_id: '',
@@ -22,7 +32,7 @@ export default function Create({auth,success, mrr_no,items,clients,categories,em
         address:'',
         remarks:'',
     })
-
+// const newItem, setNewItem = 
     const  options = items.data.map(item => ({ //values from the db
         value: item.id,
         label: item.name
@@ -70,15 +80,34 @@ export default function Create({auth,success, mrr_no,items,clients,categories,em
         console.log('Current MODAL data:', formData); 
     }, [formData]);
 
-    //SUBMIT OF MODAL FORM
+   
+
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
-        console.log('Modal submitted with data:', formData);
+    
+        Inertia.post(route('item.submit'), formData)
+        //   .then((response) => {
+        //     setFormData({
+        //         name: '',
+        //         description: '',
+        //         sku: skuu,
+        //         specs: '',
+        //         part_no: '',
+        //         serial_no: '',
+        //         model_no: '',
+        //         uom: '',
+        //         quantity:'',
+        //         status: '',
+        //         remarks:'',
+        //       });
+        //   })
+        //   .catch((error) => {
+        //     console.error('Form submission error:', error);
+        //   });
+      };
+    
         // post(route(" item.storeItem "));
         // Inertia.post('item.submitt', formData);
-        post(route("item.submit"), formData);
-        console.log("submitted:" + formData)
-    };
 
     //SUBMIT OF MAIN FORM
     const onSubmit = (e) =>{
@@ -110,16 +139,15 @@ export default function Create({auth,success, mrr_no,items,clients,categories,em
                         
                          {/* START */}
                         <div className="grid grid-cols-3 gap-2">
-
+                        {successMessage && <p>{successMessage}</p>}
                             {/* 1ST GRID COLUMN */}
                             <div className="col-span-2 grid grid-cols-2 gap-2 content-start"> 
-
                                 <div className="mt-6 col-span-2">
                                     <InputLabel htmlFor="receiving_client_id" value="Client Name"/>
                                     <SelectInput
                                         id="receiving_client_id"
                                         name="client_id"
-                                        className="mt-1 block w-full"
+                                        className="block w-full"
                                         onChange={(e) => setData("client_id", e.target.value)}>
                                             <option value="">Select client </option>
                                             {clients.data.map((client)=>(
@@ -155,8 +183,7 @@ export default function Create({auth,success, mrr_no,items,clients,categories,em
                                 </div>
                             </div>
                                   {/* 2ND GRID COLUMN */}
-                                  <div className="mt-14 col-span-1 grid grid-cols-1 content-start">
-
+                                  <div className="mt-10 col-span-1 grid grid-cols-1 content-start">
                                     <div className="mt-4 col-span-1">
                                         <InputLabel htmlFor="mrr_no" value="MRR No."/>
                                                         <div className=" flex h-[11]">
@@ -208,21 +235,30 @@ export default function Create({auth,success, mrr_no,items,clients,categories,em
                         <div className="my-4">
                             <InputLabel htmlFor="receiving Items" value="Group of Items"/>
                                 <div className="col-span-10 xs:col-span-8">
-                                    <Select
-                                          value={selectedOptions}
-                                         onChange={handleSelectChange}
-                                         className="mt-1 block w-full"
-                                          isMulti={true}
-                                         options={options}
-                                          isSearchable={true}
-                                          placeholder="Select Items"
-                                     >
-                                    </Select>
+                                    <div className="flex flex-row items-center gap-2">
+                                    <div className="w-full ">
+                                        <Select
+                                            value={selectedOptions}
+                                            onChange={handleSelectChange}
+                                            className=" block"
+                                            isMulti={true}
+                                            options={options}
+                                            isSearchable={true}
+                                            placeholder="Select Items"
+                                        >
+                                        </Select>
+                                    </div>
                                     {/* add new item form modal  */}
-                                    <button onClick={(e)=>(e.preventDefault(),setShowModal(true))}
-                                        className=" text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mt-5 mr-5"
-                                        >Add New Item
-                                    </button> 
+                                    <div>
+                                        <button onClick={(e)=>(e.preventDefault(),setShowModal(true))}
+                                            className=" text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-md rounded-lg text-nowrap  px-16 py-2 text-center mr-5"
+                                            >Add New Item
+                                        </button> 
+                                    </div>
+
+                                    </div>
+                                   
+                                    
                                      
                                  </div>
 
@@ -255,11 +291,11 @@ export default function Create({auth,success, mrr_no,items,clients,categories,em
                                                     {selectedItem.name}
                                                     </Link>
                                                 </th>
-                                                <td className="px-3 py-2">{selectedItem.brand.name}</td>
+                                                <td className="px-3 py-2"> {selectedItem.brand && selectedItem.brand.name ? selectedItem.brand.name : 'Not Belong on Any Brands'}</td>
                                                  <td className="px-3 py-2">{selectedItem.category.name}</td>
                                                  <td className="px-3 py-2">{selectedItem.model_no}</td>
                                                  <td className="px-3 py-2">{selectedItem.part_no}</td>
-                                                 <td className="px-3 py-2">{selectedItem.quantity} {selectedItem.uom}</td>
+                                                 <td className="px-3 py-2">{selectedItem.quantity ? (selectedItem.quantity + ' ' + selectedItem.uom) : 'Not Belong'}</td>
                                                  </tr>
                                              );
                                         })}
@@ -284,7 +320,7 @@ export default function Create({auth,success, mrr_no,items,clients,categories,em
                     <ModalReceiving onClose={(e)=>setShowModal(false)} isVisible={showModal} onSubmit={handleNewItemSubmit}>
                                         <div className="">
                                       
-                                           <div className="w-5/6 mx-auto sm:px-6 lg:px-8">
+                                           <div className="q-full sm:px-6 lg:px-8">
                                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                                      <form onSubmit={handleNewItemSubmit} 
                                                     className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" >

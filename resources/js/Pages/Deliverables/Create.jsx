@@ -1,15 +1,17 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
+import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-select";
 
-export default function Create({ auth, deliverablesss }) {
+export default function Create({ auth, deliverablesss, clients }) {
 
-    
+    console.log(clients);
     
   const {data, setData, post,errors} = useForm({
     project: '',
@@ -42,6 +44,24 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
     setData("list_item_id", selectedValues);
 };
 
+// const handleClientChange = (e) => {
+//     const selectedClientId = e.target.value;
+//     // setData("project", selectedClientId);
+//     const selectedClient = clients.data.find(client => client.id === parseInt(selectedClientId));
+
+//     setData(prevData => ({
+//         ...prevData,
+//         'project': selectedClientId,
+//         'projectName': selectedClient ? selectedClient.name : '',
+//         "address": selectedClient ? selectedClient.address : ''
+//     }));
+//     //  setData("project", selectedClientId);
+//     // useEffect(() => {
+//     //     setData('project', selectedClientId);
+//     //   }, [selectedClientId]);
+// };
+
+
 
 
   const onSubmit = (e) =>{
@@ -68,24 +88,26 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                         className="p-4 sm:p8  bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
                            <div className="flex">
                                 <div className="w-full">
-                                    <div className="mt-4  col-span-3">
-                                        <InputLabel htmlFor="receiving_project" value="Project."/>
-                                        <TextInput 
-                                        id="receiving_project"
-                                        type="text"
+                                <div className="mt-4  col-span-3">
+                                        <InputLabel htmlFor="deliverables_project" value="Project."/>
+                                        <SelectInput 
+                                        id="deliverables_project"
                                         name="project"
-                                        value={data.project}
                                         className="mt-1 block w-full"
-                                        isFocused={true}
-                                        onChange={e => setData('project', e.target.value)}
-                                        />
+                                        onChange={(e) => setData("project", e.target.value)}>
+                                            <option value="">Select project</option>
+                                            {clients.data.map((client)=>(
+                                                <option value={client.id} key={client.id}>{client.name}</option>
+                                            ))}
+                                        </SelectInput>
                                         <InputError message={errors.project} className="mt-2"/>
                                     </div>
 
+
                                     <div className="mt-4  col-span-3">
-                                        <InputLabel htmlFor="receiving_address" value="Address."/>
+                                        <InputLabel htmlFor="deliverables_address" value="Address."/>
                                         <TextInput 
-                                        id="receiving_address"
+                                        id="deliverables_address"
                                         type="text"
                                         name="address"
                                         value={data.address}
@@ -99,10 +121,10 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                     <div className="grid grid-cols-8 gap-2">
                                        
                                         <div className=" mt-4  col-span-2 ">
-                                            <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
+                                            <InputLabel htmlFor="deliverables_dr_no" value="DR No."/>
                                             
                                             <TextInput 
-                                                id="receiving_dr_no"
+                                                id="deliverables_dr_no"
                                                 type="text"
                                                 name="dr_no"
                                                 value={data.dr_no} 
@@ -114,9 +136,9 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                             
                                         </div>
                                         <div className="mt-4  col-span-2">
-                                            <InputLabel htmlFor="receiving_rs_no" value="RS No."/>
+                                            <InputLabel htmlFor="deliverables_rs_no" value="RS No."/>
                                             <TextInput 
-                                                id="receiving_rs_no"
+                                                id="deliverables_rs_no"
                                            type="text"
                                            name="rs_no"
                                            value={data.rs_no}
@@ -127,9 +149,9 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                             <InputError message={errors.rs_no} className="mt-2"/>
                                         </div>
                                         <div className="mt-4  col-span-2">
-                                            <InputLabel htmlFor="receiving_dr_qty" value="Qty."/>
+                                            <InputLabel htmlFor="deliverables_dr_qty" value="Qty."/>
                                             <TextInput 
-                                                id="receiving_dr_qty"
+                                                id="deliverables_dr_qty"
                                                 type="number"
                                                 name="dr_qty"
                                                 value={data.dr_qty}
@@ -140,9 +162,9 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                             <InputError message={errors.dr_qty} className="mt-2"/>
                                         </div>
                                         <div className="mt-4  col-span-2">
-                                            <InputLabel htmlFor="receiving_dr_date" value="Date."/>
+                                            <InputLabel htmlFor="deliverables_dr_date" value="Date."/>
                                             <TextInput 
-                                                id="receiving_dr_date"
+                                                id="deliverables_dr_date"
                                                 type="date"
                                                 name="dr_date"
                                                 value={data.dr_date}
@@ -153,6 +175,21 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                             <InputError message={errors.dr_date} className="mt-2"/>
                                         </div>
                                     </div>
+                                
+                                    <div className="mt-4  col-span-3">
+                                        <InputLabel htmlFor="deliverables_remarks" value="Remarks."/>
+                                        <TextAreaInput 
+                                        id="deliverables_remarks"
+                                        type="text"
+                                        name="remarks"
+                                        value={data.remarks}
+                                        className="mt-1 block w-full"
+                                        isFocused={true}
+                                        onChange={e => setData('remarks', e.target.value)}
+                                        />
+                                        <InputError message={errors.remarks} className="mt-2"/>
+                                    </div>
+                                    <br />
                                     
                                     <div className="mt-4">
                                         <InputLabel htmlFor="receiving Items" value="Group of Items"/>

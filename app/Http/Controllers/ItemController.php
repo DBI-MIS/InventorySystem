@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreFormDataRequest;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
@@ -14,6 +16,7 @@ use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Receiving;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class ItemController extends Controller
@@ -91,10 +94,10 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $formData)
+    public function store(StoreItemRequest $request)
     {
-        dd($formData);
-        $data = $formData->validated();
+        // dd($formData);
+        $data = $request->validated();
         // dd($data);
         Item::create($data);
         return to_route('item.index')->with('success', 'Item was created');
@@ -133,14 +136,14 @@ class ItemController extends Controller
         
            
     }
-    public function storeItem(StoreItemRequest $request)
-    {
-        $data = $request->validated();
-        // dd($data);
-        Item::create($data);
-        return to_route('item.index')->with('success', 'Item was created');
-        // Determine where to redirect based on the source
-    }
+    // public function storeItem(StoreItemRequest $request)
+    // {
+    //     $data = $request->validated();
+    //     // dd($data);
+    //     Item::create($data);
+    //     return to_route('item.index')->with('success', 'Item was created');
+    //     // Determine where to redirect based on the source
+    // }
     /**
      * Display the specified resource.
      */
@@ -222,14 +225,36 @@ class ItemController extends Controller
         // $item = Item::create($validatedData);//
         return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
     }
-    public function submit(StoreItemRequest $request)
+    public function submit(StoreFormDataRequest $formData)
     {
-        // dd($request);
-        $validatedData = $request->validated();
-        dd($validatedData);
-        $item = Item::create($validatedData);
-        dd($item);
-        return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
+        // dd($formData);
+        $validatedData = $formData->validated();
+        // dd($validatedData);
+       Item::create($validatedData);
+       $item = Item::query()->latest('created_at')->first();
+    //    dd($item);
+        $newItem = $item->id;
+        // dd($newItem );
+        Inertia::share('success', 'Item created successfully!');
+    Inertia::share('newItem', $item->id);
+        return redirect()->route('receiving.create')->with('message', 'Item created successfully!');
+        // return response()->json([
+        //     'success' => 'Item created successfully!',
+        //     'newItem' => $item->id, // 
+        //     // Pass any other necessary data
+        // ]);
+        // return redirect()->back()->with('newItem', $newItem);
+        // return Inertia( "Receiving/Create");
+        // return Redirect::back()->with('newItem', $newItem);
+        // return Inertia::render('Receiving/Create', [
+        //     'newItem' => $item->id
+        // ]);
+        // return inertia("Receiving/Create", [
+        //     'newItem' => $item->id]);
         // return response()->json(['success' => true]);
+    //     return Inertia('receiving.create',{
+    //         'newItem' => $item->id,
+            
+    // });
     }
 }

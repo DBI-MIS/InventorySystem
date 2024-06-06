@@ -25,7 +25,7 @@ class Deliverables extends Model
         'address',
         'dr_date',
         'dr_qty',
-        'project_id',
+        'client_id',
         'address_id',
         'rs_no_id',
         'remarks',
@@ -39,7 +39,13 @@ class Deliverables extends Model
         return $this->belongsTo(Item::class);
     }
 
-    public function itemsDeliverables(){
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function itemsDeliverables()
+    {
         return $this->belongsToMany(Item::class, 'deliverable_item')->withTimestamps();
     }
 

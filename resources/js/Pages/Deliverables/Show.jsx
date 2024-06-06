@@ -86,6 +86,10 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
                     <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">ADDRESS : </dt>
                     <dd className="text-lg font-light">{deliverable.address}</dd>
                   </div>
+                  <div className="flex flex-col pb-3 mt-2">
+                    <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">REMARKS : </dt>
+                    <dd className="text-lg font-light">{deliverable.remarks}</dd>
+                  </div>
                 </dl>
           </div>
           {/* card #2 */}
