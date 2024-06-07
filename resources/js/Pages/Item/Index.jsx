@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
 import SelectInput from "@/Components/SelectInput";
+import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP } from "@/constants";
 export default function Index({auth,items, queryParams = null, success}) {
 
 const [open, setOpen] = useState(true);
@@ -163,6 +164,8 @@ const deleteItem = (item) => {
                               sortChanged={sortChanged}>Brand</TableHeading>
                                 <TableHeading className=""  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Category</TableHeading>
+                                <TableHeading className=""  name="statuses"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Status</TableHeading>
                                 <TableHeading  className=""  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Qty</TableHeading>
                                 <div className="text-right">Actions</div>
@@ -185,6 +188,11 @@ const deleteItem = (item) => {
                                       </th>
                                       <td className="w-[300px] py-2">{item.brand ? item.brand.name : 'N/A'}</td>
                                       <td className="w-[300px] py-2">{item.category ? item.category.name : 'N/A'}</td>
+                                      <td className="w-[300px] py-2">
+                                        <span className={`px-2 py-1 font-semibold tracking-wide rounded ${ITEM_STATUS_CLASS_MAP[item.statuses] || 'bg-gray-300'} ${item.statuses ? 'text-white' : 'text-black'}`}>
+                                            {ITEM_STATUS_TEXT_MAP[item.statuses] || 'No Status'}
+                                        </span>
+                                      </td>
                                       <td className="w-[100px] py-2 text-nowrap">{item.quantity} {item.uom} </td>
                                       <td className="w-[100px] py-2 text-nowrap">
                                           <div className="flex flex-row justify-end items-center">

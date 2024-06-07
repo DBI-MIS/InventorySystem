@@ -42,6 +42,11 @@ class Deliverables extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    public function receiving()
+    {
+        return $this->hasMany(Receiving::class);
+    }
+    
 
     public function itemsDeliverables()
     {

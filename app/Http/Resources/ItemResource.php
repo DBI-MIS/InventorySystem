@@ -37,8 +37,8 @@ class ItemResource extends JsonResource
             'location_id' => $this->location_id,
             'employee_id' => $this->employee_id,
             'location' => new LocationResource($this->location),
-            'employee' => new EmployeeResource($this->brand),
-            'status' => $this->status,
+            'employee' => new EmployeeResource($this->employee),
+            'statuses' => $this->statuses,
             'remark' => $this->remark,
         ];
     }

@@ -12,26 +12,28 @@ import { useState } from "react";
 import Select from "react-select"
 import { usePage } from '@inertiajs/inertia-react';
 import React from "react";
-export default function Create({auth,success,compact,response ,mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
+export default function Create({auth,success,compact,response,delivers ,mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
     // console.log(compact);
     //   console.log("newly Added : " + newItem)
-    const { flash } = usePage();
-    const [successMessage, setSuccessMessage] = React.useState(null);
+    // const { flash } = usePage();
+    // const [successMessage, setSuccessMessage] = React.useState(null);
   
-    React.useEffect(() => {
-      setSuccessMessage(flash.message); 
-    }, [flash]);
-    console.log(items);
+    // React.useEffect(() => {
+    //   setSuccessMessage(flash.message); 
+    // }, [flash]);
+    console.log(delivers);
+  
     // MAIN FORM OF RECEIVING
    const {data, setData,post,errors} = useForm({
         client_id: '',
         mrr_no: '',
         group_item_id: '',
         si_no:'',
-        dr_no:'',
+        // dr_no:'',
         address:'',
         remarks:'',
     })
+    console.log("CUrrent Data:" + data)
 // const newItem, setNewItem = 
     const  options = items.data.map(item => ({ //values from the db
         value: item.id,
@@ -79,6 +81,7 @@ export default function Create({auth,success,compact,response ,mrr_no,items,clie
     useEffect(() => {
         console.log('Current MODAL data:', formData); 
     }, [formData]);
+    console.log(data);
 
    
 
@@ -111,7 +114,7 @@ export default function Create({auth,success,compact,response ,mrr_no,items,clie
 
     //SUBMIT OF MAIN FORM
     const onSubmit = (e) =>{
-        alert("hi");
+        // alert("hi");
         e.preventDefault();
         post(route("receiving.store"));
      }
@@ -139,7 +142,7 @@ export default function Create({auth,success,compact,response ,mrr_no,items,clie
                         
                          {/* START */}
                         <div className="grid grid-cols-3 gap-2">
-                        {successMessage && <p>{successMessage}</p>}
+                        {/* {successMessage && <p>{successMessage}</p>} */}
                             {/* 1ST GRID COLUMN */}
                             <div className="col-span-2 grid grid-cols-2 gap-2 content-start"> 
                                 <div className="mt-6 col-span-2">
@@ -211,8 +214,22 @@ export default function Create({auth,success,compact,response ,mrr_no,items,clie
                                                         />
                                                         <InputError message={errors.si_no} className="mt-2"/>
                                         </div>
+                                        <div className="t-4 col-span-1">
+                                            <InputLabel htmlFor="receiving_deliverable_id" value="DR No."/>
+                                            <SelectInput
+                                                id="receiving_deliverable_id"
+                                                name="deliverable_id"
+                                                className="block w-full"
+                                                onChange={(e) => setData("deliver_id", e.target.value)}>
+                                                    <option value="">Select DR No </option>
+                                                    {delivers.data.map((deliver)=>(
+                                                        <option value={deliver.id} key={deliver.id}>{deliver.dr_no}</option>
 
-                                        <div className="mt-4 col-span-1">
+                                                        ))}
+                                            </SelectInput>
+                                            <InputError message={errors.deliver_id} className="mt-2"/>
+                                        </div>
+                                        {/* <div className="mt-4 col-span-1">
                                         <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
                                                         <TextInput 
                                                             id="receiving_dr_no"
@@ -224,7 +241,7 @@ export default function Create({auth,success,compact,response ,mrr_no,items,clie
                                                             onChange={e => setData('dr_no', e.target.value)}
                                                         />
                                                         <InputError message={errors.dr_no} className="mt-2"/>
-                                        </div>
+                                        </div> */}
                                         
                                     </div>
 

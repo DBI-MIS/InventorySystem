@@ -45,7 +45,7 @@ class UpdateItemRequest extends FormRequest
                 "employee_id" => ['required',
                 'exists:employees,id',
                 ],
-                'status' => ['nullable','max:255'],
+                'statuses' => ['nullable','max:255'],
                 "remark" => ['nullable','string'],
             ];
     }

@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Item extends Model
 {
-    protected $casts = [ 'id' => 'string' ,];
+    protected $casts =
+     [ 'id' => 'string' ,
+    //  'statuses' => 'array',
+];
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'sku_prefix',
@@ -24,7 +27,7 @@ class Item extends Model
         'quantity',
         'location_id',
         'employee_id',
-        'status',
+        'statuses',
         'remark',
     
     ];

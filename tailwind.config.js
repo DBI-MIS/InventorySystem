@@ -11,6 +11,7 @@ module.exports = withMT( {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx',
+        './resources/js/*.jsx',
     ],
 
     theme: {
@@ -24,6 +25,11 @@ module.exports = withMT( {
                 "third": "#5b84d6",
                 "fourth": "#84a3e0",
                 "to-fuchsia-600": "#c026d3",
+                "crimson": "#9f1239",
+                "emerald": "#10b981",
+                "stone": "#B7B09C",
+                "slate": "#64748b",
+                "sky": "#0369a1",
             },
             textColor: {
                 "third": "#6b90da",
@@ -32,9 +38,9 @@ module.exports = withMT( {
                 
             },
             fontSize: {
-                "s":"10px",
-                "m":"11px",
-                "sml":"12px"
+                // "s":"10px",
+                // "m":"11px",
+                // "sml":"12px"
             }
 
 

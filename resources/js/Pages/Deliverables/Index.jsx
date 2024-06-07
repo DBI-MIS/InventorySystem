@@ -145,6 +145,7 @@ const deleteDeliverables = (deliverable) => {
                             <th className="pr-10" name="address_id">ADDRESS</th>
                             <TableHeading className="pr-10" name="dr_date"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DATE</TableHeading>
                             <th className="pr-10" name="item_qty">QTY</th>
+                            <th className="px-3 py-3"></th>
                            
 
                         </tr>

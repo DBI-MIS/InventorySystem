@@ -75,7 +75,11 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 <br />
                                 <NavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
-                                    <Deliver className="block h-9 w-auto fill-current  " /> 
+                                    <Deliver className="block h-7 w-auto fill-current  " /> 
+                                </NavLink>
+                                <br />
+                                <NavLink href={route('stockrequisition.index')} active={route().current('stockrequisition.index')}>
+                                    <Deliver className="block h-7 w-auto fill-current  " /> 
                                 </NavLink>
                                 
                                 

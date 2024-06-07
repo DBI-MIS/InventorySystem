@@ -29,11 +29,11 @@ class StoreReceivingRequest extends FormRequest
         'group_item_id' => [
             'nullable',
             'exists:items,id'],
-        "client_id" => ['nullable', 'max:255'],
-        "si_no" => ['required', 'max:255'],
-        "dr_no" => ['required', 'max:255'],
-        "address" => ['nullable','string'],
-        "remarks" => ['nullable','string'],
+        "client_id"=>['nullable', 'max:255'],
+        "si_no" =>['required', 'max:255'],
+        "deliver_id"=>['exists:deliverables,id'],
+        "address"=>['nullable','string'],
+        "remarks"=>['nullable','string'],
     ];
     }
 }

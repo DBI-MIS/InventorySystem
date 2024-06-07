@@ -6,7 +6,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
 import React from "react";
 import TextInput from "@/Components/TextInput";
-export default function Index({auth,receivings,  queryParams = null, success}) {
+export default function Index({auth,receivings, queryParams = null, success}) {
   const [open, setOpen] = React.useState(true);
 queryParams = queryParams || {};
   const searchFieldChanged = (mrr_no, value, ) => {
@@ -111,7 +111,7 @@ const deleteReceiving = (receiving) => {
                               sortChanged={sortChanged}>Client Name</TableHeading>
                                 <TableHeading  className="pr-10"   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>S.I. No.</TableHeading>
-                                <TableHeading  className="pr-2"   name="brand_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                <TableHeading  className="pr-2"   name="deliver"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>D.R No.</TableHeading>
                                <TableHeading className="pr-10"  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Address</TableHeading>
@@ -146,7 +146,8 @@ const deleteReceiving = (receiving) => {
                                       </td>
                                       <td className="px-3 py-2 text-nowrap">{receiving.client_id}</td>
                                       <td className="px-3 py-2 text-nowrap">{receiving.si_no}</td>
-                                      <td className="px-3 py-2 text-nowrap">{receiving.dr_no}</td>
+                                      {/* <td className="px-3 py-2 text-nowrap">{receiving.deliverable.dr_no ?? "No DR No"}</td> */}
+                                      <td className="px-3 py-2 text-nowrap">{receiving.deliver.dr_no}</td>
                                       <td className="px-3 py-2">{receiving.address}</td>
                                       {/* <td className="px-3 py-2">{receiving.remarks}</td> */}
                                       {/* <td className="px-3 py-2">{receiving.created_by}</td> */}

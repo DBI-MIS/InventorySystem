@@ -24,7 +24,8 @@ return new class extends Migration
             $table->string('status')->default('null');
             $table->string('list_item_id')->nullable();
             // $table->foreignIdFor(Client::class)->constrained();
-            $table->foreignId('client_id')->constrained('clients');
+            // $table->foreignId('client_id')->constrained('clients');
+             $table->foreignIdFor(Client::class)->nullable();
             $table->timestamps();
         });
     }

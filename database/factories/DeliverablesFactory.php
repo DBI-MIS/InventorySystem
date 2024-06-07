@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,6 +24,7 @@ class DeliverablesFactory extends Factory
             'address'=> fake()->address(),
             'dr_date'=> now(),
             'dr_qty' => rand(1, 10),
+            'client_id'=>Client::factory(),
             'created_at' => time(),
             'updated_at' => time(),
             'remarks'=> fake()->realText(),

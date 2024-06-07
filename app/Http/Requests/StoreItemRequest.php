@@ -49,7 +49,7 @@ class StoreItemRequest extends FormRequest
           "employee_id" => [
           'exists:employees,id',
           ],
-          'status' => ['max:255'],
+          'statuses' => ['max:255'],
           "remark" => ['max:255'],
       ];
   }

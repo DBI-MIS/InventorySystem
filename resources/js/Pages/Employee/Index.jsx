@@ -141,6 +141,7 @@ const deleteEmployee = (employee) => {
 
                       <th className="px-3 py-3 text-right">Actions</th>
                       </tr>
+                      
                     </thead>
                   
                     <tbody>

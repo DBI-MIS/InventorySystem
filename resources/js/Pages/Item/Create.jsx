@@ -4,8 +4,10 @@ import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { ITEM_STATUS_TEXT_MAP } from "@/constants";
 import { Head, Link, useForm} from "@inertiajs/react";
-
+import { useState } from "react";
+import Select from 'react-select';
 
 export default function Create({auth,brands,sku, categories,employees,locations,success,mrrData}){
 
@@ -20,10 +22,22 @@ export default function Create({auth,brands,sku, categories,employees,locations,
         model_no: '',
         uom: '',
         quantity:'',
-        status: '',
+        statuses: '',
         remark:'',
         
     })
+    const statusesOptions = Object.keys(ITEM_STATUS_TEXT_MAP).map((key) => ({
+        value: key,
+        label: ITEM_STATUS_TEXT_MAP[key],
+      }));
+
+    //  const statusesOptions =useState(["hi", "hello"]);
+     const [isClearable, setIsClearable] = useState(true);
+     const [isSearchable, setIsSearchable] = useState(true);
+     const [isDisabled, setIsDisabled] = useState(false);
+     const [isLoading, setIsLoading] = useState(false);
+     const [isRtl, setIsRtl] = useState(false);
+  
     const onSubmit = (e) =>{
         // post function declared above
         e.preventDefault();
@@ -219,19 +233,64 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                     />
                           </div>
                         </div>
-                         
-
-                          <div className="mt-4 col-span-1">
-                                <InputLabel htmlFor="item_employee_id" value="Status"/>
-                                <TextInput
-                                    id="item_status"
-                                    type="text"
-                                    name="status"
-                                    className="mt-1 block w-full"
-                                    onChange={(e) => setData("status", e.target.value)}
-                                />
-                                <InputError message={errors.item_status} className="mt-2"/>
+                        {/* <div className="mt-4 col-span-1">
+                          <InputLabel htmlFor="item_statuses" value="Status"/>
+                          <Select
+                                className="basic-single"
+                                classNamePrefix="select"
+                                isDisabled={isDisabled}
+                                isLoading={isLoading}
+                                isClearable={isClearable}
+                                isRtl={isRtl}
+                                defaultValue={data.statuses || []} 
+                                onChange={(selectedOptions) => setData({ ...data, statuses: selectedOptions.map(option => option.value) })} // Update with selected options
+                                placeholder="Select Statuses (multiple allowed)"
+                                isMulti 
+                                isSearchable={isSearchable}
+                                name="statuses"
+                                options={statusesOptions}
+                            />
+                                <InputError message={errors.statuses} className="mt-2"/>
+                            </div> */}
+                        <div className="mt-4 col-span-1">
+                          <InputLabel htmlFor="item_statuses" value="Status"/>
+                          <Select
+                                className="basic-single"
+                                classNamePrefix="select"
+                                isDisabled={isDisabled}
+                                isLoading={isLoading}
+                                isClearable={isClearable}
+                                isRtl={isRtl}
+                                defaultValue={data.statuses} // Set initial value if needed
+                                onChange={({ value }) => setData({ ...data, statuses: value })}
+                                isSearchable={isSearchable}
+                                // onChange={e => setData('statuses', e.target.value)}
+                                name="statuses"
+                                options={statusesOptions}
+                            />
+                                <InputError message={errors.statuses} className="mt-2"/>
                             </div>
+
+                          {/* <div className="mt-4 col-span-1">
+                          <InputLabel htmlFor="item_statuses" value="Status"/>
+                                <SelectInput
+                                id="item_statuses"
+                                name="statuses"
+                                className="mt-1 block w-full"
+                                onChange={e => setData('statuses', e.target.value)} >
+                                    <option value="">Select Status </option>
+                                    <option value="new">Brand New</option>
+                                    <option value="used">Used</option>
+                                    <option value="defective">Defective</option>
+                                    <option value="for_repair">For Repair</option>
+                                    <option value="for_disposal">For Disposal</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="reviewing">Reviewing</option>
+                                    <option value="unassigned">Unassigned</option>
+                                    <option value="processed">Processed</option>
+                                </SelectInput>
+                                <InputError message={errors.statuses} className="mt-2"/>
+                            </div> */}
 
                             <div className="mt-4 col-span-1">
                                 <InputLabel htmlFor="item_serial_no" value="Serial No."/>

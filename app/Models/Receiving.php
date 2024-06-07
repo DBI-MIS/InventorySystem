@@ -19,7 +19,7 @@ class Receiving extends Model
         'group_item_id', 
         'client_id',
         'si_no',
-        'dr_no',
+        'deliver_id',
         'address',
         'location_id',
         'employee_id',
@@ -45,6 +45,9 @@ class Receiving extends Model
     }
     public function client(){
         return $this->hasOne(Client::class);
+    }
+    public function deliver(){
+        return $this->belongsTo(Deliverables::class);
     }
     // public function createdBy(){
     //     //relation of uodated and createdby

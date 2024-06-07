@@ -41,7 +41,7 @@ class ItemController extends Controller
         if(request("category_id")){
            $query->where('category_id', (request("category_id")));
         }
-        $items = $query->with('category')->orderBy($sortField, $sortDirection)->paginate(20);
+        $items = $query->with('category','brand')->orderBy($sortField, $sortDirection)->paginate(20);
 
         return inertia("Item/Index", [
             "items" => ItemResource::collection($items),
@@ -149,14 +149,11 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     { 
-        $onlySoftDeletedItems = Item::onlyTrashed()->get();
-
+      
         return inertia('Item/Show', [
             'item' => new ItemResource($item),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
-            $onlySoftDeletedItems,
-            // $tryDeleted,
             
         ]);
     }

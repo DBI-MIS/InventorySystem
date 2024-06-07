@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateReceivingRequest extends FormRequest
+class UpdateStockRequisitionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,15 +22,7 @@ class UpdateReceivingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "client_id" => ['nullable', 'max:255'],
-            "mrr_no" => ['nullable', 'max:255'],
-            'group_item_id' => [
-                'nullable',
-                'exists:items,id'],
-            "si_no" => ['required', 'max:255'],
-            "deliver_id" => ['exists:deliverables,id'],
-            "address" => ['nullable','string'],
-            "remarks" => ['nullable','string'],
+            //
         ];
     }
 }

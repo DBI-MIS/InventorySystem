@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Client;
+use App\Models\Deliverables;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
@@ -53,25 +55,25 @@ class ReceivingFactory extends Factory
             '20230101-0015',
             
         ]);
-        $dr_no = $this->faker->randomElement([
+        // $dr_no = $this->faker->randomElement([
             
-            'DR-20230501-001',
-            'DR-20230501-002',
-            'DR-20230501-003',
-            'DR-20230501-004',
-            'DR-20230501-005',
-            'DR-20230501-006',
-            'DR-20230501-007',
-            'DR-20230501-008',
-            'DR-20230501-009',
-            'DR-20230501-010',
-            'DR-20230501-011',
-            'DR-20230501-012',
-            'DR-20230501-013',
-            'DR-20230501-014',
-            'DR-20230501-015',
+        //     'DR-20230501-001',
+        //     'DR-20230501-002',
+        //     'DR-20230501-003',
+        //     'DR-20230501-004',
+        //     'DR-20230501-005',
+        //     'DR-20230501-006',
+        //     'DR-20230501-007',
+        //     'DR-20230501-008',
+        //     'DR-20230501-009',
+        //     'DR-20230501-010',
+        //     'DR-20230501-011',
+        //     'DR-20230501-012',
+        //     'DR-20230501-013',
+        //     'DR-20230501-014',
+        //     'DR-20230501-015',
 
-        ]);
+        // ]);
         $address = $this->faker->randomElement([
             
             '123 Rizal Street, Barangay San Roque,  ',
@@ -99,9 +101,10 @@ class ReceivingFactory extends Factory
         return [
             'mrr_no'=> $mrr_no,
             // 'group_item_id'=>rand(1, 30),
-            'client_id'=>$client_name,
+            'client_id'=> Client::factory(),
             'si_no'=>$si_no,
-            'dr_no'=>$dr_no,
+            // 'deliver_id'=>fake()->regexify('[0-9]{12}'),
+            'deliver_id'=> Deliverables::factory(),
             'address'=>$address,
             // 'location_id'=> 1,
             // 'employee_id'=> 1,

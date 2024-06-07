@@ -24,12 +24,20 @@ class ItemFactory extends Factory
             'sets'=> 'Sets',
         ]);
 
-        $status = $this->faker->randomElement([
-            'Pending',
-            'Delivered',
-            'Reviewing',
-            'Unassigned',
-            'Processed',
+        $statuses = $this->faker->randomElement([
+            'pending',
+            'delivered',
+            'reviewing',
+            'unassigned',
+            'processed',
+            'pending',
+            'new',
+            'used',
+            'defective',
+            'for_repair',
+            'for_disposal',
+            ''
+            
         ]);
 
         $products = $this->faker->randomElement([
@@ -142,7 +150,7 @@ class ItemFactory extends Factory
         return [
             'sku'=> rand(6000,6300),
             'name'=> $products,
-            'brand_id'=>rand(1,15),
+            'brand_id'=>rand(1,7),
             'category_id'=>rand(1,4),
             'description'=> fake()->sentence('4'),
             'specs'=> fake()->realText(),
@@ -153,7 +161,7 @@ class ItemFactory extends Factory
             'quantity'=>random_int('5','999'),
             'location_id'=>rand(1,5),
             'employee_id'=>rand(1,4),
-            'status'=> $status,
+            'statuses'=> $statuses,
             'created_at' => time(),
             'updated_at' => time(),
             'remark'=> fake()->realText(),

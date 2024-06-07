@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateReceivingRequest;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ClientResource;
+use App\Http\Resources\DeliverablesResource;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\LocationResource;
@@ -16,6 +17,7 @@ use App\Http\Resources\ReceivingResource;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Client;
+use App\Models\Deliverables;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
@@ -30,6 +32,8 @@ class ReceivingController extends Controller
     public function index()
     {
          $query = Receiving::query() ;
+        //  $itemssss = Receiving::with('deliverables')->get();
+        //  dd($itemssss );
          $sortField = request("sort_field", 'created_at');
          $sortDirection = request("sort_direction", "desc");
          if (request("mrr_no")) {
@@ -53,7 +57,7 @@ class ReceivingController extends Controller
 
          $receivings = $query->orderBy($sortField, $sortDirection)
          ->paginate(10);
-         
+        //  dd($query);
          return inertia("Receiving/Index", [
              "receivings" => ReceivingResource::collection($receivings),
              'queryParams' => request()-> query() ?: null,
@@ -74,7 +78,10 @@ class ReceivingController extends Controller
        $employees = Employee::query()->orderBy('name', 'asc')->get();
        $locations = Location::query()->orderBy('name', 'asc')->get();
        $clients =  Client::select('name')->distinct()->orderBy('name', 'asc')->get();
+    //    $deliverables =  Deliverables::select('dr_no')->distinct()->orderBy('dr_no', 'asc')->get();
+      $delivers = Deliverables::query()->orderBy('dr_no', 'asc')->get();
        $sku = $this->generateSkuId();
+    //    dd($deliverables);
        $input['sku'] = $sku;
        $mrrData = Receiving::select('mrr_no')->distinct()->get();
         //  for Mrr No
@@ -91,6 +98,7 @@ class ReceivingController extends Controller
           'employees' =>  EmployeeResource::collection($employees),
           'locations' =>  LocationResource::collection($locations),
           'clients' => ClientResource::collection($clients),
+          'delivers' => DeliverablesResource::collection($delivers),
           'mrr_no' =>  $mrr_no,
           'skuu' => $sku
       ]);

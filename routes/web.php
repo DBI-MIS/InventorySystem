@@ -17,9 +17,11 @@ use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceivingController;
 use App\Http\Controllers\ReceivingItemController;
+use App\Http\Controllers\StockRequisitionController;
 use App\Models\Item;
 use App\Models\Receiving;
 use App\Models\ReceivingItem;
+use App\Models\StockRequisition;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::resource('itemMrr', ItemController::class);
         Route::resource('stocksearch', StockSearchController::class);
         Route::resource('deliverables', DeliverablesController::class);
+        Route::resource('stockrequisition', StockRequisitionController::class);
         Route::post('/receivings/{receivingId}/items/{itemId}',[ ReceivingController::class,'assignItem' ]);
         Route::resource('preview', PreviewController::class);
         Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;

@@ -1,4 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { ITEM_STATUS_CLASS_MAP, ITEM_STATUS_TEXT_MAP } from "@/constants";
 import {Head, Link}  from "@inertiajs/react";
 export default function Show({auth, item,category,onlySoftDeletedItems,tryDeleted, queryParams, success}){
     console.log(item)
@@ -96,7 +97,11 @@ export default function Show({auth, item,category,onlySoftDeletedItems,tryDelete
 
                             <div className="flex flex-col pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Status : </dt>
-                            <dd className="text-lg font-light">{item.status}</dd>
+                            <dd className="text-lg font-light"> 
+                                <span className={`px-2 py-1 font-semibold tracking-wide rounded ${ITEM_STATUS_CLASS_MAP[item.status] || 'bg-gray-300'} ${item.status ? 'text-white' : 'text-black'}`}>
+                                    {ITEM_STATUS_TEXT_MAP[item.status] || 'No Status'}
+                                </span>
+                            </dd>
                             </div>
 
                             <div className="flex flex-col pb-3 mt-2">
