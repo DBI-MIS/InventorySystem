@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('dr_date')->nullable();
             $table->string('dr_qty')->nullable();
             $table->string('remarks')->nullable();
-            $table->string('status')->default('null');
+            $table->string('status')->default('pending');
             $table->string('list_item_id')->nullable();
             // $table->foreignIdFor(Client::class)->constrained();
             // $table->foreignId('client_id')->constrained('clients');

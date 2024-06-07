@@ -30,6 +30,9 @@ class DashboardController extends Controller
         $totalDeliverable = Deliverables::query()
             ->count('dr_no');
 
+            $totalDeliverableDelivered = Deliverables::query()->where('status', 'pending')
+            ->count();
+
         $totalReceiving = Receiving::query()
             ->count('mrr_no');
 
@@ -41,6 +44,7 @@ class DashboardController extends Controller
             'totalCategory',
             'totalClient',
             'totalDeliverable',
+            'totalDeliverableDelivered',
             'totalReceiving',
         ));
     }

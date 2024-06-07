@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ auth, totalName, formattedTotalQuantity, totalCategory, totalClient, totalDeliverable, totalReceiving }) {
+export default function Dashboard({ auth, totalName, formattedTotalQuantity, totalCategory, totalClient, totalDeliverable, totalReceiving, totalDeliverableDelivered }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -14,8 +14,8 @@ export default function Dashboard({ auth, totalName, formattedTotalQuantity, tot
 
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <h3 className='text-slate-700 font-light text-xl'>
-                                Total Items
+                            <h3 className='text-slate-700 font-light text-md'>
+                               No. of Items
                             </h3>
                             <p className='mr-2 text-6xl'>{ totalName ?? "No Data"}</p>
                             
@@ -24,50 +24,51 @@ export default function Dashboard({ auth, totalName, formattedTotalQuantity, tot
 
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                        <h3 className='text-green-600 font-semibold text-2xl'>
-                                Total Item Qty
+                        <h3 className='text-slate-700 font-light text-md'>
+                                Total Item Quantity
                             </h3>
-                            <span className='mr-2 text-4xl'>{ formattedTotalQuantity ?? "No Data" }</span>
+                            <span className='mr-2 text-6xl'>{ formattedTotalQuantity ?? "No Data" }</span>
                             
                         </div>
                     </div>
 
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                        <h3 className='text-green-600 font-semibold text-2xl'>
-                                Total Item Categories
+                        <h3 className='text-slate-700 font-light text-md'>
+                                No. of Categories
                             </h3>
-                            <span className='mr-2 text-4xl'>{ totalCategory ?? "No Data" }</span>
+                            <span className='mr-2 text-6xl'>{ totalCategory ?? "No Data" }</span>
                             
                         </div>
                     </div>
 
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                        <h3 className='text-green-600 font-semibold text-2xl'>
-                                Total Clients
+                        <h3 className='text-slate-700 font-light text-md'>
+                                No. of Clients
                             </h3>
-                            <span className='mr-2 text-4xl'>{ totalClient ?? "No Data" }</span>
+                            <span className='mr-2 text-6xl'>{ totalClient ?? "No Data" }</span>
                             
                         </div>
                     </div>
 
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                        <h3 className='text-green-600 font-semibold text-2xl'>
-                                Total DR
+                        <h3 className='text-slate-700 font-light text-md'>
+                                No. of DR
                             </h3>
-                            <span className='mr-2 text-4xl'>{ totalDeliverable ?? "No Data" }</span>
+                            <span className='mr-2 text-6xl'>{ totalDeliverableDelivered ?? "0" }</span>
+                            <span className='mr-2 text-6xl'>/{ totalDeliverable ?? "No Data" }</span>
                             
                         </div>
                     </div>
 
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                        <h3 className='text-green-600 font-semibold text-2xl'>
-                                Total MRR
+                        <h3 className='text-slate-700 font-light text-md'>
+                                No. of MRR
                             </h3>
-                            <span className='mr-2 text-4xl'>{ totalReceiving ?? "No Data" }</span>
+                            <span className='mr-2 text-6xl'>{ totalReceiving ?? "No Data" }</span>
                             
                         </div>
                     </div>

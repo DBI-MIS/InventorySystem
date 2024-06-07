@@ -261,7 +261,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 isLoading={isLoading}
                                 isClearable={isClearable}
                                 isRtl={isRtl}
-                                defaultValue={data.statuses} // Set initial value if needed
+                                defaultValue={data.statuses} 
                                 onChange={({ value }) => setData({ ...data, statuses: value })}
                                 isSearchable={isSearchable}
                                 // onChange={e => setData('statuses', e.target.value)}
