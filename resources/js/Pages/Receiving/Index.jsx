@@ -103,29 +103,33 @@ const deleteReceiving = (receiving) => {
                           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
                             <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                               <tr className="text-nowrap ">
-                              <TableHeading  className="pr-10"  name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>ID</TableHeading>
-                              <TableHeading  className="pr-10"  name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>MRR No. </TableHeading>
-                                    <TableHeading  className="pr-10"  name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Client Name</TableHeading>
-                                <TableHeading  className="pr-10"   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>S.I. No.</TableHeading>
-                                <TableHeading  className="pr-2"   name="deliver"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>D.R No.</TableHeading>
-                               <TableHeading className="pr-10"  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Address</TableHeading>
-                              {/* <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Remarks</TableHeading> */}
-                              <TableHeading  className="pr-10"  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Action</TableHeading>
+                                <TableHeading  className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                  sortChanged={sortChanged}
+                                >ID</TableHeading>
+                                <TableHeading  className="pr-10" name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                  sortChanged={sortChanged}
+                                >MRR No. </TableHeading>
+                                <TableHeading  className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                 sortChanged={sortChanged}
+                                >Client Name</TableHeading>
+                                  <TableHeading  className="pr-10"  name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                  sortChanged={sortChanged}
+                                >S.I. No.</TableHeading>
+                                  <TableHeading  className="pr-2"  name="deliver"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                  sortChanged={sortChanged}
+                                >D.R No.</TableHeading>
+                                <TableHeading className="pr-10" name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                  sortChanged={sortChanged}
+                                >Address</TableHeading>
+                                <TableHeading  className="pr-10" name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                  sortChanged={sortChanged}
+                                >Action</TableHeading>
                               </tr>
                             </thead>
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                               <tr className="text-nowrap ">
                                 <th className="px-3 py-3"></th>
                                 <th className="px-3 py-3"></th>
-                              
                                 <th className="px-3 py-3 text-right"></th>
                               </tr>
                             </thead>
@@ -139,18 +143,17 @@ const deleteReceiving = (receiving) => {
                                           
                                       </td>
                                       <td className="px-3 py-2 hover:underline">
-                                        <b><Link href={route('receiving.show', receiving.id)} >
-                                      {receiving.mrr_no}
-                                        </Link></b>
-                                      
+                                      <b>
+                                        <Link href={route('receiving.show', receiving.id)} >
+                                          {receiving.mrr_no}
+                                        </Link>
+                                      </b>
                                       </td>
-                                      <td className="px-3 py-2 text-nowrap">{receiving.client_id}</td>
-                                      <td className="px-3 py-2 text-nowrap">{receiving.si_no}</td>
-                                      {/* <td className="px-3 py-2 text-nowrap">{receiving.deliverable.dr_no ?? "No DR No"}</td> */}
-                                      <td className="px-3 py-2 text-nowrap">{receiving.deliver.dr_no}</td>
-                                      <td className="px-3 py-2">{receiving.address}</td>
-                                      {/* <td className="px-3 py-2">{receiving.remarks}</td> */}
-                                      {/* <td className="px-3 py-2">{receiving.created_by}</td> */}
+                                      
+                                      <td className="px-3 py-2 text-nowrap">{receiving.client && receiving.client.name ? receiving.client.name : "No Client Name"}</td>
+                                      <td className="px-3 py-2 text-nowrap">{receiving.si_no ?? "No SI Number"}</td>
+                                      <td className="px-3 py-2 text-nowrap">{receiving.deliver && receiving.deliver.dr_no ? receiving.deliver.dr_no : " No DR Number "}</td>
+                                      <td className="px-3 py-2">{receiving.address ?? "No Address"}</td>
                                       <td className="px-3 py-2 text-nowrap">
                                           <div className="flex">
                                               <Link href={route('receiving.edit', receiving.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 

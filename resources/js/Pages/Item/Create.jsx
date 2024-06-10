@@ -75,153 +75,134 @@ export default function Create({auth,brands,sku, categories,employees,locations,
 
                             {/* item */}
                             <div className="mt-6 col-span-1">
-                                        <InputLabel htmlFor="item_name" value="Item Name"/>
-                                        <TextInput 
-                                        id="item_name"
-                                        type="text"
-                                        name="name"
-                                        value={data.name}
-                                        className="mt-1 block w-full"
-                                        isFocused={true}
-                                        onChange={e => setData('name', e.target.value)}
-                                        />
-                                        <InputError message={errors.name} className="mt-2"/>
-                                    </div>
-
-                                    <div className=" mt-6  col-span-1">
-                              <InputLabel htmlFor="item_category_sku" value="Category"/>
+                                <InputLabel htmlFor="item_name" value="Item Name"/>
+                                  <TextInput 
+                                  id="item_name"
+                                  type="text"
+                                  name="name"
+                                  placeholder="Enter Item Name"
+                                  value={data.name}
+                                  className="mt-1 block w-full"
+                                   isFocused={true}
+                                  onChange={e => setData('name', e.target.value)}
+                                  />
+                                   <InputError message={errors.name} className="mt-2"/>
+                            </div>
+                            <div className=" mt-6  col-span-1">
+                                <InputLabel htmlFor="item_category_sku" value="Category"/>
                                 <div className=" flex h-[11]">
                                     <SelectInput
-                                        value={data.category_id}
-                                        onChange={(e) =>setData('category_id', e.target.value)}
+                                         value={data.category_id}
+                                           onChange={(e) =>setData('category_id', e.target.value)}
                                         id="item_category_sku"
                                         name="category_id"
-                                        className="mt-1 block w-full">
+                                                className="mt-1 block w-full">
                                             <option value="">Select Category </option>
                                             {categories.data.map((category)=>(
                                                 <option value={category.id} key={category.id}>{category.name}</option>
                                             ))}
-                                    </SelectInput>
+                                            </SelectInput>
                                     <InputError message={errors.category_id} className="mt-2"/>
                                 </div>
-
-                               
-                          </div>
-                          <div className=" mt-4 col-span-1">
-                            <InputLabel htmlFor="item_brand_id" value="Brand"/>
-                            <SelectInput
-                            id="item_brand_id"
-                            name="brand_id"
-                            className="mt-1 block w-full"
-                            onChange={(e) => setData("brand_id", e.target.value)}>
-                                <option value="">Select Brand </option>
-                                {brands.data.map((brand)=>(
-                                    <option value={brand.id} key={brand.id}>{brand.name}</option>
-
-                                ))}
-                            </SelectInput>
-                            <InputError message={errors.brand_id} className="mt-2"/>
-                            <h1 id="hello"></h1>
-                        </div>
-                        <div className="mt-4 col-span-1 col-start-2 grid grid-cols-2 gap-1">
-                        <div className="col-span-1">
-                                <InputLabel htmlFor="item_quantity" value="Quantity"/>
-                                <TextInput 
-                                id="item_quantity"
-                                type="number"
-                                name="quantity"
-                                value={data.quantity}
-                                className="mt-1 block w-full"
-                                onChange={e => setData('quantity', e.target.value)}
-                                />
-                                <InputError message={errors.quantity} className="mt-2"/>
                             </div>
-                            <div className="col-span-1">
-                            <InputLabel htmlFor="item_brand_id" value="UOM"/>
-                            <SelectInput
-                              id="item_uom"
-                              name="uom"
-                              className="mt-1 block w-full"
-                              onChange={e => setData('uom', e.target.value)} >
-                                <option value="">Select UOM </option>
-                                 <option value="M">Meters</option>
-                                 <option value="Kg">Kilograms</option>
-                                 <option value="L">Liters</option>
-                                 <option value="Pcs">Pieces</option>
-                                 <option value="Pc">Piece</option>
-                                 <option value="Set">Set</option>
-                                 <option value="Sets">Sets</option>
-                            </SelectInput>
-                            <InputError message={errors.uom} className="mt-2"/>
-                        </div>
-                        </div>
-                        
-                        <div className="mt-4 col-span-2">
-                            <InputLabel htmlFor="item_description" value="Description"/>
-                            <TextAreaInput
-                            id="item_description"
-                            name="description"
-                            value={data.description}
-                            className="mt-1 block w-full resize-none"
-                            rows="5"
-                            onChange={e => setData('description', e.target.value)}
-                            />
-                            <InputError message={errors.description} className="mt-2"/>
-                        </div>
+                            <div className=" mt-4 col-span-1">
+                                <InputLabel htmlFor="item_brand_id" value="Brand"/>
+                                <SelectInput
+                                id="item_brand_id"
+                                name="brand_id"
+                                className="mt-1 block w-full"
+                                onChange={(e) => setData("brand_id", e.target.value)}>
+                                    <option value="">Select Brand </option>
+                                    {brands.data.map((brand)=>(
+                                        <option value={brand.id} key={brand.id}>{brand.name}</option>
+                                    ))}
+                                </SelectInput>
+                                <InputError message={errors.brand_id} className="mt-2"/>
+                            </div>
+                            <div className="mt-4 col-span-1 col-start-2 grid grid-cols-2 gap-1">
+                      
+                                <div className="col-span-1">
+                                    <InputLabel htmlFor="item_quantity" value="Quantity"/>
+                                    <TextInput 
+                                        id="item_quantity"
+                                        type="number"
+                                        placeholder="Enter Quantity"
+                                        name="quantity"
+                                        value={data.quantity}
+                                        className="mt-1 block w-full"
+                                        onChange={e => setData('quantity', e.target.value)}
+                                    />
+                                    <InputError message={errors.quantity} className="mt-2"/>
+                                </div>
+                                <div className="col-span-1">
+                                    <InputLabel htmlFor="item_brand_id" value="UOM"/>
+                                    <SelectInput
+                                        id="item_uom"
+                                        name="uom"
+                                        className="mt-1 block w-full"
+                                        onChange={e => setData('uom', e.target.value)} >
+                                        <option value="">Select UOM </option>
+                                        <option value="M">Meters</option>
+                                        <option value="Kg">Kilograms</option>
+                                        <option value="L">Liters</option>
+                                        <option value="Pcs">Pieces</option>
+                                        <option value="Pc">Piece</option>
+                                        <option value="Set">Set</option>
+                                        <option value="Sets">Sets</option>
+                                    </SelectInput>
+                                    <InputError message={errors.uom} className="mt-2"/>
+                                </div>
+                            </div>
 
-                        <div className="mt-4 col-span-2">
-                            <InputLabel htmlFor="item_specs" value="Specification"/>
-                            <TextAreaInput
-                            id="item_description"
-                            name="specs"
-                            value={data.specs}
-                            className="mt-1 block w-full resize-none"
-                            rows="5"
-                            onChange={e => setData('specs', e.target.value)}
-                            />
-                            <InputError message={errors.specs} className="mt-2"/>
-                        </div>
+                           <div className="mt-4 col-span-2">
+                                <InputLabel htmlFor="item_description" value="Description"/>
+                                <TextAreaInput
+                                id="item_description"
+                                placeholder="Enter Item Description"
+                                name="description"
+                                value={data.description}
+                                className="mt-1 block w-full resize-none"
+                                rows="5"
+                                onChange={e => setData('description', e.target.value)}
+                                />
+                                <InputError message={errors.description} className="mt-2"/>
+                          </div>
 
-                        <div className="mt-4 col-span-2">
-                            <InputLabel htmlFor="item_remark" value="Remarks"/>
-                            <TextAreaInput
-                            id="item_remark"
-                            name="remark"
-                            value={data.remark}
-                            className="mt-1 block w-full resize-none"
-                                    rows="5"
-                            onChange={e => setData('remark', e.target.value)}
-                            />
-                            <InputError message={errors.remark} className="mt-2"/>
-                        </div>
+                            <div className="mt-4 col-span-2">
+                                <InputLabel htmlFor="item_specs" value="Specification"/>
+                                <TextAreaInput
+                                id="item_specs"
+                                name="specs"
+                                placeholder="Enter Item Specifications"
+                                value={data.specs}
+                                className="mt-1 block w-full resize-none"
+                                rows="5"
+                                onChange={e => setData('specs', e.target.value)}
+                                />
+                                <InputError message={errors.specs} className="mt-2"/>
+                            </div>
+
+                            <div className="mt-4 col-span-2">
+                                <InputLabel htmlFor="item_remark" value="Remarks"/>
+                                <TextAreaInput
+                                id="item_remark"
+                                name="remark"
+                                placeholder="Enter Item Remarks"
+                                value={data.remark}
+                                className="mt-1 block w-full resize-none"
+                                        rows="5"
+                                onChange={e => setData('remark', e.target.value)}
+                                />
+                                <InputError message={errors.remark} className="mt-2"/>
+                            </div>
 
                          </div>
 
                          {/* 2ND GRID COLUMN */}
                          <div className="col-span-1 grid grid-cols-1 content-start">
-                        
-                        <div className="col-span-1 grid grid-cols-2 ">
-
-                        {/* <div className="mt-6 col-span-1">
-                                    <InputLabel htmlFor="item_mrr_no" value="MRR No."/>
-                                    <SelectInput
-                                        value={data.mrr_no}
-                                        onChange={e => setData('mrr_no',e.target.value)}
-                                        id="receiving_mrr_no"
-                                        name="mrr_no"
-                                        className="mt-1 block w-full"
-                                 >
-                                <option value="">Select Mrr No</option>
-                                {mrrData.map((data, index) => (
-                                    <option key={index} value={data.mrr_no}>
-                                        {data.mrr_no}
-                                    </option>
-                                ))}
-                            </SelectInput>
-                                   
-                                   
-                                </div> */}
-                                <div className="mt-6 col-span-q ">
+                               
+                         <div className="mt-7 col-span-1">
+                                <InputLabel htmlFor="item_sku" value="SKU"/>
                                  <TextInput 
                                     id="item_sku"
                                     type="text"
@@ -229,9 +210,8 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                     readOnly
                                     placeholder={sku}
                                     value={data.sku=sku} 
-                                    className="mt-6 block w-full"
+                                    className=" block w-full"
                                     />
-                          </div>
                         </div>
                         {/* <div className="mt-4 col-span-1">
                           <InputLabel htmlFor="item_statuses" value="Status"/>
@@ -256,7 +236,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                           <InputLabel htmlFor="item_statuses" value="Status"/>
                           <Select
                                 className="basic-single"
-                                classNamePrefix="select"
+                                placeholder="Select Status"
                                 isDisabled={isDisabled}
                                 isLoading={isLoading}
                                 isClearable={isClearable}
@@ -264,7 +244,6 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 defaultValue={data.statuses} 
                                 onChange={({ value }) => setData({ ...data, statuses: value })}
                                 isSearchable={isSearchable}
-                                // onChange={e => setData('statuses', e.target.value)}
                                 name="statuses"
                                 options={statusesOptions}
                             />
@@ -297,6 +276,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 <TextInput 
                                 id="item_serial_no"
                                 type="text"
+                                placeholder="Enter Serial Number"
                                 name="serial_no"
                                 value={data.serial_no}
                                 className="mt-1 block w-full"
@@ -311,6 +291,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 id="item_model_no"
                                 type="text"
                                 name="model_no"
+                                placeholder="Enter Model Number"
                                 value={data.model_no}
                                 className="mt-1 block w-full"
                                 onChange={e => setData('model_no', e.target.value)}
@@ -324,11 +305,12 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 id="item_part_no"
                                 type="text"
                                 name="part_no"
+                                placeholder="Enter Part Number"
                                 value={data.part_no}
                                 className="mt-1 block w-full"
                                 onChange={e => setData('part_no', e.target.value)}
                                 />
-                                <InputError message={errors.part_no_id} className="mt-2"/>
+                                <InputError message={errors.part_no} className="mt-2"/>
                             </div>
 
                             <div className="mt-4 col-span-1">

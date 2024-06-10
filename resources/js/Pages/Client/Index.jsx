@@ -14,6 +14,7 @@ export default function Index({auth, clients, queryParams = null, success}) {
   const [open, setOpen] = React.useState(true);
 
 queryParams = queryParams || {};
+
 const searchFieldChanged = (name, value) => {
   if(value){
     queryParams[name] = value;
@@ -96,34 +97,35 @@ const deleteClient = (client) => {
                           </svg>Add New
                         </Link>
                       </div>
-                      <div>
-                        <th className="flex flex-row cursor-pointer items-center relative">
+                     
+                        <div className="flex flex-row items-center relative gap-2">
 
-                          <SelectInput className=" max-w-full " 
-                            defaultValue={queryParams.status}
-                            onChange={(e)=> searchFieldChanged('status', e.target.value )}
-                          >
-                            <option value="">Select Status</option>
-                            <option value="pending">Pending</option>
-                            <option value="active"> Active</option>
-                            <option value="inactive">Inactive</option>
-                          </SelectInput>
-                        </th>
-                      </div>
-                      <div className="flex flex-row items-center relative">
+                          <div>
+                            <th className="flex flex-row cursor-pointer items-center relative">
+                              <SelectInput className=" max-w-full " 
+                                defaultValue={queryParams.status}
+                                onChange={(e)=> searchFieldChanged('status', e.target.value )}
+                              >
+                                <option value="">Select Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="active"> Active</option>
+                                <option value="inactive">Inactive</option>
+                              </SelectInput>
+                            </th>
+                          </div>
 
-                        <div className="absolute pointer-events-none right-2">
-                          <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/>
-                          </svg>
+                          <div className="absolute pointer-events-none right-2">
+                              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/>
+                              </svg>
+                          </div>
+                          <TextInput  className="w-[500px]" 
+                              defaultValue={queryParams.name}
+                              placeholder="Search Client Here " 
+                              onBlur={(e) => searchFieldChanged('name', e.target.value)}
+                              onKeyPress={(e) => onKeyPress('name', e )}
+                          />
                         </div>
-                        <TextInput  className="w-[500px]" 
-                          defaultValue={queryParams.name}
-                          placeholder="Search Client Here " 
-                          onBlur={(e) => searchFieldChanged('name', e.target.value)}
-                          onKeyPress={(e) => onKeyPress('name', e )}
-                        />
-                      </div>
                     </div>
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                       <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -174,11 +176,11 @@ const deleteClient = (client) => {
                         {clients.data.map((client)=>(
                              <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={client.id}>
                              <td className="py-2">
-                                {client.id}
+                                {client.id ?? "No Client ID"}
                             </td>
                              <th className="py-2 text-gray-700 text-nowrap hover:underline">
                               <Link href={route('client.show', client.id)}>
-                              {client.name}
+                              {client.name ?? "No Client Name"}
                               </Link>
                             </th>
                             <td className="py-2 ">{client.contact_person ?? "No Contact Person"}</td>

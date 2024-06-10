@@ -27,9 +27,13 @@ class StoreReceivingRequest extends FormRequest
             Rule::unique('receivings', 'mrr_no')->ignore($this->receiving),
         ],
         'group_item_id' => [
-            'nullable',
+           
             'exists:items,id'],
-        "client_id"=>['nullable', 'max:255'],
+        "client_id"=>
+        [
+            'required',  
+            'exists:clients,id'
+        ],
         "si_no" =>['required', 'max:255'],
         "deliver_id"=>['exists:deliverables,id'],
         "address"=>['nullable','string'],

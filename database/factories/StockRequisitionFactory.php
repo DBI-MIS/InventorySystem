@@ -18,7 +18,7 @@ class StockRequisitionFactory extends Factory
     {
         return [
             'sr_to'=>fake()->sentence(),
-            'sr_no'=>rand(1, 10),
+            'rs_no'=>rand(1, 10),
             'sr_date'=>now(),
             'sr_qty'=>rand(1, 10),
             'sr_description'=>fake()->realText(),

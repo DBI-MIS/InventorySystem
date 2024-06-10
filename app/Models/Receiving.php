@@ -44,7 +44,7 @@ class Receiving extends Model
         return $this->belongsToMany(Item::class, 'item_receiving')->withTimestamps();
     }
     public function client(){
-        return $this->hasOne(Client::class);
+        return $this->belongsTo(Client::class);
     }
     public function deliver(){
         return $this->belongsTo(Deliverables::class);

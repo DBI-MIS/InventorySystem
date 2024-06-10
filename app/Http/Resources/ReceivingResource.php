@@ -27,7 +27,7 @@ class ReceivingResource extends JsonResource
             'mrr_no'=> $this->mrr_no,
             'group_item_id' => $this->group_item_id,
             'client_id'=> $this->client_id,
-            // 'client' => new ClientResource($this->client),
+            'client' => new ClientResource($this->client),
             'si_no'=> $this->si_no,
             'deliver_id'=> $this->deliver_id,
             'deliver' => new DeliverablesResource($this->deliver),

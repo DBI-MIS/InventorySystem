@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StockRequisition;
 use App\Http\Requests\StoreStockRequisitionRequest;
 use App\Http\Requests\UpdateStockRequisitionRequest;
+use App\Http\Resources\StockRequisitionResource;
 
 class StockRequisitionController extends Controller
 {
@@ -15,11 +16,18 @@ class StockRequisitionController extends Controller
     {
 
         $query = StockRequisition::query();
+        // dd($query);
 
-        $query->paginate(10);
+        $sortFields = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        $stockrequest = $query->orderBy($sortFields, $sortDirection)
+        ->paginate(10)
+        ->onEachSide(1);
 
         return inertia("StockRequisition/Index", [
-            
+            "stockrequest" => StockRequisitionResource::collection($stockrequest),
+            'queryParams' => request()->query() ?: null,
         ]);
     }
 

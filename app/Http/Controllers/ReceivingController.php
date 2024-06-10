@@ -77,8 +77,8 @@ class ReceivingController extends Controller
        $categories = Category::query()->orderBy('name', 'asc')->get();
        $employees = Employee::query()->orderBy('name', 'asc')->get();
        $locations = Location::query()->orderBy('name', 'asc')->get();
-       $clients =  Client::select('name')->distinct()->orderBy('name', 'asc')->get();
-    //    $deliverables =  Deliverables::select('dr_no')->distinct()->orderBy('dr_no', 'asc')->get();
+       $clients =  Client::query()->distinct()->orderBy('name', 'asc')->get();
+    //     $clients =  Client::select('name')->distinct()->orderBy('name', 'asc')->get();
       $delivers = Deliverables::query()->orderBy('dr_no', 'asc')->get();
        $sku = $this->generateSkuId();
     //    dd($deliverables);
@@ -138,6 +138,7 @@ class ReceivingController extends Controller
     {
 
         $data = $request->validated();
+        //    dd($data);
         $items = $data['group_item_id'];
         $receiving =Receiving::create($data);
         $receiving->items()->attach($items);  
