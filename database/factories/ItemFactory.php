@@ -148,7 +148,7 @@ class ItemFactory extends Factory
         ]);
 
         return [
-            'sku'=> rand(6000,6300),
+            'sku'=> rand(600000,630000),
             'name'=> $products,
             'brand_id'=>rand(1,7),
             'category_id'=>rand(1,4),

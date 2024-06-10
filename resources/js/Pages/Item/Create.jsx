@@ -213,25 +213,6 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                     className=" block w-full"
                                     />
                         </div>
-                        {/* <div className="mt-4 col-span-1">
-                          <InputLabel htmlFor="item_statuses" value="Status"/>
-                          <Select
-                                className="basic-single"
-                                classNamePrefix="select"
-                                isDisabled={isDisabled}
-                                isLoading={isLoading}
-                                isClearable={isClearable}
-                                isRtl={isRtl}
-                                defaultValue={data.statuses || []} 
-                                onChange={(selectedOptions) => setData({ ...data, statuses: selectedOptions.map(option => option.value) })} // Update with selected options
-                                placeholder="Select Statuses (multiple allowed)"
-                                isMulti 
-                                isSearchable={isSearchable}
-                                name="statuses"
-                                options={statusesOptions}
-                            />
-                                <InputError message={errors.statuses} className="mt-2"/>
-                            </div> */}
                         <div className="mt-4 col-span-1">
                           <InputLabel htmlFor="item_statuses" value="Status"/>
                           <Select
