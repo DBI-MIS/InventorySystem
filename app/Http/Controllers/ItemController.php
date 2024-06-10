@@ -37,6 +37,11 @@ class ItemController extends Controller
         if(request("uom")){
             $query->where("uom", request("uom"));
         }
+        if(request("statuses")){
+            $query->where("statuses", request("statuses"));
+            $count = $query->count();
+            // dd($count);
+        };
         
         if(request("category_id")){
            $query->where('category_id', (request("category_id")));
@@ -47,6 +52,7 @@ class ItemController extends Controller
             "items" => ItemResource::collection($items),
             'queryParams' => request()-> query() ?: null,
             'success' => session('success'),
+            'count' => isset($count) ? $count : null
              ]);
 
 
@@ -77,6 +83,7 @@ class ItemController extends Controller
             'sku' =>$sku,
             'mrr_no' => session('mrr_no'),
             'mrrData' =>  $mrrData,
+            
         ]);
 
     }

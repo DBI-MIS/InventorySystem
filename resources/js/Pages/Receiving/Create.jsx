@@ -6,21 +6,12 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Inertia } from "@inertiajs/inertia";
-import { Head, Link, router, useForm } from "@inertiajs/react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { Head, Link,useForm } from "@inertiajs/react";
+import { useEffect,  useState} from "react";
 import Select from "react-select"
-import { usePage } from '@inertiajs/inertia-react';
 import React from "react";
 export default function Create({auth,success,compact,response,delivers ,mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
-    // console.log(compact);
-    //   console.log("newly Added : " + newItem)
-    // const { flash } = usePage();
-    // const [successMessage, setSuccessMessage] = React.useState(null);
-  
-    // React.useEffect(() => {
-    //   setSuccessMessage(flash.message); 
-    // }, [flash]);
+    
     console.log(delivers);
   
     // MAIN FORM OF RECEIVING
@@ -40,23 +31,19 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
         label: item.name
       }));
 
-      const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
-      const [selectedOptions, setSelectedOptions] = useState([]);
+    const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
+    const [selectedOptions, setSelectedOptions] = useState([]);
     
-      const handleSelectChange = (selectedOptions) => {
+    const handleSelectChange = (selectedOptions) => {
         
         setSelectedOptions(selectedOptions);
-
         const selectedValues = selectedOptions.map(option => parseInt(option.value));
-
         setData("group_item_id", selectedValues);
     };
 
     const [showModal, setShowModal] = useState(false);
-
     
     // ADD ITEM MODAL FORM
-
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -83,34 +70,11 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
     }, [formData]);
     console.log(data);
 
-   
-
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
     
         Inertia.post(route('item.submit'), formData)
-        //   .then((response) => {
-        //     setFormData({
-        //         name: '',
-        //         description: '',
-        //         sku: skuu,
-        //         specs: '',
-        //         part_no: '',
-        //         serial_no: '',
-        //         model_no: '',
-        //         uom: '',
-        //         quantity:'',
-        //         status: '',
-        //         remarks:'',
-        //       });
-        //   })
-        //   .catch((error) => {
-        //     console.error('Form submission error:', error);
-        //   });
       };
-    
-        // post(route(" item.storeItem "));
-        // Inertia.post('item.submitt', formData);
 
     //SUBMIT OF MAIN FORM
     const onSubmit = (e) =>{
@@ -123,8 +87,8 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
         user={auth.user}
         header={
             <div className="flex justify-between items-center"  >
-            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Receiving</h2>
-          </div>
+                 <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Receiving</h2>
+            </div>
         }
         >
              <Head title="Receivings" />
@@ -142,7 +106,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                         
                          {/* START */}
                         <div className="grid grid-cols-3 gap-2">
-                        {/* {successMessage && <p>{successMessage}</p>} */}
+
                             {/* 1ST GRID COLUMN */}
                             <div className="col-span-2 grid grid-cols-2 gap-2 content-start"> 
                                 <div className="mt-6 col-span-2">
@@ -152,7 +116,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                         name="client_id"
                                         className="block w-full"
                                         onChange={(e) => setData("client_id", e.target.value)}>
-                                            <option value="">Select client </option>
+                                            <option value="">Select client Name </option>
                                             {clients.data.map((client)=>(
                                                 <option value={client.id} key={client.id}>{client.name}</option>
 
@@ -166,6 +130,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                         <TextAreaInput
                                         id="receiving_address"
                                         name="address"
+                                        placeholder="Enter Full Address"
                                         value={data.address}
                                         className="mt-1 block w-full"
                                         onChange={e => setData('address', e.target.value)}
@@ -178,6 +143,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                         <TextAreaInput
                                             id="receiving_remarks"
                                             name="receiving_remarks"
+                                            placeholder="Enter Receiving Remarks"
                                             value={data.remarks}
                                             className="mt-1 block w-full"
                                             onChange={e => setData('remarks', e.target.value)}
@@ -207,6 +173,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                             id="receiving_si_no"
                                                             type="text"
                                                             name="si_no"
+                                                            placeholder="Enter SI Number"
                                                             value={data.si_no}
                                                             className="mt-1 block w-full"
                                                             isFocused={true}
@@ -216,67 +183,49 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                         </div>
                                         <div className="t-4 col-span-1">
                                             <InputLabel htmlFor="receiving_deliverable_id" value="DR No."/>
-                                            <SelectInput
-                                                id="receiving_deliverable_id"
-                                                name="deliverable_id"
-                                                className="block w-full"
-                                                onChange={(e) => setData("deliver_id", e.target.value)}>
-                                                    <option value="">Select DR No </option>
-                                                    {delivers.data.map((deliver)=>(
-                                                        <option value={deliver.id} key={deliver.id}>{deliver.dr_no}</option>
+                                            <div className="col-span-10 xs:col-span-8">
+                                                <SelectInput
+                                                    id="receiving_deliverable_id"
+                                                    name="deliverable_id"
+                                                    className="mt-1 block w-full"
+                                                    onChange={(e) => setData("deliver_id", e.target.value)}>
+                                                        <option value="">Select DR No </option>
+                                                        {delivers.data.map((deliver)=>(
+                                                            <option value={deliver.id} key={deliver.id}>{deliver.dr_no}</option>
 
-                                                        ))}
-                                            </SelectInput>
+                                                            ))}
+                                                </SelectInput>
+                                            </div>
                                             <InputError message={errors.deliver_id} className="mt-2"/>
                                         </div>
-                                        {/* <div className="mt-4 col-span-1">
-                                        <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
-                                                        <TextInput 
-                                                            id="receiving_dr_no"
-                                                            type="text"
-                                                            name="dr_no"
-                                                            value={data.dr_no}
-                                                            className="mt-1 block w-full"
-                                                            isFocused={true}
-                                                            onChange={e => setData('dr_no', e.target.value)}
-                                                        />
-                                                        <InputError message={errors.dr_no} className="mt-2"/>
-                                        </div> */}
-                                        
                                     </div>
-
-                            
-    
                         </div>
                         {/* GROUP ITEM LIST */}
                         <div className="my-4">
                             <InputLabel htmlFor="receiving Items" value="Group of Items"/>
                                 <div className="col-span-10 xs:col-span-8">
                                     <div className="flex flex-row items-center gap-2">
-                                    <div className="w-full ">
-                                        <Select
-                                            value={selectedOptions}
-                                            onChange={handleSelectChange}
-                                            className=" block"
-                                            isMulti={true}
-                                            options={options}
-                                            isSearchable={true}
-                                            placeholder="Select Items"
-                                        >
-                                        </Select>
+                                        <div className="w-full ">
+                                            <Select
+                                                value={selectedOptions}
+                                                onChange={handleSelectChange}
+                                                className=" block"
+                                                isMulti={true}
+                                                options={options}
+                                                isSearchable={true}
+                                                placeholder="Select Items (Can Select Mutiple Items)"
+                                            >
+                                            </Select>
+                                        </div>
+                                        {/* add new item form modal  */}
+                                        <div>
+                                            <button onClick={(e)=>(e.preventDefault(),setShowModal(true))}
+                                                className=" text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-md rounded-lg text-nowrap  px-16 py-2 text-center mr-5"
+                                                >Add New Item
+                                            </button> 
+                                        </div>
                                     </div>
-                                    {/* add new item form modal  */}
-                                    <div>
-                                        <button onClick={(e)=>(e.preventDefault(),setShowModal(true))}
-                                            className=" text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-md rounded-lg text-nowrap  px-16 py-2 text-center mr-5"
-                                            >Add New Item
-                                        </button> 
-                                    </div>
-
-                                    </div>
-                                   
-                                    
-                                     
+                                    <span className="mt-2"><b>If items are not available on the lists, you can add new Item.</b></span>
                                  </div>
 
                                  <div className="mt-5">
@@ -294,25 +243,25 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                             <th className="pr-10">Quantity</th>
                                             </tr>
                                         </thead> 
-                                     {selectedOptions && selectedOptions.length >= 0 && ( 
+                                         {selectedOptions && selectedOptions.length >= 0 && ( 
                                          <tbody>
                                              {selectedOptions.map(option => {
                                             const selectedItem = allItems.find(item => item.id === parseInt(option.value));
 
                                              return (
                                                 <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
-                                                <td className="px-3 py-2">{selectedItem.id}</td>
-                                                <td className="px-3 py-2">{selectedItem.sku_prefix}-{selectedItem.sku}</td>
+                                                <td className="px-3 py-2">{selectedItem.id ?? "No Item ID"}</td>
+                                                <td className="px-3 py-2">{selectedItem.sku_prefix ?? "No Sku Prefix"}-{selectedItem.sku ?? "No Sku"}</td>
                                                 <th className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
                                                     <Link href={route('item.show', selectedItem.id)}>
-                                                    {selectedItem.name}
+                                                    {selectedItem.name ?? "No Item Name"}
                                                     </Link>
                                                 </th>
-                                                <td className="px-3 py-2"> {selectedItem.brand && selectedItem.brand.name ? selectedItem.brand.name : 'Not Belong on Any Brands'}</td>
-                                                 <td className="px-3 py-2">{selectedItem.category.name}</td>
-                                                 <td className="px-3 py-2">{selectedItem.model_no}</td>
-                                                 <td className="px-3 py-2">{selectedItem.part_no}</td>
-                                                 <td className="px-3 py-2">{selectedItem.quantity ? (selectedItem.quantity + ' ' + selectedItem.uom) : 'Not Belong'}</td>
+                                                <td className="px-3 py-2"> {selectedItem.brand && selectedItem.brand.name ? selectedItem.brand.name : 'No Brand Name'}</td>
+                                                 <td className="px-3 py-2">{selectedItem.category && selectedItem.category.name ? selectedItem.category.name: "No Category Name"}</td>
+                                                 <td className="px-3 py-2">{selectedItem.model_no ?? "No Model Number"}</td>
+                                                 <td className="px-3 py-2">{selectedItem.part_no ?? "No Part Number"}</td>
+                                                 <td className="px-3 py-2">{selectedItem.quantity ? (selectedItem.quantity + ' ' + (selectedItem.uom ?? "No UOM")) : 'No Quantity'}</td>
                                                  </tr>
                                              );
                                         })}
@@ -355,6 +304,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                             id="item_name"
                                                                             type="text"
                                                                             name="name"
+                                                                            placeholder="Enter New Item Name"
                                                                             value={formData.name}
                                                                             className="mt-1 block w-full"
                                                                             isFocused={true}
@@ -402,6 +352,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                                 id="item_quantity"
                                                                                 type="number"
                                                                                 name="quantity"
+                                                                                placeholder="Enter Quantity"
                                                                                 value={formData.quantity}
                                                                                 className="mt-1 block w-full"
                                                                                 onChange={handleChange}
@@ -432,6 +383,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                     <TextAreaInput
                                                                         id="item_description"
                                                                         name="description"
+                                                                        placeholder="Enter Item Description"
                                                                         value={formData.description}
                                                                         className="mt-1 block w-full resize-none"
                                                                         rows="5"
@@ -445,6 +397,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                     <TextAreaInput
                                                                         id="item_specs"
                                                                         name="specs"
+                                                                        placeholder="Enter Item Specification"
                                                                         value={formData.specs}
                                                                         className="mt-1 block w-full resize-none"
                                                                         rows="5"
@@ -458,6 +411,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                     <TextAreaInput
                                                                         id="item_remarks"
                                                                         name="remarks"
+                                                                        placeholder="Enter Item Remarks"
                                                                         value={formData.remarks}
                                                                         className="mt-1 block w-full resize-none"
                                                                         rows="5"
@@ -471,16 +425,16 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                          <div className="col-span-1 grid grid-cols-1 content-start">
                                                                 
                                                             <div className="col-span-1 grid grid-cols-2 ">
-                                                                 <div className="mt-6 col-span-2 ">
-                                                                <TextInput 
-                                                                    id="item_sku"
-                                                                    type="text"
-                                                                    name="sku"
-                                                                    readOnly
-                                                                    placeholder={skuu}
-                                                                    className="mt-6 block w-full"
+                                                                <div className="mt-6 col-span-2 ">
+                                                                    <TextInput 
+                                                                        id="item_sku"
+                                                                        type="text"
+                                                                        name="sku"
+                                                                        readOnly
+                                                                        placeholder={skuu}
+                                                                        className="mt-6 block w-full"
                                                                      />
-                                                            </div>
+                                                                </div>
                                                             </div>
 
                                                             <div className="mt-4 col-span-1">
@@ -489,6 +443,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                      id="item_status"
                                                                      type="text"
                                                                      name="status"
+                                                                     placeholder="Enter Item Status"
                                                                      className="mt-1 block w-full"
                                                                      onChange={handleChange}
                                                                 />
@@ -500,6 +455,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                 <TextInput 
                                                                     id="item_serial_no"
                                                                     type="text"
+                                                                    placeholder="Enter Serial Number"
                                                                     name="serial_no"
                                                                     value={formData.serial_no}
                                                                     className="mt-1 block w-full"
@@ -514,6 +470,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                     id="item_model_no"
                                                                     type="text"
                                                                     name="model_no"
+                                                                    placeholder="Enter Model Number"
                                                                     value={formData.model_no}
                                                                     className="mt-1 block w-full"
                                                                     onChange={handleChange}
@@ -527,6 +484,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                         id="item_part_no"
                                                                         type="text"
                                                                         name="part_no"
+                                                                        placeholder="Enter Part Number"
                                                                         value={formData.part_no}
                                                                         className="mt-1 block w-full"
                                                                         onChange={handleChange}
@@ -542,7 +500,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                     className="mt-1 block w-full"
                                                                     value={formData.location_id}
                                                                     onChange={handleChange}>
-                                                                    <option value="">Select Location</option>
+                                                                    <option value="">Select Location Name</option>
                                                                      {locations.data.map((location)=>(
                                                                           <option value={location.id} key={location.id}>{location.name}</option>
 
@@ -565,7 +523,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
 
                                                                      ))}
                                                                  </SelectInput>
-                                                                 <InputError message={errors.employee_id_id} className="mt-2"/>
+                                                                 <InputError message={errors.employee_id} className="mt-2"/>
                                                             </div>
 
                                                         </div>

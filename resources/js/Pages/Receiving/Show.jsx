@@ -1,55 +1,12 @@
-import Pagination from "@/Components/Pagination";
-import PaginationReceiving from "@/Components/PaginationReceiving";
-// import PaginationReceiving from "@/Components/PaginationReceiving";
-import TableHeading from "@/Components/TableHeading";
-import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import {Head, Link, router}  from "@inertiajs/react";
-export default function Show({auth, receiving,receiving_items,queryParams,paginationData,paginationLinks}){
-    console.log("receiving" + receiving)
-    console.log( "receiving_items" + receiving_items)
-    console.log("links" + paginationLinks)
-
+import {Head, Link}  from "@inertiajs/react";
+export default function Show({auth, receiving,receiving_items}){
+   
+  console.log("receiving" + receiving);
+  console.log( "receiving_items" + receiving_items);
     
-    receiving_items = Array.isArray(receiving_items) ? receiving_items : [];
-    queryParams = queryParams || {};
-  const searchFieldChanged = (name, value, ) => {
-    if(value){
-      queryParams[name] = value;
-    }
-    else{
-      delete queryParams[name];
-    }
-    // change the url path everytime option changes
-    router.get(route('item.index'), queryParams)
-  };
-// alert(receiving_brand_names)
-  const onKeyPress = (name, e) => {
-    if(e.key !== 'Enter') return;
-    searchFieldChanged(name, e.target.value);
-  }
-  const showAll = ()=>{
+  receiving_items = Array.isArray(receiving_items) ? receiving_items : [];
 
-    if(value == 'all'){
-
-    }
-  }
-// sorting functions
-  const sortChanged = (name) => {
-    if(name === queryParams.sort_field) {
-      if(queryParams.sort_direction === 'desc'){
-        queryParams.sort_direction ='asc'
-      }else{
-        queryParams.sort_direction = 'desc'
-      }
-    }
-    // sorting the different fields
-    else{
-        queryParams.sort_field = name;
-        queryParams.sort_direction = "desc";
-    }
-    router.get(route('receiving.index'), queryParams)
-  }
     return(
         <AuthenticatedLayout 
         user={auth.user}
@@ -58,7 +15,6 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
               <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight capitalize">
                     {`Material Receiving Report " ${receiving.id} " `}
                </h2>
-            
             </div>
             }
         >
@@ -76,23 +32,18 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                               <label
                               className="font-bold text-lg"
                               htmlFor="ReceivingId">MRR Number</label>
-                              <span className="text-2xl font-semibold ">{receiving.mrr_no}</span>
+                              <span className="text-2xl font-semibold ">{receiving.mrr_no ?? "No MRR Number"}</span>
                               </div>
-                              {/* <div className="flex flex-col gap-3 receivings-end">
-                                  <div>
-                                  <label className="font-light text-md">Receiving ID: </label>
-                                  <span className="font-light">{receiving.id}</span>
-                                  </div>       
-                              </div> */}
                             </div>
+
                             <div className="flex flex-col pb-3 mt-12">
                               <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">CLIENT NAME: </dt>
-                              <dd className="text-lg font-light">{receiving.client_id}</dd>
+                              <dd className="text-lg font-light">{receiving.client && receiving.client.name ? receiving.client.name : "No Client Name"}</dd>
                             </div>
 
                             <div className="flex flex-col pb-3 mt-6">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Address: </dt>
-                            <dd className="text-lg font-light">{receiving.address}</dd>
+                            <dd className="text-lg font-light">{receiving.address ?? "No Receiving Address"}</dd>
                             </div>
                         </dl>
                 </div>
@@ -107,16 +58,16 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                         </div>
                         <div className="flex flex-col pb-3 mt-[6.4rem]">
                           <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Receiving ID: </dt>
-                          <dd className="text-lg font-light"><span className="">{receiving.id}</span></dd>
+                          <dd className="text-lg font-light"><span className="">{receiving.id ?? "No Receiving ID"}</span></dd>
                         </div>
                         <div className="flex flex-col pb-3 mt-5">
                           <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">SI Number: </dt>
-                          <dd className="text-lg font-light"><span className="">{receiving.si_no}</span></dd>
+                          <dd className="text-lg font-light"><span className="">{receiving.si_no ?? "No SI Number"}</span></dd>
                         </div>
                             
                         <div className="flex flex-col pb-3 mt-6">
                           <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">DR Number: </dt>
-                          <dd className="text-lg font-light"><span className="">{receiving.dr_no}</span></dd>
+                          <dd className="text-lg font-light"><span className="">{receiving.deliver && receiving.deliver.dr_no ? receiving.deliver.dr_no : "No DR Number"}</span></dd>
                         </div>
                         
                     </dl>
@@ -127,7 +78,7 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                          <div className="px-6 ">
                                 <label
                                 className="font-light text-gray-700 text-md"
-                                htmlFor="ReceivingId">Remarks :</label>  <span>{receiving.remarks}</span>
+                                htmlFor="ReceivingId">Remarks :</label><span>{receiving.remarks ?? "No Receiving Remarks"}</span>
                          </div>
                      </div>               
                 </div>
@@ -168,24 +119,24 @@ export default function Show({auth, receiving,receiving_items,queryParams,pagina
                                 
                                     <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={receiving_item.id}>
                                         <td className="px-3 py-2">
-                                            {receiving_item.id}
+                                            {receiving_item.id ?? "No Receiving ID"}
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
-                                            {receiving_item.category ? receiving_item.category.sku_prefix : ''}-{receiving_item.sku}
+                                            {receiving_item.category ? receiving_item.category.sku_prefix : "No Sku Prefix "}-{receiving_item.sku ?? "No SKU"}
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
-                                            {receiving_item.quantity}
+                                            {receiving_item.quantity ?? "No quantity"}
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
-                                            {receiving_item.uom}
+                                            {receiving_item.uom ?? "No UOM "}
                                         </td>
                                         <th className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
                                           <Link href={route('item.show', receiving_item.id)}>
-                                             {receiving_item.name}
+                                             {receiving_item.name ?? "No Item Name"}
                                           </Link>
                                         </th>
                                         <td className="px-3 py-2 text-wrap">
-                                          {receiving_item.description}
+                                          {receiving_item.description ?? "No Item Description"}
                                         </td>
                                     </tr>
                                 ))}

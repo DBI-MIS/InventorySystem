@@ -8,7 +8,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
 import SelectInput from "@/Components/SelectInput";
 import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP } from "@/constants";
-export default function Index({auth,items, queryParams = null, success}) {
+export default function Index({auth,items, queryParams = null, success,count}) {
 
 const [open, setOpen] = useState(true);
   
@@ -22,34 +22,19 @@ const [open, setOpen] = useState(true);
 
 console.log(items)
 queryParams = queryParams || {};
-  const searchFieldChanged = (name, value, ) => {
+const searchFieldChanged = (name, value) => {
+  if(value){
+    queryParams[name] = value;
+  }
+  else{
+    delete queryParams[name];
+  }
+  // change the url path everytime option changes
+ router.get(route('item.index'), queryParams)
+};
 
-    const lowerCaseName = name.toLowerCase();
 
-    if (name === "brand_id" || name === 'category_id') {
-      if (value) {
-        queryParams[name] = value;
-      } else {
-        delete queryParams[name];
-      }
-    } else {
-      if (value) {
-        queryParams[lowerCaseName] = value;
-      } else {
-        delete queryParams[lowerCaseName];
-      }
-    }
-
-    // if(value){
-    //   queryParams[lowerCaseName] = value;
-    // }
-    // else{
-    //   delete queryParams[lowerCaseName];
-    // }
-
-    // change the url path everytime option changes
-    router.get(route('item.index'), queryParams)
-  };
+ 
 
   const onKeyPress = (name, e) => {
 
@@ -124,6 +109,7 @@ const deleteItem = (item) => {
             </div>
          
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <span>HI PO</span>
                   <div className="p-6 text-gray-900 dark:text-gray-100">
                       <div className="overflow-auto">
                         <div className="w-full flex flex-row justify-between items-center mb-2">
@@ -134,7 +120,36 @@ const deleteItem = (item) => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                   </svg> New Item
             </Link></div>
-                          <div className="flex flex-row items-center relative">
+                          <div className="flex flex-row items-center relative gap-2">
+                            <div>
+                              <th className="flex flex-row cursor-pointer items-center relative">
+                              {/* {queryParams!==null&& (
+                                // shows count of the results of the search select input
+                                <span>{{count}}</span>
+                              )} */}
+                               {queryParams !== null ? (
+                               <span>{String(count)}</span>
+                                  ) : (
+                                    <span>No filters applied</span>
+                                  )}
+                               
+                              <SelectInput
+                                className="max-w-full"
+                                defaultValue={queryParams.statuses}
+                                onChange={(e) => searchFieldChanged('statuses', e.target.value)}
+                              >
+                                <option value="">Select Status</option> 
+                                {Object.keys(ITEM_STATUS_TEXT_MAP).map((statuses) => (
+                                  <option
+                                    key={statuses}
+                                    value={statuses}
+                                  >
+                                    {ITEM_STATUS_TEXT_MAP[statuses]}
+                                  </option>
+                                ))}
+                              </SelectInput>
+                              </th>
+                           </div>
                           <div className="absolute pointer-events-none right-2"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
                           </div>
 
@@ -164,7 +179,7 @@ const deleteItem = (item) => {
                               sortChanged={sortChanged}>Brand</TableHeading>
                                 <TableHeading className=""  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Category</TableHeading>
-                                <TableHeading className=""  name="statuses"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                <TableHeading className=""  name="statuseses"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Status</TableHeading>
                                 <TableHeading  className=""  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Qty</TableHeading>
