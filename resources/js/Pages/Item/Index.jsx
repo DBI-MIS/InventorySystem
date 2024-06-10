@@ -109,6 +109,7 @@ const deleteItem = (item) => {
             </div>
          
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <span>HI PO</span>
                   <div className="p-6 text-gray-900 dark:text-gray-100">
                       <div className="overflow-auto">
                         <div className="w-full flex flex-row justify-between items-center mb-2">
