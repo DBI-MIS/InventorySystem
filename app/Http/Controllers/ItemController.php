@@ -40,7 +40,7 @@ class ItemController extends Controller
         if(request("statuses")){
             $query->where("statuses", request("statuses"));
             $count = $query->count();
-            // dd($statusName );
+            // dd($count);
         };
         
         if(request("category_id")){
@@ -52,8 +52,7 @@ class ItemController extends Controller
             "items" => ItemResource::collection($items),
             'queryParams' => request()-> query() ?: null,
             'success' => session('success'),
-            'count' => isset($count) ? $count : null,
-            // 'statusName' => isset($statusName) ? $count : null
+            'count' => isset($count) ? $count : null
              ]);
 
 

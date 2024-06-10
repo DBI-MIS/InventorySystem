@@ -25,7 +25,6 @@ class ClientController extends Controller
         }
         if(request("status")){
             $query->where("status", request("status"));
-            $count = $query->count();
         };
         $clients = $query->orderBy($sortField, $sortDirection)
         ->paginate(20);
@@ -34,7 +33,6 @@ class ClientController extends Controller
             "clients" => ClientResource::collection($clients),
             'queryParams' => request()-> query() ?: null,
             'success' => session('success'),
-            'count' => isset($count) ? $count : null,
         ]);
     }
 
