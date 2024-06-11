@@ -36,7 +36,7 @@ class StockRequisitionController extends Controller
      */
     public function create()
     {
-        //
+        return inertia("StockRequisition/Create");
     }
 
     /**
@@ -44,13 +44,17 @@ class StockRequisitionController extends Controller
      */
     public function store(StoreStockRequisitionRequest $request)
     {
-        //
+        $data = $request->validated();
+        StockRequisition::create($data);
+
+        return to_route('stockrequisition.index')->with('success', 'Stock Requisition was created');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(StockRequisition $stockRequisition)
+    public function show(StockRequisition $stockrequisition)
     {
         //
     }
@@ -58,24 +62,35 @@ class StockRequisitionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(StockRequisition $stockRequisition)
+    public function edit(StockRequisition $stockrequisition)
     {
-        //
+        // dd($stockrequisition);
+        return inertia('StockRequisition/Edit', [
+            'stockrequisition' => new StockRequisitionResource($stockrequisition)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStockRequisitionRequest $request, StockRequisition $stockRequisition)
+    public function update(UpdateStockRequisitionRequest $request, StockRequisition $stockrequisition)
     {
-        //
+        // dd($stockrequisition);
+        $data = $request->validated();
+        $stockrequisition->update($data);
+
+        return to_route('stockrequisition.index')->with('success', "StockRequest was updated");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StockRequisition $stockRequisition)
+    public function destroy(StockRequisition $stockrequisition)
     {
-        //
+        // dd($stockrequisition);
+        $rsno = $stockrequisition->rs_no;
+        $stockrequisition->delete();
+
+        return to_route('stockrequisition.index')->with('success', "Stock Requisition no.\"$rsno\" was deleted");
     }
 }

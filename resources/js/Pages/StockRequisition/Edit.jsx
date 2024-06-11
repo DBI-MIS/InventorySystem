@@ -1,44 +1,41 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import SelectInput from '@/Components/SelectInput';
 import TextAreaInput from '@/Components/TextAreaInput';
 import TextInput from '@/Components/TextInput';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { useForm } from '@inertiajs/inertia-react'
-import { Head, Link } from '@inertiajs/react';
-import React from 'react'
+import { Head, Link, useForm } from '@inertiajs/react'
 
-export default function Create({ auth }) {
+export default function Edit({ auth, stockrequisition }) {
+    console.log(stockrequisition);
 
-  const {data, setData, post, errors} = useForm({
-    sr_to: '',
-    rs_no: '',
-    sr_date: '',
-    sr_qty: '',
-    sr_unit: '',
-    sr_description: '',
-    sr_notes: '',
+    const {data, setData, post, errors, reset} = useForm({
+        sr_to: stockrequisition.sr_to || "",
+        rs_no: stockrequisition.rs_no || "",
+        sr_date: stockrequisition.sr_date || "",
+        sr_qty: stockrequisition.sr_qty || "",
+        sr_unit: stockrequisition.sr_unit || "",
+        sr_description: stockrequisition.sr_description || "",
+        sr_notes: stockrequisition.sr_notes || "",
+        _method: "PUT",
+    });
 
-  });
+    const onSubmit = (e) => {
+        e.preventDefault();
 
-  const onSubmit = (e) =>{
-    e.preventDefault();
-    post(route("stockrequisition.store"));
-  }
+        post(route("stockRequisition.update", stockrequisition.id));
+    };
+    return(
+        <Authenticated
+        user={auth.user}
+        header={
+            <div className="flex justify-between items-center"  >
+          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Stock Requisition {stockrequisition.rs_no}</h2>
+        </div>
+        }
+        >
+            <Head title="Stock Requisition" />
 
-
-  return (
-    <Authenticated
-    user={auth.user}
-    header={
-      <div className="flex justify-between items-center"  >
-            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Stock Requisition</h2>
-          </div>
-    }
-    >
-      <Head title='Stock Requisition'/>
-
-    <div className="py-12">
+            <div className="py-12">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 
@@ -57,8 +54,8 @@ export default function Create({ auth }) {
                        placeholder="To."
                        value={data.sr_to}
                        className="mt-1 block w-full"
-                       isFocused={true}
-                       onChange={e => setData('sr_to', e.target.value)}
+                       
+                       onChange={(e) => setData('sr_to', e.target.value)}
                        />
                        <InputError message={errors.sr_to} className="mt-2"/>
                   </div>
@@ -75,8 +72,8 @@ export default function Create({ auth }) {
                        placeholder="RS No."
                        value={data.rs_no}
                        className="mt-1 block w-full"
-                       isFocused={true}
-                       onChange={e => setData('rs_no', e.target.value)}
+                       
+                       onChange={(e) => setData('rs_no', e.target.value)}
                        />
                        <InputError message={errors.rs_no} className="mt-2"/>
                   </div>
@@ -89,8 +86,8 @@ export default function Create({ auth }) {
                        placeholder="Date."
                        value={data.sr_date}
                        className="mt-1 block w-full"
-                       isFocused={true}
-                       onChange={e => setData('sr_date', e.target.value)}
+                       
+                       onChange={(e) => setData('sr_date', e.target.value)}
                        />
                        <InputError message={errors.sr_date} className="mt-2"/>
                   </div>
@@ -110,8 +107,8 @@ export default function Create({ auth }) {
                               name="sr_qty"
                               value={data.sr_qty} 
                               className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_qty', e.target.value)}
+                              
+                              onChange={(e) => setData('sr_qty', e.target.value)}
                               />
                            <InputError message={errors.sr_qty} className="mt-2"/>
                                             
@@ -125,8 +122,8 @@ export default function Create({ auth }) {
                               name="sr_unit"
                               value={data.sr_unit} 
                               className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_unit', e.target.value)}
+                              
+                              onChange={(e) => setData('sr_unit', e.target.value)}
                               />
                            <InputError message={errors.sr_unit} className="mt-2"/>
                                             
@@ -141,8 +138,8 @@ export default function Create({ auth }) {
                               name="sr_description"
                               value={data.sr_description}
                               className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_description', e.target.value)}
+                              
+                              onChange={(e) => setData('sr_description', e.target.value)}
                           />
                           <InputError message={errors.sr_description} className="mt-2"/>
                     </div>
@@ -154,8 +151,8 @@ export default function Create({ auth }) {
                               name="sr_notes"
                               value={data.sr_notes}
                               className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_notes', e.target.value)}
+                              
+                              onChange={(e) => setData('sr_notes', e.target.value)}
                           />
                           <InputError message={errors.sr_notes} className="mt-2"/>
                     </div>
@@ -177,6 +174,7 @@ export default function Create({ auth }) {
         </div>
       </div>
     </div>
-    </Authenticated>
-  )
+            
+        </Authenticated>
+    )
 }

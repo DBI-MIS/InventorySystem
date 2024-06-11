@@ -24,7 +24,7 @@ class StoreCategoryRequest extends FormRequest
         return [
             "name" => ['required', 'max:255'],
             "description" => ['nullable','string'],
-            "sku_prefix" => ['nullable', 'max:3', "min:3"],
+            "sku_prefix" => ['nullable','alpha:ascii', 'max:3', "min:3"],
             
         ];
     }

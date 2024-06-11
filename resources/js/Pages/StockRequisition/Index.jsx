@@ -39,6 +39,14 @@ const sortChanged = (name) => {
   router.get(route("stockrequisition.index"), queryParams)
 };
 
+const deleteStock = (stockrequisition) => {
+  if(!window.confirm("Are you sure you want to delete the stockrequest?")){
+    return;
+  }
+  router.delete(route('stockrequisition.destroy', stockrequisition.id))
+}
+
+
   return (
     <Authenticated
         user={auth.user}
@@ -115,7 +123,7 @@ const sortChanged = (name) => {
                             
                           
                           </div>
-                          <table>
+                          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
 
                             <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
 
@@ -128,7 +136,7 @@ const sortChanged = (name) => {
                                 <TableHeading className="pr-10" name="sr_qty"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>QTY</TableHeading>
                                 <TableHeading className="pr-10" name="sr_unit"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>UNIT</TableHeading>
                                 <TableHeading className="pr-10" name="sr_description"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DESCRIPTION</TableHeading>
-                                <TableHeading className="pr-10" name="sr_note"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>NOTES</TableHeading>
+                                <TableHeading className="pr-10" name="sr_notes"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>NOTES</TableHeading>
 
                               </tr>
 
@@ -143,22 +151,22 @@ const sortChanged = (name) => {
                                   <td className="px-3 py-2">{stocks.sr_qty}</td>
                                   <td className="px-3 py-2">{stocks.sr_unit}</td>
                                   <td className="px-3 py-2">{stocks.sr_description}</td>
-                                  <td className="px-3 py-2">{stocks.sr_note}</td>
+                                  <td className="px-3 py-2">{stocks.sr_notes}</td>
                                   <td className="px-3 py-2 text-nowrap">
-                                          {/* <div className="flex">
-                                              <Link href={route('deliverables.edit', deliverable.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 
+                                          <div className="flex">
+                                              <Link href={route('stockrequisition.edit', stocks.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 
                                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                   </svg>
                                               </Link>
                                               <button 
-                                                  onClick={(e) =>deleteDeliverables(deliverable)}
+                                                  onClick={(e) =>deleteStock(stocks)}
                                                   className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover: rounded-full  hover:underline mx-1"> 
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                                                   <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                                                 </svg>
                                               </button>
-                                          </div> */}
+                                          </div>
                                     </td>
                                 </tr>
                               ))}

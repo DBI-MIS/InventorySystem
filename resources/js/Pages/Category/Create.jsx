@@ -6,6 +6,7 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 // import { Description } from "@headlessui/react/dist/components/description/description";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 export default function Create({auth,success}){
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
@@ -13,7 +14,15 @@ export default function Create({auth,success}){
         description: '',
         sku_prefix: ''
     })
-
+    const [inputValue, setInputValue] = useState('');
+    const handleChange = (event) => {
+        const newValue = event.target.value;
+        const regex = /^[a-zA-Z]+$/;
+        if (regex.test(newValue)) {
+          setInputValue(newValue);
+          setData('sku_prefix', inputValue)
+        }
+      };
     const onSubmit = (e) =>{
         // post function declared above
         e.preventDefault();
@@ -68,7 +77,8 @@ export default function Create({auth,success}){
                                     className="mt-1 block w-full"
                                     maxLength={3}
                                     isFocused={true}
-                                    onChange={e => setData("sku_prefix", e.target.value)}
+                                    onChange={handleChange}
+                                    // onChange={e => setData("sku_prefix", e.target.value)}
                                 />
                                 <span className="font-light text-xs md:text-sm text-red-600"><b>Note: SKU PREFIX should be 3 letters only.</b></span>
                                 <InputError message={errors.sku_prefix} className="mt-2"/>
