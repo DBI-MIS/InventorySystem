@@ -26,15 +26,10 @@ export default function Show({auth, client, }){
                             <div className="flex flex-col pb-3 mt-2">
                                 <label
                                 className="font-bold text-lg"
-                                htmlFor="ClientId"> Client Name</label>
+                                htmlFor="ClientId"> Client / Project Name</label>
                                 <span className="text-2xl font-semibold ">{client.name ?? "No Client Name"}</span>
                             </div>
-                            <div className="flex flex-col gap-3 clients-end">
-                                <div>
-                                <label className="font-light text-md">Client ID: </label>
-                                <span className="font-light">{client.id ?? "No Client ID"}</span>
-                                </div>       
-                            </div>
+                           
                             </div>
 
                             <div className="flex flex-col pb-3 mt-12">
@@ -49,7 +44,7 @@ export default function Show({auth, client, }){
                         </dl>
                 </div>
                 {/* card #2 */}
-                <div className="col-span-1">
+                <div className="mt-6 col-span-1">
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
 
                         <div className="float-end mt-5">

@@ -23,34 +23,69 @@ class StoreItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-          "sku_prefix" => [ 'max:255'],
-          "sku" => [ 'max:255'],
-          "name" => [ 'max:255'],
+          "sku_prefix" => [
+            'required',
+             'max:255'
+          ],
+          "sku" => [
+             'required',
+              'max:255'
+          ],
+          "name" => [
+            'required',
+            'max:255'
+          ],
           'brand_id' => [
-            
+            'required',
             'exists:brands,id',
-        ],
+          ],
           "category_id" => [
+            'required',
           'exists:categories,id',
-        ],
-      //   "receving_item_id" => ['required',
-      //   'exists:receving_items,id',
-      //  ],
-          "description" => ['string'],
-          "specs" => ['string'],
-          "part_no" => [ 'max:255'],
-          "serial_no" => [ 'max:255'],
-          "model_no" => [ 'max:255'],
-          "uom" => [ 'max:20'],
-          "quantity" => [ 'max:255'],
+         ],
+          "description" => [
+            'required',
+            'string'
+          ],
+          "specs" => [
+            'required',
+            'string'
+          ],
+          "part_no" => [
+            'nullable',
+            'max:255'
+          ],
+          "serial_no" => [
+            'nullable', 'max:255'
+          ],
+          "model_no" => [ 
+            'nullable',
+            'max:255'
+          ],
+          "uom" => [ 
+            'required',
+            'max:20'
+          ],
+          "quantity" => [ 
+            'required',
+            'max:255'
+          ],
           "location_id" => [
-            
-          'exists:locations,id',],
+            'required',
+          'exists:locations,id'
+         ],
           "employee_id" => [
+            'required',
           'exists:employees,id',
           ],
-          'statuses' => ['max:255'],
-          "remark" => ['max:255'],
+          'statuses' => [
+            'required',
+            'max:255'
+          ],
+          "remark" => [
+            'required',
+            'max:255'
+          ],
       ];
   }
 }

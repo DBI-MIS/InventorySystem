@@ -97,7 +97,7 @@ export default function Create({auth, client }){
                          </div>
 
                          {/* 2ND GRID COLUMN */}
-                         <div className="mt-12 col-span-1 grid grid-cols-1 content-start">
+                         <div className="col-span-1 grid grid-cols-1 content-start">
 
                           <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="client_contact_no" value="Contact No."/>

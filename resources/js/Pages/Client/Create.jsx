@@ -26,7 +26,7 @@ export default function Create({auth,employees,success}){
         user={auth.user}
         header={
           <div className="flex justify-between items-center"  >
-            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Client</h2>
+            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Client / Project </h2>
           </div>
         }
         >
@@ -47,11 +47,11 @@ export default function Create({auth,employees,success}){
                          {/* 1ST GRID COLUMN */}
                          <div className="col-span-2 grid grid-cols-2 gap-2 content-start">
                                 <div className="mt-6 col-span-2">
-                                    <InputLabel htmlFor="client_name" value="Client Name"/>
+                                    <InputLabel htmlFor="client_name" value="Client / Project Name"/>
                                     <TextInput 
                                     id="client_name"
                                     type="text"
-                                    placeholder="Enter Client Name ..."
+                                    placeholder="Enter Client / Project Name "
                                     name="name"
                                     value={data.name}
                                     className="mt-1 block w-full"
@@ -94,7 +94,7 @@ export default function Create({auth,employees,success}){
                                     <InputLabel htmlFor="client_remarks" value="Remarks"/>
                                     <TextAreaInput
                                     id="client_remarks"
-                                    placeholder="Enter Client Remarks..."
+                                    placeholder="Enter Client Remarks"
                                     name="remarks"
                                     value={data.remarks}
                                     className="mt-1 block w-full resize-none"
@@ -106,7 +106,7 @@ export default function Create({auth,employees,success}){
                          </div>
 
                          {/* 2ND GRID COLUMN */}
-                         <div className="mt-12 col-span-1 grid grid-cols-1 content-start">
+                         <div className=" col-span-1 grid grid-cols-1 content-start">
 
                           <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="client_contact_no" value="Contact No."/>
