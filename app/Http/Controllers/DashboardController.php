@@ -8,11 +8,18 @@ use App\Models\Deliverables;
 use App\Models\Item;
 use App\Models\Receiving;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+
+        $items = Item::selectRaw('name, SUM(quantity) as total_qty')
+        ->groupBy('name')
+        // ->paginate(10)
+        ->get();
+
         $totalName = Item::distinct('name')
             ->count('name');
 
@@ -38,14 +45,15 @@ class DashboardController extends Controller
 
 
 
-        return inertia('Dashboard', compact(
-            'totalName',
-            'formattedTotalQuantity',
-            'totalCategory',
-            'totalClient',
-            'totalDeliverable',
-            'totalDeliverableDelivered',
-            'totalReceiving',
-        ));
+            return inertia('Dashboard', [
+                'items' => $items,
+                'totalName' => $totalName,
+                'formattedTotalQuantity' => $formattedTotalQuantity,
+                'totalCategory' => $totalCategory,
+                'totalClient' => $totalClient,
+                'totalDeliverable' => $totalDeliverable,
+                'totalDeliverableDelivered' => $totalDeliverableDelivered,
+                'totalReceiving' => $totalReceiving,
+            ]);
     }
 }

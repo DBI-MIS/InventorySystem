@@ -1,9 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import React from 'react';
 import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import { Alert} from "@material-tailwind/react";
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia-react';
 import SelectInput from "@/Components/SelectInput";
 import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP } from "@/constants";
 
@@ -31,7 +33,7 @@ const searchFieldChanged = (name, value) => {
     delete queryParams[name];
   }
   // change the url path everytime option changes
- router.get(route('item.index'), queryParams)
+ router.get(route('dashboard'), queryParams)
 };
 
 const onKeyPress = (name, e) => {
@@ -66,6 +68,10 @@ const onKeyPress = (name, e) => {
     }
     router.get(route('item.index'), queryParams)
   }
+
+  const handlePageChange = (url) => {
+    Inertia.visit(url, { preserveScroll: true, preserveState: true });
+};
 
     return (
         <AuthenticatedLayout
@@ -141,43 +147,32 @@ const onKeyPress = (name, e) => {
                 </div>
             </div>
         {/* head displayed together with the appname */}
-       <Head title="Items" />
-      <div className="py-5 flex flex-row mx-auto">
-          <div className="w-1/2 sm:px-6 lg:px-8 relative">
+       
+      <div className="py-5 flex flex-row">
         
-         
+          <div className="w-1/2 mx-auto sm:px-6 lg:px-8 relative">
+        
+          
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                   <div className="p-6 text-gray-900 dark:text-gray-100">
+                 
                       <div className="overflow-auto">
+                      
                         <div className="w-full flex flex-row justify-between items-center mb-2">
                           <div>
+                          <span>Stocks</span>
                         </div>
                           <div className="flex flex-row items-center relative gap-2">
                             <div>
                               <th className="flex flex-row cursor-pointer items-center relative">
-                              <SelectInput
-                                className="max-w-full"
-                                defaultValue={queryParams.statuses}
-                                onChange={(e) => searchFieldChanged('statuses', e.target.value)}
-                              >
-                                <option value="">Select Status</option> 
-                                {Object.keys(ITEM_STATUS_TEXT_MAP).map((statuses) => (
-                                  <option
-                                    key={statuses}
-                                    value={statuses}
-                                  >
-                                    {ITEM_STATUS_TEXT_MAP[statuses]}
-                                  </option>
-                                ))}
-                              </SelectInput>
                               </th>
                            </div>
                           <div className="absolute pointer-events-none right-2"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
                           </div>
 
-                          <TextInput  className="w-[500px]" 
+                          <TextInput  className="w-[600px]" 
                                   defaultValue={queryParams.name}
-                                  placeholder="Search Item Name Here" 
+                                  placeholder="Search Here" 
                                   onBlur={(e) => searchFieldChanged('name', e.target.value)}
                                   onKeyPress={(e) => onKeyPress('name', e )}/>
                                   
@@ -194,7 +189,7 @@ const onKeyPress = (name, e) => {
                                 <TableHeading  className=""   name="name"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Item</TableHeading>
                                 <TableHeading className=""  name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
-                              sortChanged={sortChanged}>Category</TableHeading>
+                              sortChanged={sortChanged}>Total Qty</TableHeading>
                                 <TableHeading className=""  name="statuseses"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Status</TableHeading>
                                 <TableHeading  className=""  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
@@ -245,17 +240,35 @@ const onKeyPress = (name, e) => {
                               ))}
                             </tbody> */}
                             <tbody>
-
-                            </tbody>
+                    {items.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.name}</td>
+                            <td>{item.total_qty}</td>
+                        </tr>
+                    ))}
+                </tbody>
                         </table>
                       </div> 
                  </div>
                  {/* pagination not visible */}
                  {/* <Pagination links={items.meta.links} /> */}
+                 {/* <Pagination links={items.links.map} /> */}
+                 {/* <div>
+                {items.links.map((link, index) => (
+                    <button
+                        key={index}
+                        disabled={!link.url}
+                        onClick={() => handlePageChange(link.url)}
+                        className={link.active ? 'active' : ''}
+                    >
+                        {link.label.replace('&laquo;', '<<').replace('&raquo;', '>>')}
+                    </button>
+                ))}
+            </div> */}
               </div>
           </div>
-          <div className="w-1/2 sm:px-6 lg:px-8 relative">
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+          <div className="w-1/2 mx-auto sm:px-6 lg:px-8 relative">
+          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg h-[500px]">
           <div className="p-6 text-gray-900 dark:text-gray-100">
             </div>
             </div>
