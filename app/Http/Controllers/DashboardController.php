@@ -12,20 +12,26 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
 {
- // Fetch latest item
- $latestItems = Item::latest('created_at')->limit(20)->get();
+    // Fetch latest item
+    $latestItems = Item::latest('created_at')->limit(20)->get();
 
-    // Aggregate quantities and determine statuses
-    $items = Item::selectRaw('name, SUM(quantity) as total_quantity_in, SUM(qty_out) as total_quantity_out')
+    // Initialize query parameters with default values
+    $sortBy = $request->input('sort_by', 'name'); // Default sorting by name
+    $sortDirection = $request->input('sort_direction', 'asc'); // Default sorting direction ascending
+
+    // Query the items with sorting based on query parameters
+    $itemsQuery = Item::selectRaw('name, SUM(quantity) as total_quantity_in, SUM(qty_out) as total_quantity_out')
         ->groupBy('name')
-        ->get()
-        ->map(function ($item) {
-            $item->total_qty = $item->total_quantity_in - $item->total_quantity_out;
-            $item->status = $this->determineStatus($item->total_qty);
-            return $item;
-        });
+        ->orderBy($sortBy, $sortDirection);
+
+    // Execute the query
+    $items = $itemsQuery->get()->map(function ($item) {
+        $item->total_qty = $item->total_quantity_in - $item->total_quantity_out;
+        $item->status = $this->determineStatus($item->total_qty);
+        return $item;
+    });
 
     // Count distinct item names
     $totalName = Item::distinct('name')->count('name');
@@ -52,7 +58,7 @@ class DashboardController extends Controller
     $totalReceiving = Receiving::count('mrr_no');
 
     // Return the data to the inertia dashboard component
-    return inertia('Dashboard', [
+    return Inertia::render('Dashboard', [
         'latestItems' => $latestItems,
         'items' => $items,
         'totalName' => $totalName,

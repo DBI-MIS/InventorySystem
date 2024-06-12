@@ -283,7 +283,10 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                             </button>
                         </div>
                     </form>
-                    <ModalReceiving onClose={(e)=>setShowModal(false)} isVisible={showModal} onSubmit={handleNewItemSubmit}>
+                    <ModalReceiving 
+                    onClose={(e)=>setShowModal(false)}
+                    isVisible={showModal}
+                    onSubmit={handleNewItemSubmit}>
                                         <div className="">
                                       
                                            <div className="q-full sm:px-6 lg:px-8">

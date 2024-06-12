@@ -8,6 +8,7 @@ import { Head, Link, router, } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia-react';
 import SelectInput from "@/Components/SelectInput";
 import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP } from "@/constants";
+import { useState } from 'react';
 
 export default function Dashboard({
   auth,
@@ -23,52 +24,36 @@ export default function Dashboard({
   latestItems,
 }) {
 
-  // const [open, setOpen] = useState(true);
-
   queryParams = queryParams || {};
+  const [searchValue, setSearchValue] = useState(queryParams.name || '');
+
   const searchFieldChanged = (name, value) => {
+    const newQueryParams = { ...queryParams };
     if (value) {
-      queryParams[name] = value;
+      newQueryParams.name = value;
+    } else {
+      delete newQueryParams.name;
     }
-    else {
-      delete queryParams[name];
-    }
-    // change the url path everytime option changes
-    router.get(route('dashboard'), queryParams)
+    Inertia.get(route('dashboard.index'), newQueryParams);
   };
 
   const onKeyPress = (name, e) => {
-
-    const lowerCaseName = name.toLowerCase();
-
-    if (e.key !== 'Enter') return;
-
-    searchFieldChanged(lowerCaseName, e.target.value);
-  }
-
-  const showAll = () => {
-
-    if (value == 'all') {
-
+    if (e.key === 'Enter') {
+      const lowerCaseName = name.toLowerCase();
+      searchFieldChanged(lowerCaseName, e.target.value);
     }
-  }
+  };
 
   const sortChanged = (name) => {
+    const newQueryParams = { ...queryParams };
     if (name === queryParams.sort_field) {
-      if (queryParams.sort_direction === 'desc') {
-        queryParams.sort_direction = 'asc'
-      } else {
-        queryParams.sort_direction = 'desc'
-
-      }
+      newQueryParams.sort_direction = queryParams.sort_direction === 'desc' ? 'asc' : 'desc';
+    } else {
+      newQueryParams.sort_field = name;
+      newQueryParams.sort_direction = 'desc';
     }
-    // sorting the different fields
-    else {
-      queryParams.sort_field = name;
-      queryParams.sort_direction = "desc";
-    }
-    router.get(route('item.index'), queryParams)
-  }
+    Inertia.get(route('dashboard.index'), newQueryParams);
+  };
 
   const handlePageChange = (url) => {
     Inertia.visit(url, { preserveScroll: true, preserveState: true });
@@ -208,11 +193,13 @@ export default function Dashboard({
                     <div className="absolute pointer-events-none right-2"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8" /><line x1="21" x2="16.65" y1="21" y2="16.65" /></svg>
                     </div>
 
-                    <TextInput className="w-[600px]"
+                    <TextInput
+                      className="w-[300px]"
                       defaultValue={queryParams.name}
                       placeholder="Search Here"
-                      onBlur={(e) => searchFieldChanged('name', e.target.value)}
-                      onKeyPress={(e) => onKeyPress('name', e)} />
+                      onBlur={(e) => searchFieldChanged('item.name', e.target.value)}
+                      onKeyPress={(e) => onKeyPress('item.name', e)}
+                    />
 
 
                   </div>
@@ -245,21 +232,6 @@ export default function Dashboard({
                 </table>
               </div>
             </div>
-            {/* pagination not visible */}
-            {/* <Pagination links={items.meta.links} /> */}
-            {/* <Pagination links={items.links.map} /> */}
-            {/* <div>
-                {items.links.map((link, index) => (
-                    <button
-                        key={index}
-                        disabled={!link.url}
-                        onClick={() => handlePageChange(link.url)}
-                        className={link.active ? 'active' : ''}
-                    >
-                        {link.label.replace('&laquo;', '<<').replace('&raquo;', '>>')}
-                    </button>
-                ))}
-            </div> */}
           </div>
         </div>
 
