@@ -21,7 +21,7 @@ export default function Create({auth,success}){
       if (value === "" || lettersOnly.test(value)) {
         setData('sku_prefix' ,value.toUpperCase());
       }
-    }
+    };
     const onSubmit = (e) =>{
         // post function declared above
         e.preventDefault();

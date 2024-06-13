@@ -109,7 +109,7 @@ export default function Edit({ auth, stockrequisition }) {
                                         className="mt-1 block w-full"
                                         onChange={e => setData('sr_qty', e.target.value)}
                                         />
-                                        <InputError message={errors.qty} className="mt-2"/>
+                                        <InputError message={errors.sr_qty} className="mt-2"/>
                                     </div>
                   <div className=" mt-4  col-span-2 ">
                         <InputLabel htmlFor="stockrequest_sr_unit" value="Unit."/>

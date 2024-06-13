@@ -24,7 +24,6 @@ class StoreItemRequest extends FormRequest
     {
         return [
           "sku_prefix" => [
-            'required',
              'max:255'
           ],
           "sku" => [

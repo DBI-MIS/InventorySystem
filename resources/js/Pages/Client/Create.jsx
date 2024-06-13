@@ -5,6 +5,10 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import React from 'react';
+import { useState } from "react";
+import '../../../css/phoneNumber.css'
+import PhoneInput, { formatPhoneNumber } from 'react-phone-number-input';
 export default function Create({auth,employees,success}){
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
@@ -16,7 +20,33 @@ export default function Create({auth,employees,success}){
         status: '',
         remarks: '',
     })
-    
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [valid,setValid] = useState(true);
+    const handleChange = (value) => {
+        // const input = e.target.value;
+        setPhoneNumber(value);
+        setValid(validatePhoneNumber(value));
+
+        // e.preventDefault();
+      // Limit input to 11 digits (including +63)
+    //   if (value.length > 11) {
+    //     setPhoneNumber(value.slice(0, 11));
+    //   } else {
+    //     setPhoneNumber(value);
+    //   }
+    };
+    const validatePhoneNumber = (phoneNumber) =>{
+        const phoneNumberPattern = /^\d{10}$/;
+        return phoneNumberPattern.test(phoneNumber);
+    }
+  
+    const validatePhilippinePhone = (phoneNumber) => {
+      // Basic validation (can be improved)
+      return phoneNumber.startsWith('+63') && phoneNumber.length === 11;
+    };
+  
+    const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/; // Common prefixes
+  
     const onSubmit = (e) =>{
         e.preventDefault();
         post(route("client.store"));
@@ -89,6 +119,21 @@ export default function Create({auth,employees,success}){
                                     />
                                     <InputError message={errors.contact_person} className="mt-2"/>
                                 </div> 
+                                <div className="flex ">
+                                <PhoneInput
+                                    placeholder="Enter Philippine phone number"
+                                    value={phoneNumber}
+                                    onChange={(e) => handleChange}
+                                    defaultCountry="PH" // Set default country to Philippines
+                                    maxLength={11} // Limit input length (optional - handled in handleChange)
+                                    // autoFormat={false} // Disable auto formatting (optional)
+                                    country={'ph'}// Force country to Philippines (optional)
+                                    // isValid={validatePhilippinePhone(phoneNumber)} // Optional validation indicator
+                                />
+                                {!valid && <p>PENTER VALID 10 DIGIT NUMBER</p>}
+                                {/* {!validatePhilippinePhone(phoneNumber) && <p>Invalid Philippine phone number format!</p>} */}
+                                                            </div>
+                                
 
                                 <div className="mt-4 col-span-2">
                                     <InputLabel htmlFor="client_remarks" value="Remarks"/>
@@ -99,7 +144,7 @@ export default function Create({auth,employees,success}){
                                     value={data.remarks}
                                     className="mt-1 block w-full resize-none"
                                             rows="5"
-                                    onChange={e => setData('remarks', e.target.value)}
+                                    onChange={ss => setData('remarks', e.target.value)}
                                     />
                                     <InputError message={errors.remarks} className="mt-2"/>
                                 </div>

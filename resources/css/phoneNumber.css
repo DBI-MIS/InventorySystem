@@ -1,0 +1,22 @@
+.PhoneInput{
+margin-top: 10px;
+display: flex;
+gap:8px
+
+}
+.PhoneInputCountry{
+    
+    display: flex;
+    flex-direction:row-reverse;
+}
+.PhoneInputCountrySelect{
+   width:12rem;
+}
+.PhoneInputCountryIcon {
+    display: flex;
+    width: 70px;
+
+}
+.PhoneInputInput{
+    width: 16.5rem;
+}

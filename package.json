@@ -25,6 +25,7 @@
         "@inertiajs/inertia-react": "^0.8.1",
         "@material-tailwind/react": "^2.1.9",
         "react-pagination": "^1.0.0",
+        "react-phone-number-input": "^3.4.3",
         "react-select": "^5.8.0"
     }
 }

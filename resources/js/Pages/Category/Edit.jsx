@@ -12,7 +12,15 @@ export default function Create({auth, category }){
         sku_prefix: category.sku_prefix || "",
         _method: "PUT", 
     });
-
+    const onInputChange = e => {
+        const { value } = e.target;
+        console.log('Input value: ', value);
+     
+        const lettersOnly = /^[A-Za-z]+$/;
+        if (value === "" || lettersOnly.test(value)) {
+          setData('sku_prefix' ,value.toUpperCase());
+        }
+      }
     const onSubmit = (e) =>{
         e.preventDefault();
         post(route("category.update",category.id));
@@ -67,7 +75,9 @@ export default function Create({auth, category }){
                             className="mt-1 block w-full"
                             isFocused={true}
                             maxLength={3}
-                            onChange={e => setData("sku_prefix", e.target.value)}
+                            onChange={onInputChange}
+                            // onChange={e => setData("sku_prefix", e.target.value)}
+
                             />
                             <InputError message={errors.sku_prefix} className="mt-2"/>
                         </div>

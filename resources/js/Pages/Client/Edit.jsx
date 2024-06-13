@@ -42,7 +42,7 @@ export default function Create({auth, client }){
                          {/* 1ST GRID COLUMN */}
                          <div className="col-span-2 grid grid-cols-2 gap-2 content-start">
                                 <div className="mt-6 col-span-2">
-                                    <InputLabel htmlFor="client_name" value="Client Name"/>
+                                    <InputLabel htmlFor="client_name" value="Client / Project Name"/>
                                     <TextInput 
                                     id="client_name"
                                     type="text"

@@ -9,7 +9,7 @@ import { Head, Link, useForm} from "@inertiajs/react";
 import { useState } from "react";
 import Select from 'react-select';
 
-export default function Create({auth,brands,sku, categories,employees,locations,success,mrrData}){
+export default function Create({auth,brands,sku, categories,employees,locations,success}){
 
    const {data, setData, post,errors,reset} = useForm({
         name: '',
@@ -24,6 +24,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
         quantity:'',
         statuses: '',
         remark:'',
+        location_id: '2' // == DBI
         
     })
     const statusesOptions = Object.keys(ITEM_STATUS_TEXT_MAP).map((key) => ({
@@ -301,7 +302,6 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 name="location_id"
                                 className="mt-1 block w-full"
                                 onChange={(e) => setData("location_id", e.target.value)}>
-                                    <option value="">Select Location</option>
                                     {locations.data.map((location)=>(
                                         <option value={location.id} key={location.id}>{location.name}</option>
 
@@ -323,7 +323,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
 
                                 ))}
                             </SelectInput>
-                            <InputError message={errors.brand_id} className="mt-2"/>
+                            <InputError message={errors.employee_id} className="mt-2"/>
                         </div>
 
                          </div>
