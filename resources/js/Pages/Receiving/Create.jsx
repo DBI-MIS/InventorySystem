@@ -56,6 +56,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
         quantity:'',
         status: '',
         remarks:'',
+        location_id: '1' // == DBI depends on factory what id 
       });
   
     const  handleChange= (event) => {
@@ -87,7 +88,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
         user={auth.user}
         header={
             <div className="flex justify-between items-center"  >
-                 <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Receiving</h2>
+                 <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Material Receiving Report</h2>
             </div>
         }
         >
@@ -502,7 +503,6 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                                     className="mt-1 block w-full"
                                                                     value={formData.location_id}
                                                                     onChange={handleChange}>
-                                                                    <option value="">Select Location Name</option>
                                                                      {locations.data.map((location)=>(
                                                                           <option value={location.id} key={location.id}>{location.name}</option>
 

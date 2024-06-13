@@ -7,9 +7,18 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import React from 'react';
 import { useState } from "react";
+import {
+    isPossiblePhoneNumber,
+    isValidPhoneNumber,
+    validatePhoneNumberLength,
+    isValidNumber,
+  } from 'libphonenumber-js'
+  
+import { parsePhoneNumberFromString ,  parsePhoneNumber, } from 'libphonenumber-js';
+// import myModule from './myModule';
 import '../../../css/phoneNumber.css'
-import PhoneInput, { formatPhoneNumber } from 'react-phone-number-input';
 export default function Create({auth,employees,success}){
+   
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
         name: '',
@@ -20,33 +29,56 @@ export default function Create({auth,employees,success}){
         status: '',
         remarks: '',
     })
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [valid,setValid] = useState(true);
-    const handleChange = (value) => {
-        // const input = e.target.value;
-        setPhoneNumber(value);
-        setValid(validatePhoneNumber(value));
-
-        // e.preventDefault();
-      // Limit input to 11 digits (including +63)
-    //   if (value.length > 11) {
-    //     setPhoneNumber(value.slice(0, 11));
-    //   } else {
-    //     setPhoneNumber(value);
-    //   }
-    };
-    const validatePhoneNumber = (phoneNumber) =>{
-        const phoneNumberPattern = /^\d{10}$/;
-        return phoneNumberPattern.test(phoneNumber);
-    }
+    const [phoneNumberInput, setPhoneNumberInput] = useState('');
+    const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
   
-    const validatePhilippinePhone = (phoneNumber) => {
-      // Basic validation (can be improved)
-      return phoneNumber.startsWith('+63') && phoneNumber.length === 11;
-    };
-  
+    function handleChange(event) {
+        const digits = event.target.value.replace(/\D/g, ''); // Extract digits only
+      
+        try {
+          const parsedNumber = parsePhoneNumber(`+63${digits}`, 'PH'); // Parse with +63 prefix
+          setFormattedPhoneNumber(PhoneNumberOfflineGeocoder(parsedNumber, 'INTERNATIONAL')); // Format internationally
+          setData('contact_person',formattedPhoneNumber)
+          setErrorMessage(''); // Clear error if valid
+        } catch (error) {
+          setFormattedPhoneNumber(''); // Clear formatted number on error
+          if (error.message === 'The phone number is not valid for the given country code.') {
+            setErrorMessage('Invalid Philippine phone number. Please enter 10 digits.'); // Specific message for invalid format
+          } else if (error.message === 'The phone number is too short for the given region.') {
+            setErrorMessage('Invalid Philippine phone number. Please enter 10 digits.'); // More specific message for less than 10 digits
+          } else {
+            setErrorMessage('Invalid phone number. Please refer to [Areaphonecodes.com](https://areaphonecodes.com/philippines/) for valid Philippine area codes.');
+          }
+        }
+      }
     const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/; // Common prefixes
+
+    //
+    const [tin, setTin] = useState('');
+    // const [errorMessage, setErrorMessage] = useState('');
   
+    const handleTinChange = (event) => {
+      const value = event.target.value.replace(/\D/g, ''); 
+  
+      // dashes every 3 digits
+      const formattedValue = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{3})$/, '$1-$2-$3-$4');
+  
+      setTin(formattedValue);
+  
+      setErrorMessage('');
+  
+      if (value.length < 9 || value.length > 12 || !/^\d{3}-\d{3}-\d{3}-\d{3}$/.test(formattedValue)) {
+        setErrorMessage('Invalid TIN format. Please enter a valid 9-12 digit TIN number (XXX-XXX-XXX-XXX)');
+      } else {
+        // Update data using setData callback if validation passes
+        // setData('tin_no', value);
+        setTin(formattedValue); // display purposes 
+      setErrorMessage(''); // Clear error
+      setData('tin_no', formattedValue); 
+      }
+    };
+    console.log(data)
     const onSubmit = (e) =>{
         e.preventDefault();
         post(route("client.store"));
@@ -84,7 +116,7 @@ export default function Create({auth,employees,success}){
                                     placeholder="Enter Client / Project Name "
                                     name="name"
                                     value={data.name}
-                                    className="mt-1 block w-full"
+                                    className="mt-3 block w-full"
                                     isFocused={true}
                                     onChange={e => setData('name', e.target.value)}
                                     />
@@ -119,21 +151,20 @@ export default function Create({auth,employees,success}){
                                     />
                                     <InputError message={errors.contact_person} className="mt-2"/>
                                 </div> 
-                                <div className="flex ">
-                                <PhoneInput
-                                    placeholder="Enter Philippine phone number"
-                                    value={phoneNumber}
-                                    onChange={(e) => handleChange}
-                                    defaultCountry="PH" // Set default country to Philippines
-                                    maxLength={11} // Limit input length (optional - handled in handleChange)
-                                    // autoFormat={false} // Disable auto formatting (optional)
-                                    country={'ph'}// Force country to Philippines (optional)
-                                    // isValid={validatePhilippinePhone(phoneNumber)} // Optional validation indicator
-                                />
-                                {!valid && <p>PENTER VALID 10 DIGIT NUMBER</p>}
-                                {/* {!validatePhilippinePhone(phoneNumber) && <p>Invalid Philippine phone number format!</p>} */}
-                                                            </div>
-                                
+                                {/* <div>
+                                    <label htmlFor="phone-number">Phone Number:</label>
+                                    <input
+                                        type="tel"
+                                        id="phone-number"
+                                        name="phone-number"
+                                        value={phoneNumberInput}
+                                        onChange={handleChange}
+                                        placeholder="+63..."
+                                    />
+                                    <p>Valid Philippine phone numbers typically start with area codes like those listed on <a href="https://areaphonecodes.com/philippines/">Areaphonecodes.com</a>.</p>
+                                    {formattedPhoneNumber && <p>Formatted Number: {formattedPhoneNumber}</p>}
+                                    {errorMessage && <p className="error-message">{errorMessage}</p>}
+                                    </div> */}
 
                                 <div className="mt-4 col-span-2">
                                     <InputLabel htmlFor="client_remarks" value="Remarks"/>
@@ -154,20 +185,38 @@ export default function Create({auth,employees,success}){
                          <div className=" col-span-1 grid grid-cols-1 content-start">
 
                           <div className="mt-6 col-span-1">
+                            <div className="flex gap-2">
+                            <InputLabel htmlFor="client_tin_no" value="TIN No."/>
+                            <span className="text-red-800  font-medium text-sm">format: XXXX-XXX-XXX-XXX</span>
+
+                            </div>
+                        
+                            <TextInput
+                                type="text"
+                                 id="client_tin_no"
+                                name="client_tin_no"
+                                value={tin}
+                                placeholder="Enter TIN No. (XXX-XXX-XXX-XXX)"
+                                className="mt-2 block w-full"
+                                onChange={handleTinChange}
+                                maxLength="12" 
+                            />
+                            
+                            {errorMessage && <p className="error-message text-red-700">{errorMessage}</p>}
+                            </div>
+                            <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="client_contact_no" value="Contact No."/>
                                 <TextInput
                                 type="number"
                                 id="client_contact_no"
                                 name="contact_no"
-                                placeholder="Enter Contact Number"
                                 value={data.contact_no}
                                 className="mt-1 block w-full"
                                 onChange={e => setData('contact_no', e.target.value)}
                                 />
                                 <InputError message={errors.contact_no} className="mt-2"/>
                             </div>
-
-                            <div className="mt-6 col-span-1">
+                            {/* <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="client_tin_no" value="TIN No."/>
                                 <TextInput
                                 type="number"
@@ -180,7 +229,7 @@ export default function Create({auth,employees,success}){
                                 onChange={e => setData('tin_no', e.target.value)}
                                 />
                                 <InputError message={errors.tin_no} className="mt-2"/>
-                            </div>
+                            </div> */}
 
                             <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="client_status" value="Status"/>

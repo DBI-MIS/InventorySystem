@@ -146,7 +146,7 @@ const onPrevPage = (e) => {
         user={auth.user}
         header={
           <div className="flex justify-between items-center"  >
-          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Receiving {receiving.id}</h2>
+          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Material Receiving Report {receiving.mrr_no}</h2>
         </div>
       } >
       <Head title="Receivings" />
@@ -308,6 +308,7 @@ const onPrevPage = (e) => {
                                   
                               </div>
                           </div>
+                          
                           {/* WARNING MESSAGE WHEN ADDING DUPLICATE ITEMS */}
                           <div className="mt-2 mx-2">
                             {notification && (

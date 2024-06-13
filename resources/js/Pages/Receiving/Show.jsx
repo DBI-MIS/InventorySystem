@@ -13,7 +13,7 @@ export default function Show({auth, receiving,receiving_items}){
         header={
             <div className="flex receivings-centerjustify-between">
               <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight capitalize">
-                    {`Material Receiving Report " ${receiving.id} " `}
+                    {`Material Receiving Report " ${receiving.mrr_no} " `}
                </h2>
             </div>
             }

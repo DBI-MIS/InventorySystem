@@ -26,7 +26,7 @@ class StoreClientRequest extends FormRequest
             "address" => ['required', 'max:255'],
             "contact_person"=> ['required', 'max:255'],
             "contact_no"=> ['required', 'max:11', "min:11"],
-            "tin_no"=> ['required', 'max:12', 'min:12'],
+            "tin_no"=> ['required', 'max:15', 'min:12'], //12max if di kasama dash
             "status"=> ['required', 'max:20'],
             "remarks"=> ['nullable','string'],
         ];

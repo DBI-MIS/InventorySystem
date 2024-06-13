@@ -11,18 +11,17 @@ export default function Edit({ auth, stockrequisition }) {
 
     const {data, setData, post, errors, reset} = useForm({
         sr_to: stockrequisition.sr_to || "",
-        rs_no: stockrequisition.rs_no || "",
+        rs_no: stockrequisition.rs_no   || "",
         sr_date: stockrequisition.sr_date || "",
         sr_qty: stockrequisition.sr_qty || "",
         sr_unit: stockrequisition.sr_unit || "",
         sr_description: stockrequisition.sr_description || "",
         sr_notes: stockrequisition.sr_notes || "",
         _method: "PUT",
-    });
+    })
 
     const onSubmit = (e) => {
         e.preventDefault();
-
         post(route("stockrequisition.update", stockrequisition.id));
     };
   return (
@@ -56,7 +55,7 @@ export default function Edit({ auth, stockrequisition }) {
                    value={data.sr_to}
                    className="mt-1 block w-full"
                    
-                   onChange={(e) => setData('sr_to', e.target.value)}
+                   onChange={e => setData('sr_to', e.target.value)}
                    />
                    <InputError message={errors.sr_to} className="mt-2"/>
               </div>
@@ -74,7 +73,7 @@ export default function Edit({ auth, stockrequisition }) {
                    value={data.rs_no}
                    className="mt-1 block w-full"
                    
-                   onChange={(e) => setData('rs_no', e.target.value)}
+                   onChange={e => setData('rs_no', e.target.value)}
                    />
                    <InputError message={errors.rs_no} className="mt-2"/>
               </div>
@@ -88,7 +87,7 @@ export default function Edit({ auth, stockrequisition }) {
                    value={data.sr_date}
                    className="mt-1 block w-full"
                    
-                   onChange={(e) => setData('sr_date', e.target.value)}
+                   onChange={e => setData('sr_date', e.target.value)}
                    />
                    <InputError message={errors.sr_date} className="mt-2"/>
               </div>
@@ -121,7 +120,7 @@ export default function Edit({ auth, stockrequisition }) {
                           value={data.sr_unit} 
                           className="mt-1 block w-full"
                           
-                          onChange={(e) => setData('sr_unit', e.target.value)}
+                          onChange={e => setData('sr_unit', e.target.value)}
                           />
                        <InputError message={errors.sr_unit} className="mt-2"/>
                                         
@@ -137,7 +136,7 @@ export default function Edit({ auth, stockrequisition }) {
                           value={data.sr_description}
                           className="mt-1 block w-full"
                           
-                          onChange={(e) => setData('sr_description', e.target.value)}
+                          onChange={e => setData('sr_description', e.target.value)}
                       />
                       <InputError message={errors.sr_description} className="mt-2"/>
                 </div>
@@ -150,7 +149,7 @@ export default function Edit({ auth, stockrequisition }) {
                           value={data.sr_notes}
                           className="mt-1 block w-full"
                           
-                          onChange={(e) => setData('sr_notes', e.target.value)}
+                          onChange={e => setData('sr_notes', e.target.value)}
                       />
                       <InputError message={errors.sr_notes} className="mt-2"/>
                 </div>
