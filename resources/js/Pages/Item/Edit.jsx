@@ -5,7 +5,7 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-export default function Create({auth, item,categories, locations, brands, employees }){
+export default function Edit({auth, item,categories, locations, brands, employees }){
     // data will hold/contain the ff:
    const {data, setData, post ,errors,} = useForm({
         name: item.name || "",

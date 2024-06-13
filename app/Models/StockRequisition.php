@@ -19,9 +19,9 @@ class StockRequisition extends Model
         'sr_notes'
     ];
 
-    public function stockrequisition()
-    {
-        return $this->hasMany(StockRequisition::class);
-    }
+    // public function stockrequisition()
+    // {
+    //     return $this->hasMany(StockRequisition::class);
+    // }
 
 }

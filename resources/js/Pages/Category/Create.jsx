@@ -1,10 +1,8 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-// import { Description } from "@headlessui/react/dist/components/description/description";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 export default function Create({auth,success}){
@@ -14,15 +12,16 @@ export default function Create({auth,success}){
         description: '',
         sku_prefix: ''
     })
-    const [inputValue, setInputValue] = useState('');
-    const handleChange = (event) => {
-        const newValue = event.target.value;
-        const regex = /^[a-zA-Z]+$/;
-        if (regex.test(newValue)) {
-          setInputValue(newValue);
-          setData('sku_prefix', inputValue)
-        }
-      };
+ 
+    const onInputChange = e => {
+      const { value } = e.target;
+      console.log('Input value: ', value);
+   
+      const lettersOnly = /^[A-Za-z]+$/;
+      if (value === "" || lettersOnly.test(value)) {
+        setData('sku_prefix' ,value.toUpperCase());
+      }
+    }
     const onSubmit = (e) =>{
         // post function declared above
         e.preventDefault();
@@ -77,7 +76,7 @@ export default function Create({auth,success}){
                                     className="mt-1 block w-full"
                                     maxLength={3}
                                     isFocused={true}
-                                    onChange={handleChange}
+                                    onChange={onInputChange}
                                     // onChange={e => setData("sku_prefix", e.target.value)}
                                 />
                                 <span className="font-light text-xs md:text-sm text-red-600"><b>Note: SKU PREFIX should be 3 letters only.</b></span>
