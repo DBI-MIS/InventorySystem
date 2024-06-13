@@ -10,7 +10,7 @@ import React from 'react'
 
 export default function Create({ auth }) {
 
-  const {data, setData, post, errors} = useForm({
+  const {data, setData, post, errors, reset} = useForm({
     sr_to: '',
     rs_no: '',
     sr_date: '',
@@ -131,7 +131,7 @@ export default function Create({ auth }) {
                            <InputError message={errors.sr_unit} className="mt-2"/>
                                             
                       </div>
-
+                      
                   </div>
                   <div className="mt-4  col-span-3">
                           <InputLabel htmlFor="stockrequest_sr_description" value="Description."/>
