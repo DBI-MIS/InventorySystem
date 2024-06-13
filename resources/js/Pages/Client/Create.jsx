@@ -144,7 +144,7 @@ export default function Create({auth,employees,success}){
                                     value={data.remarks}
                                     className="mt-1 block w-full resize-none"
                                             rows="5"
-                                    onChange={ss => setData('remarks', e.target.value)}
+                                    onChange={e => setData('remarks', e.target.value)}
                                     />
                                     <InputError message={errors.remarks} className="mt-2"/>
                                 </div>

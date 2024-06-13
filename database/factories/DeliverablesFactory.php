@@ -19,7 +19,7 @@ class DeliverablesFactory extends Factory
     {
         return [
             'list_item_id'=>rand(1, 30),
-            'dr_no'=> random_int('10', '20'),
+            'dr_no'=> fake()->regexify('[0-9]{8}'),
             'rs_no'=> rand(1, 10),
             'address'=> fake()->address(),
             'dr_date'=> now(),

@@ -197,7 +197,9 @@ public function show(Receiving $receiving, Request $request)
     public function edit(Receiving $receiving)
     {
         $items = Item::query()->orderBy('name', 'asc')->get();
-        $clients = Client::select('name')->distinct()->orderBy('name', 'asc')->get();
+        $clients =  Client::query()->distinct()->orderBy('name', 'asc')->get();
+        // $clients = Client::select('name')->distinct()->orderBy('name', 'asc')->get();
+        $delivers = Deliverables::query()->distinct()->orderBy('dr_no', 'asc')->get();
         // dd($clients);
         // Fetch brand name and category name for existing items
         foreach ($items as $item) {
@@ -227,7 +229,8 @@ public function show(Receiving $receiving, Request $request)
         'clients' => ClientResource::collection($clients),
             'receiving' => new ReceivingResource($receiving),
             'existingItems' =>  $existingItems,
-            'existingItemIds' => $existingItemIds
+            'existingItemIds' => $existingItemIds,
+            'delivers' => DeliverablesResource::collection($delivers),
        ]
        );
     }

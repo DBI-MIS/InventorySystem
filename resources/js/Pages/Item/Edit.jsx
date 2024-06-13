@@ -120,18 +120,17 @@ export default function Edit({auth, item,categories, locations, brands, employee
                                         type="text"
                                         name="uom"
                                         defaultValue={data.uom}
-                                        
                                         className="mt-1 block w-full"
                                         onChange={e => setData('uom', e.target.value)} >
-                                <option value="">Select UOM </option>
-                                 <option value="Meters">Meters</option>
-                                 <option value="Kilograms">Kilograms</option>
-                                 <option value="Liters">Liters</option>
-                                 <option value="Pieces">Pieces</option>
-                                 <option value="Piece">Piece</option>
-                                 <option value="Set">Set</option>
-                                 <option value="Sets">Sets</option>
-                            </SelectInput>
+                                            <option value="">Select UOM </option>
+                                            <option value="Meters">Meters</option>
+                                            <option value="Kilograms">Kilograms</option>
+                                            <option value="Liters">Liters</option>
+                                            <option value="Pieces">Pieces</option>
+                                            <option value="Piece">Piece</option>
+                                            <option value="Set">Set</option>
+                                            <option value="Sets">Sets</option>
+                                        </SelectInput>
                                         <InputError message={errors.uom} className="mt-2"/>
                                     </div>
                                     </div>

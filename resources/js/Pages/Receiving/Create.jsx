@@ -133,6 +133,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                         placeholder="Enter Full Address"
                                         value={data.address}
                                         className="mt-1 block w-full"
+                                        rows="5"
                                         onChange={e => setData('address', e.target.value)}
                                                 />
                                     <InputError message={errors.address} className="mt-2"/>
@@ -146,13 +147,14 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                             placeholder="Enter Receiving Remarks"
                                             value={data.remarks}
                                             className="mt-1 block w-full"
+                                            rows="5"
                                             onChange={e => setData('remarks', e.target.value)}
                                         />
                                     <InputError message={errors.remarks} className="mt-2"/>
                                 </div>
                             </div>
                                   {/* 2ND GRID COLUMN */}
-                                  <div className="mt-10 col-span-1 grid grid-cols-1 content-start">
+                                  <div className="mt-2 col-span-1 grid grid-cols-1 content-start">
                                     <div className="mt-4 col-span-1">
                                         <InputLabel htmlFor="mrr_no" value="MRR No."/>
                                                         <div className=" flex h-[11]">
@@ -167,7 +169,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                         </div>
                                         </div>
 
-                                        <div className="mt-4 col-span-1">
+                                        <div className="mt-6 col-span-1">
                                         <InputLabel htmlFor="receiving_si_no" value="SI No."/>
                                                         <TextInput 
                                                             id="receiving_si_no"
@@ -181,7 +183,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                         />
                                                         <InputError message={errors.si_no} className="mt-2"/>
                                         </div>
-                                        <div className="t-4 col-span-1">
+                                        <div className="mt-6 col-span-1">
                                             <InputLabel htmlFor="receiving_deliverable_id" value="DR No."/>
                                             <div className="col-span-10 xs:col-span-8">
                                                 <SelectInput
@@ -225,11 +227,11 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                             </button> 
                                         </div>
                                     </div>
-                                    <span className="mt-2"><b>If items are not available on the lists, you can add new Item.</b></span>
+                                    <span className="mt-2 text-red-500"><b> Note: If items are not available on the lists, you can add new Item.</b></span>
                                  </div>
 
                                  <div className="mt-5">
-                                     <h1 className="text-2xl text-center p-5 font-semibold">LIST OF MRR ITEMS</h1>
+                                     <h1 className="text-2xl text-center text-blue-800 p-5 font-semibold">LIST OF MRR ITEMS</h1>
                                      <table className="min-w-full bg-white">
                                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                             <tr>

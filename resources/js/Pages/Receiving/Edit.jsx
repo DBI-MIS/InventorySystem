@@ -10,7 +10,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 import Select from "react-select"
-export default function Edit({auth,existingItems,existingItemIds,receiving,items,clients}){
+export default function Edit({auth,existingItems,existingItemIds,receiving,items,clients,delivers}){
 
  // data will hold/contain the ff:
  const {data, setData, post ,errors,processing} = useForm({
@@ -19,7 +19,7 @@ export default function Edit({auth,existingItems,existingItemIds,receiving,items
     mrr_no: receiving.mrr_no || "",
     receiving_item_id: receiving.receiving_item_id || "",
     si_no: receiving.si_no || "",
-    dr_no: receiving.dr_no || "",
+    deliver_id: receiving.deliver_id || "",
     address: receiving. address || "",
     remarks: receiving. remarks || "",
         _method: "PUT", 
@@ -166,6 +166,7 @@ const onPrevPage = (e) => {
                                     <SelectInput
                                         id="receiving_client_id"
                                         name="client_id"
+                                        defaultValue={data.client_id}
                                         className="mt-1 block w-full"
                                         onChange={(e) => setData("client_id", e.target.value)}>
                                             <option value="">Select client </option>
@@ -184,6 +185,7 @@ const onPrevPage = (e) => {
                                         name="address"
                                         value={data.address}
                                         className="mt-1 block w-full"
+                                        rows="5"
                                         onChange={e => setData('address', e.target.value)}
                                                 />
                                     <InputError message={errors.address} className="mt-2"/>
@@ -196,6 +198,7 @@ const onPrevPage = (e) => {
                                             name="remarks"
                                             value={data.remarks}
                                             className="mt-1 block w-full"
+                                            rows="5"
                                             onChange={e => setData('remarks', e.target.value)}
                                         />
                                     <InputError message={errors.remarks} className="mt-2"/>
@@ -203,7 +206,7 @@ const onPrevPage = (e) => {
                             </div>
 
                             {/* 2ND GRID COLUMN */}
-                            <div className="mt-14 col-span-1 grid grid-cols-1 content-start">
+                            <div className="mt-3 col-span-1 grid grid-cols-1 content-start">
 
                             <div className="mt-4 col-span-1">
                                 <InputLabel htmlFor="mrr_no" value="MRR No."/>
@@ -219,7 +222,7 @@ const onPrevPage = (e) => {
                                  </div>
                             </div>
 
-                                <div className="mt-4 col-span-1">
+                                <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="receiving_si_no" value="SI No."/>
                                 <TextInput 
                                      id="receiving_si_no"
@@ -233,19 +236,37 @@ const onPrevPage = (e) => {
                                  <InputError message={errors.si_no} className="mt-2"/>
                                 </div>
 
-                                <div className="mt-4 col-span-1">
-                                <InputLabel htmlFor="receiving_dr_no" value="DR No."/>
+                                  <div className="mt-4 col-span-1">
+                                  <InputLabel htmlFor="receiving_deliverable_id" value="DR No."/>
+                                            <div className="col-span-10 xs:col-span-8">
+                                                <SelectInput
+                                                    id="receiving_deliverable_id"
+                                                    name="deliverable_id"
+                                                    className="mt-1 block w-full"
+                                                    defaultValue={data.deliver_id}
+                                                    onChange={(e) => setData("deliver_id", e.target.value)}>
+                                                        <option value="">Select DR No </option>
+                                                        {delivers.data.map((deliver)=>(
+                                                            <option value={deliver.id} key={deliver.id}>{deliver.dr_no}</option>
+
+                                                            ))}
+                                                </SelectInput>
+                                            </div>
+                                            <InputError message={errors.deliver_id} className="mt-2"/>
+                                </div>
+                                {/* <div className="mt-4 col-span-1">
+                                <InputLabel htmlFor="receiving_deliver_id" value="DR No."/>
                                       <TextInput 
-                                           id="receiving_dr_no"
+                                           id="receiving_deliver_id"
                                            type="text"
-                                           name="dr_no"
-                                           value={data.dr_no}
+                                           name="deliver_id"
+                                           value={data.deliver_id}
                                            className="mt-1 block w-full"
                                            isFocused={true}
-                                          onChange={e => setData('dr_no', e.target.value)}
+                                          onChange={e => setData('deliver_id', e.target.value)}
                                       />
-                                    <InputError message={errors.dr_no} className="mt-2"/>
-                                </div>
+                                    <InputError message={errors.deliver_id} className="mt-2"/>
+                                </div> */}
                             </div>
     
                         </div>
@@ -265,6 +286,7 @@ const onPrevPage = (e) => {
                                       placeholder="Select Items"
                                   >
                                   </Select>
+                                  <InputError message={errors.group_item_id} className="mt-2"/>
                               </div>
                               <div className="col-span-3 xs:col-span-2">
                                   <button
@@ -283,6 +305,7 @@ const onPrevPage = (e) => {
                                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
                                   </button>
+                                  
                               </div>
                           </div>
                           {/* WARNING MESSAGE WHEN ADDING DUPLICATE ITEMS */}
