@@ -71,7 +71,9 @@ class ClientController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Client $client)
+   
     {
+        //  dd($client);
         return inertia('Client/Edit',[
             'client' => new ClientResource($client),
           ]);

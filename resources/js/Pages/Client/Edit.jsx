@@ -5,8 +5,10 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Create({auth, client }){
+  
    const {data, setData, post ,errors,reset} = useForm({
         name: client.name || "",
         address: client.address || "",
@@ -17,6 +19,32 @@ export default function Create({auth, client }){
         remarks: client.remarks || "",
         _method: "PUT", 
     });
+    console.log("Client Data : " + client);
+     //
+     const [tin, setTin] = useState('');
+     const [errorMessage, setErrorMessage] = useState('');
+   
+     const handleTinChange = (event) => {
+       const value = event.target.value.replace(/\D/g, ''); 
+   
+       // dashes every 3 digits
+       const formattedValue = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{3})$/, '$1-$2-$3-$4');
+   
+       setTin(formattedValue);
+   
+       setErrorMessage('');
+   
+       if (value.length < 9 || value.length > 12 || !/^\d{3}-\d{3}-\d{3}-\d{3}$/.test(formattedValue)) {
+         setErrorMessage('Invalid TIN format. Please enter a valid 9-12 digit TIN number (XXX-XXX-XXX-XXX)');
+       } else {
+         // Update data using setData callback if validation passes
+         // setData('tin_no', value);
+         setTin(formattedValue); // display purposes 
+       setErrorMessage(''); // Clear error
+       setData('tin_no', formattedValue); 
+       }
+     };
+    console.log("data" + data);
     const onSubmit = (e) =>{
         e.preventDefault();
         post(route("client.update",client.id));
@@ -99,6 +127,26 @@ export default function Create({auth, client }){
                          {/* 2ND GRID COLUMN */}
                          <div className="col-span-1 grid grid-cols-1 content-start">
 
+                         <div className="mt-6 col-span-1">
+                              <div className="flex gap-2">
+                                 <InputLabel htmlFor="client_tin_no" value="TIN No."/>
+                                <span className="text-red-800  font-medium text-sm">format: XXXX-XXX-XXX-XXX</span>
+                              </div>
+                          
+                              <TextInput
+                                  type="text"
+                                  id="client_tin_no"
+                                  name="client_tin_no"
+                                  value={data.tin_no}
+                                  placeholder="Enter TIN No. (XXX-XXX-XXX-XXX)"
+                                  className="mt-2 block w-full"
+                                  onChange={handleTinChange}
+                                  maxLength="12" 
+                              />
+                              {errorMessage && <p className="error-message text-red-700">{errorMessage}</p>}
+                              <InputError message={errors.tin_no} className="mt-2"/>
+                            </div>
+
                           <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="client_contact_no" value="Contact No."/>
                                 <TextInput
@@ -112,19 +160,6 @@ export default function Create({auth, client }){
                                 <InputError message={errors.contact_no} className="mt-2"/>
                             </div>
 
-                            <div className="mt-6 col-span-1">
-                                <InputLabel htmlFor="client_tin_no" value="TIN No."/>
-                                <TextInput
-                                type="number"
-                                id="client_tin_no"
-                                name="contact_no"
-                                value={data.tin_no}
-                                className="mt-1 block w-full"
-                                isFocused={true}
-                                onChange={e => setData('tin_no', e.target.value)}
-                                />
-                                <InputError message={errors.tin_no} className="mt-2"/>
-                            </div>
 
                             <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="client_status" value="Status"/>

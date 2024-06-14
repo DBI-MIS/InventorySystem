@@ -9,16 +9,16 @@ import React from 'react'
 export default function Edit({ auth, stockrequisition }) {
     console.log(stockrequisition);
 
-    const {data, setData, post, errors, reset} = useForm({
-        sr_to: stockrequisition.sr_to || "",
-        rs_no: stockrequisition.rs_no   || "",
-        sr_date: stockrequisition.sr_date || "",
-        sr_qty: stockrequisition.sr_qty || "",
-        sr_unit: stockrequisition.sr_unit || "",
-        sr_description: stockrequisition.sr_description || "",
-        sr_notes: stockrequisition.sr_notes || "",
-        _method: "PUT",
-    });
+    const { data, setData, post, errors, reset } = useForm ({
+      sr_to: stockrequisition.sr_to || "",
+      rs_no: stockrequisition || "",
+      sr_date: stockrequisition || "",
+      sr_qty: stockrequisition || "",
+      sr_unit: stockrequisition || "",
+      sr_description: stockrequisition || "",
+      sr_notes: stockrequisition || "",
+      _method: "PUT",
+    })
     console.log(data);
 
 

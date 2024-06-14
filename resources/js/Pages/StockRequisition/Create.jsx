@@ -4,8 +4,7 @@ import SelectInput from '@/Components/SelectInput';
 import TextAreaInput from '@/Components/TextAreaInput';
 import TextInput from '@/Components/TextInput';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { useForm } from '@inertiajs/inertia-react'
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react'
 
 export default function Create({ auth }) {
@@ -20,6 +19,7 @@ export default function Create({ auth }) {
     sr_notes: '',
 
   });
+  console.log(data);
 
   const onSubmit = (e) =>{
     e.preventDefault();
