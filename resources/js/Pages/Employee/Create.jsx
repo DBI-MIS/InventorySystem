@@ -37,7 +37,7 @@ export default function Create({auth}){
                             id="employee_name"
                             type="text"
                             name="name"
-                            placeholder="Enter Employee Name..."
+                            placeholder="Enter Employee Name"
                             value={data.name}
                             className="mt-1 block w-full"
                             isFocused={true}
@@ -49,7 +49,7 @@ export default function Create({auth}){
                             <InputLabel htmlFor="employee_department" value="Employee Department"/>
                             <TextInput 
                             id="employee_department"
-                            placeholder="Enter Employee Department ..."
+                            placeholder="Enter Employee Department"
                             type="text"
                             name="department"
                             value={data.department}
@@ -64,9 +64,10 @@ export default function Create({auth}){
                             <TextAreaInput
                             id="employee_remarks"
                             name="remarks"
-                            placeholder="Enter Remarks or Stattus of Employee ..."
+                            placeholder="Enter Remarks or Stattus of Employee "
                             value={data.remarks}
                             className="mt-1 block w-full"
+                            rows="5"
                             isFocused={true}
                             onChange={e => setData('remarks', e.target.value)}
                             />

@@ -38,7 +38,7 @@ export default function Create({auth}){
                             <TextInput 
                             id="location_name"
                             type="text"
-                            placeholder="Enter Location Name..."
+                            placeholder="Enter Location Name"
                             name="name"
                             value={data.name}
                             className="mt-1 block w-full"
@@ -53,9 +53,10 @@ export default function Create({auth}){
                             <TextAreaInput
                             id="location_company"
                             name="company"
-                            placeholder="Enter Company Name..."
+                            placeholder="Enter Company Name"
                             value={data.company}
                             className="mt-1 block w-full"
+                            rows="5"
                             isFocused={true}
                             onChange={e => setData('company', e.target.value)}
                             />
@@ -68,7 +69,7 @@ export default function Create({auth}){
                             id="location_address"
                             type="text"
                             name="address"
-                            placeholder="Enter Complete Address..."
+                            placeholder="Enter Complete Address"
                             value={data.address}
                             className="mt-1 block w-full"
                             isFocused={true}

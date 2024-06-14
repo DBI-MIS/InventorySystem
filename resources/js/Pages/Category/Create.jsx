@@ -93,6 +93,7 @@ export default function Create({auth,success}){
                                 placeholder="Enter Category Description"
                                 value={data.description}
                                 className="mt-1 block w-full"
+                                rows="5"
                                 isFocused={true}
                                 onChange={e => setData('description', e.target.value)}
                             />
