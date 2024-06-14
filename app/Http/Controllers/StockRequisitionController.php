@@ -6,6 +6,7 @@ use App\Models\StockRequisition;
 use App\Http\Requests\StoreStockRequisitionRequest;
 use App\Http\Requests\UpdateStockRequisitionRequest;
 use App\Http\Resources\StockRequisitionResource;
+use App\Models\Item;
 
 class StockRequisitionController extends Controller
 {
@@ -20,6 +21,12 @@ class StockRequisitionController extends Controller
 
         $sortFields = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
+
+        // if(request("rs_no")) {
+        //     $query->where("rs_no", "like", "%" . request("rs_no") . "%");
+        // }
+
+        // $stockrequisitionPivot = Item::query()->with('stockrequest_items')->get();  
 
         $stockrequest = $query->orderBy($sortFields, $sortDirection)
         ->paginate(10)

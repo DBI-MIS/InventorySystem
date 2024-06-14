@@ -12,7 +12,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
     const {data, setData, post, errors, processing} = useForm({
         address: deliverable.address || "",
         dr_no:     deliverable.dr_no || "",
-        rs_no:     deliverable.rs_no || "",
+        rs_no_id:     deliverable.rs_no_id || "",
         client_id: deliverable.client_id || "",
         dr_date: deliverable.dr_date || "",
         dr_qty:   deliverable.dr_qty || "",

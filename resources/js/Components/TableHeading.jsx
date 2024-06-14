@@ -12,7 +12,7 @@ export default function TableHeading({
 }) {
   return (
     <th onClick={(e)=>sortChanged(name)}>
-    <div className="flex flex-row items-center gap-1 cursor-pointer">
+    <div className="flex flex-row items-center gap-2 cursor-pointer">
     
         {children}
        {sortable && ( 

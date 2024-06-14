@@ -5,7 +5,7 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from "react";
 
 export default function Create({auth,success}){
@@ -20,51 +20,61 @@ export default function Create({auth,success}){
         status: '',
         remarks: '',
     })
-    const [phoneNumberInput, setPhoneNumberInput] = useState('');
-    const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-  
+    const [errorMessages, setErrorMessages] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [valid, setValid] = useState(false);
+    const [isValid, setIsValid] = useState(false);
   
-    // const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/;
-    const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{3}))(?:\d{7})$/;
+   
+    const philippineNumberRegex = /^(?:(?:9\d{2})|(?:8[1-9]|\d{3}))(?:\d{7})$/;  //  OR /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/;
 
     const handleChange = (event) => {
-      setPhoneNumber(event.target.value);
-      const isValid = philippineNumberRegex.test(event.target.value);
-      setValid(isValid);
-    if (isValid) {
-      setData('contact_no', event.target.value); // Set data only on valid input
-    }
-    };
-    // const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/; // Common prefixes
 
-    //
-    const [tin, setTin] = useState('');
-    // const [errorMessage, setErrorMessage] = useState('');
-  
-    const handleTinChange = (event) => {
-      const value = event.target.value.replace(/\D/g, ''); 
-  
-      // dashes every 3 digits
-      const formattedValue = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{3})$/, '$1-$2-$3-$4');
-  
-      setTin(formattedValue);
-  
-      setErrorMessage('');
-  
-      if (value.length < 9 || value.length > 12 || !/^\d{3}-\d{3}-\d{3}-\d{3}$/.test(formattedValue)) {
-        setErrorMessage('Invalid TIN format. Please enter a valid 9-12 digit TIN number (XXX-XXX-XXX-XXX)');
-      } else {
-        // Update data using setData callback if validation passes
-        // setData('tin_no', value);
-        setTin(formattedValue); // display purposes 
-      setErrorMessage(''); // Clear error
-      setData('tin_no', formattedValue); 
-      }
+        const enteredNum =  event.target.value //pass the value
+
+        setPhoneNumber(enteredNum);
+        // validation if valid ph format and not more than 10 numbers
+        const isValidNum = enteredNum.length >= 9 && enteredNum.length <= 10 && philippineNumberRegex.test(enteredNum);
+
+        setValid(isValidNum); //to update the text color of input
+        //show error message
+        setErrorMessages(isValidNum ? '' : (enteredNum.length > 10 ? 'Invalid phone number ( it shoul only be 9-10 digits)' : '')); 
+        setIsValid(isValidNum);
     };
+    //update the contact number
+    useEffect(() => {
+      if (isValid) {
+        setData('contact_no', `+63${phoneNumber}`);
+      }
+    }, [isValid, phoneNumber]); 
+    
+    // TIN NUMBER VALIDATION
+      const [tin, setTin] = useState('');
+  
+     const handleTinChange = (event) => {
+        const value = event.target.value.replace(/\D/g, ''); 
+      
+        // dashes every 3 digits
+        const formattedValue = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{3})$/, '$1-$2-$3-$4');
+      
+        setTin(formattedValue);
+        setErrorMessage(''); //to remove the error message
+      
+        if (value.length < 9 || value.length > 12 || !/^\d{3}-\d{3}-\d{3}-\d{3}$/.test(formattedValue)) 
+        {
+            setErrorMessage('Invalid TIN format. Please enter a valid 9-12 digit TIN number (212-345-678-000)');
+        }
+         else 
+        {
+          setTin(formattedValue); 
+          setErrorMessage(''); // Clear error
+          setData('tin_no', formattedValue); 
+        }
+    };
+
     console.log(data)
+    
     const onSubmit = (e) =>{
         e.preventDefault();
         post(route("client.store"));
@@ -137,20 +147,6 @@ export default function Create({auth,success}){
                                     />
                                     <InputError message={errors.contact_person} className="mt-2"/>
                                 </div> 
-                                {/* <div>
-                                    <label htmlFor="phone-number">Phone Number:</label>
-                                    <input
-                                        type="tel"
-                                        id="phone-number"
-                                        name="phone-number"
-                                        value={phoneNumberInput}
-                                        onChange={handleChange}
-                                        placeholder="+63..."
-                                    />
-                                    <p>Valid Philippine phone numbers typically start with area codes like those listed on <a href="https://areaphonecodes.com/philippines/">Areaphonecodes.com</a>.</p>
-                                    {formattedPhoneNumber && <p>Formatted Number: {formattedPhoneNumber}</p>}
-                                    {errorMessage && <p className="error-message">{errorMessage}</p>}
-                                    </div> */}
 
                                 <div className="mt-4 col-span-2">
                                     <InputLabel htmlFor="client_remarks" value="Remarks"/>
@@ -167,80 +163,65 @@ export default function Create({auth,success}){
                                 </div>
                          </div>
 
-                         {/* 2ND GRID COLUMN */}
-                         <div className=" col-span-1 grid grid-cols-1 content-start">
+                            {/* 2ND GRID COLUMN */}
+                            <div className=" col-span-1 grid grid-cols-1 content-start">
 
-                          <div className="mt-6 col-span-1">
-                              <div className="flex gap-2">
-                                 <InputLabel htmlFor="client_tin_no" value="TIN No."/>
-                                <span className="text-red-800  font-medium text-sm">format: XXXX-XXX-XXX-XXX</span>
-                              </div>
-                          
-                              <TextInput
-                                  type="text"
-                                  id="client_tin_no"
-                                  name="client_tin_no"
-                                  value={tin}
-                                  placeholder="Enter TIN No. (XXX-XXX-XXX-XXX)"
-                                  className="mt-2 block w-full"
-                                  onChange={handleTinChange}
-                                  maxLength="12" 
-                              />
-                              {errorMessage && <p className="error-message text-red-700">{errorMessage}</p>}
-                              <InputError message={errors.tin_no} className="mt-2"/>
+                              <div className="mt-6 col-span-1">
+                                  <div className="flex gap-2">
+                                      <InputLabel htmlFor="client_tin_no" value="TIN No."/>
+                                      <span className="text-gray-500  font-medium text-sm">format: (212-345-678-000)</span>
+                                  </div>
+                              
+                                  <TextInput
+                                      type="text"
+                                      id="client_tin_no"
+                                      name="client_tin_no"
+                                      value={tin}
+                                      placeholder="Enter TIN No. (XXX-XXX-XXX-XXX)"
+                                      className="mt-2 block w-full"
+                                      onChange={handleTinChange}
+                                      maxLength="12" 
+                                  />
+                                    {errorMessage && <p className="error-message text-red-700">{errorMessage}</p>}
+                                    <InputError message={errors.tin_no} className="mt-2"/>
+                                </div>
+
+                                <div className="mt-6 col-span-1">
+                                    <InputLabel htmlFor="client_contact_no" value="Contact No."/>
+                                    
+                                    <div className="flex items-center border rounded-md">
+                                      <TextInput
+                                        id="client_contact_no"
+                                        name="contact_no"
+                                        type="number"
+                                        placeholder=" Ex: 9608108745"
+                                        value={phoneNumber}
+                                        onChange={handleChange}
+                                        className={`px-2 w-full focus:outline-none border-0 
+                                        ${isValid ? 'text-green-800' : 'text-red-800'}`} 
+                                      />
+                                    </div>
+                                      {errorMessages && <p className="error-message text-red-700">{errorMessages}</p>}
+                                      <InputError message={errors.contact_no} className="mt-2"/>
+                                </div>
+
+                                <div className="mt-6 col-span-1">
+                                    <InputLabel htmlFor="client_status" value="Status"/>
+                                    <SelectInput
+                                    id="client_status"
+                                    name="status"
+                                    className="mt-1 block w-full"
+                                    onChange={e => setData('status', e.target.value)} >
+                                        <option value="">Select Status </option>
+                                        <option value="active">Active</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="inactive">Inactive</option>
+                                    </SelectInput>
+                                    <InputError message={errors.status} className="mt-2"/>
+                                </div>
                             </div>
-                            <div className="mt-6 col-span-1">
-                            <InputLabel htmlFor="client_contact_no" value="Contact No."/>
-                                <TextInput
-                                id="client_contact_no"
-                                name="contact_no"
-                                type="tel"
-                                value={phoneNumber}
-                                onChange={handleChange}
-                                className="mt-1 block w-full"
-                                />
-                                {valid ? (
-                                  <p>Valid phone number</p>
-                                ) : (
-                                  <p style={{ color: 'red' }}>Invalid phone number</p>
-                                )}
-                                <InputError message={errors.contact_no} className="mt-2"/>
-                            </div>
-                            {/* <div className="mt-6 col-span-1">
-                                <InputLabel htmlFor="client_tin_no" value="TIN No."/>
-                                <TextInput
-                                type="number"
-                                id="client_tin_no"
-                                name="contact_no"
-                                placeholder="Entr TIN Number"
-                                value={data.tin_no}
-                                className="mt-1 block w-full"
-                                isFocused={true}
-                                onChange={e => setData('tin_no', e.target.value)}
-                                />
-                                <InputError message={errors.tin_no} className="mt-2"/>
-                            </div> */}
-
-                            <div className="mt-6 col-span-1">
-                                <InputLabel htmlFor="client_status" value="Status"/>
-                                <SelectInput
-                                id="client_status"
-                                name="status"
-                                className="mt-1 block w-full"
-                                onChange={e => setData('status', e.target.value)} >
-                                    <option value="">Select Status </option>
-                                    <option value="active">Active</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="inactive">Inactive</option>
-                                </SelectInput>
-                                <InputError message={errors.status} className="mt-2"/>
-                            </div>
-
-                            
-
-                         </div>
  
-                          </div>
+                        </div>
                       
                         <div className="mt-4 text-right">
                             <Link href={route('client.index')}

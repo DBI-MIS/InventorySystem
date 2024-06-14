@@ -12,19 +12,32 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
+    public function index()
 {
+
     // Fetch latest item
     $latestItems = Item::latest('created_at')->limit(20)->get();
 
-    // Initialize query parameters with default values
-    $sortBy = $request->input('sort_by', 'name'); // Default sorting by name
-    $sortDirection = $request->input('sort_direction', 'asc'); // Default sorting direction ascending
+    $sortBy = request('sort_by', 'name'); // Default sorting by name
+    $sortDirection = request('sort_direction', 'asc'); // Default sorting direction ascending
 
     // Query the items with sorting based on query parameters
     $itemsQuery = Item::selectRaw('name, SUM(quantity) as total_quantity_in, SUM(qty_out) as total_quantity_out')
-        ->groupBy('name')
-        ->orderBy($sortBy, $sortDirection);
+    ->groupBy('name')
+    ->orderBy($sortBy, $sortDirection);
+
+    // Initialize query parameters with default values
+   
+    // if (request("name")) {
+    //     $itemsQuery->where("name", "like", "%" . request("name") . "%");
+    // }
+
+    if (request("name")) {
+        $itemsQuery->where(function ($query) {
+            $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
+        });
+    }
+
 
     // Execute the query
     $items = $itemsQuery->get()->map(function ($item) {
@@ -32,6 +45,7 @@ class DashboardController extends Controller
         $item->status = $this->determineStatus($item->total_qty);
         return $item;
     });
+
 
     // Count distinct item names
     $totalName = Item::distinct('name')->count('name');
@@ -68,6 +82,7 @@ class DashboardController extends Controller
         'totalDeliverable' => $totalDeliverable,
         'totalDeliverableDelivered' => $totalDeliverableDelivered,
         'totalReceiving' => $totalReceiving,
+        'queryParams' => request()-> query() ?: null,
     ]);
 }
 

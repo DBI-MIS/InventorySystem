@@ -1,7 +1,7 @@
 export default function ApplicationLogo(props) {
     return (
 
-        <img {...props} src="storage\unnamed.png" alt="" />
+        <img {...props} src="DB_LOGO2_WHITE.png" alt="" />
         
     );
 }

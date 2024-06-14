@@ -1,5 +1,5 @@
 export default function DbitransparentLogo(props) {
     return (
-        <img {...props} src="\storage\unnamed.png" alt="" />
+        <img {...props} src="DB_LOGO_WHITE.png" alt="" />
     );
 }

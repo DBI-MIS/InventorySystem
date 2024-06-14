@@ -12,6 +12,7 @@ use App\Models\Item;
 use App\Models\Location;
 use App\Models\Material;
 use App\Models\Receiving;
+use App\Models\StockRequisition;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -98,6 +99,12 @@ foreach(Item::all() as $item){
         $item->deliverable_items()->attach($deliverable->id);
         }
         }
+
+        // foreach(Item::all() as $item){
+        //     foreach(StockRequisition::all() as $stockrequisition){
+        //         $item->stockrequest_items()->attach($stockrequisition->id);
+        // }
+        // }
 
 
     

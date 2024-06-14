@@ -22,7 +22,7 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ['required', 'max:255'],
+            "name" => ['required','alpha:ascii', 'max:255'],
             "description" => ['nullable','string'],
             "sku_prefix" => ['nullable','alpha:ascii', 'max:3', "min:3"],
             

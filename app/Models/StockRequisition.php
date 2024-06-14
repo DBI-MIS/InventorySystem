@@ -29,4 +29,9 @@ class StockRequisition extends Model
         return $this->hasMany(deliverables::class);
     }
 
+    // public function rsnoStockRequest()
+    // {
+    //     return $this->belongsToMany(Item::class, 'stockrequest_item')->withTimestamps();
+    // }
+
 }

@@ -29,58 +29,105 @@ export default function Authenticated({ user, header, children }) {
                             {/*Logo*/}
                             <div className="shrink-0 flex items-center p-1 mt-6 mb-12">
                                 <Link href="/">
-                                    <DbitransparentLogo className="block w-24 fill-current text-white" />
+                                    <DbitransparentLogo className="w-[32px] fill-current text-white" />
                                 </Link>
                             </div>
                             <div className="items-center flex flex-col gap-2">
-                                
+
+                                <div class="group relative">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     <Dboard className="block h-9 w-auto fill-current " />
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Dashboard</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('item.index')} active={route().current('item.index')}>
                                     <Nitem className="block h-9 w-auto fill-current " /> 
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Items</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('category.index')} active={route().current('category.index')}>
                                    <Ncategory className="block h-9 w-auto fill-current " />
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Categories</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('brand.index')} active={route().current('brand.index')}>
                                     <Nbrand className="block h-9 w-auto fill-current " />
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Brands</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('location.index')} active={route().current('location.index')}>
                                     <Nlocation className="block h-9 w-auto fill-current " />
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Locations</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('employee.index')} active={route().current('employee.index')}>
                                     <Nemployee className="block h-9 w-auto fill-current " />
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Employees</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('client.index')} active={route().current('client.index')}>
                                     <Nclient className="block h-9 w-auto fill-current " /> 
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Clients</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('archive.index')} active={route().current('archive.index')}>
                                     <Narchive className="block h-9 w-auto fill-current " />
                                 </NavLink>
-                                <br />                
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Trash</span>
+                                </div>
+                                <br />      
+
+                                <div class="group relative">
                                 <NavLink href={route('receiving.index')} active={route().current('receiving.index')}>
                                     <Nreceiving className="block h-9 w-auto fill-current " /> 
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">MRR</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('stocksearch.index')} active={route().current('stocksearch.index')}>
                                     <SearchItem className="block h-9 w-auto fill-current  " /> 
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Item Search</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
                                     <Deliver className="block h-7 w-auto fill-current  " /> 
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">DR</span>
+                                </div>
                                 <br />
+
+                                <div class="group relative">
                                 <NavLink href={route('stockrequisition.index')} active={route().current('stockrequisition.index')}>
                                     <Deliver className="block h-7 w-auto fill-current  " /> 
                                 </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Stock Requisition</span>
+                                </div>
                                 
                                 
                             </div>

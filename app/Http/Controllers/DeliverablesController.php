@@ -58,7 +58,7 @@ class DeliverablesController extends Controller
         $deliverabless =  $query->orderBy($sortField, $sortDirection)
         ->paginate(10)
         ->onEachSide(1);
-
+// dd($query);
     return inertia("Deliverables/Index",[
         "deliverabless" => DeliverablesResource::collection($deliverabless),
         'queryParams' => request()->query() ?: null,
@@ -80,6 +80,7 @@ class DeliverablesController extends Controller
         // $clients = Client::query()->orderBy('name', 'asc')->get();
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
         $stockrequisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
+        // dd($stockrequisitions);
         return inertia("Deliverables/Create", [
             "deliverablesss" => ItemResource::collection($deliverablesss),
             "clients" => ClientResource::collection($clients),
@@ -155,7 +156,7 @@ class DeliverablesController extends Controller
         return inertia('Deliverables/Edit',[
             'itemss' => ItemResource::collection($itemss),
             'clients' => ClientResource::collection($clients),
-            'stockrequisitions' => StockRequisition::collection($stockrequisitions),
+            'stockrequisitions' => StockRequisitionResource::collection($stockrequisitions),
             'deliverable' => new DeliverablesResource($deliverable),
             'existingItemss' => $existingItemss,
             'existingItemsIds' => $existingItemsIds

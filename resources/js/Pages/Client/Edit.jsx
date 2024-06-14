@@ -5,7 +5,7 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Create({auth, client }){
   
@@ -44,6 +44,35 @@ export default function Create({auth, client }){
        setData('tin_no', formattedValue); 
        }
      };
+    //  CONTACT NUMBER
+    const [errorMessages, setErrorMessages] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [valid, setValid] = useState(false);
+    const [isValid, setIsValid] = useState(false);
+  
+   
+    const philippineNumberRegex = /^(?:(?:9\d{2})|(?:8[1-9]|\d{3}))(?:\d{7})$/;  //  OR /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/;
+
+    const handleChange = (event) => {
+
+        const enteredNum =  event.target.value //pass the value
+
+        setPhoneNumber(enteredNum);
+        // validation if valid ph format and not more than 10 numbers
+        const isValidNum = enteredNum.length >= 9 && enteredNum.length <= 10 && philippineNumberRegex.test(enteredNum);
+
+        setValid(isValidNum); //to update the text color of input
+        //show error message
+        setErrorMessages(isValidNum ? '' : (enteredNum.length > 10 ? 'Invalid phone number ( it shoul only be 9-10 digits)' : '')); 
+        setIsValid(isValidNum);
+    };
+    //update the contact number
+    useEffect(() => {
+      if (isValid) {
+        setData('contact_no', `+63${phoneNumber}`);
+      }
+    }, [isValid, phoneNumber]); 
+
     console.log("data" + data);
     const onSubmit = (e) =>{
         e.preventDefault();
@@ -147,18 +176,25 @@ export default function Create({auth, client }){
                               <InputError message={errors.tin_no} className="mt-2"/>
                             </div>
 
-                          <div className="mt-6 col-span-1">
-                                <InputLabel htmlFor="client_contact_no" value="Contact No."/>
-                                <TextInput
-                                type="number"
-                                id="client_contact_no"
-                                name="contact_no"
-                                value={data.contact_no}
-                                className="mt-1 block w-full"
-                                onChange={e => setData('contact_no', e.target.value)}
-                                />
-                                <InputError message={errors.contact_no} className="mt-2"/>
-                            </div>
+                        
+                                <div className="mt-6 col-span-1">
+                                    <InputLabel htmlFor="client_contact_no" value="Contact No."/>
+                                    
+                                    <div className="flex items-center border rounded-md">
+                                      <TextInput
+                                        id="client_contact_no"
+                                        name="contact_no"
+                                        type="number"
+                                        placeholder=" Ex: 9608108745"
+                                        value={data.contact_no}
+                                        onChange={handleChange}
+                                        className={`px-2 w-full focus:outline-none border-0 
+                                        ${isValid ? 'text-green-800' : 'text-red-800'}`} 
+                                      />
+                                    </div>
+                                      {errorMessages && <p className="error-message text-red-700">{errorMessages}</p>}
+                                      <InputError message={errors.contact_no} className="mt-2"/>
+                                </div>
 
 
                             <div className="mt-6 col-span-1">
