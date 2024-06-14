@@ -21,6 +21,8 @@ class DeliverablesResource extends JsonResource
             'id' => $this->id,
             'client_id' => $this->client_id,
             'client' => new ClientResource($this->client),
+            'rs_no_id' => $this->rs_no_id,
+            'rs_no' => new StockRequisitionResource($this->rs_no),
             'dr_no' => $this->dr_no,
             'rs_no' => $this->rs_no,
             'address' => $this->address,

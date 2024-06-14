@@ -11,12 +11,12 @@ export default function Edit({ auth, stockrequisition }) {
 
     const { data, setData, post, errors, reset } = useForm ({
       sr_to: stockrequisition.sr_to || "",
-      rs_no: stockrequisition || "",
-      sr_date: stockrequisition || "",
-      sr_qty: stockrequisition || "",
-      sr_unit: stockrequisition || "",
-      sr_description: stockrequisition || "",
-      sr_notes: stockrequisition || "",
+      rs_no: stockrequisition.rs_no || "",
+      sr_date: stockrequisition.sr_date || "",
+      sr_qty: stockrequisition.sr_qty || "",
+      sr_unit: stockrequisition.sr_unit || "",
+      sr_description: stockrequisition.sr_description || "",
+      sr_notes: stockrequisition.sr_notes || "",
       _method: "PUT",
     })
     console.log(data);
@@ -31,7 +31,7 @@ export default function Edit({ auth, stockrequisition }) {
     user={auth.user}
     header={
       <div className="flex justify-between items-center"  >
-            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Stock Requisition</h2>
+            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Stock Requisition, RS No.  {stockrequisition.rs_no}</h2>
           </div>
     }
     >

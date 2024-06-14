@@ -7,17 +7,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import React from 'react';
 import { useState } from "react";
-import {
-    isPossiblePhoneNumber,
-    isValidPhoneNumber,
-    validatePhoneNumberLength,
-    isValidNumber,
-  } from 'libphonenumber-js'
-  
-import { parsePhoneNumberFromString ,  parsePhoneNumber, } from 'libphonenumber-js';
-// import myModule from './myModule';
-import '../../../css/phoneNumber.css'
-export default function Create({auth,employees,success}){
+
+export default function Create({auth,success}){
    
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
@@ -33,26 +24,21 @@ export default function Create({auth,employees,success}){
     const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
   
-    function handleChange(event) {
-        const digits = event.target.value.replace(/\D/g, ''); // Extract digits only
-      
-        try {
-          const parsedNumber = parsePhoneNumber(`+63${digits}`, 'PH'); // Parse with +63 prefix
-          setFormattedPhoneNumber(PhoneNumberOfflineGeocoder(parsedNumber, 'INTERNATIONAL')); // Format internationally
-          setData('contact_person',formattedPhoneNumber)
-          setErrorMessage(''); // Clear error if valid
-        } catch (error) {
-          setFormattedPhoneNumber(''); // Clear formatted number on error
-          if (error.message === 'The phone number is not valid for the given country code.') {
-            setErrorMessage('Invalid Philippine phone number. Please enter 10 digits.'); // Specific message for invalid format
-          } else if (error.message === 'The phone number is too short for the given region.') {
-            setErrorMessage('Invalid Philippine phone number. Please enter 10 digits.'); // More specific message for less than 10 digits
-          } else {
-            setErrorMessage('Invalid phone number. Please refer to [Areaphonecodes.com](https://areaphonecodes.com/philippines/) for valid Philippine area codes.');
-          }
-        }
-      }
-    const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/; // Common prefixes
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [valid, setValid] = useState(false);
+  
+    // const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/;
+    const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{3}))(?:\d{7})$/;
+
+    const handleChange = (event) => {
+      setPhoneNumber(event.target.value);
+      const isValid = philippineNumberRegex.test(event.target.value);
+      setValid(isValid);
+    if (isValid) {
+      setData('contact_no', event.target.value); // Set data only on valid input
+    }
+    };
+    // const philippineNumberRegex = /^(\+63)(?:(?:9\d{2})|(?:8[1-9]|\d{4}))(?:\d{7})$/; // Common prefixes
 
     //
     const [tin, setTin] = useState('');
@@ -204,15 +190,20 @@ export default function Create({auth,employees,success}){
                               <InputError message={errors.tin_no} className="mt-2"/>
                             </div>
                             <div className="mt-6 col-span-1">
-                                <InputLabel htmlFor="client_contact_no" value="Contact No."/>
+                            <InputLabel htmlFor="client_contact_no" value="Contact No."/>
                                 <TextInput
-                                type="number"
                                 id="client_contact_no"
                                 name="contact_no"
-                                value={data.contact_no}
+                                type="tel"
+                                value={phoneNumber}
+                                onChange={handleChange}
                                 className="mt-1 block w-full"
-                                onChange={e => setData('contact_no', e.target.value)}
                                 />
+                                {valid ? (
+                                  <p>Valid phone number</p>
+                                ) : (
+                                  <p style={{ color: 'red' }}>Invalid phone number</p>
+                                )}
                                 <InputError message={errors.contact_no} className="mt-2"/>
                             </div>
                             {/* <div className="mt-6 col-span-1">

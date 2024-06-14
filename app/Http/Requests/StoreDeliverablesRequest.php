@@ -29,6 +29,7 @@ class StoreDeliverablesRequest extends FormRequest
             "dr_qty" => ['nullable','max:255'],
             "remarks" => ['nullable','max:255'],
             'client_id' => ['required', 'exists:clients,id'],
+            'rs_no_id' => ['required', 'exists:stock_requisitions,id'],
             "list_item_id" => ['required', 'exists:items,id'],
             
         ];

@@ -46,6 +46,10 @@ class Deliverables extends Model
     {
         return $this->hasMany(Receiving::class);
     }
+    public function stockrequisition()
+    {
+        return $this->belongsTo(stockrequisition::class);
+    }
     
 
     public function itemsDeliverables()

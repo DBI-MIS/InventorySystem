@@ -8,9 +8,11 @@ use App\Http\Requests\UpdateDeliverablesRequest;
 use App\Http\Resources\ClientResource;
 use App\Http\Resources\DeliverablesResource;
 use App\Http\Resources\ItemResource;
+use App\Http\Resources\StockRequisitionResource;
 use App\Models\Client;
 use App\Models\Item;
 use App\Models\Receiving;
+use App\Models\StockRequisition;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -77,9 +79,11 @@ class DeliverablesController extends Controller
         $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
         // $clients = Client::query()->orderBy('name', 'asc')->get();
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
+        $stockrequisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
         return inertia("Deliverables/Create", [
             "deliverablesss" => ItemResource::collection($deliverablesss),
-            "clients" => ClientResource::collection($clients)
+            "clients" => ClientResource::collection($clients),
+            "stockrequisitions" => StockRequisitionResource::collection($stockrequisitions)
         ]);
     }
 
@@ -133,6 +137,7 @@ class DeliverablesController extends Controller
         // dd($deliverable);
         $itemss = Item::query()->orderBy('name', 'asc')->get();
         $clients = Client::query()->orderBy('name', 'asc')->get();
+        $stockrequisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
 
         $parsedID = json_decode($deliverable, true);
         $id = $parsedID['id'];
@@ -150,6 +155,7 @@ class DeliverablesController extends Controller
         return inertia('Deliverables/Edit',[
             'itemss' => ItemResource::collection($itemss),
             'clients' => ClientResource::collection($clients),
+            'stockrequisitions' => StockRequisition::collection($stockrequisitions),
             'deliverable' => new DeliverablesResource($deliverable),
             'existingItemss' => $existingItemss,
             'existingItemsIds' => $existingItemsIds

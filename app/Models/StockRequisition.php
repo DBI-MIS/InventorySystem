@@ -24,4 +24,9 @@ class StockRequisition extends Model
         return $this->hasMany(StockRequisition::class);
     }
 
+    public function deliverables()
+    {
+        return $this->hasMany(deliverables::class);
+    }
+
 }
