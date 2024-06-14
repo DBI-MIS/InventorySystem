@@ -141,7 +141,7 @@ const deleteDeliverables = (deliverable) => {
                             <TableHeading className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ID</TableHeading>
                             <th className="pr-10" name="client">PROJECT</th>
                             <TableHeading className="pr-10" name="dr_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DR NO.:</TableHeading>
-                            <TableHeading className="pr-10" name="rs_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>RS NO.:</TableHeading>
+                            <TableHeading className="pr-10" name="rs_no_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>RS NO.:</TableHeading>
                             <th className="pr-10" name="address_id">ADDRESS</th>
                             <TableHeading className="pr-10" name="dr_date"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DATE</TableHeading>
                             <th className="pr-10" name="item_qty">QTY</th>
@@ -182,7 +182,7 @@ const deleteDeliverables = (deliverable) => {
                                   <td className="px-3 py-2">{deliverable.id}</td>
                                   <td className="px-3 py-2 hover:underline"><b><Link href={route('deliverables.show', deliverable.id)}> {deliverable.client.name ?? "No Client Name"} </Link></b></td>
                                   <td className="px-3 py-2">{deliverable.dr_no ?? "No DR No"}</td>
-                                  <td className="px-3 py-2">{deliverable.rs_no ?? "No RS Number"}</td>
+                                  <td className="px-3 py-2">{deliverable.stock_requisition.rs_no ?? "No RS Number"}</td>
                                   <td className="px-3 py-2">{deliverable.address ?? "No Deliverable Address"}</td>
                                   <td className="px-3 py-2 text-nowrap">{deliverable.dr_date ?? "No DR Date"}</td>
                                   <td className="px-3 py-2 text-nowrap">{deliverable.dr_qty ?? "No DR Quantity"}</td>

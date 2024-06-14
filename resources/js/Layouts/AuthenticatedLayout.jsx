@@ -107,14 +107,6 @@ export default function Authenticated({ user, header, children }) {
                                 <br />
 
                                 <div class="group relative">
-                                <NavLink href={route('stocksearch.index')} active={route().current('stocksearch.index')}>
-                                    <SearchItem className="block h-9 w-auto fill-current  " /> 
-                                </NavLink>
-                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Item Search</span>
-                                </div>
-                                <br />
-
-                                <div class="group relative">
                                 <NavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
                                     <Deliver className="block h-7 w-auto fill-current  " /> 
                                 </NavLink>
@@ -194,10 +186,6 @@ export default function Authenticated({ user, header, children }) {
                                 <br />                
                         <ResponsiveNavLink href={route('receiving.index')}  active={route().current('receiving.index')}>
                                     <Nreceiving className="block h-9 w-auto fill-current " /> 
-                        </ResponsiveNavLink>
-                        <br />
-                        <ResponsiveNavLink href={route('stocksearch.index')} active={route().current('stocksearch.index')}>
-                                    <SearchItem className="block h-9 w-auto fill-current " /> 
                         </ResponsiveNavLink>
                         <br />
                         <ResponsiveNavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>

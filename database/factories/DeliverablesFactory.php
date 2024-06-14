@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Client;
+use App\Models\StockRequisition;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class DeliverablesFactory extends Factory
             'dr_no'=> fake()->regexify('[0-9]{8}'),
             'address'=> fake()->address(),
             'dr_date'=> now(),
+            // 'stock_requisition_id' => StockRequisition::factory(),
             'dr_qty' => rand(1, 10),
             'client_id'=>Client::factory(),
             'created_at' => time(),

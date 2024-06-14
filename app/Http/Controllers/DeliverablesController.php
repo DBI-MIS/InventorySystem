@@ -33,7 +33,7 @@ class DeliverablesController extends Controller
 
         $deliverablePivot = Item::query()->with('deliverable_items')->get();
 
-    
+        $stockrequisition = 
     
         // dd( $deliverabless);
         
@@ -79,12 +79,12 @@ class DeliverablesController extends Controller
         $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
         // $clients = Client::query()->orderBy('name', 'asc')->get();
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
-        $stockrequisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
+        $stock_requisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
         // dd($stockrequisitions);
         return inertia("Deliverables/Create", [
             "deliverablesss" => ItemResource::collection($deliverablesss),
             "clients" => ClientResource::collection($clients),
-            "stockrequisitions" => StockRequisitionResource::collection($stockrequisitions)
+            "stock_requisitions" => StockRequisitionResource::collection($stock_requisitions)
         ]);
     }
 
@@ -96,7 +96,7 @@ class DeliverablesController extends Controller
         $data = $request->validated();
         
         $items = $data['list_item_id'];
-        $deliverable=Deliverables::create($data);
+        $deliverable = Deliverables::create($data);
         $deliverable->itemsDeliverables()->attach($items);
 
         
@@ -138,7 +138,7 @@ class DeliverablesController extends Controller
         // dd($deliverable);
         $itemss = Item::query()->orderBy('name', 'asc')->get();
         $clients = Client::query()->orderBy('name', 'asc')->get();
-        $stockrequisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
+        $stock_requisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
 
         $parsedID = json_decode($deliverable, true);
         $id = $parsedID['id'];
@@ -156,7 +156,7 @@ class DeliverablesController extends Controller
         return inertia('Deliverables/Edit',[
             'itemss' => ItemResource::collection($itemss),
             'clients' => ClientResource::collection($clients),
-            'stockrequisitions' => StockRequisitionResource::collection($stockrequisitions),
+            'stock_requisitions' => StockRequisitionResource::collection($stock_requisitions),
             'deliverable' => new DeliverablesResource($deliverable),
             'existingItemss' => $existingItemss,
             'existingItemsIds' => $existingItemsIds

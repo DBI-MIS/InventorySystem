@@ -8,9 +8,9 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import Select from "react-select";
 
-export default function Create({ auth, deliverablesss, clients , stockrequisitions }) {
+export default function Create({ auth, deliverablesss, clients , stock_requisitions }) {
 
-    console.log(clients);
+    console.log(stock_requisitions);
     
   const {data, setData, post,errors} = useForm({
     address: '',
@@ -137,18 +137,18 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                             <InputLabel htmlFor="stockrequest_rs_no_id" value="RS No."/>
                                             <SelectInput 
                                                 id="stockrequest_rs_no_id"
-                                           name="rs_no_id"
+                                           name="stock_requisition"
                                            className="mt-1 block w-full"
-                                                onChange={e => setData('rs_no_id', e.target.value)}
+                                                onChange={e => setData('stock_requisition', e.target.value)}
                                             >
                                                 <option value="">Select RS No.</option>
-                                                {stockrequisitions.data.map((stockrequest) => (
+                                                {stock_requisitions.data.map((stockrequest) => (
                                                     <option value={stockrequest.id} key={stockrequest.id}>
                                                         {stockrequest.rs_no}
                                                     </option>
                                                 ))}
                                                 </SelectInput>
-                                            <InputError message={errors.rs_no_id} className="mt-2"/>
+                                            <InputError message={errors.stock_requisition} className="mt-2"/>
                                         </div>
                                         <div className="mt-4  col-span-2">
                                             <InputLabel htmlFor="deliverables_dr_qty" value="Qty."/>

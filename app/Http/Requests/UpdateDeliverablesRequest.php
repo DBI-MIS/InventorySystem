@@ -23,14 +23,14 @@ class UpdateDeliverablesRequest extends FormRequest
     {
         return [
             "dr_no" => ['required','max:255'],
-            "rs_no" => ['required','max:255'],
             "address" => ['required','max:255'],
             "dr_date" => ['nullable','date'],
             "dr_qty" => ['nullable','max:255'],
             "remarks" => ['nullable','max:255'],
             'client_id' => ['required', 'exists:clients,id'],
-            'rs_no_id' => ['required', 'exists:stock_requisitions,id'],
+            'stock_requisition_id' => ['required', 'exists:stock_requisitions,id'],
             "list_item_id" => ['required', 'exists:items,id'],
+            
         ];
     }
 }

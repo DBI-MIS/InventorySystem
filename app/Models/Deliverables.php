@@ -19,14 +19,13 @@ class Deliverables extends Model
 
     protected $fillable = [
         'list_item_id',
-        'rs_no_id',
         'dr_no',
         'address',
+        'stock_requisition_id',
         'dr_date',
         'dr_qty',
         'client_id',
         'address_id',
-        'rs_no_id',
         'remarks',
         'created_by'
         
@@ -46,7 +45,7 @@ class Deliverables extends Model
     {
         return $this->hasMany(Receiving::class);
     }
-    public function stockrequisition()
+    public function stock_requisition()
     {
         return $this->belongsTo(StockRequisition::class);
     }

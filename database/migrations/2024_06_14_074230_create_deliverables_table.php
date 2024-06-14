@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Client;
+use App\Models\StockRequisition;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +17,8 @@ return new class extends Migration
         Schema::create('deliverables', function (Blueprint $table) {
             $table->id();
             $table->string('dr_no')->nullable();
-            $table->string('rs_no')->nullable();
+            // $table->foreignIdFor(StockRequisition::class)->nullable();
+            $table->foreignId('stock_requisition_id')->constrained('stock_requisition');
             $table->string('address')->nullable();
             $table->string('dr_date')->nullable();
             $table->string('dr_qty')->nullable();
