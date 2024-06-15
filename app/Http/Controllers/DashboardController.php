@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Deliverables;
 use App\Models\Item;
 use App\Models\Receiving;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -26,11 +27,6 @@ class DashboardController extends Controller
     ->groupBy('name')
     ->orderBy($sortBy, $sortDirection);
 
-    // Initialize query parameters with default values
-   
-    // if (request("name")) {
-    //     $itemsQuery->where("name", "like", "%" . request("name") . "%");
-    // }
 
     if (request("name")) {
         $itemsQuery->where(function ($query) {
@@ -71,6 +67,10 @@ class DashboardController extends Controller
     // Count the total number of receivings
     $totalReceiving = Receiving::count('mrr_no');
 
+    $currentDateTime = Carbon::now('Asia/Manila')->format('l, M d, Y h:i A');
+
+    $userName = auth()->user()->name;
+
     // Return the data to the inertia dashboard component
     return Inertia::render('Dashboard', [
         'latestItems' => $latestItems,
@@ -82,7 +82,9 @@ class DashboardController extends Controller
         'totalDeliverable' => $totalDeliverable,
         'totalDeliverableDelivered' => $totalDeliverableDelivered,
         'totalReceiving' => $totalReceiving,
+        'currentDateTime' => $currentDateTime,
         'queryParams' => request()-> query() ?: null,
+        'userName' => $userName,
     ]);
 }
 
