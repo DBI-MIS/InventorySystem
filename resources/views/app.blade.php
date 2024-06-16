@@ -12,7 +12,6 @@
 
         <!-- Scripts -->
         {{-- <script src="{{ asset('js/ziggy.js') }}"></script> --}}
-        <script src="http://localhost:8097"></script>
 
         @routes
         @viteReactRefresh

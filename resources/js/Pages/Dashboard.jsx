@@ -9,6 +9,11 @@ import { Inertia } from "@inertiajs/inertia-react";
 import SelectInput from "@/Components/SelectInput";
 import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP } from "@/constants";
 import { useState } from "react";
+// import CustomBarChart from "@/Components/BarChart";
+// import { usePage } from '@inertiajs/inertia-react';
+
+
+
 
 export default function Dashboard({
     auth,
@@ -26,19 +31,10 @@ export default function Dashboard({
     userName,
     latestMrrs,
     latestDrs,
+    // dailyItemCounts = usePage().props,
 }) {
     queryParams = queryParams || {};
-    // const [searchValue, setSearchValue] = useState(queryParams.name || '');
-
-    // const searchFieldChanged = (name, value) => {
-    //   const newQueryParams = { ...queryParams };
-    //   if (value) {
-    //     newQueryParams.name = value;
-    //   } else {
-    //     delete newQueryParams.name;
-    //   }
-    //   Inertia.get(route('dashboard.index'), newQueryParams);
-    // };
+    
 
     const searchFieldChanged = (name, value) => {
         if (value) {
@@ -82,6 +78,8 @@ export default function Dashboard({
         Inertia.visit(url, { preserveScroll: true, preserveState: true });
     };
 
+
+    
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -424,7 +422,9 @@ export default function Dashboard({
                 </div>
             </div>
 
-            <div className="flex flex-row gap-2 px-12"></div>
+            <div className="">
+            {/* <CustomBarChart dailyItemCounts={dailyItemCounts} /> */}
+            </div>
         </AuthenticatedLayout>
     );
 }

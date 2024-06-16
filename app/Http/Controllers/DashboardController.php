@@ -23,10 +23,9 @@ class DashboardController extends Controller
 
     $latestDrs = Deliverables::latest('created_at')->limit(5)->get();
 
-    $sortBy = request('sort_by', 'name'); // Default sorting by name
-    $sortDirection = request('sort_direction', 'asc'); // Default sorting direction ascending
+    $sortBy = request('sort_by', 'name');
+    $sortDirection = request('sort_direction', 'asc');
 
-    // Query the items with sorting based on query parameters
     $itemsQuery = Item::selectRaw('name, SUM(quantity) as total_quantity_in, SUM(qty_out) as total_quantity_out')
     ->groupBy('name')
     ->orderBy($sortBy, $sortDirection);
@@ -39,7 +38,6 @@ class DashboardController extends Controller
     }
 
 
-    // Execute the query
     $items = $itemsQuery->get()->map(function ($item) {
         $item->total_qty = $item->total_quantity_in - $item->total_quantity_out;
         $item->status = $this->determineStatus($item->total_qty);
@@ -47,35 +45,38 @@ class DashboardController extends Controller
     });
 
 
-    // Count distinct item names
     $totalName = Item::distinct('name')->count('name');
 
-    // Calculate the total quantity (net quantity considering additions and subtractions)
     $totalQuantity = Item::selectRaw('SUM(quantity - qty_out) as net_quantity')->value('net_quantity');
 
-    // Format the total quantity for display
     $formattedTotalQuantity = number_format($totalQuantity);
 
-    // Count the total number of categories
     $totalCategory = Category::count('name');
 
-    // Count the total number of clients
     $totalClient = Client::count('name');
 
-    // Count the total number of deliverables
     $totalDeliverable = Deliverables::count('dr_no');
 
-    // Count the total number of pending deliverables
     $totalDeliverableDelivered = Deliverables::where('status', 'pending')->count();
 
-    // Count the total number of receivings
     $totalReceiving = Receiving::count('mrr_no');
 
     $currentDateTime = Carbon::now('Asia/Manila')->format('l, M d, Y h:i A');
 
     $userName = auth()->user()->name;
 
-    // Return the data to the inertia dashboard component
+    $dailyItemCounts = Item::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+    ->groupBy('date')
+    ->orderBy('date')
+    ->get()
+    ->map(function ($item) {
+        return [
+            'date' => $item->date,
+            'count' => $item->count
+        ];
+    });
+
+    
     return Inertia::render('Dashboard', [
         'latestItems' => $latestItems,
         'items' => $items,
@@ -91,6 +92,7 @@ class DashboardController extends Controller
         'userName' => $userName,
         'latestMrrs' => $latestMrrs,
         'latestDrs' => $latestDrs,
+        'dailyItemCounts' => $dailyItemCounts,
     ]);
 }
 
