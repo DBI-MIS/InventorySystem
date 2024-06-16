@@ -445,7 +445,8 @@ export default function Dashboard({
                                                     <td className="text-base">{item.name}</td>
                                                     <td className="w-24 text-base font-bold text-center">{item.total_qty}</td>
                                                     <td className="w-28">
-                                                    <p className={`text-gray-900 whitespace-no-wrap ${item.status === 'out of stock' ? 'text-red-500' : item.status === 'need restock' ? 'text-yellow-500' : 'text-green-500'}`}>
+                                                    <p className={`whitespace-no-wrap text-center rounded-lg
+                                                        ${item.status === 'out of stock' ? ' bg-red-500 text-white' : item.status === 'need restock' ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'}`}>
                                                         {item.status}</p></td>
                                                 </tr>
                                             ))}
