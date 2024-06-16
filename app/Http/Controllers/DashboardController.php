@@ -16,8 +16,12 @@ class DashboardController extends Controller
     public function index()
 {
 
-    // Fetch latest item
-    $latestItems = Item::latest('created_at')->limit(20)->get();
+    
+    $latestItems = Item::latest('created_at')->limit(15)->get();
+
+    $latestMrrs = Receiving::latest('created_at')->limit(5)->get();
+
+    $latestDrs = Deliverables::latest('created_at')->limit(5)->get();
 
     $sortBy = request('sort_by', 'name'); // Default sorting by name
     $sortDirection = request('sort_direction', 'asc'); // Default sorting direction ascending
@@ -85,6 +89,8 @@ class DashboardController extends Controller
         'currentDateTime' => $currentDateTime,
         'queryParams' => request()-> query() ?: null,
         'userName' => $userName,
+        'latestMrrs' => $latestMrrs,
+        'latestDrs' => $latestDrs,
     ]);
 }
 

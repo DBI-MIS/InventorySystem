@@ -24,6 +24,8 @@ export default function Dashboard({
     latestItems,
     currentDateTime,
     userName,
+    latestMrrs,
+    latestDrs,
 }) {
     queryParams = queryParams || {};
     // const [searchValue, setSearchValue] = useState(queryParams.name || '');
@@ -84,7 +86,7 @@ export default function Dashboard({
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-4xl text-blue-600 dark:text-gray-200 leading-tight">
+                <h2 className="font-extrabold text-4xl text-blue-600 dark:text-gray-200 leading-tight">
                     Dashboard
                 </h2>
             }
@@ -92,79 +94,79 @@ export default function Dashboard({
             <Head title="Dashboard" />
 
             <div className="px-7 pt-4 w-full text-base font-bold text-right border-b-2 border-white/50 flex justify-between">
-                <span>Welcome! {userName}</span>
-                <span>{currentDateTime}</span>
-                </div>
+                <span className="font-light text-xl">Welcome! {userName}</span>
+                <span className="font-light text-lg">{currentDateTime}</span>
+            </div>
             <div className="p-5 w-full">
-                    {/* Cards */}
-                    <div className="w-full grid grid-cols-4 gap-2 text-center">
+                {/* Cards */}
+                <div className="w-full grid grid-cols-4 gap-2 text-center">
 
-                        <div className="col-span-1 flex flex-row bg-white overflow-hidden shadow-sm sm:rounded-lg content-center items-center justify-center gap-2 p-4">
-                            <div className="w-12">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Module--Streamline-Sharp"><desc>Module Streamline Icon: https://streamlinehq.com</desc><g id="module--cube-code-module-programming-plugin"><path id="Vector 1377" fill="#2859c5" d="M1 5.5 12 1l11 4.5v13L12 23 1 18.5v-13Z" stroke-width="1"></path><path id="Union" fill="#8fbffa" fill-rule="evenodd" d="M11.25 9.693 1 5.5 12 1l11 4.5 -10.25 4.193v13L12 23l-0.75 -0.307v-13Z" clip-rule="evenodd" stroke-width="1"></path></g></svg>
-                            </div>
-                            <div className="text-gray-900 text-left">
-                                <h3 className="text-slate-700 font-light text-sm">
-                                    Total Stocks
-                                </h3>
-                                <span className="mr-2 text-4xl font-bold">
-                                    {formattedTotalQuantity ?? "No Data"}
-                                </span>
-
-                            </div>
+                    <div className="col-span-1 flex flex-row bg-white overflow-hidden shadow-sm sm:rounded-lg content-center items-center justify-center gap-2 p-4">
+                        <div className="w-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Module--Streamline-Sharp"><desc>Module Streamline Icon: https://streamlinehq.com</desc><g id="module--cube-code-module-programming-plugin"><path id="Vector 1377" fill="#2859c5" d="M1 5.5 12 1l11 4.5v13L12 23 1 18.5v-13Z" stroke-width="1"></path><path id="Union" fill="#8fbffa" fill-rule="evenodd" d="M11.25 9.693 1 5.5 12 1l11 4.5 -10.25 4.193v13L12 23l-0.75 -0.307v-13Z" clip-rule="evenodd" stroke-width="1"></path></g></svg>
                         </div>
+                        <div className="text-gray-900 text-left ml-2">
+                            <h3 className="text-slate-700 font-light text-sm">
+                                Total Stocks
+                            </h3>
+                            <span className="text-4xl font-bold">
+                                {formattedTotalQuantity ?? "No Data"}
+                            </span>
 
-
-                        <div className="col-span-1 flex flex-row bg-white overflow-hidden shadow-sm sm:rounded-lg content-center items-center justify-center gap-2 p-4">
-                            <div className="w-12">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Gold--Streamline-Sharp"><desc>Gold Streamline Icon: https://streamlinehq.com</desc><g id="gold--gold-money-payment-bars-finance-wealth-bullion-jewelry"><path id="Union" fill="#8fbffa" d="M9.066 12.75H3.434l-2.428 8.5h10.489l-2.43 -8.5Z" stroke-width="1"></path><path id="Union_2" fill="#8fbffa" d="M20.566 12.75h-5.632l-2.428 8.5h10.488l-2.428 -8.5Z" stroke-width="1"></path><path id="Union_3" fill="#8fbffa" d="M14.816 2.75H9.184l-2.428 8.5h10.488l-2.428 -8.5Z" stroke-width="1"></path></g></svg>
-                            </div>
-                            <div className="text-gray-900 text-left">
-                                <h3 className="text-slate-700 font-light text-sm">
-                                    Items
-                                </h3>
-                                <span className="mr-2 text-4xl font-bold">
-                                    {totalName ?? "No Data"}
-                                </span>
-
-                            </div>
                         </div>
+                    </div>
 
-                        <div className="col-span-1 flex flex-row bg-white overflow-hidden shadow-sm sm:rounded-lg content-center items-center justify-center gap-2 p-4">
-                            <div className="w-12">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Shipping-Box-1--Streamline-Sharp"><desc>Shipping Box 1 Streamline Icon: https://streamlinehq.com</desc><g id="shipping-box-1--box-package-label-delivery-shipment-shipping"><path id="Union" fill="#8fbffa" fill-rule="evenodd" d="M23.76 0.24H0.24V23.76H23.76V0.24Z" clip-rule="evenodd" stroke-width="1"></path><path id="Intersect" fill="#2859c5" fill-rule="evenodd" d="M8.1712 0.24V10.3591L12 7.6242L15.8288 10.3591V0.24H8.1712Z" clip-rule="evenodd" stroke-width="1"></path><path id="Vector 3 (Stroke)" fill="#2859c5" fill-rule="evenodd" d="M19.1107 20.4781H13.6409V18.8372H19.1107V20.4781Z" clip-rule="evenodd" stroke-width="1"></path></g></svg>
-                            </div>
-                            <div className="text-gray-900 text-left">
-                                <h3 className="text-slate-700 font-light text-sm">
-                                    Categories
-                                </h3>
-                                <span className="mr-2 text-4xl font-bold">
-                                    {totalCategory ?? "No Data"}
-                                </span>
 
-                            </div>
+                    <div className="col-span-1 flex flex-row bg-white overflow-hidden shadow-sm sm:rounded-lg content-center items-center justify-center gap-2 p-4">
+                        <div className="w-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Gold--Streamline-Sharp"><desc>Gold Streamline Icon: https://streamlinehq.com</desc><g id="gold--gold-money-payment-bars-finance-wealth-bullion-jewelry"><path id="Union" fill="#8fbffa" d="M9.066 12.75H3.434l-2.428 8.5h10.489l-2.43 -8.5Z" stroke-width="1"></path><path id="Union_2" fill="#8fbffa" d="M20.566 12.75h-5.632l-2.428 8.5h10.488l-2.428 -8.5Z" stroke-width="1"></path><path id="Union_3" fill="#8fbffa" d="M14.816 2.75H9.184l-2.428 8.5h10.488l-2.428 -8.5Z" stroke-width="1"></path></g></svg>
                         </div>
+                        <div className="text-gray-900 text-left ml-2">
+                            <h3 className="text-slate-700 font-light text-sm">
+                                Items
+                            </h3>
+                            <span className="mr-2 text-4xl font-bold">
+                                {totalName ?? "No Data"}
+                            </span>
 
-                        <div className="col-span-1 flex flex-row bg-white overflow-hidden shadow-sm sm:rounded-lg content-center items-center justify-center gap-2 p-4">
-                            <div className="w-12">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Office-Worker--Streamline-Sharp"><desc>Office Worker Streamline Icon: https://streamlinehq.com</desc><g id="office-worker--office-worker-human-resources"><path id="Union" fill="#2859c5" fill-rule="evenodd" d="M17.735 12.766a3 3 0 0 0 -3 3v0.263h-2.25v6.987h10.5v-6.987h-2.25v-0.263a3 3 0 0 0 -3 -3Zm1 3.263v-0.263a1 1 0 0 0 -2 0v0.263h2Z" clip-rule="evenodd" stroke-width="1"></path><path id="Ellipse 411" fill="#8fbffa" d="M6.98 8.5a8.47 8.47 0 0 0 -5.5 2.019V17h2.5v6h6v-8.715h2.5v-3.766A8.467 8.467 0 0 0 6.98 8.5Z" stroke-width="1"></path><path id="Ellipse 354" fill="#8fbffa" d="M3.98 4a3 3 0 1 0 6 0 3 3 0 1 0 -6 0" stroke-width="1"></path></g></svg>
-                            </div>
-                            <div className="text-gray-900 text-left">
-                                <h3 className="text-slate-700 font-light text-sm">
-                                    Clients
-                                </h3>
-                                <span className="mr-2 text-4xl font-bold">
-                                    {totalClient ?? "No Data"}
-                                </span>
-
-                            </div>
                         </div>
+                    </div>
+
+                    <div className="col-span-1 flex flex-row bg-white overflow-hidden shadow-sm sm:rounded-lg content-center items-center justify-center gap-2 p-4">
+                        <div className="w-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Shipping-Box-1--Streamline-Sharp"><desc>Shipping Box 1 Streamline Icon: https://streamlinehq.com</desc><g id="shipping-box-1--box-package-label-delivery-shipment-shipping"><path id="Union" fill="#8fbffa" fill-rule="evenodd" d="M23.76 0.24H0.24V23.76H23.76V0.24Z" clip-rule="evenodd" stroke-width="1"></path><path id="Intersect" fill="#2859c5" fill-rule="evenodd" d="M8.1712 0.24V10.3591L12 7.6242L15.8288 10.3591V0.24H8.1712Z" clip-rule="evenodd" stroke-width="1"></path><path id="Vector 3 (Stroke)" fill="#2859c5" fill-rule="evenodd" d="M19.1107 20.4781H13.6409V18.8372H19.1107V20.4781Z" clip-rule="evenodd" stroke-width="1"></path></g></svg>
+                        </div>
+                        <div className="text-gray-900 text-left ml-2">
+                            <h3 className="text-slate-700 font-light text-sm">
+                                Categories
+                            </h3>
+                            <span className="mr-2 text-4xl font-bold">
+                                {totalCategory ?? "No Data"}
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div className="col-span-1 flex flex-row bg-white overflow-hidden shadow-sm sm:rounded-lg content-center items-center justify-center gap-2 p-4">
+                        <div className="w-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Office-Worker--Streamline-Sharp"><desc>Office Worker Streamline Icon: https://streamlinehq.com</desc><g id="office-worker--office-worker-human-resources"><path id="Union" fill="#2859c5" fill-rule="evenodd" d="M17.735 12.766a3 3 0 0 0 -3 3v0.263h-2.25v6.987h10.5v-6.987h-2.25v-0.263a3 3 0 0 0 -3 -3Zm1 3.263v-0.263a1 1 0 0 0 -2 0v0.263h2Z" clip-rule="evenodd" stroke-width="1"></path><path id="Ellipse 411" fill="#8fbffa" d="M6.98 8.5a8.47 8.47 0 0 0 -5.5 2.019V17h2.5v6h6v-8.715h2.5v-3.766A8.467 8.467 0 0 0 6.98 8.5Z" stroke-width="1"></path><path id="Ellipse 354" fill="#8fbffa" d="M3.98 4a3 3 0 1 0 6 0 3 3 0 1 0 -6 0" stroke-width="1"></path></g></svg>
+                        </div>
+                        <div className="text-gray-900 text-left ml-2">
+                            <h3 className="text-slate-700 font-light text-sm">
+                                Clients
+                            </h3>
+                            <span className="mr-2 text-4xl font-bold">
+                                {totalClient ?? "No Data"}
+                            </span>
+
+                        </div>
+                    </div>
 
 
 
 
 
-                        {/* <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    {/* <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div className="p-6 text-gray-900">
             <h3 className="text-slate-700 font-light text-md">
                 DR
@@ -190,12 +192,12 @@ export default function Dashboard({
     </div> */}
 
 
-                    </div>
                 </div>
+            </div>
 
             <div className="p-5 flex flex-row gap-2">
-               
-                <div className="w-1/2">
+
+                <div className="w-1/2 flex flex-row gap-2">
 
 
                     {/* Latest Items */}
@@ -231,6 +233,81 @@ export default function Dashboard({
                             </div>
                         </div>
                     </div>
+                    <div className="w-full flex flex-col gap-2">
+                        <div>
+                            {/* Latest Mrrs */}
+                            <div className="w-full">
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg h-auto">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <div>
+                                            <span>Recent MRR</span>
+                                        </div>
+                                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
+                                            <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                                <tr className="">
+                                                    <th>Date</th>
+                                                    <th>MRR No.</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {/* Map through latest MRR */}
+                                                {latestMrrs.map((mrr) => (
+                                                    <tr key={mrr.id}>
+                                                        <td>
+                                                            {new Date(
+                                                                mrr.created_at
+                                                            ).toLocaleDateString()}
+                                                        </td>
+                                                        <td>{mrr.mrr_no}</td>
+                                                        <td>{mrr.status}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                              {/* Latest Drs */}
+                              <div className="w-full">
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg h-auto">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <div>
+                                            <span>Recent DR</span>
+                                        </div>
+                                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
+                                            <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                                <tr className="">
+                                                    <th>Date</th>
+                                                    <th>DR No.</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {/* Map through latest DR */}
+                                                {latestDrs.map((dr) => (
+                                                    <tr key={dr.id}>
+                                                        <td>
+                                                            {new Date(
+                                                                dr.created_at
+                                                            ).toLocaleDateString()}
+                                                        </td>
+                                                        <td>{dr.dr_no}</td>
+                                                        <td>{dr.status}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
 
                 {/* Search Items */}
