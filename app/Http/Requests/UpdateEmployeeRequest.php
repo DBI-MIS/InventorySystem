@@ -22,9 +22,21 @@ class UpdateEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ['required', 'max:255'],
-            "department" => ['nullable','string'],
-            "remarks" => ['nullable', 'string'],
+            "name" => [
+                'required',
+                'alpha',
+                'min:2', 
+                'max:255'
+            ],
+            "department" => [
+                'nullable', 
+                'alpha', 
+                'max:255'
+            ],
+            "remarks" => ['
+                nullable',
+                'string'
+            ],
         ];
     }
 }

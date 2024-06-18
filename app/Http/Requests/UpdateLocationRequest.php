@@ -22,9 +22,21 @@ class UpdateLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ['required', 'max:255'],
-            "company" => ['nullable','string'],
-            "address" => ['nullable', 'max:255'],
+           "name" => [
+                'required',
+                'alpha', 
+                'max:255'
+            ],
+            "company" => [
+                'nullable', 
+                'alpha_num',
+                'string'
+            ],
+            "address" => [
+                'nullable',
+                'regex:/(^[-0-9A-Za-z.,\/ ]+$)/', 
+                'max:255'
+            ],
         ];
     }
 }

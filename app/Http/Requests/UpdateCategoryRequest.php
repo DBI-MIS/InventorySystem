@@ -22,9 +22,24 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ['required', 'max:255'],
-            "description" => ['nullable','string'],
-            "sku_prefix" => ['nullable', 'max:255'],
+            "name" => [
+                'required',
+                'alpha:ascii', 
+                'min:2', 
+                'max:255'
+            ],
+            
+            "description" => [
+                'nullable',
+                'string'
+             ],
+             
+            "sku_prefix" => [
+                'required',
+                'alpha:ascii', 
+                'max:3',
+                 "min:3"
+            ],
         ];
     }
 }

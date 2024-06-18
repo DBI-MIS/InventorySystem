@@ -22,7 +22,7 @@ class StoreBrandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ['required', 'max:255'],
+            "name" => ['required', 'alpha', 'max:255'],
             "description" => ['nullable','string'],
             
         ];

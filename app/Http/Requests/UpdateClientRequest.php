@@ -22,13 +22,43 @@ class UpdateClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ['required', 'max:255'],
-            "address" => ['required', 'max:255'],
-            "contact_person"=> ['required', 'max:255'],
-            "contact_no"=> ['required', 'max:13', "min:12"],
-            "tin_no"=> ['required',  'max:15', 'min:12'],
-            "status"=> ['required', 'max:20'],
-            "remarks"=> ['nullable','string'],
+            "name" => [
+                'required',
+                 'alpha', 
+                 'min:2',
+                 'max:255'
+                ],
+            "address" => [
+                'required', 
+                'regex:/(^[-0-9A-Za-z.,\/ ]+$)/',
+                'min:2','max:255'
+                ],
+            "contact_person"=> [
+                'required',
+                 'min:2', 
+                 'alpha',
+                 'max:255'
+                ],
+            "contact_no"=> [
+                'required',
+                'regex:/^[0-9+]+$/', 
+                'max:13', "min:12"
+                 ],
+            "tin_no"=> [
+                'required',
+                'regex:/^[0-9-]+$/',  //num & hypen only
+                'max:15', 
+                'min:12'
+                ],
+            "status"=> [
+                'required',
+                'min:2', 
+                'max:20'
+                ],
+            "remarks"=> [
+                'nullable',
+                'string'
+                 ],
         ];
     }
 }

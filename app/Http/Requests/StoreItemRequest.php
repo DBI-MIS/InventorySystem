@@ -24,56 +24,75 @@ class StoreItemRequest extends FormRequest
     {
         return [
           "sku_prefix" => [
+            'alpha',
              'max:255'
           ],
           "sku" => [
+            'numeric',
              'required',
+             'min:2',
               'max:255'
           ],
           "name" => [
+            'alpha_num',
+            'min:2',
             'required',
             'max:255'
           ],
           'brand_id' => [
+            'numeric',
+            'min:2',
             'required',
             'exists:brands,id',
           ],
           "category_id" => [
+            'numeric',
+            'min:2',
             'required',
           'exists:categories,id',
          ],
           "description" => [
             'required',
+            'min:2',
             'string'
           ],
           "specs" => [
+            'alpha_num',
             'required',
             'string'
           ],
           "part_no" => [
+            'alpha_num',
             'nullable',
             'max:255'
           ],
           "serial_no" => [
+            'alpha_num',
             'nullable', 'max:255'
           ],
           "model_no" => [ 
+            'alpha_num',
             'nullable',
             'max:255'
           ],
           "uom" => [ 
+            'alpha',
             'required',
             'max:20'
           ],
           "quantity" => [ 
+            'numeric',
             'required',
+            'min:0',
             'max:255'
           ],
           "location_id" => [
+            'numeric',
             'required',
           'exists:locations,id'
          ],
           "employee_id" => [
+            'numeric',
             'required',
           'exists:employees,id',
           ],
@@ -82,6 +101,7 @@ class StoreItemRequest extends FormRequest
             'max:255'
           ],
           "remark" => [
+            'alpha_num',
             'required',
             'max:255'
           ],

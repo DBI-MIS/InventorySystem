@@ -23,21 +23,36 @@ class StoreReceivingRequest extends FormRequest
     public function rules(): array
     {  return [
         "mrr_no" => [
-            'nullable',
-            Rule::unique('receivings', 'mrr_no')->ignore($this->receiving),
+            'required', 
+            'min:6',
+            'max:6'
+           
         ],
         'group_item_id' => [
-           
-            'exists:items,id'],
+           'nullable',
+            'exists:items,id'
+        ],
         "client_id"=>
         [
             'required',  
+            'min:1',
             'exists:clients,id'
         ],
-        "si_no" =>['required', 'max:255'],
-        "deliver_id"=>['exists:deliverables,id'],
-        "address"=>['nullable','string'],
-        "remarks"=>['nullable','string'],
+        "si_no" =>[
+            'required',
+            'max:255'
+        ],
+        "deliver_id"=>[
+            'required',
+            'exists:deliverables,id'
+        ],
+        "address"=>[
+            'nullable','string'
+        ],
+        "remarks"=>[
+            'nullable',
+            'string'
+        ],
     ];
     }
 }

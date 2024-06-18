@@ -22,15 +22,36 @@ class UpdateReceivingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "client_id" => ['nullable', 'max:255'],
-            "mrr_no" => ['nullable', 'max:255'],
+            "client_id" => [ 
+                'required',  
+                'min:1',
+                'exists:clients,id'
+            ],
+            "mrr_no" => [
+                'required', 
+                'min:6',
+                'max:6'
+            ],
             'group_item_id' => [
                 'nullable',
-                'exists:items,id'],
-            "si_no" => ['required', 'max:255'],
-            "deliver_id" => ['exists:deliverables,id'],
-            "address" => ['nullable','string'],
-            "remarks" => ['nullable','string'],
+                'exists:items,id'
+            ],
+            "si_no" => [
+                'required',
+                 'max:255'
+            ],
+            "deliver_id" => [
+                'required',
+                'exists:deliverables,id'
+            ],
+            "address" => [
+                'nullable',
+                'string'
+            ],
+            "remarks" => [
+                'nullable',
+                'string'
+            ],
         ];
     }
 }
