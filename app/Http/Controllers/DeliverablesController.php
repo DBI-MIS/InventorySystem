@@ -79,12 +79,12 @@ class DeliverablesController extends Controller
         $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
         // $clients = Client::query()->orderBy('name', 'asc')->get();
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
-        $stock_requisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
+        $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
         // dd($stockrequisitions);
         return inertia("Deliverables/Create", [
             "deliverablesss" => ItemResource::collection($deliverablesss),
             "clients" => ClientResource::collection($clients),
-            "stock_requisitions" => StockRequisitionResource::collection($stock_requisitions)
+            "stockrequests" => StockRequisitionResource::collection($stockrequests)
         ]);
     }
 
@@ -138,7 +138,7 @@ class DeliverablesController extends Controller
         // dd($deliverable);
         $itemss = Item::query()->orderBy('name', 'asc')->get();
         $clients = Client::query()->orderBy('name', 'asc')->get();
-        $stock_requisitions = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
+        $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
 
         $parsedID = json_decode($deliverable, true);
         $id = $parsedID['id'];
@@ -156,7 +156,7 @@ class DeliverablesController extends Controller
         return inertia('Deliverables/Edit',[
             'itemss' => ItemResource::collection($itemss),
             'clients' => ClientResource::collection($clients),
-            'stock_requisitions' => StockRequisitionResource::collection($stock_requisitions),
+            'stockrequests' => StockRequisitionResource::collection($stockrequests),
             'deliverable' => new DeliverablesResource($deliverable),
             'existingItemss' => $existingItemss,
             'existingItemsIds' => $existingItemsIds

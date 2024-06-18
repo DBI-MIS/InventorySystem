@@ -28,7 +28,7 @@ class UpdateDeliverablesRequest extends FormRequest
             "dr_qty" => ['nullable','max:255'],
             "remarks" => ['nullable','max:255'],
             'client_id' => ['required', 'exists:clients,id'],
-            'stock_requisition_id' => ['required', 'exists:stock_requisitions,id'],
+            'stockrequest_id' => ['required', 'exists:stock_requisitions,id'],
             "list_item_id" => ['required', 'exists:items,id'],
             
         ];

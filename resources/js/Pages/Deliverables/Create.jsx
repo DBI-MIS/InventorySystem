@@ -8,9 +8,9 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import Select from "react-select";
 
-export default function Create({ auth, deliverablesss, clients , stock_requisitions }) {
+export default function Create({ auth, deliverablesss, clients , stockrequests }) {
 
-    console.log(stock_requisitions);
+    console.log(stockrequests);
     
   const {data, setData, post,errors} = useForm({
     address: '',
@@ -134,21 +134,21 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                             
                                         </div>
                                         <div className="mt-4  col-span-2">
-                                            <InputLabel htmlFor="stockrequest_rs_no_id" value="RS No."/>
+                                            <InputLabel htmlFor="deliverables_stockrequest_id" value="RS No."/>
                                             <SelectInput 
-                                                id="stockrequest_rs_no_id"
-                                           name="stock_requisition"
+                                                id="deliverables_stockrequest_id"
+                                           name="stockrequest_id"
                                            className="mt-1 block w-full"
-                                                onChange={e => setData('stock_requisition', e.target.value)}
+                                                onChange={e => setData('stockrequest_id', e.target.value)}
                                             >
                                                 <option value="">Select RS No.</option>
-                                                {stock_requisitions.data.map((stockrequest) => (
+                                                {stockrequests.data.map((stockrequest) => (
                                                     <option value={stockrequest.id} key={stockrequest.id}>
                                                         {stockrequest.rs_no}
                                                     </option>
                                                 ))}
                                                 </SelectInput>
-                                            <InputError message={errors.stock_requisition} className="mt-2"/>
+                                            <InputError message={errors.stockrequest_id} className="mt-2"/>
                                         </div>
                                         <div className="mt-4  col-span-2">
                                             <InputLabel htmlFor="deliverables_dr_qty" value="Qty."/>

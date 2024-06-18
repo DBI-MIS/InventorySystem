@@ -182,7 +182,7 @@ const deleteDeliverables = (deliverable) => {
                                   <td className="px-3 py-2">{deliverable.id}</td>
                                   <td className="px-3 py-2 hover:underline"><b><Link href={route('deliverables.show', deliverable.id)}> {deliverable.client.name ?? "No Client Name"} </Link></b></td>
                                   <td className="px-3 py-2">{deliverable.dr_no ?? "No DR No"}</td>
-                                  <td className="px-3 py-2">{deliverable.stock_requisition.rs_no ?? "No RS Number"}</td>
+                                  <td className="px-3 py-2">{deliverable.stockrequest.rs_no ?? "No RS Number"}</td>
                                   <td className="px-3 py-2">{deliverable.address ?? "No Deliverable Address"}</td>
                                   <td className="px-3 py-2 text-nowrap">{deliverable.dr_date ?? "No DR Date"}</td>
                                   <td className="px-3 py-2 text-nowrap">{deliverable.dr_qty ?? "No DR Quantity"}</td>

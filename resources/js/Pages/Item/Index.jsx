@@ -113,25 +113,16 @@ const deleteItem = (item) => {
                       <div className="overflow-auto">
                         <div className="w-full flex flex-row justify-between items-center mb-2">
                           <div>
-                          <Link href={route('item.create')} className="flex flex-nowrap gap-2 font-semibold bg-blue-500 py-2 px-4 text-white rounded shadow transition-all hover:bg-blue-700">
-                 
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                  </svg> New Item
-            </Link></div>
+                            <Link href={route('item.create')} className="flex flex-nowrap gap-2 font-semibold bg-blue-500 py-2 px-4 text-white rounded shadow transition-all hover:bg-blue-700">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg> New Item
+                            </Link>
+                         </div>
                           <div className="flex flex-row items-center relative gap-2">
                             <div>
                               <th className="flex flex-row cursor-pointer items-center relative">
-                              {/* {queryParams!==null&& (
-                                // shows count of the results of the search select input
-                                <span>{{count}}</span>
-                              )} */}
-                               {queryParams !== null ? (
-                               <span>{String(count)}</span>
-                                  ) : (
-                                    <span>No filters applied</span>
-                                  )}
-                               
+                           
                               <SelectInput
                                 className="max-w-full"
                                 defaultValue={queryParams.statuses}
@@ -151,19 +142,13 @@ const deleteItem = (item) => {
                            </div>
                           <div className="absolute pointer-events-none right-2"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
                           </div>
-
                           <TextInput  className="w-[500px]" 
                                   defaultValue={queryParams.name}
                                   placeholder="Search Item Name Here" 
                                   onBlur={(e) => searchFieldChanged('name', e.target.value)}
                                   onKeyPress={(e) => onKeyPress('name', e )}/>
-                                  
-                                
                           </div>
-
-                            
-                          
-                          </div>
+                        </div>
                     
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
                             <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -207,7 +192,7 @@ const deleteItem = (item) => {
                                             {ITEM_STATUS_TEXT_MAP[item.statuses] || 'No Status'}
                                         </span>
                                       </td>
-                                      <td className="w-[100px] py-2 text-nowrap">{item.quantity} {item.uom} </td>
+                                      <td className="w-[100px] py-2 text-nowrap">{item.quantity ?? "No quantity"} {item.uom ?? "No UOM"} </td>
                                       <td className="w-[100px] py-2 text-nowrap">
                                           <div className="flex flex-row justify-end items-center">
                                               <Link href={route('item.edit', item.id)} 

@@ -44,7 +44,6 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::resource('client', ClientController::class);
         Route::resource('mrrItem', MrrItemController::class);
         Route::resource('itemMrr', ItemController::class);
-        Route::resource('stocksearch', StockSearchController::class);
         Route::resource('deliverables', DeliverablesController::class);
         Route::resource('stockrequisition', StockRequisitionController::class);
         Route::post('/receivings/{receivingId}/items/{itemId}',[ ReceivingController::class,'assignItem' ]);

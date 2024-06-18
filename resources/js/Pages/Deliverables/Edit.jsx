@@ -7,7 +7,7 @@ import { Head, Link, useForm  } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-export default function Edit({ auth, existingItemss, existingItemsIds, clients, deliverable, itemss}){
+export default function Edit({ auth, existingItemss, existingItemsIds, clients, deliverable, stockrequests, itemss}){
 
     const {data, setData, post, errors, processing} = useForm({
         address: deliverable.address || "",
@@ -179,14 +179,12 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                           
                                       </div>
                                       <div className="mt-4  col-span-2">
-                                          <InputLabel htmlFor="deliverables_rs_no" value="RS No."/>
+                                          <InputLabel htmlFor="deliverables_stockrequest_id" value="RS No."/>
                                           <TextInput 
-                                              id="deliverables_rs_no"
-                                         type="text"
-                                         name="rs_no"
+                                              id="deliverables_stockrequest_id"
+                                         name="stockrequest_id"
                                          value={data.rs_no}
                                          className="mt-1 block w-full"
-                                              isFocused={true}
                                               onChange={e => setData('rs_no', e.target.value)}
                                           />
                                           <InputError message={errors.rs_no} className="mt-2"/>

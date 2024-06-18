@@ -20,6 +20,7 @@ export default function Create({auth, client }){
         _method: "PUT", 
     });
     console.log("Client Data : " + client);
+
      //
      const [tin, setTin] = useState('');
      const [errorMessage, setErrorMessage] = useState('');
@@ -45,8 +46,11 @@ export default function Create({auth, client }){
        }
      };
     //  CONTACT NUMBER
+    
+    const formattedContactNo = data.contact_no.slice(3); //inalis +63 
+
     const [errorMessages, setErrorMessages] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState(formattedContactNo);
     const [valid, setValid] = useState(false);
     const [isValid, setIsValid] = useState(false);
   
@@ -78,6 +82,8 @@ export default function Create({auth, client }){
         e.preventDefault();
         post(route("client.update",client.id));
     }
+
+    
     return(
         <AuthenticatedLayout
         user={auth.user}
@@ -178,18 +184,23 @@ export default function Create({auth, client }){
 
                         
                                 <div className="mt-6 col-span-1">
+                                  <div className="flex font-medium text-sm gap-2">
                                     <InputLabel htmlFor="client_contact_no" value="Contact No."/>
+                                    <span className="text-gray-600"> Ex: 9608108745 or 0281234567</span>
                                     
-                                    <div className="flex items-center border rounded-md">
+
+                                  </div>
+                                  
+                                    <div className="flex items-center border rounded-md " >
                                       <TextInput
                                         id="client_contact_no"
                                         name="contact_no"
                                         type="number"
                                         placeholder=" Ex: 9608108745"
-                                        value={data.contact_no}
+                                        value={phoneNumber}
                                         onChange={handleChange}
-                                        className={`px-2 w-full focus:outline-none border-0 
-                                        ${isValid ? 'text-green-800' : 'text-red-800'}`} 
+                                        className={`px-2 w-full focus:outline-none border-0 text-black
+                                        ${isValid ? 'text-green-800' : ''}`} 
                                       />
                                     </div>
                                       {errorMessages && <p className="error-message text-red-700">{errorMessages}</p>}

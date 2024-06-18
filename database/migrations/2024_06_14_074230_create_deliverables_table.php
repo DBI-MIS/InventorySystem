@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('dr_no')->nullable();
             // $table->foreignIdFor(StockRequisition::class)->nullable();
-            $table->foreignId('stock_requisition_id')->constrained('stock_requisition');
+            $table->foreignId('stockrequest_id')->constrained('stock_requisitions');
             $table->string('address')->nullable();
             $table->string('dr_date')->nullable();
             $table->string('dr_qty')->nullable();

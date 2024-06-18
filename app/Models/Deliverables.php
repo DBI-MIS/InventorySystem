@@ -21,7 +21,7 @@ class Deliverables extends Model
         'list_item_id',
         'dr_no',
         'address',
-        'stock_requisition_id',
+        'stockrequest_id',
         'dr_date',
         'dr_qty',
         'client_id',
@@ -45,7 +45,7 @@ class Deliverables extends Model
     {
         return $this->hasMany(Receiving::class);
     }
-    public function stock_requisition()
+    public function stockrequest()
     {
         return $this->belongsTo(StockRequisition::class);
     }
