@@ -50,7 +50,7 @@ export default function PrintDeliverables({ deliverable,deliverable_items,queryP
                         </div>
                         <div>
                             <label for="ReceivingId">RS No. :</label>
-                            <span  className="mx-2">{deliverable.rs_no}</span>
+                            <span  className="mx-2">{deliverable.stockrequest.rs_no}</span>
                         </div>
                         <div>
                             <label for="ReceivingId">Date :</label>

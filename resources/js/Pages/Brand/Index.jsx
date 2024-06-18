@@ -140,7 +140,7 @@ const deleteBrand = (brand) => {
                              <td className="py-2">
                                 {brand.id}
                             </td>
-                             <th className="py-2 text-gray-700 text-nowrap ">
+                             <th className="py-2 pr-2  text-gray-700 text-nowrap ">
                               {brand.name ??  "No Brand Name"}
                             </th>
                              <td className="py-2 ">

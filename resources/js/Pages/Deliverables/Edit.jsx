@@ -8,11 +8,12 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 
 export default function Edit({ auth, existingItemss, existingItemsIds, clients, deliverable, stockrequests, itemss}){
+  console.log(stockrequests);
 
     const {data, setData, post, errors, processing} = useForm({
         address: deliverable.address || "",
         dr_no:     deliverable.dr_no || "",
-        rs_no_id:     deliverable.rs_no_id || "",
+        stockrequest_id: deliverable.stockrequest_id || "",
         client_id: deliverable.client_id || "",
         dr_date: deliverable.dr_date || "",
         dr_qty:   deliverable.dr_qty || "",
@@ -101,6 +102,20 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
         console.log('Current data:', data);
       }, [data]);
 
+      const handleClientChange = (e) => {
+        const selectedClientId = e.target.value;
+        
+        const selectedClient = clients.data.find(client => client.id === parseInt(selectedClientId));
+   
+        setData({
+           ...data,
+           client_id: selectedClientId,
+           address: selectedClient ? selectedClient.address : ''
+        });
+          
+    };
+
+
       const onSubmit = (e) =>{
         e.preventDefault();
         post(route("deliverables.update",deliverable.id));
@@ -133,7 +148,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                       id="deliverables_client_id"
                                       value={data.client_id}
                                       className="mt-1 block w-full"
-                                      onChange={(e) => setData("client_id", e.target.value)}
+                                      onChange={handleClientChange}
                                       >
                                         
                                         <option value="">Select Project</option>
@@ -179,16 +194,23 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                           
                                       </div>
                                       <div className="mt-4  col-span-2">
-                                          <InputLabel htmlFor="deliverables_stockrequest_id" value="RS No."/>
-                                          <TextInput 
-                                              id="deliverables_stockrequest_id"
-                                         name="stockrequest_id"
-                                         value={data.rs_no}
-                                         className="mt-1 block w-full"
-                                              onChange={e => setData('rs_no', e.target.value)}
-                                          />
-                                          <InputError message={errors.rs_no} className="mt-2"/>
-                                      </div>
+                                            <InputLabel htmlFor="deliverables_stockrequest_id" value="RS No."/>
+                                            <SelectInput 
+                                                id="deliverables_stockrequest_id"
+                                           name="stockrequest_id"
+                                           value={data.stockrequest_id}
+                                           className="mt-1 block w-full"
+                                                onChange={e => setData('stockrequest_id', e.target.value)}
+                                            >
+                                                <option value="">Select RS No.</option>
+                                                {stockrequests.data.map((stockrequest) => (
+                                                    <option value={stockrequest.id} key={stockrequest.id}>
+                                                        {stockrequest.rs_no}
+                                                    </option>
+                                                ))}
+                                                </SelectInput>
+                                            <InputError message={errors.stockrequest_id} className="mt-2"/>
+                                        </div>
                                       <div className="mt-4  col-span-2">
                                           <InputLabel htmlFor="deliverables_dr_qty" value="Qty."/>
                                           <TextInput 
@@ -219,7 +241,8 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                   
                                   <div className="mt-4">
                                       <InputLabel htmlFor="list_item_id" value="Group of Items"/>
-                                          <div className="col-span-10 xs:col-span-8">
+                                      <div className=" grid grid-cols-12 gap-5">
+                                          <div className="col-span-9 xs:col-span-6">
                                               <Select
                                                   value={selectedOptions}
                                                   onChange={handleSelectChange}
@@ -248,6 +271,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
                                   </button>
+                              </div>
                               </div>
                               <div className="mt-2 mx-2">
                             {notification && (

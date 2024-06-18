@@ -60,6 +60,7 @@ export default function Create({auth,success}){
                                     value={data.name}
                                     className="mt-1 block w-full"
                                     isFocused={true}
+                                    minLength={3}
                                     onChange={e => setData('name', e.target.value)}
                                 />
                                 <InputError message={errors.name} className="mt-2"/>
@@ -75,6 +76,7 @@ export default function Create({auth,success}){
                                     value={data.sku_prefix}
                                     className="mt-1 block w-full"
                                     maxLength={3}
+                                    minLength={3}
                                     isFocused={true}
                                     onChange={onInputChange}
                                     // onChange={e => setData("sku_prefix", e.target.value)}

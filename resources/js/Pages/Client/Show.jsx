@@ -9,7 +9,7 @@ export default function Show({auth, client, }){
         header={
             <div className="flex items-center justify-between">
                 <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight capitalize">
-                    {`Client Entry - ${client.name} `}
+                    {`Client - ${client.name} `}
                 </h2>
             </div>
             }
@@ -32,7 +32,7 @@ export default function Show({auth, client, }){
                            
                             </div>
 
-                            <div className="flex flex-col pb-3 mt-12">
+                            <div className="flex flex-col pb-2 mt-12">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Address :</dt>
                             <dd className="text-lg font-light">{client.address ?? "No Client Address"}</dd>
                             </div>
@@ -48,27 +48,29 @@ export default function Show({auth, client, }){
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
 
                         <div className="float-end mt-5">
-                            <Link href={route('client.edit', client.id)} className="bg-blue-500 py-[0.8rem] px-8 text-white rounded shadow transition-all hover:bg-blue-700">
+                            <Link href={route('client.edit', client.id)} className="bg-blue-500 py-[0.8rem] px-6 text-md text-white rounded shadow transition-all hover:bg-blue-700">
                                 Edit Entry
                             </Link>
                         </div>
+                        
                         <div className="flex flex-col pb-3 mt-[6.4rem]">
-                          <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Contact Number: </dt>
-                          <dd className="text-lg font-light"><span className="">{client.contact_no ?? "No Contact Number"}</span></dd>
-                        </div>
-                            
-                        <div className="flex flex-col pb-3 mt-6">
-                         <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">TIN Number: </dt>
-                         <dd className="text-lg font-light"><span className="">{client.tin_no ?? "No TIN Number"}</span></dd>
-                        </div>
-
-                        <div className="flex flex-col pb-3 mt-2">
                         <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Status : </dt>
                         <dd className="text-lg font-light">
                             <span className={"px-2 py-1 font-semibold tracking-wide rounded text-white " + CLIENT_STATUS_CLASS_MAP[client.status]} >
                                 {CLIENT_STATUS_TEXT_MAP[client.status] ?? "No Status"}
                              </span></dd>
                          </div>
+                        <div className="flex flex-col pb-3 mt-2">
+                          <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Contact Number: </dt>
+                          <dd className="text-lg font-light"><span className="">{client.contact_no ?? "No Contact Number"}</span></dd>
+                        </div>
+                            
+                        <div className="flex flex-col pb-3 mt-2">
+                         <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">TIN Number: </dt>
+                         <dd className="text-lg font-light"><span className="">{client.tin_no ?? "No TIN Number"}</span></dd>
+                        </div>
+
+                       
                     </dl>
                 </div>
                 {/* card #3 */}

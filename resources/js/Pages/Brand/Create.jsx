@@ -45,6 +45,7 @@ export default function Create({auth,success}){
                                     placeholder="Enter Brand Name"
                                     type="text"
                                     name="name"
+                                    minLength={3}
                                     value={data.name}
                                     className="mt-1 block w-full"
                                     isFocused={true}

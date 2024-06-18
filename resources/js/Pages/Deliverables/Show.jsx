@@ -107,7 +107,7 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
 
                       <div className="flex flex-col pb-3 mt-2">
                       <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">RS NO.: </dt>
-                      <dd className="text-lg font-light">{deliverable.rs_no ?? "No RS Number"}</dd>
+                      <dd className="text-lg font-light">{deliverable.stockrequest.rs_no ?? "No RS Number"}</dd>
                       </div>
                       <div className="flex flex-row pb-3 mt-2">
                       <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">DATE: </dt>

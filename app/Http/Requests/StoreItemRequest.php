@@ -38,13 +38,13 @@ class StoreItemRequest extends FormRequest
           'brand_id' => [
             'required',
             'numeric',
-            'min:2',
+            'min:1',
             'exists:brands,id',
           ],
           "category_id" => [
             'required',
             'numeric',
-            'min:2',
+            'min:1',
           'exists:categories,id',
          ],
           "description" => [
@@ -80,7 +80,7 @@ class StoreItemRequest extends FormRequest
           "quantity" => [ 
             'required',
             'numeric',
-            'min:0',
+            'min:1',
           
           ],
           "location_id" => [
@@ -103,5 +103,25 @@ class StoreItemRequest extends FormRequest
             'max:255'
           ],
       ];
+      
   }
+
+  // created customize messages to make error message more formal and flexible
+  //  example the brand id is required --> it should be brand name is required
+  public function messages()
+{
+    return [
+        'name.required' => 'Item Name is required.',
+        'name.regex' =>  'The name can only contain letters, numbers, & spaces',
+        'brand_id.required' => 'Brand Name is required.',
+        'category_id.required' => 'Category Name is required.',
+        'description.required' => 'Item Description is required.',
+        'specs.required' => 'Item Specification is required.',
+        'quantity.required' => 'Item quantity is required.',
+        'location_id.required' => 'Location is required.',
+        'employee_id.required' => 'Employee is required.',
+        'statuses.required' => 'Item Status is required.',
+        'remark.required' => 'Item Remarks is required.',
+    ];
+}
 }

@@ -39,6 +39,7 @@ export default function Create({auth}){
                             name="name"
                             placeholder="Enter Employee Name"
                             value={data.name}
+                            minLength={3}
                             className="mt-1 block w-full"
                             isFocused={true}
                             onChange={e => setData('name', e.target.value)}

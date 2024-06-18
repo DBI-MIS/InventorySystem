@@ -81,6 +81,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                   id="item_name"
                                   type="text"
                                   name="name"
+                                  minLength={3}
                                   placeholder="Enter Item Name"
                                   value={data.name}
                                   className="mt-1 block w-full"
@@ -129,6 +130,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                         type="number"
                                         placeholder="Enter Quantity"
                                         name="quantity"
+                                        min={1}
                                         value={data.quantity}
                                         className="mt-1 block w-full"
                                         onChange={e => setData('quantity', e.target.value)}

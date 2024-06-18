@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\ReceivingItem;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -40,6 +41,7 @@ class ItemResource extends JsonResource
             'employee' => new EmployeeResource($this->employee),
             'statuses' => $this->statuses,
             'remark' => $this->remark,
+            'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
         ];
     }
 }

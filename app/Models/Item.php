@@ -9,6 +9,7 @@ class Item extends Model
 {
     protected $casts =
      [ 'id' => 'string' ,
+    
     //  'statuses' => 'array',
 ];
     use HasFactory, SoftDeletes;
