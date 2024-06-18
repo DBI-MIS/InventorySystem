@@ -22,7 +22,7 @@ class StockRequisitionResource extends JsonResource
             'rs_no' => $this->rs_no,
             'sr_date' => $this->sr_date,
             'sr_qty' => $this->sr_qty,
-            'item_id' => $this->item_id,
+            'sr_unit' => $this->sr_unit,
             'sr_description' => $this->sr_description,
             'sr_notes' => $this->sr_notes,
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),

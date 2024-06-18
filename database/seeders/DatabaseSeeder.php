@@ -83,12 +83,12 @@ class DatabaseSeeder extends Seeder
          ->count(20)
          ->create();
 
-         Deliverables::factory()
-         ->count(20)
-         ->create();
-         StockRequisition::factory()
-         ->count(10)
-         ->create();
+        //  Deliverables::factory()
+        //  ->count(20)
+        //  ->create();
+        //  StockRequisition::factory()
+        //  ->count(10)
+        //  ->create();
          
 foreach(Item::all() as $item){
     foreach(Receiving::all() as $receiving){

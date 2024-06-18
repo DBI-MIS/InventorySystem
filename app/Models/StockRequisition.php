@@ -14,7 +14,7 @@ class StockRequisition extends Model
         'rs_no',
         'sr_date',
         'sr_qty',
-        'item_id',
+        'sr_unit',
         'sr_description',
         'sr_notes'
     ];

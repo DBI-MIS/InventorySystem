@@ -22,7 +22,7 @@ class StockRequisitionFactory extends Factory
             'rs_no'=> fake()->regexify('[0-9]{6}'),
             'sr_date'=>now(),
             'sr_qty'=>rand(1, 10),
-            'item_id'=>Item::factory(),
+            'sr_unit'=>rand(1, 10),
             'sr_description'=>fake()->realText(),
             'sr_notes'=>fake()->sentence(),
             'created_at' => time(),
