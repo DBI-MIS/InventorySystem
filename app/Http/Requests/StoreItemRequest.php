@@ -23,32 +23,28 @@ class StoreItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-          "sku_prefix" => [
-            'alpha',
-             'max:255'
-          ],
           "sku" => [
+            'required',
             'numeric',
-             'required',
              'min:2',
               'max:255'
           ],
           "name" => [
-            'alpha_num',
-            'min:2',
             'required',
+            'regex:/^[A-Za-z0-9 ]+$/',
+            'min:2',
             'max:255'
           ],
           'brand_id' => [
+            'required',
             'numeric',
             'min:2',
-            'required',
             'exists:brands,id',
           ],
           "category_id" => [
+            'required',
             'numeric',
             'min:2',
-            'required',
           'exists:categories,id',
          ],
           "description" => [
@@ -57,43 +53,44 @@ class StoreItemRequest extends FormRequest
             'string'
           ],
           "specs" => [
-            'alpha_num',
             'required',
+            'alpha_num',
             'string'
           ],
           "part_no" => [
-            'alpha_num',
             'nullable',
+            'alpha_num',
             'max:255'
           ],
           "serial_no" => [
+            'nullable',
             'alpha_num',
-            'nullable', 'max:255'
+             'max:255'
           ],
           "model_no" => [ 
-            'alpha_num',
             'nullable',
+            'alpha_num',
             'max:255'
           ],
           "uom" => [ 
-            'alpha',
             'required',
+            'alpha',
             'max:20'
           ],
           "quantity" => [ 
-            'numeric',
             'required',
+            'numeric',
             'min:0',
-            'max:255'
+          
           ],
           "location_id" => [
-            'numeric',
             'required',
+            'numeric',
           'exists:locations,id'
          ],
           "employee_id" => [
-            'numeric',
             'required',
+            'numeric',
           'exists:employees,id',
           ],
           'statuses' => [
@@ -101,8 +98,8 @@ class StoreItemRequest extends FormRequest
             'max:255'
           ],
           "remark" => [
-            'alpha_num',
             'required',
+            'alpha_num',
             'max:255'
           ],
       ];

@@ -228,7 +228,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                             </button> 
                                         </div>
                                     </div>
-                                    <span className="mt-2 text-red-500"><b> Note: If items are not available on the lists, you can add new Item.</b></span>
+                                    <span className="mt-2 text-gray-600"><b>Note:</b> If items are not available on the lists, you can add new Item.</span>
                                  </div>
 
                                  <div className="mt-5">

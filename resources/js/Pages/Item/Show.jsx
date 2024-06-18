@@ -98,8 +98,8 @@ export default function Show({auth, item,category,onlySoftDeletedItems,tryDelete
                             <div className="flex flex-col pb-3 mt-2">
                             <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">Status : </dt>
                             <dd className="text-lg font-light"> 
-                                <span className={`px-2 py-1 font-semibold tracking-wide rounded ${ITEM_STATUS_CLASS_MAP[item.status] || 'bg-gray-300'} ${item.status ? 'text-white' : 'text-black'}`}>
-                                    {ITEM_STATUS_TEXT_MAP[item.status] || 'No Status'}
+                                <span className={`px-2 py-1 font-semibold tracking-wide rounded ${ITEM_STATUS_CLASS_MAP[item.statuses] || 'bg-gray-300'} ${item.statuses ? 'text-white' : 'text-black'}`}>
+                                    {ITEM_STATUS_TEXT_MAP[item.statuses] || 'No Status'}
                                 </span>
                             </dd>
                             </div>

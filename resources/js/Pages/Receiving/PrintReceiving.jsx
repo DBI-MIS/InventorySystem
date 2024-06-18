@@ -43,7 +43,7 @@ export default function PrintReceiving({ receiving,receiving_items,queryParams})
                     <div className="font-light text-xs md:text-sm">
                         <div>
                             <label for="ReceivingId">DR No. :</label>
-                            <span  className="mx-2">{receiving.dr_no}</span>
+                            <span  className="mx-2">{receiving.deliver.dr_no}</span>
                         </div>
                         <div>
                             <label for="ReceivingId">MRR No. :</label>
@@ -91,7 +91,7 @@ export default function PrintReceiving({ receiving,receiving_items,queryParams})
                             <th class="border text-xs border-gray-500 px-1 py-2 font-light text-gray-800 whitespace-nowrap dark:text-white">
                                 <Link href={route('item.show', receiving_item.id)}>{receiving_item.name}</Link>
                             </th>
-                            <td class=" text-xs border border-gray-500 px-1 py-2 font-light text-gray-900 whitespace-nowrap text-wrap">{receiving_item.description}</td>
+                            <td class=" text-xs border border-gray-500 px-1 py-2 font-light text-gray-900 whitespace-nowrap text-wrap">{receiving_item.description ?? "No Description"}</td>
                         </tr>
                     ))}
                     </>

@@ -103,8 +103,8 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                                 <option value={category.id} key={category.id}>{category.name}</option>
                                             ))}
                                             </SelectInput>
-                                    <InputError message={errors.category_id} className="mt-2"/>
                                 </div>
+                                <InputError message={errors.category_id} className="mt-2"/>
                             </div>
                             <div className=" mt-4 col-span-1">
                                 <InputLabel htmlFor="item_brand_id" value="Brand"/>

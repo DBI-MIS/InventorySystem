@@ -4,7 +4,10 @@ import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { ITEM_STATUS_CLASS_MAP, ITEM_STATUS_TEXT_MAP } from "@/constants";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
+import Select from 'react-select';
 export default function Edit({auth, item,categories, locations, brands, employees }){
     // data will hold/contain the ff:
    const {data, setData, post ,errors,} = useForm({
@@ -23,12 +26,24 @@ export default function Edit({auth, item,categories, locations, brands, employee
         quantity: item.quantity || "",
         location_id: item.location_id || "",
         employee_id: item.employee_id || "",
-        status: item.status || "",
+        statuses: item.statuses || "",
         remark: item.remark || "",
         _method: "PUT", 
     });
+
+    const statusesOptions = Object.keys(ITEM_STATUS_TEXT_MAP).map((key) => ({
+        value: key,
+        label: ITEM_STATUS_TEXT_MAP[key],
+      }));
+
+    //  const statusesOptions =useState(["hi", "hello"]);
+     const [isClearable, setIsClearable] = useState(true);
+     const [isSearchable, setIsSearchable] = useState(true);
+     const [isDisabled, setIsDisabled] = useState(false);
+     const [isLoading, setIsLoading] = useState(false);
+     const [isRtl, setIsRtl] = useState(false);
+
     const onSubmit = (e) =>{
-        // post function declared above
         e.preventDefault();
         post(route("item.update",item.id));
     }
@@ -48,7 +63,7 @@ export default function Edit({auth, item,categories, locations, brands, employee
                                 
                                 <div className="grid grid-cols-3 gap-2 ">
                                      {/* 1ST GRID COLUMN */}
-                                    <div className="col-span-2 grid grid-cols-1 gap-2 content-start">
+                                    <div className="col-span-2 grid grid-cols-2 gap-2 content-start">
 
                                     {/* item */}
                                     <div className="mt-6 col-span-1">
@@ -83,7 +98,7 @@ export default function Edit({auth, item,categories, locations, brands, employee
                                     </div>
 
                                      {/* brand ID */}
-                                     <div className="mt-4 col-span-1 col-start-1">
+                                     <div className="mt-6 col-span-1 col-start-1">
                                         <InputLabel htmlFor="item_brand_id" value="Brand"/>
                                         <SelectInput
                                         id="item_brand_id"
@@ -100,7 +115,7 @@ export default function Edit({auth, item,categories, locations, brands, employee
                                         <InputError message={errors.brand_id} className="mt-2"/>
                                     </div>
                                             {/* QUANTITY & UOM */}
-                                    <div className="mt-4 col-span-1 col-start-2 grid grid-cols-2 gap-1">
+                                    <div className="mt-6 col-span-1 col-start-2 grid grid-cols-2 gap-1">
                                     <div className="col-span-1">
                                         <InputLabel htmlFor="item_quantity" value="Quantity"/>
                                         <TextInput 
@@ -148,7 +163,7 @@ export default function Edit({auth, item,categories, locations, brands, employee
                                                     readOnly
                                                     value={data.sku_prefix}
                                                     className="mt-1 !border-none w-[60px] pointer-events-none text-right"
-                                                    onChange={e => setData('sku_prefix', e.target.value)}
+                                                    // onChange={e => setData('sku_prefix', e.target.value)}
                                                     />
                                                     <TextInput 
                                                     id="item_sku"
@@ -174,55 +189,65 @@ export default function Edit({auth, item,categories, locations, brands, employee
                                     onChange={e => setData('description', e.target.value)}
                                     />
                                     <InputError message={errors.description} className="mt-2"/>
-                                </div>
+                                    </div>
                                             {/* Specifications */}
-                                <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="item_specs" value="Item Specs"/>
-                                    <TextAreaInput
-                                    id="item_description"
-                                    name="specs"
-                                    value={data.specs}
-                                    className="mt-1 block w-full resize-none"
-                                    rows="5"
-                                    onChange={e => setData('specs', e.target.value)}
-                                    />
-                                    <InputError message={errors.specs} className="mt-2"/>
-                                </div>
+                                     <div className="mt-4 col-span-2">
+                                        <InputLabel htmlFor="item_specs" value="Item Specs"/>
+                                        <TextAreaInput
+                                            id="item_description"
+                                            name="specs"
+                                            value={data.specs}
+                                            className="mt-1 block w-full resize-none"
+                                            rows="5"
+                                            onChange={e => setData('specs', e.target.value)}
+                                        />
+                                        <InputError message={errors.specs} className="mt-2"/>
+                                    </div>
                                             {/* Remarks */}
-                                <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="item_remark" value="Item Remarks"/>
-                                    <TextAreaInput
-                                    id="item_remark"
-                                    name="remark"
-                                    value={data.remark}
-                                    className="mt-1 block w-full resize-none"
-                                    rows="5"
-                                    onChange={e => setData('remark', e.target.value)}
-                                    />
-                                    <InputError message={errors.remark} className="mt-2"/>
-                                </div>
+                                     <div className="mt-4 col-span-2">
+                                        <InputLabel htmlFor="item_remark" value="Item Remarks"/>
+                                        <TextAreaInput
+                                            id="item_remark"
+                                            name="remark"
+                                            value={data.remark}
+                                            className="mt-1 block w-full resize-none"
+                                            rows="5"
+                                            onChange={e => setData('remark', e.target.value)}
+                                        />
+                                        <InputError message={errors.remark} className="mt-2"/>
+                                     </div>
 
                                     </div>
                                     {/* 2ND GRID COLUMN */} 
                                     <div className="grid grid-cols-1 content-start">
 
                                         {/* Status */}
-                                    <div className="mt-6 col-span-1">
-                                            <InputLabel htmlFor="item_status" value="Status"/>
-                                            <TextInput
-                                            id="item_status"
-                                            type="text"
-                                            name="status"
-                                            value={data.status}
-                                            className="mt-1 block w-full"
-                                            onChange={(e) => setData("status", e.target.value)}
-                                            />
-                                            
-                                            <InputError message={errors.status} className="mt-2"/>
+                                    <div className="mt-7 col-span-1">
+                                        <InputLabel htmlFor="item_statuses" value="Status"/>
+                                        <Select
+                                            className="basic-single"
+                                            placeholder="Select Status"
+                                            isDisabled={isDisabled}
+                                            isLoading={isLoading}
+                                            isClearable={isClearable}
+                                            isRtl={isRtl}
+                                            defaultValue={data.statuses} 
+                                            onChange={({ value }) => setData({ ...data, statuses: value })}
+                                            isSearchable={isSearchable}
+                                            name="statuses"
+                                            options={statusesOptions}
+                                    />
+                                        <div className="flex gap-2 mt-2 text-sm">  
+                                        <span> Existing Status:</span>
+                                        <span className={`px-2 py-[0.15rem] text-sm font-semibold rounded ${ITEM_STATUS_CLASS_MAP[item.statuses]} text-white`}>
+                                                {ITEM_STATUS_TEXT_MAP[item.statuses] }
+                                            </span>
+                                            <InputError message={errors.statuses} className="mt-2"/>
+                                        </div>
                                     </div>
 
                                             {/* Serial */}
-                                    <div className="mt-4 col-span-1">
+                                    <div className=" mt-3 col-span-1">
                                         <InputLabel htmlFor="item_serial_no" value="Serial No."/>
                                         <TextInput 
                                         id="item_serial_no"

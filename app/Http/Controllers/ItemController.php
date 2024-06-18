@@ -170,6 +170,7 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
+        // dd($item);
        // show the stored info from creation
             $categories = Category::query()->orderBy('name', 'asc')->get();
             $brands =Brand::query()->orderBy('name', 'asc')->get();
