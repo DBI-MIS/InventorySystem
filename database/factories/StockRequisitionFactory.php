@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Item;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,6 +22,7 @@ class StockRequisitionFactory extends Factory
             'rs_no'=> fake()->regexify('[0-9]{6}'),
             'sr_date'=>now(),
             'sr_qty'=>rand(1, 10),
+            'item_id'=>Item::factory(),
             'sr_description'=>fake()->realText(),
             'sr_notes'=>fake()->sentence(),
             'created_at' => time(),

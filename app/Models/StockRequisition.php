@@ -14,7 +14,7 @@ class StockRequisition extends Model
         'rs_no',
         'sr_date',
         'sr_qty',
-        'sr_unit',
+        'item_id',
         'sr_description',
         'sr_notes'
     ];
@@ -27,6 +27,10 @@ class StockRequisition extends Model
     public function deliverables()
     {
         return $this->hasOne(Deliverables::class);
+    }
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
     }
 
     // public function rsnoStockRequest()

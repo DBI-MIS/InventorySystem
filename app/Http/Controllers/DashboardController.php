@@ -15,8 +15,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
-
         $latestItems = Item::latest('created_at')->limit(15)->get();
 
         $latestMrrs = Receiving::latest('created_at')->limit(5)->get();

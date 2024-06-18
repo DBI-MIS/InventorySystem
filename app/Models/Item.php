@@ -59,6 +59,9 @@ class Item extends Model
     public function deliverable_items(){
         return $this->belongsToMany(Deliverables::class, 'deliverable_item')->withTimestamps();
     }
+    public function stockrequisition(){
+        return $this->hasOne(StockRequisition::class);
+    }
  /**
      * The attributes that should be mutated to dates.
      *
