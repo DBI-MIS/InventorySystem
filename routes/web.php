@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;
         Route::get('/receiving/my-receiving/{receivingId}', [ReceivingController::class, 'myReceiving'])->name('receiving.myReceiving');
         Route::get('/deliverables/my-deliverable/{deliverableId}', [DeliverablesController::class, 'myDeliverable'])->name('deliverable.myDeliverable');
+        Route::get('/stockrequisition/my-stockrequest/{stockrequestId}', [StockRequisitionController::class, 'myStockRequest'])->name('stockrequest.myStockRequest');
         Route::post('receiving/create', [ItemController::class,'storeItem'])->name('item.storeItem');
         Route::post('receiving/create', [ItemController::class,'itemMrr'])->name('item.itemMrr');
         Route::post('/item/submit', [ItemController::class, 'submit'])->name('item.submit');

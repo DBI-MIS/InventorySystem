@@ -27,7 +27,7 @@ class ClientController extends Controller
             $query->where("status", request("status"));
         };
         $clients = $query->orderBy($sortField, $sortDirection)
-        ->paginate(20);
+        ->paginate(12);
 
         return inertia("Client/Index", [
             "clients" => ClientResource::collection($clients),

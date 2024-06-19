@@ -36,4 +36,15 @@ export const CLIENT_STATUS_CLASS_MAP = {
     unassigned: 'bg-stone',
     processed:'bg-green-500',
   };
+  export const EMPLOYEE_STATUS_CLASS_MAP = {
+    //equivalent value on the database(leftside) & corresponding color and text appearance
+      Resigned: "bg-amber-700",
+      Active: "bg-green-700 ",
+      Inactive: "bg-red-900",
+    };
+    export const EMPLOYEE_STATUS_TEXT_MAP = {
+      Resigned: "Resigned",
+      Active: "Active",
+      Inactive: "Inactive",
+    };
   

@@ -8,6 +8,7 @@ export default function Create({auth}){
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
         name: '',
+        company: '',
         department: '',
         remarks: '',
     })
@@ -46,6 +47,22 @@ export default function Create({auth}){
                             />
                             <InputError message={errors.name} className="mt-2"/>
                         </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="employee_company" value="Employee Company"/>
+                            <TextInput 
+                            id="employee_company"
+                            placeholder="Enter Employee Company"
+                            type="text"
+                            name="company"
+                            value={data.company}
+                            className="mt-1 block w-full"
+                            isFocused={true}
+                            onChange={e => setData('company', e.target.value)}
+                            />
+                            <InputError message={errors.company} className="mt-2"/>
+                        </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="employee_department" value="Employee Department"/>
                             <TextInput 

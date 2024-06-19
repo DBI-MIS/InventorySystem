@@ -49,8 +49,8 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
                   
                </div>
               <div>
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {`Delivery Receipt No. " ${deliverable.id} " `}
+                <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight capitalize">
+                    {`Delivery Receipt No. " ${deliverable.dr_no} " `}
                </h2>
               </div>
             
@@ -59,9 +59,9 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
     >
       <Head title={`Deliverables "${deliverable.id}" `}/>
 
-      <div className="py-2capitalize">
+      <div className="py-6 capitalize">
       
-      <div className=" max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3  gap-2">
+      <div className=" w-5/6 mx-auto sm:px-6 lg:px-8 grid grid-cols-3 font-bold gap-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
       
           {/* card #1 */}
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg col-span-2 ">
@@ -70,53 +70,51 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
                     <div className="flex flex-col pb-3 mt-2">
                       <label
                       className="font-bold text-lg"
-                      htmlFor="ReceivingId"></label>
-                    </div>
-                    <div className="w-[90px]">
-                        <label className="font-light text-md"
-                        >Delivery Receipt: </label>
-                        <span className="font-light">{deliverable.id}</span>
+                      htmlFor="DeliverablesId">DR Number</label>
+                      <span className="text-2xl font-semibold ">{deliverable.dr_no ?? "No DR Number"}</span>
                     </div>
                   </div>
-                  <div className="flex flex-col pb-3 mt-2">
+                  <div className="flex flex-col pb-3 mt-12">
                     <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">PROJECT : </dt>
                     <dd className="text-lg font-light">{deliverable.client.name ?? "No Client Name"}</dd>
                   </div>
-                  <div className="flex flex-col pb-3 mt-2">
+                  <div className="flex flex-col pb-3 mt-6">
                     <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">ADDRESS : </dt>
                     <dd className="text-lg font-light">{deliverable.address ?? "No Address Available"}</dd>
                   </div>
-                  <div className="flex flex-col pb-3 mt-2">
-                    <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">REMARKS : </dt>
-                    <dd className="text-lg font-light">{deliverable.remarks ?? "No Remarks Available"}</dd>
-                  </div>
                 </dl>
           </div>
+          
           {/* card #2 */}
-          <div className="bg-white  dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg ml-2 col-span-1">
+          <div className="col-span-1">
               <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                     <div className="flex float-end mb-5 px-10 gap-2 ">
+                     <div className="flex float-end mt-5 ">
                         <Link href={route('deliverable.myDeliverable', deliverable.id)} className="bg-blue-500 py-2 px-6 text-white rounded shadow transition-all hover:bg-blue-700">
                             Print DR
                         </Link>
                     </div>
-                      <div className="flex flex-col pb-3 mt-2">
-                      <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">DR NO.:  </dt>
-                      <dd className="text-lg font-light">{deliverable.dr_no ?? "No DR Number"}</dd>
-                      </div>
-
-                      <div className="flex flex-col pb-3 mt-2">
-                      <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">RS NO.: </dt>
+                      <div className="flex flex-col pb-3 mt-[6.4rem]">
+                      <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">RS NO: </dt>
                       <dd className="text-lg font-light">{deliverable.stockrequest.rs_no ?? "No RS Number"}</dd>
                       </div>
-                      <div className="flex flex-row pb-3 mt-2">
+                      <div className="flex flex-row pb-3 mt-6">
                       <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">DATE: </dt>
                       <dd className="text-lg font-light uppercase ml-2">{deliverable.dr_date ?? "No DR Date"}</dd>
                       </div>
               
               </dl>
           </div>
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
+          <div className="col-span-3">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-2 h-[140px]">
+                         <div className="px-6 ">
+                                <label
+                                className="font-light text-gray-700 text-md"
+                                htmlFor="ReceivingId">Remarks :</label> <span>{deliverable.remarks ?? "No Receiving Remarks"}</span>
+                         </div>
+                     </div>               
+          </div>
+          </div>
+          <div className="w-5/6 mx-auto sm:px-6 lg:px-8 mt-2 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
                 <div className="overflow-auto">
@@ -127,12 +125,11 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
                           <th class=" border text-left px-8 py-4">QTY</th>
                           <th class=" border text-left px-8 py-4">UNIT</th>
                           <th class=" border text-left px-8 py-4">ITEM NAME</th>
-                          <th class=" border text-left px-8 py-4">ITEM DESCRIPTION</th>
+                          <th class=" border text-left px-9 py-4">ITEM DESCRIPTION</th>
                         </tr>
                       </thead>
                       <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                         <tr className="text-nowrap ">
-                          <th className="px-3 py-3"></th>
                           <th className="px-3 py-3"></th>
                           <th className="px-3 py-3"></th>
                           <th className="px-3 py-3"></th>
@@ -175,7 +172,7 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
         </div>
               
         </div>
-      </div>
+      
   </div>
 
     </Authenticated>

@@ -24,7 +24,7 @@ class EmployeeController extends Controller
         }
 
         $employees = $query->orderBy($sortField, $sortDirection)
-        ->paginate(10);
+        ->paginate(12);
 
         return inertia("Employee/Index", [
             "employees" => EmployeeResource::collection($employees),

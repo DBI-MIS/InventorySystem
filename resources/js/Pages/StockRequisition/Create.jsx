@@ -5,7 +5,7 @@ import TextAreaInput from '@/Components/TextAreaInput';
 import TextInput from '@/Components/TextInput';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function Create({ auth }) {
 
@@ -26,6 +26,33 @@ export default function Create({ auth }) {
     post(route("stockrequisition.store"));
   }
 
+    // Initialize state for table rows
+  const [tableRows, setTableRows] = useState([]);
+
+  // Handle button click to add a new empty row
+  const handleAddRow = () => {
+    setTableRows([
+      ...tableRows,
+      {
+        sr_to: '',
+        rs_no: '',
+        sr_date: '',
+        sr_qty: '',
+        sr_unit: '',
+        sr_description: '',
+        sr_notes: '',
+      },
+    ]);
+  };
+
+  // Handle change in table input fields
+  const handleInputChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedRows = [...tableRows];
+    updatedRows[index][name] = value;
+    setTableRows(updatedRows);
+  };
+
 
   return (
     <Authenticated
@@ -45,10 +72,9 @@ export default function Create({ auth }) {
 
           <form onSubmit={onSubmit} className="p-4 sm:p8  bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
 
-          <div className="grid grid-cols-3 gap-2">
-                <div className="col-span-2 grid grid-cols-2 gap-2 content-start">
-
-                  <div className="mt-4 col-span-3">
+          {/* <div className="grid grid-cols-3 gap-2">
+                <div className="col-span-1 grid grid-cols-2 gap-2 content-start">
+                  <div className="mt-24 col-span-3">
                        <InputLabel htmlFor="stockrequest_sr_to" value="To."/>
                        <TextInput
                        id="deliverables_sr_to"
@@ -64,6 +90,7 @@ export default function Create({ auth }) {
                   </div>
 
                 </div>
+                <div className="col-span-1 grid grid-cols-2 gap-2 content-start"></div>
                 <div className="mt-10 col-span-1 grid grid-cols-1 content-start">
 
                 <div className="mt-4 col-span-3">
@@ -99,9 +126,9 @@ export default function Create({ auth }) {
           </div>
           <div className="flex">
               <div className="w-full">
-                  <div className="grid grid-cols-8 gap-2">
+                  <div className="grid grid-cols-7 gap-2">
 
-                      <div className=" mt-4  col-span-2 ">
+                      <div className=" mt-4  col-span-1 ">
                             <InputLabel htmlFor="stockrequest_sr_qty" value="Qty."/>
                                             
                             <TextInput 
@@ -116,10 +143,10 @@ export default function Create({ auth }) {
                            <InputError message={errors.sr_qty} className="mt-2"/>
                                             
                       </div>
-                      <div className=" mt-4  col-span-2 ">
+                      <div className=" mt-4  col-span-1 ">
                             <InputLabel htmlFor="stockrequest_sr_unit" value="Unit."/>
                                             
-                            <TextInput 
+                            <SelectInput 
                               id="stockrequest_sr_unit"
                               type="text"
                               name="sr_unit"
@@ -127,13 +154,20 @@ export default function Create({ auth }) {
                               className="mt-1 block w-full"
                               isFocused={true}
                               onChange={e => setData('sr_unit', e.target.value)}
-                              />
+                              >
+                                <option value="">Select UOM </option>
+                                <option value="M">Meters</option>
+                                <option value="Kg">Kilograms</option>
+                                <option value="L">Liters</option>
+                                <option value="Pcs">Pieces</option>
+                                <option value="Pc">Piece</option>
+                                <option value="Set">Set</option>
+                                <option value="Sets">Sets</option>
+                              </SelectInput>
                            <InputError message={errors.sr_unit} className="mt-2"/>
                                             
                       </div>
-                      
-                  </div>
-                  <div className="mt-4  col-span-3">
+                      <div className="mt-1  col-span-5">
                           <InputLabel htmlFor="stockrequest_sr_description" value="Description."/>
                           <TextAreaInput 
                               id="stockrequest_sr_description"
@@ -146,6 +180,9 @@ export default function Create({ auth }) {
                           />
                           <InputError message={errors.sr_description} className="mt-2"/>
                     </div>
+                      
+                  </div>
+                  
                     <div className="mt-4  col-span-3">
                           <InputLabel htmlFor="stockrequest_sr_notes" value="Notes."/>
                           <TextAreaInput 
@@ -160,8 +197,106 @@ export default function Create({ auth }) {
                           <InputError message={errors.sr_notes} className="mt-2"/>
                     </div>
               </div>
-          </div>
+          </div> */}
+           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                  <tr className="text-nowrap">
+                    <th className="pr-10">ID</th>
+                    <th className="pr-10">TO</th>
+                    <th className="pr-10">RS NO.</th>
+                    <th className="pr-10">DATE</th>
+                    <th className="pr-10">QTY</th>
+                    <th className="pr-10">UNIT</th>
+                    <th className="pr-10">DESCRIPTION</th>
+                    <th className="pr-10">NOTES</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableRows.map((row, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <TextInput
+                          type="text"
+                          name={`rows[${index}].sr_to`}
+                          value={row.sr_to}
+                          className="mt-1 block w-full"
+                          onChange={(e) => handleInputChange(index, e)}
+                        />
+                      </td>
+                      <td>
+                        <TextInput
+                          type="text"
+                          name={`rows[${index}].rs_no`}
+                          value={row.rs_no}
+                          className="mt-1 block w-full"
+                          onChange={(e) => handleInputChange(index, e)}
+                        />
+                      </td>
+                      <td>
+                        <TextInput
+                          type="date"
+                          name={`rows[${index}].sr_date`}
+                          value={row.sr_date}
+                          className="mt-1 block w-full"
+                          onChange={(e) => handleInputChange(index, e)}
+                        />
+                      </td>
+                      <td>
+                        <TextInput
+                          type="text"
+                          name={`rows[${index}].sr_qty`}
+                          value={row.sr_qty}
+                          className="mt-1 block w-full"
+                          onChange={(e) => handleInputChange(index, e)}
+                        />
+                      </td>
+                      <td>
+                        <SelectInput
+                          name={`rows[${index}].sr_unit`}
+                          value={row.sr_unit}
+                          className="mt-1 block w-full"
+                          onChange={(e) => handleInputChange(index, e)}
+                        >
+                          <option value="">Select UOM</option>
+                          <option value="M">Meters</option>
+                          <option value="Kg">Kilograms</option>
+                          <option value="L">Liters</option>
+                          <option value="Pcs">Pieces</option>
+                          <option value="Pc">Piece</option>
+                          <option value="Set">Set</option>
+                          <option value="Sets">Sets</option>
+                        </SelectInput>
+                      </td>
+                      <td>
+                        <TextAreaInput
+                          name={`rows[${index}].sr_description`}
+                          value={row.sr_description}
+                          className="mt-1 block w-full"
+                          onChange={(e) => handleInputChange(index, e)}
+                        />
+                      </td>
+                      <td>
+                        <TextAreaInput
+                          name={`rows[${index}].sr_notes`}
+                          value={row.sr_notes}
+                          className="mt-1 block w-full"
+                          onChange={(e) => handleInputChange(index, e)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
           <div className="mt-20 text-right">
+          <button
+                  type="button"
+                  onClick={handleAddRow}
+                  className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600 mr-2"
+                >
+                  Add Row
+                </button>
+
                 <Link href={route('stockrequisition.index')}
                       className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
                 >

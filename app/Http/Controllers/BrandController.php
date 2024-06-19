@@ -25,7 +25,7 @@ class BrandController extends Controller
         }
 
         $brands = $query->orderBy($sortField, $sortDirection)
-        ->paginate(10);
+        ->paginate(12);
 
         return inertia("Brand/Index", [
             "brands" => BrandResource::collection($brands),

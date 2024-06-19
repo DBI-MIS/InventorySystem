@@ -23,6 +23,7 @@ class StoreEmployeeRequest extends FormRequest
     {
         return [
             "name" => ['required','alpha','min:2', 'max:255'],
+            "company" => ['nullable', 'alpha', 'max:255'],
             "department" => ['nullable', 'alpha', 'max:255'],
             "remarks" => ['nullable','string'],
             

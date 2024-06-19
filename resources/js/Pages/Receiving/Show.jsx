@@ -24,7 +24,7 @@ export default function Show({auth, receiving,receiving_items}){
             <div className="w-5/6 mx-auto sm:px-6 lg:px-8 grid grid-cols-3 font-bold gap-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
            
                 {/* card #1 */}
-                <div className="col-span-2 ">
+                <div className=" bg-white overflow-hidden shadow-sm sm:rounded-lg col-span-2 ">
               
                         <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                             <div className="flex flex-row justify-between">

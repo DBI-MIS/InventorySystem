@@ -1,5 +1,6 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
+import SelectInput from '@/Components/SelectInput';
 import TextAreaInput from '@/Components/TextAreaInput';
 import TextInput from '@/Components/TextInput';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
@@ -45,9 +46,9 @@ export default function Edit({ auth, stockrequisition }) {
           <form onSubmit={onSubmit} className="p-4 sm:p8  bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
 
           <div className="grid grid-cols-3 gap-2">
-                <div className="col-span-2 grid grid-cols-2 gap-2 content-start">
+                <div className="col-span-1 grid grid-cols-2 gap-2 content-start">
 
-                  <div className="mt-4 col-span-3">
+                  <div className="mt-24 col-span-3">
                        <InputLabel htmlFor="stockrequest_sr_to" value="To."/>
                        <TextInput
                        id="deliverables_sr_to"
@@ -62,6 +63,8 @@ export default function Edit({ auth, stockrequisition }) {
                   </div>
 
                 </div>
+                <div className="col-span-1 grid grid-cols-2 gap-2 content-start"></div>
+                
                 <div className="mt-10 col-span-1 grid grid-cols-1 content-start">
 
                 <div className="mt-4 col-span-3">
@@ -95,9 +98,9 @@ export default function Edit({ auth, stockrequisition }) {
           </div>
           <div className="flex">
               <div className="w-full">
-                  <div className="grid grid-cols-8 gap-2">
+                  <div className="grid grid-cols-7 gap-2">
 
-                      <div className=" mt-4  col-span-2 ">
+                      <div className=" mt-4  col-span-1 ">
                             <InputLabel htmlFor="stockrequest_sr_qty" value="Qty."/>
                                             
                             <TextInput 
@@ -112,10 +115,10 @@ export default function Edit({ auth, stockrequisition }) {
                            <InputError message={errors.sr_qty} className="mt-2"/>
                                             
                       </div>
-                      <div className=" mt-4  col-span-2 ">
+                      <div className=" mt-4  col-span-1 ">
                             <InputLabel htmlFor="stockrequest_sr_unit" value="Unit."/>
                                             
-                            <TextInput 
+                            <SelectInput 
                               id="stockrequest_sr_unit"
                               type="text"
                               name="sr_unit"
@@ -123,13 +126,20 @@ export default function Edit({ auth, stockrequisition }) {
                               className="mt-1 block w-full"
                               isFocused={true}
                               onChange={e => setData('sr_unit', e.target.value)}
-                              />
+                            >
+                              <option value="">Select UOM </option>
+                                <option value="M">Meters</option>
+                                <option value="Kg">Kilograms</option>
+                                <option value="L">Liters</option>
+                                <option value="Pcs">Pieces</option>
+                                <option value="Pc">Piece</option>
+                                <option value="Set">Set</option>
+                                <option value="Sets">Sets</option>
+                            </SelectInput>
                            <InputError message={errors.sr_unit} className="mt-2"/>
                                             
                       </div>
-                      
-                  </div>
-                  <div className="mt-4  col-span-3">
+                      <div className="mt-1  col-span-5">
                           <InputLabel htmlFor="stockrequest_sr_description" value="Description."/>
                           <TextAreaInput 
                               id="stockrequest_sr_description"
@@ -142,6 +152,8 @@ export default function Edit({ auth, stockrequisition }) {
                           />
                           <InputError message={errors.sr_description} className="mt-2"/>
                     </div>
+                  </div>
+                  
                     <div className="mt-4  col-span-3">
                           <InputLabel htmlFor="stockrequest_sr_notes" value="Notes."/>
                           <TextAreaInput 

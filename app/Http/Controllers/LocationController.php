@@ -25,7 +25,7 @@ class LocationController extends Controller
         }
 
         $locations = $query->orderBy($sortField, $sortDirection)
-        ->paginate(10);
+        ->paginate(12);
 
         return inertia("Location/Index", [
             "locations" => LocationResource::collection($locations),

@@ -28,6 +28,11 @@ class UpdateEmployeeRequest extends FormRequest
                 'min:2', 
                 'max:255'
             ],
+            "company" => [
+                'nullable', 
+                'alpha', 
+                'max:255'
+            ],
             "department" => [
                 'nullable', 
                 'alpha', 

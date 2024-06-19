@@ -16,6 +16,7 @@ import SearchItem from '@/Components/SearchItem';
 import DbitransparentLogo from '@/Components/DbitranparentLogo';
 import Nclient from '@/Components/Nclient';
 import Deliver from '@/Components/Deliver';
+import Srequest from '@/Components/Srequest';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -116,7 +117,7 @@ export default function Authenticated({ user, header, children }) {
 
                                 <div class="group relative">
                                 <NavLink href={route('stockrequisition.index')} active={route().current('stockrequisition.index')}>
-                                    <Deliver className="block h-7 w-auto fill-current  " /> 
+                                    <Srequest className="block h-7 w-auto fill-current  " /> 
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Stock Requisition</span>
                                 </div>
@@ -189,7 +190,11 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                         <br />
                         <ResponsiveNavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
-                                    <Deliver className="block h-9 w-auto fill-current  " /> 
+                                    <Deliver className="block h-7 w-auto fill-current  " /> 
+                        </ResponsiveNavLink>
+                        <br />
+                        <ResponsiveNavLink href={route('stockrequisition.index')} active={route().current('stockrequisition.index')}>
+                                    <Srequest className="block h-9 w-auto fill-current" />
                         </ResponsiveNavLink>
 
                         

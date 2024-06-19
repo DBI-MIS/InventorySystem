@@ -172,8 +172,8 @@ const deleteItem = (item) => {
                             </thead>
                         
                             <tbody>
-                              {items.data.map((item)=>(
-                                   <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={item.id}>
+                              {items.data.map((item, index)=>(
+                                <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`} key={item.id}>
                                       <td className="w-[50px] py-2">
                                           {item.id}
                                       </td>

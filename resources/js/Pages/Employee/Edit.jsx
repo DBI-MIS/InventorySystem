@@ -8,6 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 export default function Create({auth, employee }){
    const {data, setData, post ,errors,reset} = useForm({
         name: employee.name || "",
+        company: employee.company || "",
         department: employee.department || "",
         remarks: employee.remarks || "",
         _method: "PUT", 
@@ -45,6 +46,18 @@ export default function Create({auth, employee }){
                             onChange={e => setData('name', e.target.value)}
                             />
                             <InputError message={errors.name} className="mt-2"/>
+                        </div>
+                        <div className="mt-4">
+                            <InputLabel htmlFor="employee_company" value="Employee Company"/>
+                            <TextAreaInput
+                            id="employee_company"
+                            name="company"
+                            value={data.company}
+                            className="mt-1 block w-full"
+                            isFocused={true}
+                            onChange={e => setData('company', e.target.value)}
+                            />
+                            <InputError message={errors.company} className="mt-2"/>
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="employee_department" value="Employee Department"/>

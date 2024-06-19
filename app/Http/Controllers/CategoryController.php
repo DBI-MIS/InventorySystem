@@ -22,7 +22,7 @@ class CategoryController extends Controller
             $query->where("name", "like", "%" . request("name") . "%");
         }
         $categories = $query->orderBy($sortField, $sortDirection)
-        ->paginate(20);
+        ->paginate(12);
 
         return inertia("Category/Index", [
             "categories" => CategoryResource::collection($categories),

@@ -52,9 +52,13 @@ class StockRequisitionController extends Controller
     public function store(StoreStockRequisitionRequest $request)
     {
         $data = $request->validated();
-        StockRequisition::create($data);
+        foreach ($data['rows'] as $rowData) {
+            StockRequisition::create($rowData);
+        }
+        // StockRequisition::create($data);
 
-        return to_route('stockrequisition.index')->with('success', 'Stock Requisition was created');
+        // return to_route('stockrequisition.index')->with('success', 'Stock Requisition was created');
+        return redirect()->route('stockrequisition.index')->with('success', 'Stock Requisition was created');
 
     }
 
@@ -63,7 +67,12 @@ class StockRequisitionController extends Controller
      */
     public function show(StockRequisition $stockrequisition)
     {
-        //
+        
+        return inertia('StockRequisition/Show', [
+            'stockrequisition' => new StockRequisitionResource($stockrequisition),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
+        ]);
     }
 
     /**
@@ -99,5 +108,13 @@ class StockRequisitionController extends Controller
         $stockrequisition->delete();
 
         return to_route('stockrequisition.index')->with('success', "Stock Requisition no.\"$rsno\" was deleted");
+    }
+
+    public function myStockRequest(StockRequisition $stockrequestId)
+    {
+        return inertia("StockRequisition/PrintStockRequest", [
+            'stockrequest' => new StockRequisitionResource($stockrequestId),
+            'queryParams' => request()->query() ?: null,
+        ]);
     }
 }

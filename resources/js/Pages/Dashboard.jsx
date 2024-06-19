@@ -172,7 +172,7 @@ export default function Dashboard({
                     <table className="min-w-full leading-normal">
                         <thead>
                             <tr>
-                                <th className="px-5 py-2 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">By Location</th>
+                                <th className="px-5 py-2 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Stocks By Location</th>
                                 <th className="px-5 py-2 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Quantity</th>
                             </tr>
                         </thead>
@@ -206,10 +206,12 @@ export default function Dashboard({
                                                 {/* Add Stock */}
                                                 <div>
                                                     <Link href={route('item.create')} className="flex flex-nowrap gap-1 items-center text-sm font-light bg-blue-500 py-1 px-2 text-white rounded shadow transition-all hover:bg-blue-700">
-
+                                                        <div className="group relative">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                                         </svg>
+                                                        <span class="absolute z-10 top-5 left-0 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Add New Stock</span>
+                                                        </div>
                                                     </Link>
                                                 </div>
 
@@ -252,10 +254,12 @@ export default function Dashboard({
                                                         {/* Create MRR */}
                                                         <div>
                                                             <Link href={route('receiving.create')} className="flex flex-nowrap gap-1 items-center text-sm font-light bg-blue-500 py-1 px-2 text-white rounded shadow transition-all hover:bg-blue-700">
-
+                                                                <div className="group relative">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                                                 </svg>
+                                                                <span class="absolute z-10 top-5 left-0 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Add MRR</span>
+                                                                </div>
                                                             </Link>
                                                         </div>
 
@@ -299,10 +303,12 @@ export default function Dashboard({
                                                         {/* Create DR */}
                                                         <div>
                                                             <Link href={route('deliverables.create')} className="flex flex-nowrap gap-1 items-center text-sm font-light bg-blue-500 py-1 px-2 text-white rounded shadow transition-all hover:bg-blue-700">
-
+<div className="group relative">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                                                 </svg>
+                                                                <span class="absolute z-10 top-5 left-0 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Add DR</span>
+                                                                </div>
                                                             </Link>
                                                         </div>
 
