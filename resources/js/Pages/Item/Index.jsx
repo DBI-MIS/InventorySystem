@@ -100,6 +100,7 @@ const deleteItem = (item) => {
                   className=" absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
                   open={open}
                   onClose={() => setOpen(false)}
+                  
                   animate={{
                     mount: { y: 0 },
                     unmount: { y: 100 },
