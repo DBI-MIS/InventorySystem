@@ -206,6 +206,7 @@ const  options = deliverablesss.data.map(item => ({ //values from the db
                                                     placeholder="Select Items"
                                                 >
                                                 </Select>
+                                                <InputError message={errors.list_item_id} className="mt-2"/>
                                             </div>
                                             <div className="mt-5">
                                                 <h1 className="text-2xl text-center p-5 font-semibold">DELIVERY RECEIPT</h1>

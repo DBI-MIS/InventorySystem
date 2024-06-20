@@ -1,10 +1,8 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-// import { Description } from "@headlessui/react/dist/components/description/description";
 import { Head, Link, useForm } from "@inertiajs/react";
 export default function Create({auth}){
     // data will hold/contain the ff:
@@ -29,6 +27,11 @@ export default function Create({auth}){
         >
         <Head title="Loctions" />
         <div className="py-12">
+        {success && (
+                <div className="bg-green-500 mb-4 py-2 px-4 text-white rounded">
+                {success}
+              </div>
+          )}
             <div className="w-5/6 mx-auto sm:px-6 lg:px-8">
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <form onSubmit={onSubmit}  data-page="{{ json_encode($page) }}"

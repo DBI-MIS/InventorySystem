@@ -13,14 +13,15 @@ export default function Index({
     queryParams = null,
     success,
 }) {
-    const [open, setOpen] = useState(true);
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setOpen(false); // Hide after 2 seconds
-        }, 1000);
+    const [open, setOpen] = React.useState(true);
+    // const [open, setOpen] = useState(true);
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setOpen(false); // Hide after 2 seconds
+    //     }, 1000);
 
-        return () => clearTimeout(timer); // Clear the timeout when component unmounts or updates
-    }, [success]);
+    //     return () => clearTimeout(timer); // Clear the timeout when component unmounts or updates
+    // }, [success]);
 
     queryParams = queryParams || {};
 
@@ -78,7 +79,23 @@ export default function Index({
             <Head title="Locations" />
             <div className="py-5">
                 <div className="max-w-5/6 mx-auto sm:px-6 lg:px-8 relative">
-                    <div className="max-w-5/6">
+                    {/* <div className="max-w-5/6">
+                        {success && (
+                            <Alert
+                                className=" absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
+                                open={open}
+                                onClose={() => setOpen(false)}
+                                animate={{
+                                    mount: { y: 0 },
+                                    unmount: { y: 100 },
+                                }}
+                            >
+                                {" "}
+                                {success}
+                            </Alert>
+                        )}
+                    </div> */}
+                       <div className="max-w-5/6">
                         {success && (
                             <Alert
                                 className=" absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"

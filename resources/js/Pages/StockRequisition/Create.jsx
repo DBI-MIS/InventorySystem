@@ -206,10 +206,58 @@ export default function Create({ auth }) {
                 <tbody>
                   {tableRows.map((row, index) => (
                     <tr key={index}>
-                      <td>{row.sr_qty}</td>
-                      <td>{row.sr_unit}</td>
-                      <td>{row.sr_description}</td>
-                      <td>{row.sr_notes}</td>
+                     <td> <TextInput
+                      id="stockrequest_sr_qty"
+                      type="number"
+                      name="sr_qty"
+                      value={row.sr_qty} 
+                      className="mt-1 block w-full"
+                      isFocused={true}
+                      onChange={e => setData('sr_qty', e.target.value)}
+                      />
+                      </td>
+                      <td>
+                        <SelectInput
+                        id="stockrequest_sr_unit"
+                        type="text"
+                        name="sr_unit"
+                        value={row.sr_unit} 
+                        className="mt-1 block w-full"
+                        isFocused={true}
+                        onChange={e => setData('sr_unit', e.target.value)}
+                        >
+                          <option value="">Select UOM </option>
+                                <option value="M">Meters</option>
+                                <option value="Kg">Kilograms</option>
+                                <option value="L">Liters</option>
+                                <option value="Pcs">Pieces</option>
+                                <option value="Pc">Piece</option>
+                                <option value="Set">Set</option>
+                                <option value="Sets">Sets</option>
+                        </SelectInput>
+                      </td>
+                      <td>
+                      <TextAreaInput 
+                              id="stockrequest_sr_description"
+                              type="text"
+                              name="sr_description"
+                              value={row.sr_description}
+                              className="mt-1 block w-full"
+                              isFocused={true}
+                              onChange={e => setData('sr_description', e.target.value)}
+                          />
+                      </td>
+                      <td>
+                      <TextAreaInput 
+                              id="stockrequest_sr_notes"
+                              type="text"
+                              name="sr_notes"
+                              value={row.sr_notes}
+                              className="mt-1 block w-full"
+                              isFocused={true}
+                              onChange={e => setData('sr_notes', e.target.value)}
+                          />
+                      </td>
                     </tr>
                   ))}
                 </tbody>

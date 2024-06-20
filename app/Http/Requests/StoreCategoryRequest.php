@@ -31,7 +31,7 @@ class StoreCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Category ame is required.',
+            'name.required' => 'Category name is required.',
             'sku_prefix.required' => 'Sku Prefix is required.',
             'sku_prefix.min' => 'Sku prefix must be at least 3 letters',
             
