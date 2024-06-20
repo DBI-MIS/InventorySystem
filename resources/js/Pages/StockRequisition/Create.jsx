@@ -21,19 +21,51 @@ export default function Create({ auth }) {
   });
   console.log(data);
 
-  const [tableRows, setTableRows] = useState([]);
+  // const [tableRows, setTableRows] = useState([]);
 
-  const onSubmit = (e) =>{
+  // const onSubmit = (e) =>{
+  //   e.preventDefault();
+  //   post(route("stockrequisition.store"));
+  // }
+
+  // const addRow = () => {
+  //   setTableRows([...tableRows, {
+  //     sr_qty: data.sr_qty,
+  //     sr_unit: data.sr_unit,
+  //     sr_description: data.sr_description,
+  //   }]);
+    
+  //   setData({
+  //     ...data,
+  //     sr_qty: '',
+  //     sr_unit: '',
+  //     sr_description: '',
+  //   });
+  // };
+  const onSubmit = (e) => {
     e.preventDefault();
-    post(route("stockrequisition.store"));
-  }
+    // Prepare data to send to backend
+    const formData = {
+      ...data,
+      rows: tableRows, // Include tableRows in the form data
+    };
+    // Assuming 'post' function handles sending data to backend
+    post(route("stockrequisition.store"), formData)
+      .then(response => {
+        // Handle success if needed
+        console.log(response);
+      })
+      .catch(error => {
+        // Handle error if needed
+        console.error(error);
+      });
+  };
 
   const addRow = () => {
     setTableRows([...tableRows, {
       sr_qty: data.sr_qty,
       sr_unit: data.sr_unit,
       sr_description: data.sr_description,
-      sr_notes: data.sr_notes,
     }]);
     // Clear input fields after adding row if needed
     setData({
@@ -41,7 +73,6 @@ export default function Create({ auth }) {
       sr_qty: '',
       sr_unit: '',
       sr_description: '',
-      sr_notes: '',
     });
   };
 
@@ -127,7 +158,7 @@ export default function Create({ auth }) {
                                             
                             <TextInput 
                               id="stockrequest_sr_qty"
-                              type="text"
+                              type="number"
                               name="sr_qty"
                               value={data.sr_qty} 
                               className="mt-1 block w-full"
@@ -199,7 +230,6 @@ export default function Create({ auth }) {
                     <th className="pr-10">QTY</th>
                     <th className="pr-10">UNIT</th>
                     <th className="pr-10">DESCRIPTION</th>
-                    <th className="pr-10">NOTES</th>
                   </tr>
                 </thead>
                 <br />
@@ -245,17 +275,6 @@ export default function Create({ auth }) {
                               className="mt-1 block w-full"
                               isFocused={true}
                               onChange={e => setData('sr_description', e.target.value)}
-                          />
-                      </td>
-                      <td>
-                      <TextAreaInput 
-                              id="stockrequest_sr_notes"
-                              type="text"
-                              name="sr_notes"
-                              value={row.sr_notes}
-                              className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_notes', e.target.value)}
                           />
                       </td>
                     </tr>

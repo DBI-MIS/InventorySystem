@@ -15,6 +15,9 @@ use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Receiving;
+use App\Models\User;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -24,8 +27,11 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(User $user)
     {  
+        // dd($user);
+        // $duser= auth()->user()->role;
+        // dd($duser);
         
         $query = Item::query() ;
         $sortField = request("sort_field", 'created_at');
@@ -47,12 +53,14 @@ class ItemController extends Controller
         }
         $items = $query->with('category','brand')->orderBy($sortField, $sortDirection)->paginate(20);
 
+      
         return inertia("Item/Index", [
             "items" => ItemResource::collection($items),
             'queryParams' => request()-> query() ?: null,
             'success' => session('success'),
             'count' => isset($count) ? $count : null
              ]);
+          
 
 
         
@@ -113,15 +121,17 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $item)
+    public function show(Item $item ,User $user) 
     { 
-      
-        return inertia('Item/Show', [
+       
+        return (inertia('Item/Show', [
             'item' => new ItemResource($item),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
             
-        ]);
+        ]))        
+        ;
+   
     }
 
     /**
@@ -168,15 +178,20 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Item $item)
+    public function destroy(Item $item, User $user)
     {
+        // dd($user);
+        // true
+        abort_if(Auth::user()->isUser(), 403); 
+      //bort_unless() //false
         $name = $item->name;
-        // $item = Item::find($item);
         $item->delete();
-       
+        
+        
         return to_route('item.index')
-       ->with('success', "Item \"$name\" was deleted");
+        ->with('success', "Item \"$name\" was deleted");
     }
+    
     public function itemMrr(StoreItemRequest $request)
     {
           

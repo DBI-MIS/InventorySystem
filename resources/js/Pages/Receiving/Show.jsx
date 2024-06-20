@@ -195,9 +195,17 @@ export default function Show({ auth, receiving, receiving_items }) {
                                             {!receiving_items ||
                                                 (receiving_items.length ===
                                                     0 && (
-                                                    <div class="font-md mt-5 text-center text-gray-600/50 p-4 absolute text-xl">
+                                                    <div class="font-md mt-5 text-gray-600/50 p-4 absolute text-xl">
                                                         No existing items on MRR
                                                         No. {receiving.mrr_no}
+                                                        <div className="mt-5">
+                                                        <Link
+                            href={route("receiving.edit", receiving.id)}
+                            className="bg-gray-600 px-2 font-light text-white rounded shadow transition-all hover:bg-blue-700 text-center"
+                        >
+                            +
+                        </Link> Add Item
+                                                        </div>
                                                     </div>
                                                 ))}
                                             {receiving_items &&

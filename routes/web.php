@@ -22,6 +22,7 @@ use App\Models\Item;
 use App\Models\Receiving;
 use App\Models\ReceivingItem;
 use App\Models\StockRequisition;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -29,8 +30,9 @@ use Inertia\Inertia;
 
 Route::redirect('/', '/dashboard');
 
-Route::middleware(['auth', 'verified'])->group(function(){
+Route::middleware(['auth', 'verified', ])->group(function(){
     //any closure that define here will be access if the user is authenticated n verified
+    // User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN, User::ROLE_EDITOR
         Route::get('/dashboard', [DashboardController::class,'index'])
         ->name('dashboard');
     
@@ -68,5 +70,6 @@ Route::middleware('auth')->group(function () {
     Route::get('restore/', [ItemController::class,'restore'])->name('item.restore');
   
 });
+
 
 require __DIR__.'/auth.php';
