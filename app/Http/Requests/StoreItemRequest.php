@@ -37,13 +37,11 @@ class StoreItemRequest extends FormRequest
           ],
           'brand_id' => [
             'required',
-            'numeric',
             'min:1',
             'exists:brands,id',
           ],
           "category_id" => [
             'required',
-            'numeric',
             'min:1',
           'exists:categories,id',
          ],
@@ -85,12 +83,10 @@ class StoreItemRequest extends FormRequest
           ],
           "location_id" => [
             'required',
-            'numeric',
           'exists:locations,id'
          ],
           "employee_id" => [
             'required',
-            'numeric',
           'exists:employees,id',
           ],
           'statuses' => [

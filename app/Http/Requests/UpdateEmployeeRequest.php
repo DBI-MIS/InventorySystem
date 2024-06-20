@@ -44,4 +44,11 @@ class UpdateEmployeeRequest extends FormRequest
             ],
         ];
     }
+    public function messages()
+    {
+        return[
+            'name.required' => 'Employee name is required.'
+
+        ];
+    }
 }

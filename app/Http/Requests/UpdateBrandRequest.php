@@ -26,4 +26,11 @@ class UpdateBrandRequest extends FormRequest
             "description" => ['nullable','string'],
         ];
     }
+    public function messages()
+    {
+        return[
+            'name.required' => "Brand name is required."
+
+        ];
+    }
 }

@@ -24,7 +24,7 @@ class UpdateClientRequest extends FormRequest
         return [
             "name" => [
                 'required',
-                 'alpha', 
+                'regex:/^[\w\s]+$/', 
                  'min:2',
                  'max:255'
                 ],
@@ -60,5 +60,25 @@ class UpdateClientRequest extends FormRequest
                 'string'
                  ],
         ];
+    }
+
+      public function messages(){
+        return[
+            'name.required' => 'Client / Project name is required.',
+            'name.regex' => 'Client / Project name must only contain letters and numbers.',
+            'name.min' => 'Client / Project name must be at least 2 letters.',
+            'address.required' => 'Client address is required.',
+            'address.regrex' => 'Client adrress format is invalid.',
+            'address.min' => 'Client address must be a valid address.',
+            'contact_person.required' => 'Contact person  is required.',
+            'contact_person.regrex' => 'Contact person format is invalid.',
+            'contact_person.min' => 'Contact person must be at least 3 letters and a valid name.',
+            'contact_no' => 'Contact No. is required',
+            'tin_no.required' => 'TIN No. is required.',
+            'tin_no.regrex' => 'TIN No. must only contain numbers',
+            'tin_no.min' => 'TIN No. must be at least 9 numbers.',
+            'status.required' => 'Client status is required.'
+        ];
+
     }
 }

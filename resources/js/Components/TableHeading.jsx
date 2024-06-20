@@ -12,11 +12,11 @@ export default function TableHeading({
 }) {
   return (
     <th onClick={(e)=>sortChanged(name)}>
-    <div className="flex flex-row items-center gap-2 cursor-pointer justify-betwen">
+    <div className="flex flex-row items-center cursor-pointer px-5 relative py-1">
     
         {children}
        {sortable && ( 
-       <div className="">
+       <div className="justify-end absolute right-0">
           <ChevronUpIcon className={"w-3 " + (sort_field === name && sort_direction === 'asc' ? 'text-red-500' : "") } />
           <ChevronDownIcon className={"w-3 " + (sort_field === name && sort_direction === 'desc' ? 'text-red-500' : "") } /> 
         </div>

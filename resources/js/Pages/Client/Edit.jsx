@@ -22,7 +22,7 @@ export default function Create({auth, client }){
     console.log("Client Data : " + client);
 
      //
-     const [tin, setTin] = useState('');
+     const [tin, setTin] = useState(data.tin_no);
      const [errorMessage, setErrorMessage] = useState('');
    
      const handleTinChange = (event) => {
@@ -37,6 +37,7 @@ export default function Create({auth, client }){
    
        if (value.length < 9 || value.length > 12 || !/^\d{3}-\d{3}-\d{3}-\d{3}$/.test(formattedValue)) {
          setErrorMessage('Invalid TIN format. Please enter a valid 9-12 digit TIN number (XXX-XXX-XXX-XXX)');
+         setData('tin_no', ''); 
        } else {
          // Update data using setData callback if validation passes
          // setData('tin_no', value);
@@ -77,6 +78,9 @@ export default function Create({auth, client }){
       }
     }, [isValid, phoneNumber]); 
 
+    useEffect(() => {
+      console.log('Current data:', data); 
+  }, [data]);
     console.log("data" + data);
     const onSubmit = (e) =>{
         e.preventDefault();
@@ -172,13 +176,13 @@ export default function Create({auth, client }){
                                   type="text"
                                   id="client_tin_no"
                                   name="client_tin_no"
-                                  value={data.tin_no}
+                                  value={tin}
                                   placeholder="Enter TIN No. (XXX-XXX-XXX-XXX)"
                                   className="mt-2 block w-full"
                                   onChange={handleTinChange}
                                   maxLength="12" 
                               />
-                              {errorMessage && <p className="error-message text-red-700">{errorMessage}</p>}
+                              {errorMessage && <p className="error-message text-xs text-red-700">{errorMessage}</p>}
                               <InputError message={errors.tin_no} className="mt-2"/>
                             </div>
 

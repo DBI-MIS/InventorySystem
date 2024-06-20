@@ -42,4 +42,15 @@ class UpdateCategoryRequest extends FormRequest
             ],
         ];
     }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Category name is required.',
+            'sku_prefix.required' => 'Sku Prefix is required.',
+            'sku_prefix.min' => 'Sku prefix must be at least 3 letters.',
+            'sku_prefix.alpha' => 'Sku prefix must only contain letters.',
+            
+        ];
+    }
+    
 }

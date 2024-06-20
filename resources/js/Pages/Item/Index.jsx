@@ -174,10 +174,10 @@ const deleteItem = (item) => {
                             <tbody>
                               {items.data.map((item, index)=>(
                                 <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`} key={item.id}>
-                                      <td className="w-[50px] py-2">
+                                      <td className="w-[50px] py-2 ">
                                           {item.id}
                                       </td>
-                                      <td className="w-[200px] py-2 text-nowrap">
+                                      <td className="w-[200px] py-2 text-nowrap ">
                                         {item.sku_prefix}-{item.sku}
                                       </td>
                                       <th className="w-[800px] py-2 text-gray-600  hover:underline">
@@ -185,16 +185,16 @@ const deleteItem = (item) => {
                                         {item.name}
                                         </Link>
                                       </th>
-                                      <td className="w-[300px] py-2">{item.brand ? item.brand.name : 'N/A'}</td>
-                                      <td className="w-[300px] py-2">{item.category ? item.category.name : 'N/A'}</td>
-                                      <td className="w-[300px] py-2 text-center">
-                                        <span className={`px-2 py-1 font-semibold tracking-wide rounded ${ITEM_STATUS_CLASS_MAP[item.statuses] || 'bg-gray-300'} ${item.statuses ? 'text-white' : 'text-black'}`}>
+                                      <td className="w-[300px] py-2 ">{item.brand ? item.brand.name : 'N/A'}</td>
+                                      <td className="w-[300px] py-2 ">{item.category ? item.category.name : 'N/A'}</td>
+                                      <td className="w-[300px] py-2 ">
+                                        <span className={`px-2 py-1 font-semibold rounded ${ITEM_STATUS_CLASS_MAP[item.statuses] || 'bg-gray-300'} ${item.statuses ? 'text-white' : 'text-black'}`}>
                                             {ITEM_STATUS_TEXT_MAP[item.statuses] || 'No Status'}
                                         </span>
                                       </td>
-                                      <td className="w-[100px] py-2 text-nowrap">{item.quantity ?? "No quantity"} {item.uom ?? "No UOM"} </td>
+                                      <td className="w-[100px] py-2 text-nowrap ">{item.quantity ?? "No quantity"} {item.uom ?? "No UOM"} </td>
                                       <td className="w-[100px] py-2 text-nowrap">
-                                          <div className="flex flex-row justify-end items-center">
+                                          <div className="w-[100px] flex flex-row justify-end items-center">
                                               <Link href={route('item.edit', item.id)} 
                                               className="text-blue-600 mx-1 hover:text-gray-600"> 
                                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className=" w-5 h-5">

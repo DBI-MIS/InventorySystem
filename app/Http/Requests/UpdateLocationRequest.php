@@ -39,4 +39,11 @@ class UpdateLocationRequest extends FormRequest
             ],
         ];
     }
+    public function messages()
+    {
+        return[
+            'name.required' => 'Location name is required.'
+
+        ];
+    }
 }

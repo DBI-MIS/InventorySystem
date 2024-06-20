@@ -22,13 +22,14 @@ class UpdateStockRequisitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "sr_to" => ['required', 'max:255'],
-            "rs_no" => ['required', 'max:255'],
-            "sr_date" => ['nullable', 'date'],
-            "sr_qty" => ['nullable', 'max:255'],
-            "sr_unit" => ['nullable', 'max:255'],
-            "sr_description" => ['required', 'max:255'],
-            "sr_notes" => ['nullable', 'max:255']
+            'rows' => 'required|array',
+            'rows.*.sr_to' => 'required|string|max:255',
+            'rows.*.rs_no' => 'required|string|max:255',
+            'rows.*.sr_date' => 'required|date',
+            'rows.*.sr_qty' => 'required|integer',
+            'rows.*.sr_unit' => 'required|string|max:50',
+            'rows.*.sr_description' => 'required|string|max:500',
+            'rows.*.sr_notes' => 'nullable|string|max:500'
         ];
     }
 }
