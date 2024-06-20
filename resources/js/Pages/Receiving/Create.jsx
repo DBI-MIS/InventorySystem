@@ -87,11 +87,11 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
         user={auth.user}
         header={
             <div className="flex justify-between items-center"  >
-                 <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Material Receiving Report</h2>
+                 <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New MRR</h2>
             </div>
         }
         >
-             <Head title="Receivings" />
+             <Head title="MRR" />
       <div className="py-2">
 
         </div>
@@ -111,8 +111,9 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                         id="receiving_client_id"
                                         name="client_id"
                                         className="block w-full"
+                                        isFocused={true}
                                         onChange={(e) => setData("client_id", e.target.value)}>
-                                            <option value="">Select client Name </option>
+                                            <option value="">Select Client Name </option>
                                             {clients.data.map((client)=>(
                                                 <option value={client.id} key={client.id}>{client.name}</option>
 
@@ -122,7 +123,7 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                 </div>
                         
                                 <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="receiving_address" value="Receiving Address"/>
+                                    <InputLabel htmlFor="receiving_address" value="Address"/>
                                         <TextAreaInput
                                         id="receiving_address"
                                         name="address"
@@ -135,19 +136,7 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                     <InputError message={errors.address} className="mt-2"/>
                                 </div>
 
-                                <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="receiving_remarks" value="Receiving Remarks"/>
-                                        <TextAreaInput
-                                            id="receiving_remarks"
-                                            name="receiving_remarks"
-                                            placeholder="Enter Receiving Remarks"
-                                            value={data.remarks}
-                                            className="mt-1 block w-full"
-                                            rows="5"
-                                            onChange={e => setData('remarks', e.target.value)}
-                                        />
-                                    <InputError message={errors.remarks} className="mt-2"/>
-                                </div>
+                                
                             </div>
                                   {/* 2ND GRID COLUMN */}
                                   <div className="mt-2 col-span-1 grid grid-cols-1 content-start">
@@ -175,7 +164,6 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                                             placeholder="Enter SI Number"
                                                             value={data.si_no}
                                                             className="mt-1 block w-full"
-                                                            isFocused={true}
                                                             onChange={e => setData('si_no', e.target.value)}
                                                         />
                                                         <InputError message={errors.si_no} className="mt-2"/>
@@ -201,7 +189,7 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                         </div>
                         {/* GROUP ITEM LIST */}
                         <div className="my-4">
-                            <InputLabel htmlFor="receiving Items" value="Group of Items"/>
+                            <InputLabel htmlFor="receiving Items" value="Select Item/s"/>
                                 <div className="col-span-10 xs:col-span-8">
                                     <div className="flex flex-row items-center gap-2">
                                         <div className="w-full ">
@@ -212,55 +200,69 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                                 isMulti={true}
                                                 options={options}
                                                 isSearchable={true}
-                                                placeholder="Select Items (Can Select Mutiple Items)"
+                                                placeholder="*(Can Select Mutiple Items)"
                                             >
                                             </Select>
                                         </div>
                                         {/* add new item form modal  */}
-                                        <div>
+                                        <div className="text-nowrap">
                                             <button onClick={(e)=>(e.preventDefault(),setShowModal(true))}
-                                                className=" text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-md rounded-lg text-nowrap  px-16 py-2 text-center mr-5"
-                                                >Add New Item
+                                                className=" flex flex-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-md rounded-lg text-nowrap  px-16 py-2 text-center mr-5"
+                                                >
+                                                    <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="currentColor"
+                                  className="font-bold w-6 h-6"
+                                 >
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                                    Add Item/s
                                             </button> 
                                         </div>
                                     </div>
                                     <span className="mt-2 text-sm text-gray-600"><b>Note:</b> If items are not available on the lists, you can add new Item.</span>
                                  </div>
 
-                                 <div className="mt-5">
-                                     <h1 className="text-2xl text-center text-blue-800 p-5 font-semibold">LIST OF MRR ITEMS</h1>
+                                 <div className="mt-5 min-h-[300px]">
+                                     <h1 className="text-2xl text-center text-blue-800 p-5 font-semibold">LIST OF ITEMS</h1>
                                      <table className="min-w-full bg-white">
                                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                             <tr>
-                                            <th className="pr-10">ID</th>
-                                            <th className="pr-10">Sku</th>
-                                            <th className="pr-10">Name</th>
-                                            <th className="pr-10">Brand</th>
-                                            <th className="pr-10">Category</th>
-                                            <th className="pr-10">Model No.</th>
-                                            <th className="pr-10">Part No.</th>
-                                            <th className="pr-10">Quantity</th>
+                                            <th className="text-left">#</th>
+                                            <th className="text-left">Sku</th>
+                                            <th className="text-left">Name</th>
+                                            <th className="text-left">Brand</th>
+                                            <th className="text-left">Category</th>
+                                            <th className="text-left">Model No.</th>
+                                            <th className="text-left">Part No.</th>
+                                            <th className="text-left">Quantity</th>
                                             </tr>
                                         </thead> 
                                          {selectedOptions && selectedOptions.length >= 0 && ( 
                                          <tbody>
-                                             {selectedOptions.map(option => {
+                                             {selectedOptions.map((option, index) => {
                                             const selectedItem = allItems.find(item => item.id === parseInt(option.value));
 
                                              return (
                                                 <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
-                                                <td className="px-3 py-2">{selectedItem.id ?? "No Item ID"}</td>
-                                                <td className="px-3 py-2">{selectedItem.sku_prefix ?? "No Sku Prefix"}-{selectedItem.sku ?? "No Sku"}</td>
-                                                <th className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
+                                                <td className="w-[60px] py-2 text-sm">
+                                                    {index + 1}
+                                                    {/* {selectedItem.id ?? "No Item ID"} */}
+                                                    </td>
+                                                <td className="w-[160px] py-2 text-sm">{selectedItem.sku_prefix ?? "No Sku Prefix"}-{selectedItem.sku ?? "No Sku"}</td>
+                                                <th className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
                                                     <Link href={route('item.show', selectedItem.id)}>
                                                     {selectedItem.name ?? "No Item Name"}
                                                     </Link>
                                                 </th>
-                                                <td className="px-3 py-2"> {selectedItem.brand && selectedItem.brand.name ? selectedItem.brand.name : 'No Brand Name'}</td>
-                                                 <td className="px-3 py-2">{selectedItem.category && selectedItem.category.name ? selectedItem.category.name: "No Category Name"}</td>
-                                                 <td className="px-3 py-2">{selectedItem.model_no ?? "No Model Number"}</td>
-                                                 <td className="px-3 py-2">{selectedItem.part_no ?? "No Part Number"}</td>
-                                                 <td className="px-3 py-2">{selectedItem.quantity ? (selectedItem.quantity + ' ' + (selectedItem.uom ?? "No UOM")) : 'No Quantity'}</td>
+                                                <td className="w-[160px] py-2 text-sm"> {selectedItem.brand && selectedItem.brand.name ? selectedItem.brand.name : 'No Brand Name'}</td>
+                                                 <td className="w-[160px] py-2 text-sm">{selectedItem.category && selectedItem.category.name ? selectedItem.category.name: "No Category Name"}</td>
+                                                 <td className="w-[200px] py-2 text-sm">{selectedItem.model_no ?? "No Model Number"}</td>
+                                                 <td className="w-[300px] py-2 text-sm">{selectedItem.part_no ?? "No Part Number"}</td>
+                                                 <td className="w-[160px] py-2 ">{selectedItem.quantity ? (selectedItem.quantity + ' ' + (selectedItem.uom ?? "No UOM")) : 'No Quantity'}</td>
                                                  </tr>
                                              );
                                         })}
@@ -269,6 +271,19 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                      </table>
                                  </div>
                         </div>
+                        <div className="mt-4 col-span-2">
+                                    <InputLabel htmlFor="receiving_remarks" value="Remarks"/>
+                                        <TextAreaInput
+                                            id="receiving_remarks"
+                                            name="receiving_remarks"
+                                            placeholder="Enter Remarks"
+                                            value={data.remarks}
+                                            className="mt-1 block w-full"
+                                            rows="5"
+                                            onChange={e => setData('remarks', e.target.value)}
+                                        />
+                                    <InputError message={errors.remarks} className="mt-2"/>
+                                </div>
                        {/* modal */}
                       
                         <div className="mt-20 text-right">

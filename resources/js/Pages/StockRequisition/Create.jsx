@@ -13,9 +13,6 @@ export default function Create({ auth }) {
     sr_to: '',
     rs_no: '',
     sr_date: '',
-    sr_qty: '',
-    sr_unit: '',
-    sr_description: '',
     sr_notes: '',
 
   });
@@ -33,47 +30,45 @@ export default function Create({ auth }) {
   //     sr_qty: data.sr_qty,
   //     sr_unit: data.sr_unit,
   //     sr_description: data.sr_description,
+      
   //   }]);
-    
+  //   // Clear input fields after adding row if needed
   //   setData({
   //     ...data,
   //     sr_qty: '',
   //     sr_unit: '',
   //     sr_description: '',
+      
   //   });
   // };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    // Prepare data to send to backend
-    const formData = {
-      ...data,
-      rows: tableRows, // Include tableRows in the form data
-    };
-    // Assuming 'post' function handles sending data to backend
-    post(route("stockrequisition.store"), formData)
-      .then(response => {
-        // Handle success if needed
-        console.log(response);
-      })
-      .catch(error => {
-        // Handle error if needed
-        console.error(error);
-      });
-  };
 
+  const [tableRows, setTableRows] = useState([]);
+
+  // Function to add a new row to tableRows
   const addRow = () => {
-    setTableRows([...tableRows, {
-      sr_qty: data.sr_qty,
-      sr_unit: data.sr_unit,
-      sr_description: data.sr_description,
-    }]);
-    // Clear input fields after adding row if needed
+    setTableRows([
+      ...tableRows,
+      {
+        sr_qty: data.sr_qty,
+        sr_unit: data.sr_unit,
+        sr_description: data.sr_description,
+      },
+    ]);
+
+    // Clear input fields after adding row
     setData({
       ...data,
       sr_qty: '',
       sr_unit: '',
       sr_description: '',
     });
+  };
+
+  // Function to handle form submission
+  const onSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission logic, e.g., post data to server
+    post(route("stockrequisition.store"));
   };
 
 
@@ -160,7 +155,7 @@ export default function Create({ auth }) {
                               id="stockrequest_sr_qty"
                               type="number"
                               name="sr_qty"
-                              value={data.sr_qty} 
+                              // value={data.sr_qty} 
                               className="mt-1 block w-full"
                               isFocused={true}
                               onChange={e => setData('sr_qty', e.target.value)}
@@ -175,7 +170,7 @@ export default function Create({ auth }) {
                               id="stockrequest_sr_unit"
                               type="text"
                               name="sr_unit"
-                              value={data.sr_unit} 
+                              // value={data.sr_unit} 
                               className="mt-1 block w-full"
                               isFocused={true}
                               onChange={e => setData('sr_unit', e.target.value)}
@@ -198,7 +193,7 @@ export default function Create({ auth }) {
                               id="stockrequest_sr_description"
                               type="text"
                               name="sr_description"
-                              value={data.sr_description}
+                              // value={data.sr_description}
                               className="mt-1 block w-full"
                               isFocused={true}
                               onChange={e => setData('sr_description', e.target.value)}
@@ -225,6 +220,25 @@ export default function Create({ auth }) {
           </div>
           <br /><br /><br />
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
+            <br />
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                  <tr className="text-nowrap">
+                    <th className="pr-10">QTY</th>
+                    <th className="pr-10">UNIT</th>
+                    <th className="pr-10">DESCRIPTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableRows.map((row, index) => (
+                    <tr key={index}>
+                      <td>{row.sr_qty}</td>
+                      <td>{row.sr_unit}</td>
+                      <td>{row.sr_description}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+          {/* <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                   <tr className="text-nowrap">
                     <th className="pr-10">QTY</th>
@@ -277,10 +291,11 @@ export default function Create({ auth }) {
                               onChange={e => setData('sr_description', e.target.value)}
                           />
                       </td>
+
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </table> */}
           {/* <div className="mt-4">
                 <table className="min-w-full bg-white dark:bg-gray-800">
                   <thead>
@@ -307,13 +322,13 @@ export default function Create({ auth }) {
            
           <div className="mt-20 text-right">
           
-                      <button
-                        type="button"
-                        onClick={addRow}
-                        className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
-                      >
-                        Add Row
-                      </button>
+          <button
+                  type="button"
+                  onClick={addRow}
+                  className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
+                >
+                  Add Row
+                </button>
                     
 
                 <Link href={route('stockrequisition.index')}

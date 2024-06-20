@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,23 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $query = User::query();
+
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
+        }
+        $users = $query->orderBy($sortField, $sortDirection)
+        ->paginate(12);
+
+        return inertia("User/Index", [
+            "users" => UserResource::collection($users),
+            'queryParams' => request()-> query() ?: null,
+            'success' => session('success'),
+
+        ]);
     }
 
     /**
@@ -22,7 +39,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia("User/Create");
     }
 
     /**
@@ -30,7 +47,10 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+         $data = $request->validated();
+        // dd($data);
+        User::create($data);
+        return to_route('user.index')->with('success', 'User created successfully!');
     }
 
     /**

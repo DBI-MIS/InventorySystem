@@ -146,7 +146,7 @@ const onPrevPage = (e) => {
         user={auth.user}
         header={
           <div className="flex justify-between items-center"  >
-          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Material Receiving Report {receiving.mrr_no}</h2>
+          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit MRR No. - {receiving.mrr_no}</h2>
         </div>
       } >
       <Head title="Receivings" />
@@ -179,30 +179,19 @@ const onPrevPage = (e) => {
                                 </div>
                         
                                 <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="receiving_address" value="Receiving Address"/>
+                                    <InputLabel htmlFor="receiving_address" value="Address"/>
                                         <TextAreaInput
                                         id="receiving_address"
                                         name="address"
                                         value={data.address}
                                         className="mt-1 block w-full"
-                                        rows="5"
+                                        rows="4"
                                         onChange={e => setData('address', e.target.value)}
                                                 />
                                     <InputError message={errors.address} className="mt-2"/>
                                 </div>
 
-                                <div className="mt-4 col-span-2">
-                                    <InputLabel htmlFor="receiving_remarks" value="Receiving Remarks"/>
-                                        <TextAreaInput
-                                            id="receiving_remarks"
-                                            name="remarks"
-                                            value={data.remarks}
-                                            className="mt-1 block w-full"
-                                            rows="5"
-                                            onChange={e => setData('remarks', e.target.value)}
-                                        />
-                                    <InputError message={errors.remarks} className="mt-2"/>
-                                </div>
+                                
                             </div>
 
                             {/* 2ND GRID COLUMN */}
@@ -230,7 +219,7 @@ const onPrevPage = (e) => {
                                     name="si_no"
                                      value={data.si_no}
                                      className="mt-1 block w-full"
-                                    isFocused={true}
+                                    
                                      onChange={e => setData('si_no', e.target.value)}
                                  />
                                  <InputError message={errors.si_no} className="mt-2"/>
@@ -273,37 +262,38 @@ const onPrevPage = (e) => {
                         {/* GROUP ITEM LIST */}
                         <div>
                         <div className=" mt-4">
-                          <InputLabel htmlFor="group_item_id" value=" Group of Items"/>
-                          <div className=" grid grid-cols-12 gap-5">
-                              <div className="col-span-9 xs:col-span-6">
+                          <InputLabel htmlFor="group_item_id" value="Select Item/s"/>
+                          <div className="w-full flex flex-row gap-5 items-center">
+                              <div className="w-full">
                                   <Select
                                       value={selectedOptions}
                                       onChange={handleSelectChange}
                                       className="mt-1 block w-full"
+                                      isFocused={true}
                                       isMulti={true}
                                       options={options}
                                       isSearchable={true}
-                                      placeholder="Select Items"
+                                      placeholder="*Can select multiple"
                                   >
                                   </Select>
                                   <InputError message={errors.group_item_id} className="mt-2"/>
                               </div>
-                              <div className="col-span-3 xs:col-span-2">
+                              <div className="text-nowrap">
                                   <button
-                                    className="flex flex-nowrap gap-2 font-semibold text-md bg-green-500 py-2 px-14 text-white rounded shadow transition-all hover:bg-green-700"
+                                    className="flex flex-nowrap gap-2 font-semibold text-md bg-blue-700 py-2 px-10 text-white rounded shadow transition-all hover:bg-blue-800"
                                     onClick={handleAddSelect}
-                                  >
-                                  Add Items
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="font-bold w-6 h-6"
-                                     >
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                    </svg>
+                                  >  <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="currentColor"
+                                  className="font-bold w-6 h-6"
+                                 >
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                  Add Item/s
+                                  
                                   </button>
                                   
                               </div>
@@ -318,18 +308,18 @@ const onPrevPage = (e) => {
                             )}
                           </div>
                       </div>
-                      <div className="mt-5">
-                          <h1 className="text-2xl text-blue-700 text-center p-5 font-semibold">LIST OF MRR ITEMS</h1>
+                      <div className="mt-2">
+                          <h1 className="text-2xl text-blue-700 text-center p-5 font-semibold">LIST OF ITEMS</h1>
                             <table className="min-w-full bg-white">
                               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                 <tr>
-                                  <th className="pr-10">ID</th>
-                                  <th className="pr-10">Sku</th>
-                                  <th className="pr-10">Name</th>
-                                  <th className="pr-10">Brand</th>
-                                  <th className="pr-10">Category</th>
-                                  <th className="pr-10">Quantity</th>
-                                  <th className="pr-10">Action</th>
+                                  <th className="w-[60px]">#</th>
+                                  <th className="w-[100px]">Sku</th>
+                                  <th className="w-[200px]">Quantity</th>
+                                  <th className="w-[500px] text-left">Name</th>
+                                  <th className="w-[200px] text-left">Brand</th>
+                                  <th className="w-[200px] text-left">Category</th>
+                                  <th className="w-[100px]">Action</th>
                                 </tr>
                               </thead> 
                               {/* if group item is null */}
@@ -345,23 +335,29 @@ const onPrevPage = (e) => {
                                       const selectedItem = existingItemss.find(item => item.id === selectedItemId);
                                         if (selectedItem) {
                                       return (
-                                        <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
-                                          <td className="px-3 py-2">{selectedItem.id}</td>
-                                          <td className="px-3 py-2">{selectedItem.sku_prefix}-{selectedItem.sku}</td>
-                                          <th className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
+                                        <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`} key={selectedItem.id}>
+                                          <td className="text-center text-sm p-1">
+                                            {index + 1}
+                                            
+                                            </td>
+                                          <td className="text-center text-sm">{selectedItem.sku_prefix}-{selectedItem.sku}</td>
+                                          <td className="text-center text-sm">{selectedItem.quantity} {selectedItem.uom}</td>
+                                          <th className="text-gray-600 text-nowrap hover:underline text-left">
                                             <Link href={route('item.show', selectedItem.id)}>
                                               {selectedItem.name}
                                             </Link>
                                           </th>
-                                          <td className="px-3 py-2">{selectedItem.brand.name}</td>
-                                          <td className="px-3 py-2">{selectedItem.category.name}</td>
-                                          <td className="px-3 py-2">{selectedItem.quantity} {selectedItem.uom}</td>
-                                          <td>
+                                          <td className="text-left">{selectedItem.brand.name}</td>
+                                          <td className="text-left">{selectedItem.category.name}</td>
+                                          
+                                          <td className="w-[100px] flex flex-row justify-center items-center">
                                             <button
                                               onClick={() => handleRemoveExistingItem(selectedItem.id, index)}
-                                              className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover:rounded-full mx-1"
+                                              className="text-red-600 mx-1 hover:text-gray-600"
                                             >
-                                              Remove
+                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                                  <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                                                </svg>
                                             </button>
                                           </td>
                                         </tr>
@@ -375,6 +371,18 @@ const onPrevPage = (e) => {
                               )}                   
                             </table>
                       </div>
+                      <div className="mt-4 col-span-2">
+                                    <InputLabel htmlFor="receiving_remarks" value="Remarks"/>
+                                        <TextAreaInput
+                                            id="receiving_remarks"
+                                            name="remarks"
+                                            value={data.remarks}
+                                            className="mt-1 block w-full"
+                                            rows="5"
+                                            onChange={e => setData('remarks', e.target.value)}
+                                        />
+                                    <InputError message={errors.remarks} className="mt-2"/>
+                                </div>
                               
             
                         </div>

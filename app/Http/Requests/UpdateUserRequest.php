@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -11,7 +13,15 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        
+        $user = Auth::user();
+
+        if ($user && ( $user->role === 'super_admin' || $user->role === 'admin' )) {
+            return true;
+        }
+
         return false;
+       
     }
 
     /**

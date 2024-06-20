@@ -18,6 +18,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceivingController;
 use App\Http\Controllers\ReceivingItemController;
 use App\Http\Controllers\StockRequisitionController;
+use App\Http\Controllers\UserController;
 use App\Models\Item;
 use App\Models\Receiving;
 use App\Models\ReceivingItem;
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::resource('client', ClientController::class);
         Route::resource('mrrItem', MrrItemController::class);
         Route::resource('itemMrr', ItemController::class);
+        Route::resource('user', UserController::class);
         Route::resource('deliverables', DeliverablesController::class);
         Route::resource('stockrequisition', StockRequisitionController::class);
         Route::post('/receivings/{receivingId}/items/{itemId}',[ ReceivingController::class,'assignItem' ]);

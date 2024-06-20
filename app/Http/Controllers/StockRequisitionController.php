@@ -52,9 +52,9 @@ class StockRequisitionController extends Controller
     public function store(StoreStockRequisitionRequest $request)
     {
         $data = $request->validated();
-        foreach ($data['rows'] as $rowData) {
-            StockRequisition::create($rowData);
-        }
+        
+            StockRequisition::create($data);
+        
         // StockRequisition::create($data);
 
         // return to_route('stockrequisition.index')->with('success', 'Stock Requisition was created');

@@ -17,6 +17,7 @@ import DbitransparentLogo from '@/Components/DbitranparentLogo';
 import Nclient from '@/Components/Nclient';
 import Deliver from '@/Components/Deliver';
 import Srequest from '@/Components/Srequest';
+import Nuser from '@/Components/Nuser';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -34,6 +35,7 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             </div>
                             <div className="items-center flex flex-col gap-2">
+
 
                                 <div class="group relative">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
@@ -90,6 +92,14 @@ export default function Authenticated({ user, header, children }) {
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Clients</span>
                                 </div>
                                 <br />
+
+                                <div class="group relative">
+                                <NavLink href={route('user.index')} active={route().current('user.index')}>
+                                    <Nuser className="block h-9 w-auto fill-current " />
+                                </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">User</span>
+                                </div>
+                                <br />      
 
                                 <div class="group relative">
                                 <NavLink href={route('archive.index')} active={route().current('archive.index')}>

@@ -28,7 +28,7 @@ export default function PrintReceiving({ receiving,receiving_items,queryParams})
                     <div class="font-light text-xs md:text-sm">
                         <div>
                             <label for="ReceivingId">Supplier:</label>
-                            <span className="mx-2">{receiving.client_id}</span>
+                            <span className="mx-2 font-bold">{receiving.client.name}</span>
                         </div>
                         <div>
                             <label for="ReceivingId">SI No :</label>

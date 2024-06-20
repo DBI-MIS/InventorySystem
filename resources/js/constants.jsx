@@ -47,4 +47,19 @@ export const CLIENT_STATUS_CLASS_MAP = {
       Active: "Active",
       Inactive: "Inactive",
     };
-  
+    
+    export const USER_STATUS_TEXT_MAP = {
+      super_admin: "Super Admin",
+      admin: "Admin",
+      editor: "Editor",
+      user: "User",
+    };
+
+
+    export const USER_STATUS_CLASS_MAP = {
+      //equivalent value on the database(leftside) & corresponding color and text appearance
+        super_admin: "bg-amber-700",
+        admin: "bg-green-700 ",
+        editor: "bg-red-900",
+        user: "bg-sky",
+      };

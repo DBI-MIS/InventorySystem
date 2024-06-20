@@ -123,7 +123,7 @@ class ItemController extends Controller
      */
     public function show(Item $item ,User $user) 
     { 
-       
+    
         return (inertia('Item/Show', [
             'item' => new ItemResource($item),
             'queryParams' => request()->query() ?: null,
@@ -182,7 +182,7 @@ class ItemController extends Controller
     {
         // dd($user);
         // true
-        abort_if(Auth::user()->isUser(), 403); 
+        // abort_if(Auth::user()->isUser(), 403); 
       //bort_unless() //false
         $name = $item->name;
         $item->delete();

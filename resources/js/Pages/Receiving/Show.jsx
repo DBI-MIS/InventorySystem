@@ -170,16 +170,16 @@ export default function Show({ auth, receiving, receiving_items }) {
                                         <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                             <tr className="text-nowrap ">
                                                 <th class="w-[60px] border text-center px-1 py-4">
-                                                    ID #
+                                                    #
                                                 </th>
-                                                <th class=" border text-left px-8 py-4">
+                                                <th class="w-[60px] border text-left px-8 py-4">
                                                     SKU
                                                 </th>
-                                                <th class=" border text-left px-8 py-4">
-                                                    Quantity
+                                                <th class="w-[60px] border text-left px-8 py-4">
+                                                    QTY
                                                 </th>
-                                                <th class=" border text-left px-8 py-4">
-                                                    Unit #
+                                                <th class="w-[60px] border text-left px-8 py-4">
+                                                    Unit
                                                 </th>
                                                 <th class=" border text-left px-8 py-4">
                                                     Item Name
@@ -199,12 +199,16 @@ export default function Show({ auth, receiving, receiving_items }) {
                                                         No existing items on MRR
                                                         No. {receiving.mrr_no}
                                                         <div className="mt-5">
-                                                        <Link
-                            href={route("receiving.edit", receiving.id)}
-                            className="bg-gray-600 px-2 font-light text-white rounded shadow transition-all hover:bg-blue-700 text-center"
-                        >
-                            +
-                        </Link> Add Item
+                                                            <Link
+                                                                href={route(
+                                                                    "receiving.edit",
+                                                                    receiving.id
+                                                                )}
+                                                                className="bg-gray-600 px-2 font-light text-white rounded shadow transition-all hover:bg-blue-700 text-center"
+                                                            >
+                                                                +
+                                                            </Link>{" "}
+                                                            Add Items
                                                         </div>
                                                     </div>
                                                 ))}
@@ -214,7 +218,7 @@ export default function Show({ auth, receiving, receiving_items }) {
                                                     <>
                                                         {receiving_items.map(
                                                             (
-                                                                receiving_item
+                                                                receiving_item, index
                                                             ) => (
                                                                 <tr
                                                                     className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700"
@@ -222,11 +226,12 @@ export default function Show({ auth, receiving, receiving_items }) {
                                                                         receiving_item.id
                                                                     }
                                                                 >
-                                                                    <td className="px-3 py-2">
-                                                                        {receiving_item.id ??
-                                                                            "No Receiving ID"}
+                                                                    <td className="px-3 py-2 text-center">
+                                                                        {index + 1}
+                                                                        {/* {receiving_item.id ??
+                                                                            "No Receiving ID"} */}
                                                                     </td>
-                                                                    <td className="px-3 py-2 text-nowrap">
+                                                                    <td className="px-3 py-2 text-nowrap text-center">
                                                                         {receiving_item.category
                                                                             ? receiving_item
                                                                                   .category
@@ -236,11 +241,11 @@ export default function Show({ auth, receiving, receiving_items }) {
                                                                         {receiving_item.sku ??
                                                                             "No SKU"}
                                                                     </td>
-                                                                    <td className="px-3 py-2 text-nowrap">
+                                                                    <td className="px-3 py-2 text-nowrap text-right">
                                                                         {receiving_item.quantity ??
                                                                             "No quantity"}
                                                                     </td>
-                                                                    <td className="px-3 py-2 text-nowrap">
+                                                                    <td className="px-3 py-2 text-nowrap text-left">
                                                                         {receiving_item.uom ??
                                                                             "No UOM "}
                                                                     </td>

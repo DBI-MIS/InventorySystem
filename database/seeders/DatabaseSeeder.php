@@ -64,6 +64,20 @@ class DatabaseSeeder extends Seeder
             'role' => 'user'
 
         ]);
+        User::factory()->create([
+            'name' => 'admin6',
+            'email' => 'admin6@gmail.com',
+            'password' => bcrypt('password'),
+            'role' => 'admin'
+
+        ]);
+        User::factory()->create([
+            'name' => 'admin7',
+            'email' => 'admin7@gmail.com',
+            'password' => bcrypt('password'),
+            'role' => 'admin'
+
+        ]);
 
         
          // create fake projects and task
