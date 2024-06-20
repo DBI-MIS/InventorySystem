@@ -161,9 +161,10 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                                         <div className=" flex h-[11]">
                                                         <TextInput 
                                                             id="receiving_mrr_no"
-                                                            type="text"
+                                                            type="number"
                                                             name="receiving_mrr_no"
                                                             readOnly
+                                                            max={6}
                                                             value={data.mrr_no=mrr_no} 
                                                             className=" block w-full"
                                                             />
@@ -228,7 +229,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
                                             </button> 
                                         </div>
                                     </div>
-                                    <span className="mt-2 text-gray-600"><b>Note:</b> If items are not available on the lists, you can add new Item.</span>
+                                    <span className="mt-2 text-sm text-gray-600"><b>Note:</b> If items are not available on the lists, you can add new Item.</span>
                                  </div>
 
                                  <div className="mt-5">

@@ -27,4 +27,10 @@ class StoreBrandRequest extends FormRequest
             
         ];
     }
+    public function messages(){
+        return [
+            'name.required' => 'Brand name is required.',
+        ];
+    }
 }
+

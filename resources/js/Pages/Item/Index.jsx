@@ -187,7 +187,7 @@ const deleteItem = (item) => {
                                       </th>
                                       <td className="w-[300px] py-2">{item.brand ? item.brand.name : 'N/A'}</td>
                                       <td className="w-[300px] py-2">{item.category ? item.category.name : 'N/A'}</td>
-                                      <td className="w-[300px] py-2">
+                                      <td className="w-[300px] py-2 text-center">
                                         <span className={`px-2 py-1 font-semibold tracking-wide rounded ${ITEM_STATUS_CLASS_MAP[item.statuses] || 'bg-gray-300'} ${item.statuses ? 'text-white' : 'text-black'}`}>
                                             {ITEM_STATUS_TEXT_MAP[item.statuses] || 'No Status'}
                                         </span>

@@ -55,4 +55,17 @@ class StoreReceivingRequest extends FormRequest
         ],
     ];
     }
+    public function messages(){
+        return[
+            'mrr_no.required' => 'Mrr No. is required. ',
+            'mrr_no.min' => 'Mrr No. must be at least 6 numbers. ',
+            'client_id.required' => 'Client/ Project name is required.',
+            'si_no.required' => " SI No. is required.",
+            'deliver_id.required' => "DR No. is required."
+
+
+
+        ];
+
+    }
 }

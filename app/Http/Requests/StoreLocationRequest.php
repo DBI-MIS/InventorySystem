@@ -24,12 +24,10 @@ class StoreLocationRequest extends FormRequest
         return [
             "name" => [
                 'required',
-                'alpha', 
                 'max:255'
             ],
             "company" => [
                 'nullable', 
-                'alpha_num',
                 'string'
             ],
             "address" => [
@@ -37,6 +35,12 @@ class StoreLocationRequest extends FormRequest
                 'regex:/(^[-0-9A-Za-z.,\/ ]+$)/', 
                 'max:255'
             ],
+        ];
+    }
+    public function messages(){
+        return [
+            'name.required' => 'Location name is required.'
+
         ];
     }
 }

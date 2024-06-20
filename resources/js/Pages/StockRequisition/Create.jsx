@@ -19,14 +19,14 @@ export default function Create({ auth }) {
     sr_notes: '',
 
   });
-  console.log(data);
+  
 
   const onSubmit = (e) =>{
     e.preventDefault();
     post(route("stockrequisition.store"));
   }
 
-    // Initialize state for table rows
+     // Initialize state for table rows
   const [tableRows, setTableRows] = useState([]);
 
   // Handle button click to add a new empty row
@@ -44,6 +44,7 @@ export default function Create({ auth }) {
       },
     ]);
   };
+  console.log(...tableRows);
 
   // Handle change in table input fields
   const handleInputChange = (index, event) => {
@@ -212,51 +213,56 @@ export default function Create({ auth }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {tableRows.map((row, index) => (
+                  {tableRows.map((index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>
                         <TextInput
+                          key={`sr_to_${index}`}
                           type="text"
-                          name={`rows[${index}].sr_to`}
-                          value={row.sr_to}
+                          name="sr_to"
+                          value={data.sr_to}
                           className="mt-1 block w-full"
-                          onChange={(e) => handleInputChange(index, e)}
+                          onChange={(e) => handleInputChange('sr_to',  index , e.target.value)}
                         />
                       </td>
                       <td>
                         <TextInput
+                          key={`rs_no_${index}`}
                           type="text"
-                          name={`rows[${index}].rs_no`}
-                          value={row.rs_no}
+                          name="rs_no"
+                          value={data.rs_no}
                           className="mt-1 block w-full"
-                          onChange={(e) => handleInputChange(index, e)}
+                          onChange={(e) => handleInputChange('rs_no', index, e.target.value)}
                         />
                       </td>
                       <td>
                         <TextInput
+                          key={`sr_date_${index}`}
                           type="date"
-                          name={`rows[${index}].sr_date`}
-                          value={row.sr_date}
+                          name="sr_date"
+                          value={data.sr_date}
                           className="mt-1 block w-full"
-                          onChange={(e) => handleInputChange(index, e)}
+                          onChange={(e) => handleInputChange('sr_date', index, e.target.value)}
                         />
                       </td>
                       <td>
                         <TextInput
+                          key={`sr_qty_${index}`}
                           type="text"
-                          name={`rows[${index}].sr_qty`}
-                          value={row.sr_qty}
+                          name="sr_qty"
+                          value={data.sr_qty}
                           className="mt-1 block w-full"
-                          onChange={(e) => handleInputChange(index, e)}
+                          onChange={(e) => handleInputChange('sr_qty', index, e.target.value)}
                         />
                       </td>
                       <td>
                         <SelectInput
-                          name={`rows[${index}].sr_unit`}
-                          value={row.sr_unit}
+                          key={`sr_unit_${index}`}
+                          name="sr_unit"
+                          value={data.sr_unit}
                           className="mt-1 block w-full"
-                          onChange={(e) => handleInputChange(index, e)}
+                          onChange={(e) => handleInputChange('sr_unit', index, e.target.value)}
                         >
                           <option value="">Select UOM</option>
                           <option value="M">Meters</option>
@@ -270,18 +276,20 @@ export default function Create({ auth }) {
                       </td>
                       <td>
                         <TextAreaInput
-                          name={`rows[${index}].sr_description`}
-                          value={row.sr_description}
+                          key={`sr_description_${index}`}
+                          name="sr_description"
+                          value={data.sr_description}
                           className="mt-1 block w-full"
-                          onChange={(e) => handleInputChange(index, e)}
+                          onChange={(e) => handleInputChange('sr_description', index, e.target.value)}
                         />
                       </td>
                       <td>
                         <TextAreaInput
-                          name={`rows[${index}].sr_notes`}
-                          value={row.sr_notes}
+                          key={`sr_notes_${index}`}
+                          name="sr_notes"
+                          value={data.sr_notes}
                           className="mt-1 block w-full"
-                          onChange={(e) => handleInputChange(index, e)}
+                          onChange={(e) => handleInputChange('sr_notes', index, e.target.value)}
                         />
                       </td>
                     </tr>
