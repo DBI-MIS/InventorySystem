@@ -4,7 +4,7 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-export default function Create({auth,success}){
+export default function Create({auth}){
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
         name: '',
@@ -27,11 +27,7 @@ export default function Create({auth,success}){
         >
         <Head title="Items" />
         <div className="py-6">
-            {success && (
-                        <div className="bg-green-500 mb-4 py-2 px-4 text-white rounded">
-                        {success}
-                    </div>
-                )}
+          
           <div className="w-5/6 mx-auto sm:px-6 lg:px-8">
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <form onSubmit={onSubmit}  data-page="{{ json_encode($page) }}"

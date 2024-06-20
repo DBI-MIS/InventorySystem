@@ -21,9 +21,6 @@ return new class extends Migration
             $table->string('client_id')->nullable();
             $table->string('si_no')->nullable();
             $table->string('address')->nullable();
-            // $table->unsignedBigInteger('deliverable_id')->nullable();
-            // $table->foreign('deliverable_id')->references('id')->on('deliverables');
-            //  $table->foreignIdFor(Deliverables::class)->constrained();
             $table->string('deliver_id')->constrained('deliverables');
             $table->string('location_id')->default(1);
             $table->string('employee_id')->nullable();

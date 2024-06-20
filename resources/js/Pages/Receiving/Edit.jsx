@@ -1,7 +1,5 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import Pagination from "@/Components/Pagination";
-import PaginationEdit from "@/Components/PaginationEdit";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";

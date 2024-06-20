@@ -26,39 +26,37 @@ export default function Show({ auth, receiving, receiving_items }) {
                         <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                             <div className="">
                                 <div className="flex flex-row gap-2 items-center">
-                                    {/* <div className="min-w-7">
+                                    <div className="min-w-8">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"
-                                            id="Gold--Streamline-Sharp"
+                                            id="Download-Box-1--Streamline-Sharp"
                                         >
                                             <desc>
-                                                Gold Streamline Icon:
+                                                Download Box 1 Streamline Icon:
                                                 https://streamlinehq.com
                                             </desc>
-                                            <g id="gold--gold-money-payment-bars-finance-wealth-bullion-jewelry">
+                                            <g id="download-box-1--arrow-box-down-download-internet-network-server-upload">
+                                                <path
+                                                    id="Subtract"
+                                                    fill="#8fbffa"
+                                                    fill-rule="evenodd"
+                                                    d="M6.5302 0.24L3.2484 4.0688V16.6493H8.7181V8.9916H15.2819V16.6493H20.7516V4.0688L17.4698 0.24H6.5302Z"
+                                                    clip-rule="evenodd"
+                                                    stroke-width="1"
+                                                ></path>
                                                 <path
                                                     id="Union"
-                                                    fill="#8fbffa"
-                                                    d="M9.066 12.75H3.434l-2.428 8.5h10.489l-2.43 -8.5Z"
-                                                    stroke-width="1"
-                                                ></path>
-                                                <path
-                                                    id="Union_2"
-                                                    fill="#8fbffa"
-                                                    d="M20.566 12.75h-5.632l-2.428 8.5h10.488l-2.428 -8.5Z"
-                                                    stroke-width="1"
-                                                ></path>
-                                                <path
-                                                    id="Union_3"
-                                                    fill="#8fbffa"
-                                                    d="M14.816 2.75H9.184l-2.428 8.5h10.488l-2.428 -8.5Z"
+                                                    fill="#2859c5"
+                                                    fill-rule="evenodd"
+                                                    d="M6.5302 0.24L3.2484 4.0688H11.1795V0.24H6.5302ZM20.7516 4.0688H12.8205V0.24H17.4698L20.7516 4.0688ZM13.6409 10.6326V18.2902H16.3758V19.3842L12 23.76L7.6242 19.3842V18.2902H10.3591V10.6326H13.6409Z"
+                                                    clip-rule="evenodd"
                                                     stroke-width="1"
                                                 ></path>
                                             </g>
                                         </svg>
-                                    </div> */}
+                                    </div>
                                     <div className="flex flex-col pb-3 mt-2">
                                         <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
                                             MRR No.:
@@ -86,8 +84,7 @@ export default function Show({ auth, receiving, receiving_items }) {
                                     Address :
                                 </dt>
                                 <dd className="text-base font-light">
-                                    {receiving.address ??
-                                        "No Address"}
+                                    {receiving.address ?? "No Address"}
                                 </dd>
                             </div>
 
@@ -166,13 +163,13 @@ export default function Show({ auth, receiving, receiving_items }) {
 
                     {/* card #2 */}
                     <div className="w-full mx-auto bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-3">
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col min-h-[500px]">
+                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col min-h-[540px] justify-between relative">
                             <div className="py-6 px-2 text-gray-900 dark:text-gray-100">
                                 <div className="overflow-auto">
                                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                         <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                             <tr className="text-nowrap ">
-                                                <th class=" border text-left px-8 py-4">
+                                                <th class="w-[60px] border text-center px-1 py-4">
                                                     ID #
                                                 </th>
                                                 <th class=" border text-left px-8 py-4">
@@ -193,27 +190,14 @@ export default function Show({ auth, receiving, receiving_items }) {
                                             </tr>
                                         </thead>
 
-                                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                            <tr className="text-nowrap ">
-                                                <th className="px-3 py-3"></th>
-                                                <th className="px-3 py-3"></th>
-                                                <th className="px-3 py-3"></th>
-                                                <th className="px-3 py-3"></th>
-                                                <th className="px-3 py-3"></th>
-                                                <th className="px-3 py-3 text-right"></th>
-                                            </tr>
-                                        </thead>
-
                                         <tbody>
                                             {/* if group item is null */}
                                             {!receiving_items ||
                                                 (receiving_items.length ===
                                                     0 && (
-                                                    <div class="font-md mt-5 text-center text-gray-600 p-4 ">
-                                                        No existing items on
-                                                        Material Receiving
-                                                        Report #{" "}
-                                                        {receiving.mrr_no}
+                                                    <div class="font-md mt-5 text-center text-gray-600/50 p-4 absolute text-xl">
+                                                        No existing items on MRR
+                                                        No. {receiving.mrr_no}
                                                     </div>
                                                 ))}
                                             {receiving_items &&
@@ -276,15 +260,15 @@ export default function Show({ auth, receiving, receiving_items }) {
                                     </table>
                                 </div>
                             </div>
-                            <div className="px-6 flex flex-col gap-3 self-end">
+                            <div className="px-6 flex flex-col gap-3">
                                 <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
-                                Remarks :
+                                    Remarks :
                                     <span className="font-light">
-                                    {receiving.remarks ?? "No Remarks"}
+                                        {receiving.remarks ?? "No Remarks"}
                                     </span>
                                 </dt>
                             </div>
-                              
+
                             {/* <PaginationReceiving links={paginationData.links} /> */}
                         </div>
                     </div>

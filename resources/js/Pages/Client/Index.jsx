@@ -1,11 +1,9 @@
 import { Alert } from "@material-tailwind/react";
 import React from "react";
 import Pagination from "@/Components/Pagination";
-import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
-import SelectInput from "@/Components/SelectInput";
 import { CLIENT_STATUS_CLASS_MAP, CLIENT_STATUS_TEXT_MAP } from "@/constants";
 
 export default function Index({ auth, clients, queryParams = null, success }) {

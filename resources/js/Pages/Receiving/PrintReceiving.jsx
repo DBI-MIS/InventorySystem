@@ -1,9 +1,5 @@
 import MrrLogo from "@/Components/MrrLogo";
-import Pagination from "@/Components/Pagination";
-import TableHeading from "@/Components/TableHeading";
-import TextInput from "@/Components/TextInput";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import {Head, Link, router}  from "@inertiajs/react";
+import {Head, Link}  from "@inertiajs/react";
 export default function PrintReceiving({ receiving,receiving_items,queryParams}){
     console.log(receiving);
     console.log(receiving.created_at);

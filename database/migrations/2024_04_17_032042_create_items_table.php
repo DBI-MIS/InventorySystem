@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            // $table->string('sku_prefix')->nullable();
             $table->string('sku');
             $table->string('name');
             $table->string('brand_id')->nullable();
@@ -32,10 +31,6 @@ return new class extends Migration
             $table->string('remark')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            //ID
-            //ITEM ID --> SKU
-            //
-            
         });
     }
 

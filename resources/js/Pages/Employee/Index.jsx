@@ -1,5 +1,4 @@
 import Pagination from "@/Components/Pagination";
-import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import { Alert } from "@material-tailwind/react";
 import React from "react";

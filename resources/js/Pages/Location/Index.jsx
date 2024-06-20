@@ -1,12 +1,9 @@
 import { Alert } from "@material-tailwind/react";
 import React from "react";
 import Pagination from "@/Components/Pagination";
-import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
-import { useEffect } from "react";
-import { useState } from "react";
 export default function Index({
     auth,
     locations,

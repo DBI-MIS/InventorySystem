@@ -5,7 +5,7 @@ if (typeof window !== 'undefined' && typeof window.Ziggy !== 'undefined') {
     Object.assign(Ziggy.routes, window.Ziggy.routes);
     const Ziggy = {
         namedRoutes: {
-            // 'archive.forceDelete': { uri: '/archive/{id}/force-delete', methods: ['DELETE'] },
+            
             // Add other routes if needed
         }
     };

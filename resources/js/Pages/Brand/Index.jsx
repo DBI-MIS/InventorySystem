@@ -1,5 +1,4 @@
 import Pagination from "@/Components/Pagination";
-import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";

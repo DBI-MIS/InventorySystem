@@ -10,7 +10,7 @@ import { Head, Link,useForm } from "@inertiajs/react";
 import { useEffect,  useState} from "react";
 import Select from "react-select"
 import React from "react";
-export default function Create({auth,success,compact,response,delivers ,mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
+export default function Create({auth,delivers ,mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
     
     console.log(delivers);
   
@@ -20,7 +20,6 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
         mrr_no: '',
         group_item_id: '',
         si_no:'',
-        // dr_no:'',
         address:'',
         remarks:'',
     })
@@ -94,11 +93,7 @@ export default function Create({auth,success,compact,response,delivers ,mrr_no,i
         >
              <Head title="Receivings" />
       <div className="py-2">
-      {success && (
-                <div className="bg-green-500 mb-4 py-2 px-4 text-white rounded">
-                {success}
-              </div>
-          )} 
+
         </div>
         <div className="w-5/6 mx-auto sm:px-6 lg:px-8">
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
