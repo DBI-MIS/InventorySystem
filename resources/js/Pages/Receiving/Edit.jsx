@@ -51,6 +51,8 @@ export default function Edit({auth,existingItems,existingItemIds,receiving,items
       setSelectedItemIds(selectedOptions.map(option => option.value));
     }, [selectedOptions]);
 
+    
+
     // const [currentPage, setCurrentPage] = useState(1);
     // const [totalItems, setTotalItems] = useState('');
     // const [totalPages, setTotalPages] = useState('');
@@ -319,7 +321,7 @@ const onPrevPage = (e) => {
                           </div>
                       </div>
                       <div className="mt-5">
-                          <h1 className="text-2xl text-center p-5 font-semibold">LIST OF MRR ITEMS</h1>
+                          <h1 className="text-2xl text-blue-700 text-center p-5 font-semibold">LIST OF MRR ITEMS</h1>
                             <table className="min-w-full bg-white">
                               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                 <tr>
@@ -332,6 +334,13 @@ const onPrevPage = (e) => {
                                   <th className="pr-10">Action</th>
                                 </tr>
                               </thead> 
+                              {/* if group item is null */}
+                              {!databaseItemIds || databaseItemIds.length === 0 && (
+                                <div class="font-md mt-5 text-center text-gray-600 p-4">
+                                  No existing items on Material Receiving Report #  {data.mrr_no}
+                                </div>
+                                )
+                              }
                               {databaseItemIds && databaseItemIds.length >= 0 && ( 
                                  <tbody>
                                     {databaseItemIds.map((selectedItemId,index) => {
@@ -361,20 +370,13 @@ const onPrevPage = (e) => {
                                       );
                                     } else {
                                       return null; 
+                                      
                                     }
                                   })}
                                 </tbody>
-                              )}                         
+                              )}                   
                             </table>
                       </div>
-                       {/* <div>
-                        <PaginationEdit
-                          currentPage={currentPage}
-                          totalPages={totalPages}
-                          onNextPage={onNextPage}
-                          onPrevPage={onPrevPage}
-                        />
-                      </div> */}
                               
             
                         </div>

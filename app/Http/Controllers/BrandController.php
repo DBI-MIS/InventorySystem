@@ -21,7 +21,8 @@ class BrandController extends Controller
 
           
         if (request("name")) {
-            $query->where("name", 'LIKE', "%" . request("name") . "%");
+            $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
+            // $query->where("name", "like", "%" . request("name") . "%");
         }
 
         $brands = $query->orderBy($sortField, $sortDirection)

@@ -21,9 +21,11 @@ export default function Index({ auth, brands, queryParams = null, success }) {
     };
 
     const onKeyPress = (name, e) => {
+        const lowerCaseName = name.toLowerCase();
+
         if (e.key !== "Enter") return;
 
-        searchFieldChanged(name, e.target.value);
+        searchFieldChanged(lowerCaseName, e.target.value);
     };
     // sorting functions
     const sortChanged = (name) => {

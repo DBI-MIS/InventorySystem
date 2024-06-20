@@ -26,13 +26,12 @@ class ItemController extends Controller
      */
     public function index()
     {  
-        //   $receivingPivot = Item::with('receivings')->get();
-        // dd($receivingPivot);
+        
         $query = Item::query() ;
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
         if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
+            $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
         }
         if(request("uom")){
             $query->where("uom", request("uom"));
@@ -108,49 +107,9 @@ class ItemController extends Controller
         // dd($data);
         Item::create($data);
         return to_route('item.index')->with('success', 'Item was created');
-        // Determine where to redirect based on the source
-        // $source = $request->path();
-        // // dd($source);
-        // if ($source == 'mrrItem.create') {
-        //     Item::create($data);
-        //     return redirect()->route('receivingItem.index')->with('success', 'Item created successfully from MRR.');
-        // } else if ($source == 'item.create') {
-        //     Item::create($data);
-        //     return redirect()->route('item.index')->with('success', 'Item created successfully from Item.');
-        // } 
-        // // Check the origin and redirect accordingly
-        // if ($request->origin === 'mrrItem.create') {
-        //     Item::create($data);
-        //     return redirect()->route('receivingItem.index')->with('success', 'MRR Item created successfully.');
-        // } elseif ($request->origin === 'item.create') {
-        //     Item::create($data);
-        //     return redirect()->route('item.index')->with('success', 'Item created successfully.');
-        // }
-        // $path = $request->path();
-
-        // if ($path === 'itemMrr/create') {
-        //      Item::create($data);
-        //      dd($data);
-        //      return to_route('receivingItem.create')->with('success', 'Item was created');
-        //     // return redirect()->route('ReceivingItem.create');
-        // }
-
-        // if ($path === 'item/create') {
-        //    Item::create($data);
-        // return to_route('item.index')->with('success', 'Item was created');
-        // }
-
         
            
     }
-    // public function storeItem(StoreItemRequest $request)
-    // {
-    //     $data = $request->validated();
-    //     // dd($data);
-    //     Item::create($data);
-    //     return to_route('item.index')->with('success', 'Item was created');
-    //     // Determine where to redirect based on the source
-    // }
     /**
      * Display the specified resource.
      */
@@ -204,6 +163,8 @@ class ItemController extends Controller
        return to_route('item.index')
        ->with('success', "Item \"$item->name\" was updated");
     }
+
+
     /**
      * Remove the specified resource from storage.
      */
@@ -243,23 +204,5 @@ class ItemController extends Controller
         Inertia::share('success', 'Item created successfully!');
     Inertia::share('newItem', $item->id);
         return redirect()->route('receiving.create')->with('message', 'Item created successfully!');
-        // return response()->json([
-        //     'success' => 'Item created successfully!',
-        //     'newItem' => $item->id, // 
-        //     // Pass any other necessary data
-        // ]);
-        // return redirect()->back()->with('newItem', $newItem);
-        // return Inertia( "Receiving/Create");
-        // return Redirect::back()->with('newItem', $newItem);
-        // return Inertia::render('Receiving/Create', [
-        //     'newItem' => $item->id
-        // ]);
-        // return inertia("Receiving/Create", [
-        //     'newItem' => $item->id]);
-        // return response()->json(['success' => true]);
-    //     return Inertia('receiving.create',{
-    //         'newItem' => $item->id,
-            
-    // });
     }
 }

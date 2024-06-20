@@ -13,15 +13,154 @@ export default function Show({auth, receiving,receiving_items}){
         header={
             <div className="flex receivings-centerjustify-between">
               <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight capitalize">
-                    {`Material Receiving Report " ${receiving.mrr_no} " `}
+                    {`Material Receiving Report - ${receiving.mrr_no}  `}
                </h2>
             </div>
             }
         >
-        <Head title={`Receiving "${receiving.id}" `}/>
+        <Head title={`MRR-${receiving.id} `}/>
 
         <div className="py-6 capitalize">
-            <div className="w-5/6 mx-auto sm:px-6 lg:px-8 grid grid-cols-3 font-bold gap-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div className="w-full mx-auto sm:px-6 lg:px-8 grid grid-cols-4 font-bold gap-2  relative">
+
+          {/* card #0 */}
+          <div className="col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col min-h-[450px] max-h-[600px] justify-start">
+                    <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                        <div className="">
+                        <div className="flex flex-row gap-2 items-center">
+                                    <div className="min-w-7">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            id="Gold--Streamline-Sharp"
+                                        >
+                                            <desc>
+                                                Gold Streamline Icon:
+                                                https://streamlinehq.com
+                                            </desc>
+                                            <g id="gold--gold-money-payment-bars-finance-wealth-bullion-jewelry">
+                                                <path
+                                                    id="Union"
+                                                    fill="#8fbffa"
+                                                    d="M9.066 12.75H3.434l-2.428 8.5h10.489l-2.43 -8.5Z"
+                                                    stroke-width="1"
+                                                ></path>
+                                                <path
+                                                    id="Union_2"
+                                                    fill="#8fbffa"
+                                                    d="M20.566 12.75h-5.632l-2.428 8.5h10.488l-2.428 -8.5Z"
+                                                    stroke-width="1"
+                                                ></path>
+                                                <path
+                                                    id="Union_3"
+                                                    fill="#8fbffa"
+                                                    d="M14.816 2.75H9.184l-2.428 8.5h10.488l-2.428 -8.5Z"
+                                                    stroke-width="1"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div className="flex flex-col pb-3 mt-2">
+                                    <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
+                                    MRR No.:
+                                </dt>
+                                        <span className="text-4xl font-semibold ">
+                                        {receiving.mrr_no ?? "No MRR Number"}
+                                        </span>
+                                    </div>
+                                </div>
+                        </div>
+                         <div className="flex flex-col pb-3 mt-2">
+                                <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
+                                    Client/Project :
+                                </dt>
+                                <dd className="text-base font-light">
+                                {receiving.client && receiving.client.name ? receiving.client.name : "No Client Name"}
+                                </dd>
+                            </div>
+                         
+                            <div className="flex flex-col pb-3 mt-2">
+                                    <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
+                                        Address :
+                                    </dt>
+                                    <dd className="text-lg font-light uppercase ">
+                                    {receiving.address ?? "No Receiving Address"}
+                                    </dd>
+                                </div>
+
+                                <div className="flex flex-col pb-3 mt-2">
+                                <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
+                                    Status :
+                                </dt>
+                                <dd className="text-lg font-light">
+
+                                {receiving.status ?? "No Status"}
+                                    {/* <span
+                                        className={`px-2 py-1 font-semibold tracking-wide rounded ${
+                                            ITEM_STATUS_CLASS_MAP[
+                                                item.statuses
+                                            ] || "bg-gray-300"
+                                        } ${
+                                            item.statuses
+                                                ? "text-white"
+                                                : "text-black"
+                                        }`}
+                                    >
+                                        {ITEM_STATUS_TEXT_MAP[item.statuses] ||
+                                            "No Item Status"}
+                                    </span> */}
+                                </dd>
+                            </div>
+
+                            <div className="flex flex-col pb-3 mt-2">
+                                <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
+                                    SI No. :{" "}
+                                </dt>
+                                <dd className="text-lg font-light">
+                                    <span className="">
+                                        {receiving.si_no ?? "No Quantity"}
+                                        
+                                    </span>
+                                </dd>
+                            </div>
+
+                            <div className="flex flex-col pb-3 mt-2">
+                                <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
+                                    DR No. :{" "}
+                                </dt>
+                                <dd className="text-lg font-light">
+                                    <span className="">
+                                    {receiving.deliver && receiving.deliver.dr_no ? receiving.deliver.dr_no : "No DR Number"}
+                                        
+                                    </span>
+                                </dd>
+                            </div>
+
+                            <div className="flex flex-col gap-3 items-end">
+                                    
+                                    <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
+                                    MRR ID: <span className="font-bold">
+                                            {receiving.id ?? "No MRR ID"}
+                                        </span>
+                                </dt>
+                                        
+                                    
+                                </div>
+
+                            
+                            </dl>
+                            
+                        <Link
+                            href={route("receiving.edit", receiving.id)}
+                            className="bg-blue-500 py-2 px-4 font-light text-white rounded shadow transition-all hover:bg-blue-700 text-center"
+                        >
+                            Edit Entry
+                        </Link>
+                    
+
+                    </div>
+            <div className="w-full mx-auto sm:px-6 lg:px-8 grid grid-cols-3 font-bold gap-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
            
                 {/* card #1 */}
                 <div className=" bg-white overflow-hidden shadow-sm sm:rounded-lg col-span-2 ">
@@ -113,6 +252,13 @@ export default function Show({auth, receiving,receiving_items}){
                             </thead>
 
                             <tbody>
+                                 {/* if group item is null */}
+                                 {!receiving_items || receiving_items.length === 0 && (
+                                <div class="font-md mt-5 text-center text-gray-600 p-4">
+                                  No existing items on Material Receiving Report #  {receiving.mrr_no}
+                                </div>
+                                )
+                              }
                               {receiving_items && receiving_items.length !== 0 && (
                                 <>
                                 {receiving_items.map((receiving_item)=>(
@@ -148,6 +294,7 @@ export default function Show({auth, receiving,receiving_items}){
                  </div>
                  {/* <PaginationReceiving links={paginationData.links} /> */}
               </div>
+            </div>
             </div>
         </div>
         </AuthenticatedLayout>

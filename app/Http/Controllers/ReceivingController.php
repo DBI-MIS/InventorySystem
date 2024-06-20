@@ -56,7 +56,7 @@ class ReceivingController extends Controller
         //  dd($receivingPivot);
 
          $receivings = $query->orderBy($sortField, $sortDirection)
-         ->paginate(10);
+         ->paginate(24);
         //  dd($query);
          return inertia("Receiving/Index", [
              "receivings" => ReceivingResource::collection($receivings),

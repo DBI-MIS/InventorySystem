@@ -19,7 +19,7 @@ class CategoryController extends Controller
         $sortDirection = request("sort_direction", "desc");
         
         if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
+            $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
         }
         $categories = $query->orderBy($sortField, $sortDirection)
         ->paginate(12);
