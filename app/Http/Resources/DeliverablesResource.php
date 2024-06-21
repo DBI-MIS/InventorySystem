@@ -31,6 +31,7 @@ class DeliverablesResource extends JsonResource
             'list_item_id' => $this->item_id,
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
             'remarks'=>  $this->remarks,
+            'items' => ItemResource::collection($this->whenLoaded('itemsDeliverables')),
             
           
            

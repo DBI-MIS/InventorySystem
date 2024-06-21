@@ -92,7 +92,7 @@ const submitDelete = (id) => {
     }
     >
       {/* head displayed together with the appname */}
-       <Head title="Items" />
+       <Head title="Deleted Items" />
       <div className="py-12">
           <div className="max-w-5/6 mx-auto sm:px-6 lg:px-8 relative">
             {success && (

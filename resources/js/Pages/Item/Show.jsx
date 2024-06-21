@@ -21,7 +21,7 @@ export default function Show({ auth, item }) {
                 
 
                     {/* card #0 */}
-                    <div className="col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col min-h-[450px] max-h-[480px] justify-start">
+                    <div className="col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col h-fit justify-start">
                     <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                         <div className="">
                         <div className="flex flex-row gap-2 items-center">
@@ -134,9 +134,9 @@ export default function Show({ auth, item }) {
                             
                         <Link
                             href={route("item.edit", item.id)}
-                            className="bg-blue-500 py-2 px-4 font-light text-white rounded shadow transition-all hover:bg-blue-700 text-center"
+                            className="bg-blue-500 py-2 px-4 font-light text-white shadow transition-all hover:bg-blue-700 text-center"
                         >
-                            Edit Entry
+                            Edit
                         </Link>
                     
 

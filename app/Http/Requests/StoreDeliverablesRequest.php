@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\QtyOutDoesNotExceedQuantity;
+use Closure;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
 
 class StoreDeliverablesRequest extends FormRequest
 {
@@ -21,6 +25,7 @@ class StoreDeliverablesRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             "dr_no" => [
                 'required' ,
@@ -50,15 +55,21 @@ class StoreDeliverablesRequest extends FormRequest
                 'required', 
                 'exists:stock_requisitions,id'
             ],
-            "list_item_id" => [
-                'required', 
-                'exists:items,id'
+            "items" => [
+                'required',
             ],
+            "items.*.qty_out" => [
+                'required',
+                'integer',
+                'min:1',
+            ],
+           
+            
             
         ];
     }
-    // created customize messages to make error message more formal and flexible
-     //  e.g. the client id is required --> it should be client or project name is required
+   
+    
     public function messages()
     {
         return[
@@ -67,7 +78,8 @@ class StoreDeliverablesRequest extends FormRequest
             'address.required' => 'Client address is required.',
             'client_id.required' => 'Client / Project name is required.',
             'stockrequest_id.required' => 'RS No. is required.',
-            'list_item_id.required' => 'Group of Items is required'
+            'items' => 'Items required',
+            'items.*.qty_out.required' => 'Each item must have a quantity.',
 
 
 

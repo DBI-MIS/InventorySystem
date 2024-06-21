@@ -5,6 +5,7 @@ use App\Http\Requests\StoreFormDataRequest;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Http\Requests\UpsertItemRequest;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\EmployeeResource;
@@ -17,6 +18,7 @@ use App\Models\Location;
 use App\Models\Receiving;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -220,4 +222,25 @@ class ItemController extends Controller
     Inertia::share('newItem', $item->id);
         return redirect()->route('receiving.create')->with('message', 'Item created successfully!');
     }
+
+   
+
+    public function upsert(UpsertItemRequest $request, Item $item)
+{
+    $items = $request->input('items');
+
+    foreach ($items as $itemData) {
+        $item = Item::find($itemData['id']);
+
+        if ($item) {
+            $item->qty_out = $itemData['qty_out'];
+          
+            $item->save();
+        } else {
+            
+        }
+    }
+
+    return redirect()->back()->with('success', 'Items updated successfully.');
+}
 }

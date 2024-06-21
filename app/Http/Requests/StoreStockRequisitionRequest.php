@@ -25,9 +25,9 @@ class StoreStockRequisitionRequest extends FormRequest
             "sr_to" => ['required', 'max:255'],
             "rs_no" => ['required', 'max:255'],
             "sr_date" => ['nullable', 'date'],
-            "sr_qty" => ['nullable', 'max:255'],
-            "sr_unit" => ['nullable', 'max:255'],
-            "sr_description" => ['nullable', 'max:255'],
+            'items.*.sr_qty' => 'required|integer',
+        'items.*.sr_unit' => 'required|string',
+        'items.*.sr_description' => 'required|string',
             "sr_notes" => ['nullable', 'max:255']
 
         ];

@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::post('receiving/create', [ItemController::class,'itemMrr'])->name('item.itemMrr');
         Route::post('/item/submit', [ItemController::class, 'submit'])->name('item.submit');
         Route::post('receiving/submit', [ReceivingController::class, 'submitItem'])->name('receiving.submitItem');
+        Route::post('/item/upsert', [ItemController::class, 'upsert'])->name('item.upsert');
         // lagay name
         // itemMrr
     

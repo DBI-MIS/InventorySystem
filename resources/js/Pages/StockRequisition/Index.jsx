@@ -142,6 +142,58 @@ const deleteStock = (stockrequisition) => {
 
                             </thead>
                             <tbody>
+  {stockrequest.data.map((stocks) => (
+    <React.Fragment key={stocks.id}>
+      <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700">
+        <td className="px-3 py-2" rowSpan={(stocks.items && stocks.items.length) || 1}>{stocks.id}</td>
+        <td className="px-3 py-2 hover:underline" rowSpan={(stocks.items && stocks.items.length) || 1}>
+          <b><Link href={route('stockrequisition.show', stocks.id)}>{stocks.sr_to}</Link></b>
+        </td>
+        <td className="px-3 py-2" rowSpan={(stocks.items && stocks.items.length) || 1}>{stocks.rs_no}</td>
+        <td className="px-3 py-2" rowSpan={(stocks.items && stocks.items.length) || 1}>{stocks.sr_date}</td>
+        <td className="px-3 py-2" rowSpan={(stocks.items && stocks.items.length) || 1}>{stocks.sr_notes}</td>
+        <td className="px-3 py-2 text-nowrap" rowSpan={(stocks.items && stocks.items.length) || 1}>
+          <div className="flex">
+            <Link href={route('stockrequisition.edit', stocks.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+              </svg>
+            </Link>
+            <button 
+              onClick={(e) => deleteStock(stocks)}
+              className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover: rounded-full  hover:underline mx-1"> 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+              </svg>
+            </button>
+          </div>
+        </td>
+        {stocks.items && stocks.items.length > 0 ? (
+          <>
+            <td className="px-3 py-2">{stocks.items[0].sr_qty}</td>
+            <td className="px-3 py-2">{stocks.items[0].sr_unit}</td>
+            <td className="px-3 py-2">{stocks.items[0].sr_description}</td>
+          </>
+        ) : (
+          <>
+            <td className="px-3 py-2">-</td>
+            <td className="px-3 py-2">-</td>
+            <td className="px-3 py-2">-</td>
+          </>
+        )}
+      </tr>
+      {stocks.items && stocks.items.slice(1).map((item, index) => (
+        <tr key={`${stocks.id}-${index}`} className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700">
+          <td className="px-3 py-2">{item.sr_qty}</td>
+          <td className="px-3 py-2">{item.sr_unit}</td>
+          <td className="px-3 py-2">{item.sr_description}</td>
+        </tr>
+      ))}
+    </React.Fragment>
+  ))}
+</tbody>
+
+                            {/* <tbody>
                               {stockrequest.data.map((stocks)=>(
                                 <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={stocks.id}>
                                   <td className="px-3 py-2">{stocks.id}</td>
@@ -170,7 +222,7 @@ const deleteStock = (stockrequisition) => {
                                     </td>
                                 </tr>
                               ))}
-                            </tbody>
+                            </tbody> */}
 
                           </table>
                     

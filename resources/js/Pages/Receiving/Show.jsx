@@ -22,7 +22,7 @@ export default function Show({ auth, receiving, receiving_items }) {
             <div className="py-6 capitalize">
                 <div className="w-full mx-auto sm:px-6 lg:px-8 grid grid-cols-4 font-bold gap-2 ">
                     {/* card #0 */}
-                    <div className="col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col min-h-[450px] max-h-[600px] justify-start relative">
+                    <div className="col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col justify-start h-fit relative">
                         <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                             <div className="">
                                 <div className="flex flex-row gap-2 items-center">
@@ -148,16 +148,23 @@ export default function Show({ auth, receiving, receiving_items }) {
 
                         <Link
                             href={route("receiving.edit", receiving.id)}
-                            className="bg-blue-500 py-2 px-4 font-light text-white rounded shadow transition-all hover:bg-blue-700 text-center"
+                            className="bg-blue-500 py-2 px-4 font-light text-white shadow transition-all hover:bg-blue-700 text-center"
                         >
-                            Edit Entry
+                            Edit
                         </Link>
 
                         <Link
                             href={route("receiving.myReceiving", receiving.id)}
-                            className="absolute right-4 top-4 bg-blue-500 py-2 px-4 font-light text-white rounded shadow transition-all hover:bg-blue-700 text-center"
+                            className="bg-blue-300 py-2 px-4 font-light text-white shadow transition-all hover:bg-blue-700 text-center"
+                        > Print
+                
+                        </Link>
+
+                        <Link
+                            href={route("receiving.myReceiving", receiving.id)}
+                            className="absolute right-2 top-2 py-2 px-2 font-light text-white rounded transition-all hover:bg-gray-300 text-center w-8"
                         >
-                            Print MRR
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Shredder--Streamline-Sharp"><desc>Shredder Streamline Icon: https://streamlinehq.com</desc><g id="shredder--device-electronics-shred-paper-cut-destroy-remove-delete"><path id="Rectangle 743" fill="#2859c5" d="M5 1h14v7H5V1Z" stroke-width="1"></path><path id="Subtract" fill="#8fbffa" fill-rule="evenodd" d="M23 8H1v10h5v-4h12v4h5V8Z" clip-rule="evenodd" stroke-width="1"></path><path id="Union" fill="#2859c5" fill-rule="evenodd" d="M13 14.25h1.5V20a3 3 0 0 0 3 3h1v-2h-1a1 1 0 0 1 -1 -1v-5.75H20v-1.5H4v1.5h3.5V20a1 1 0 0 1 -1 1h-1v2h1a3 3 0 0 0 3 -3v-5.75H11V23h2v-8.75Z" clip-rule="evenodd" stroke-width="1"></path></g></svg>
                         </Link>
                     </div>
 

@@ -36,6 +36,7 @@ class ReceivingController extends Controller
         //  dd($itemssss );
          $sortField = request("sort_field", 'created_at');
          $sortDirection = request("sort_direction", "desc");
+         
          if (request("mrr_no")) {
              $query->where("mrr_no", "like", "%" . request("mrr_no") . "%");
          }

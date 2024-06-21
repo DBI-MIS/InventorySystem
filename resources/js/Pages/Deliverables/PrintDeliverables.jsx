@@ -85,7 +85,7 @@ export default function PrintDeliverables({ deliverable,deliverable_items,queryP
                         <tr class="  bg-white border-b  dark:border-gray-700" key={deliverable_item.id}>
                             <td class="border text-xs border-gray-500 px-1 py-2 font-light   text-gray-800 whitespace-nowrap dark:text-white">{index + 1}</td>
                             
-                            <td class="border text-xs border-gray-500 px-1 py-2  font-light text-gray-800 whitespace-nowrap dark:text-white">{deliverable_item.quantity}</td>
+                            <td class="border text-xs border-gray-500 px-1 py-2  font-light text-gray-800 whitespace-nowrap dark:text-white">{deliverable_item.qty_out}</td>
                             <td class="border text-xs border-gray-500 px-1 py-2  font-light text-gray-800 whitespace-nowrap dark:text-white">{deliverable_item.uom}</td>
                             <th class="border text-xs border-gray-500 px-1 py-2 font-light text-gray-800 whitespace-nowrap dark:text-white">
                                 <Link href={route('item.show', deliverable_item.id)}>{deliverable_item.name}</Link>

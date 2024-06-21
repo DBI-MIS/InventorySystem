@@ -11,7 +11,7 @@ class Deliverables extends Model
     protected $casts = [
         'id' => 'string',
         'list_item_id' => 'array',
-        'created_at' => 'date: m-d-Y'
+        'created_at' => 'date: m-d-Y',
 
     ];
 
@@ -27,7 +27,7 @@ class Deliverables extends Model
         'client_id',
         'address_id',
         'remarks',
-        'created_by'
+        'created_by',
         
     ];
 
@@ -53,7 +53,7 @@ class Deliverables extends Model
 
     public function itemsDeliverables()
     {
-        return $this->belongsToMany(Item::class, 'deliverable_item')->withTimestamps();
+        return $this->belongsToMany(Item::class, 'deliverable_item', 'deliverables_id', 'item_id')->withTimestamps();
     }
 
     

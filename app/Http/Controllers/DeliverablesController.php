@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Deliverables;
 use App\Http\Requests\StoreDeliverablesRequest;
 use App\Http\Requests\UpdateDeliverablesRequest;
+use App\Http\Requests\UpsertItemRequest;
 use App\Http\Resources\ClientResource;
 use App\Http\Resources\DeliverablesResource;
 use App\Http\Resources\ItemResource;
@@ -91,42 +92,42 @@ class DeliverablesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(StoreDeliverablesRequest $request)
-    {
-        $data = $request->validated();
-        
-        $items = $data['list_item_id'];
-        $deliverable = Deliverables::create($data);
-        $deliverable->itemsDeliverables()->attach($items);
-
-        
-         
-
-        return redirect()->route('deliverables.index')->with('success', "Deliverables added successfully");
+{
+    $data = $request->validated();
+    $items = $data['items'];
+    
+   
+    foreach ($items as $item) {
+        if ($item['qty_out'] > $item['quantity']) {
+            return redirect()->back()->withInput()->withErrors(['items' => 'Quantity cannot exceed available amount.']);
+        }
     }
+
+    $deliverable = Deliverables::create($data);
+    
+    $itemIds = array_map(function ($item) {
+        return (int) $item['id'];
+    }, $items);
+    
+    $deliverable->itemsDeliverables()->attach($itemIds);
+
+    return redirect()->route('deliverables.index')->with('success', "Deliverables added successfully");
+}
 
     /**
      * Display the specified resource.
      */
     public function show(Deliverables $deliverable)
     {
-
-        // dd($deliverable);
-        $listItemIds = is_array($deliverable->list_item_id) ? $deliverable->list_item_id : [];
-        $deliverables_items = collect(); // Initialize as an empty collection for validation 
-        
-        if (count($listItemIds) > 0) {
-            // Fetch receiving items with relationships only if there are item ids
-            $deliverables_items = Item::query()
-                ->whereIn('id', $listItemIds)
-                ->get();
-        }
-        // dd($receiving_items);
+        $deliverable->load('itemsDeliverables'); //Load relationship
+    
         return inertia('Deliverables/Show', [
             'deliverable' => new DeliverablesResource($deliverable),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
-            'deliverables_items' =>  $deliverables_items
+            'deliverables_items' =>  $deliverable->itemsDeliverables, //Load relationship
         ]);
     }
 
@@ -216,4 +217,6 @@ class DeliverablesController extends Controller
             
         ]);
     }
+
+   
 }

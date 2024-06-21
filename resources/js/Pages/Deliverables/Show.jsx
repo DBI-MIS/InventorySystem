@@ -147,7 +147,7 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
                                       {deliverable_item.id ?? "No Item ID"}
                                   </td>
                                   <td className="px-3 py-2 text-nowrap">
-                                    {deliverable_item.quantity ?? "No Quantity for this Item"}
+                                    {deliverable_item.qty_out ?? "No Quantity for this Item"}
                                   </td>
                                   <td className="px-3 py-2 text-nowrap">
                                     {deliverable_item.uom ?? "UOM not Available"}

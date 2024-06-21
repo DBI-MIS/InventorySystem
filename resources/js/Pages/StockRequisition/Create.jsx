@@ -14,6 +14,7 @@ export default function Create({ auth }) {
     rs_no: '',
     sr_date: '',
     sr_notes: '',
+    items: [],
 
   });
   console.log(data);
@@ -42,32 +43,65 @@ export default function Create({ auth }) {
   //   });
   // };
 
-  const [tableRows, setTableRows] = useState([]);
+  // const [item, setItem] = useState({
+  //   sr_qty: '',
+  //   sr_unit: '',
+  //   sr_description: '',
+  // });
 
-  // Function to add a new row to tableRows
+  // // Function to add a new row to tableRows
+  // const addRow = () => {
+  //   setData(
+      
+  //     {
+  //       ...data,
+  //       items: [...data.items, item],
+  //       // sr_qty: data.sr_qty,
+  //       // sr_unit: data.sr_unit,
+  //       // sr_description: data.sr_description,
+  //     },
+  //   );
+
+  //   // Clear input fields after adding row
+  //   setItem({
+  //     sr_qty: '',
+  //     sr_unit: '',
+  //     sr_description: '',
+  //   });
+  // };
+
+  // // Function to handle form submission
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Handle form submission logic, e.g., post data to server
+  //   post(route("stockrequisition.store"));
+  // };
+
+  const [item, setItem] = useState({
+    sr_qty: '',
+    sr_unit: '',
+    sr_description: '',
+  });
+
   const addRow = () => {
-    setTableRows([
-      ...tableRows,
-      {
-        sr_qty: data.sr_qty,
-        sr_unit: data.sr_unit,
-        sr_description: data.sr_description,
-      },
-    ]);
+    if (!item.sr_qty || !item.sr_unit || !item.sr_description) {
+      console.log('Please fill in all item fields before adding a row.');
+      return;
+    }
+    setData(prevData => ({
+      ...prevData,
+      items: [...prevData.items, item],
+    }));
 
-    // Clear input fields after adding row
-    setData({
-      ...data,
+    setItem({
       sr_qty: '',
       sr_unit: '',
       sr_description: '',
     });
   };
 
-  // Function to handle form submission
   const onSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic, e.g., post data to server
     post(route("stockrequisition.store"));
   };
 
@@ -155,10 +189,10 @@ export default function Create({ auth }) {
                               id="stockrequest_sr_qty"
                               type="number"
                               name="sr_qty"
-                              // value={data.sr_qty} 
+                              value={item.sr_qty} 
                               className="mt-1 block w-full"
                               isFocused={true}
-                              onChange={e => setData('sr_qty', e.target.value)}
+                              onChange={e => setItem({ ...item, sr_qty: e.target.value })}
                               />
                            <InputError message={errors.sr_qty} className="mt-2"/>
                                             
@@ -170,10 +204,10 @@ export default function Create({ auth }) {
                               id="stockrequest_sr_unit"
                               type="text"
                               name="sr_unit"
-                              // value={data.sr_unit} 
+                              value={item.sr_unit} 
                               className="mt-1 block w-full"
                               isFocused={true}
-                              onChange={e => setData('sr_unit', e.target.value)}
+                              onChange={e => setItem({ ...item, sr_unit: e.target.value })}
                               >
                                 <option value="">Select UOM </option>
                                 <option value="M">Meters</option>
@@ -193,10 +227,10 @@ export default function Create({ auth }) {
                               id="stockrequest_sr_description"
                               type="text"
                               name="sr_description"
-                              // value={data.sr_description}
+                              value={item.sr_description}
                               className="mt-1 block w-full"
                               isFocused={true}
-                              onChange={e => setData('sr_description', e.target.value)}
+                              onChange={e => setItem({ ...item, sr_description: e.target.value })}
                           />
                           <InputError message={errors.sr_description} className="mt-2"/>
                     </div>
@@ -229,7 +263,7 @@ export default function Create({ auth }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {tableRows.map((row, index) => (
+                  {data.items.map((row, index) => (
                     <tr key={index}>
                       <td>{row.sr_qty}</td>
                       <td>{row.sr_unit}</td>
