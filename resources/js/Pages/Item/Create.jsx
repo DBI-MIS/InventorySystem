@@ -9,7 +9,7 @@ import { Head, Link, useForm} from "@inertiajs/react";
 import { useState } from "react";
 import Select from 'react-select';
 
-export default function Create({auth,brands,sku, categories,employees,locations}){
+export default function Create({auth,brands,sku, categories,employees,locations,}){
 
    const {data, setData, post,errors,reset} = useForm({
         name: '',

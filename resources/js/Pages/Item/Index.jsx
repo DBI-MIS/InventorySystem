@@ -5,7 +5,7 @@ import TextInput from "@/Components/TextInput";
 import { Alert} from "@material-tailwind/react";
 import React, { useEffect, useRef, useState } from "react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import {Head,Link, router} from "@inertiajs/react" ;
+import {Head, Link, router} from "@inertiajs/react" ;
 import SelectInput from "@/Components/SelectInput";
 import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP } from "@/constants";
 export default function Index({auth,items, queryParams = null, success,count}) {

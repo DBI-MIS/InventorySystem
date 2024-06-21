@@ -19,7 +19,7 @@ import Deliver from '@/Components/Deliver';
 import Srequest from '@/Components/Srequest';
 import Nuser from '@/Components/Nuser';
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({ user, header, children,}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
@@ -30,12 +30,11 @@ export default function Authenticated({ user, header, children }) {
                         <div className='flex flex-col'>
                             {/*Logo*/}
                             <div className="shrink-0 flex items-center p-1 mt-6 mb-12">
-                                <Link href="/">
+                            <NavLink href={route('dashboard')} >
                                     <DbitransparentLogo className="w-[32px] fill-current text-white" />
-                                </Link>
+                                </NavLink>
                             </div>
                             <div className="items-center flex flex-col gap-2">
-
 
                                 <div class="group relative">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
@@ -167,6 +166,13 @@ export default function Authenticated({ user, header, children }) {
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     
                     <div className="pt-2 pb-3 ml-10 space-y-1">
+
+    
+                         
+                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                    <DbitransparentLogo className="w-[32px] fill-current text-white" />
+                        </ResponsiveNavLink>
+                            
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     <Dboard className="block h-9 w-auto fill-current " />
                         </ResponsiveNavLink>
