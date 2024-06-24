@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignId('stockrequest_id')->constrained('stock_requisitions');
             $table->string('address')->nullable();
             $table->string('dr_date')->nullable();
-            $table->string('dr_qty')->nullable();
             $table->string('remarks')->nullable();
             $table->string('status')->default('pending');
             $table->string('list_item_id')->nullable();

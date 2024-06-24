@@ -97,7 +97,7 @@ class DeliverablesController extends Controller
 {
     $data = $request->validated();
     $items = $data['items'];
-    
+    // dd($data);
    
     foreach ($items as $item) {
         if ($item['qty_out'] > $item['quantity']) {

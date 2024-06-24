@@ -16,7 +16,6 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
         stockrequest_id: deliverable.stockrequest_id || "",
         client_id: deliverable.client_id || "",
         dr_date: deliverable.dr_date || "",
-        dr_qty:   deliverable.dr_qty || "",
         list_item_id:   existingItemsIds || "",
         _method: "PUT",
     });
@@ -135,6 +134,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
 
           <div className="py-12">
   <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div className="max-w-5/6"></div>
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
       <form onSubmit={onSubmit} 
                       className="p-4 sm:p8  bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
@@ -176,7 +176,7 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                       <InputError message={errors.address} className="mt-2"/>
                                   </div>
 
-                                  <div className="grid grid-cols-8 gap-2">
+                                  <div className="grid grid-cols-6 gap-2">
                                      
                                       <div className=" mt-4  col-span-2 ">
                                           <InputLabel htmlFor="deliverables_dr_no" value="DR No."/>
@@ -211,19 +211,6 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                                 </SelectInput>
                                             <InputError message={errors.stockrequest_id} className="mt-2"/>
                                         </div>
-                                      <div className="mt-4  col-span-2">
-                                          <InputLabel htmlFor="deliverables_dr_qty" value="Qty."/>
-                                          <TextInput 
-                                              id="deliverables_dr_qty"
-                                              type="number"
-                                              name="dr_qty"
-                                              value={data.dr_qty}
-                                              className="mt-1 block w-full"
-                                              isFocused={true}
-                                              onChange={e => setData('dr_qty', e.target.value)}
-                                          />
-                                          <InputError message={errors.dr_qty} className="mt-2"/>
-                                      </div>
                                       <div className="mt-4  col-span-2">
                                           <InputLabel htmlFor="deliverables_dr_date" value="Date."/>
                                           <TextInput 
@@ -301,7 +288,23 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                                         return (
                                                           <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
                                                           <td className="px-3 py-2">{selectedItem.id}</td>
-                                                          <td className="px-3 py-2">{selectedItem.quantity}</td>
+                                                          <td className="px-3 py-2">
+                <div className="flex flex-row items-center">
+                  <input
+                    type="number"
+                    value={selectedItem.qty_out || ''}
+                    onChange={(e) => handleQtyChange(selectedItem.id, e.target.value)}
+                    className="mt-1 block w-max border-0 text-right"
+                  />
+                  <span className="text-xs">/ {selectedItem.quantity}</span>
+                </div>
+                {errors[`items.${selectedItem.id}.qty_out`] && (
+                  <InputError
+                    message={errors[`items.${selectedItem.id}.qty_out`]}
+                    className="mt-2"
+                  />
+                )}
+              </td>
                                                           <td className="px-3 py-2">{selectedItem.uom}</td>
                                                           <td className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
                                                                 <Link href={route('deliverables.show', selectedItem.id)}>

@@ -48,17 +48,14 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'password',
-        'role'
+        'role',
+        'email_verified_at'
+
     ];
-    public function items()
-    {
-        return $this->hasMany(Item::class);
-    }
-    public function receivings(){
-        return $this->belongsToMany(Receiving::class);
-    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -80,5 +77,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+    public function receivings(){
+        return $this->belongsToMany(Receiving::class);
     }
 }

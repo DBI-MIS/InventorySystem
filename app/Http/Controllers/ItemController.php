@@ -21,6 +21,7 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -34,7 +35,7 @@ class ItemController extends Controller
         // dd($user);
         // $duser= auth()->user()->role;
         // dd($duser);
-        
+      
         $query = Item::query() ;
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -113,6 +114,7 @@ class ItemController extends Controller
     public function store(StoreItemRequest $request)
     {
         // dd($formData);
+        
         $data = $request->validated();
         // dd($data);
         Item::create($data);
@@ -141,6 +143,8 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
+
+        
         // dd($item);
        // show the stored info from creation
             $categories = Category::query()->orderBy('name', 'asc')->get();
@@ -165,15 +169,22 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-       //save the info from the edit section
-       $data = $request->validated();
-       
-    //    $data['updated_by'] = Auth::id();
-       $item->update($data);
-       // $item->update($request->validated());
 
-       return to_route('item.index')
-       ->with('success', "Item \"$item->name\" was updated");
+        $user = Auth::user();
+
+        if (Gate::allows('update', $item)) {
+         $data = $request->validated();
+       
+         //    $data['updated_by'] = Auth::id();
+            $item->update($data);
+            // $item->update($request->validated());
+     
+            return to_route('item.index')
+            ->with('success', "Item \"$item->name\" was updated");
+        } else {
+            abort(403, 'You are not authorized to update.');
+        }
+     
     }
 
 
@@ -184,7 +195,11 @@ class ItemController extends Controller
     {
         // dd($user);
         // true
-        abort_if(Auth::user()->isUser(), 403); 
+        // abort_if(Auth::user()->isUser(), 403); 
+        if (! (Auth::user()->isUser()) || Auth::user()->isEditor())  {
+            abort(403, 'You are not authorized to delete this item.');
+        }
+    
       //bort_unless() //false
         $name = $item->name;
         $item->delete();

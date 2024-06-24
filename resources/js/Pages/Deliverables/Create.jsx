@@ -22,7 +22,6 @@ export default function Create({
         address: "",
         dr_no: "",
         dr_date: "",
-        dr_qty: "",
         remarks: "",
         items: [],
     });

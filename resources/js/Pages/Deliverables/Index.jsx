@@ -144,8 +144,6 @@ const deleteDeliverables = (deliverable) => {
                             <TableHeading className="pr-10" name="rs_no_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>RS NO.:</TableHeading>
                             <th className="pr-10" name="address_id">ADDRESS</th>
                             <TableHeading className="pr-10" name="dr_date"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DATE</TableHeading>
-                            <th className="pr-10" name="item_qty">QTY</th>
-                            <th className="px-3 py-3"></th>
                            
 
                         </tr>
@@ -185,7 +183,6 @@ const deleteDeliverables = (deliverable) => {
                                   <td className="px-3 py-2">{deliverable.stockrequest.rs_no ?? "No RS Number"}</td>
                                   <td className="px-3 py-2">{deliverable.address ?? "No Deliverable Address"}</td>
                                   <td className="px-3 py-2 text-nowrap">{deliverable.dr_date ?? "No DR Date"}</td>
-                                  <td className="px-3 py-2 text-nowrap">{deliverable.dr_qty ?? "No DR Quantity"}</td>
                                   <td className="px-3 py-2 text-nowrap">
                                           <div className="flex">
                                               <Link href={route('deliverables.edit', deliverable.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 

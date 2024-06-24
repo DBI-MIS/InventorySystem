@@ -139,7 +139,7 @@ class ReceivingController extends Controller
     {
 
         $data = $request->validated();
-        //    dd($data);
+           dd($data);
         $items = $data['group_item_id'];
         $receiving =Receiving::create($data);
         $receiving->items()->attach($items);  

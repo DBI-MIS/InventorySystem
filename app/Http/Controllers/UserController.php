@@ -7,14 +7,19 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(User $user)
     {
+
+        if ((Auth::user()->isUser()) || Auth::user()->isEditor())  {
+            abort(403, 'You are not allowed to view this page');
+        }
         $query = User::query();
 
         $sortField = request("sort_field", 'created_at');
@@ -49,6 +54,8 @@ class UserController extends Controller
     {
          $data = $request->validated();
         // dd($data);
+        $data['email_verified_at'] = time();
+        $data['password'] = bcrypt($data['password']);
         User::create($data);
         return to_route('user.index')->with('success', 'User created successfully!');
     }
@@ -64,9 +71,12 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(StoreUserRequest $user)
+    public function edit(User $user)
     {
-        //
+         //  dd($user);
+         return inertia('User/Edit',[
+            'user' => new UserResource($user),
+          ]);
     }
 
     /**
@@ -74,14 +84,28 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $data = $request->validated();
+        $password = $data['password'] ?? null;
+        if ($password) {
+            $data['password'] = bcrypt($password);
+        } else {
+            unset($data['password']);
+        }
+        $user->update($data);
+
+        return to_route('user.index')->with('success', "User \"$user->name\" was updated");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StoreUserRequest $user)
+    public function destroy(User $user)
     {
-        //
+        
+        $name = $user->name;
+        $user->delete();
+       
+        
+        return to_route('user.index')->with('success', "User \" $name \" was deleted!");
     }
 }

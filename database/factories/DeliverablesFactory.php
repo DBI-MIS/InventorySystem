@@ -24,7 +24,7 @@ class DeliverablesFactory extends Factory
             'address'=> fake()->address(),
             'dr_date'=> now(),
             'stockrequest_id' => StockRequisition::factory(),
-            'dr_qty' => rand(1, 10),
+            // 'dr_qty' => rand(1, 10),
             'client_id'=>Client::factory(),
             'created_at' => time(),
             'updated_at' => time(),

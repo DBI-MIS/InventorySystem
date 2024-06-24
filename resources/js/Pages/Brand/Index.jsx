@@ -5,6 +5,8 @@ import { Head, Link, router } from "@inertiajs/react";
 import { Alert } from "@material-tailwind/react";
 import React from "react";
 export default function Index({ auth, brands, queryParams = null, success }) {
+
+    console.log(brands)
     const [open, setOpen] = React.useState(true);
     queryParams = queryParams || {};
 

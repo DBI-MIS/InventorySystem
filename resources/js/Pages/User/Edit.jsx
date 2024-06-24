@@ -9,16 +9,18 @@ import { Select } from "@material-tailwind/react";
 import React, { useEffect } from 'react';
 import { useState } from "react";
 
-export default function Create({auth}){
+export default function Edit({auth,user}){
    
     // data will hold/contain the ff:
    const {data, setData, post,errors,reset} = useForm({
-        name: '',
-        surname: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        role: '',
+        name: user.name || "",
+        surname:  user.surname || "",
+        email:  user.email || "",
+        password:  "",
+        password_confirmation: "",
+        role:  user.role|| "",
+        _method: 'PUT'
+
     })
     const rolesOptions = Object.keys(USER_STATUS_TEXT_MAP).map((key) => ({
         value: key,
@@ -32,21 +34,29 @@ export default function Create({auth}){
      const [isRtl, setIsRtl] = useState(false);
   
 
-    // checking password if match
-    const [errorMessage, setErrorMessage] = useState(null);
+ // checking password if match
+ const [errorMessage, setErrorMessage] = useState(null);
 
-    const handlePassword = (event) => setData('password',event.target.value);
-    const handleConfirmPassword = (event) =>  setData('password_confirmation',event.target.value);
-    // setConfirmPassword(event.target.value);
+ const handlePassword = (event) => setData('password',event.target.value);
+ const handleConfirmPassword = (event) =>  setData('password_confirmation',event.target.value);
+ // setConfirmPassword(event.target.value);
 
+//  const validatePassword = () => {
+//     if (data.password !== data.password_confirmation) {
+//       setErrorMessage('Password and Confirm password do not match!');
+//     } else {
+//       setErrorMessage(''); // Clear 
+//     }
+//   }
 
-    const validatePassword = () => {
-        if (data.password !== data.password_confirmation) {
-          setErrorMessage('Password and Confirm password do not match!');
-        } else {
-          setErrorMessage(''); // Clear 
-        }
-      }
+    // const validatePassword = () => {
+    //     if (password !== confirmPassword) {
+    //       setErrorMessage('Passwords do not match!');
+    //     } else {
+    //         setData('password', password)
+    //       setErrorMessage(''); // Clear 
+    //     }
+    //   }
     
     // CHECKING PURPOSES
      useEffect(() => {
@@ -55,14 +65,14 @@ export default function Create({auth}){
   
     const onSubmit = (e) =>{
         e.preventDefault();
-        post(route("user.store"));
+        post(route("user.update", user.id));
     }
     return(
         <AuthenticatedLayout
         user={auth.user}
         header={
           <div className="flex justify-between items-center"  >
-            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New User  </h2>
+            <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit User  </h2>
           </div>
         }
         >
@@ -129,7 +139,7 @@ export default function Create({auth}){
                             {/* 2ND GRID COLUMN */}
                             <div className=" col-span-1 grid grid-cols-1 content-start">
 
-                                <div className="mt-8 col-span-2">
+                            <div className="mt-8 col-span-2">
                                     <InputLabel htmlFor="user_password" value="Password"/>
                                     <TextInput
                                     type="password"
@@ -154,7 +164,7 @@ export default function Create({auth}){
                                     className="mt-1 block w-full"
                                     isFocused={true}
                                     onChange={handleConfirmPassword}
-                                    onBlur={validatePassword}
+                                    // onBlur={validatePassword}
                                     
                                     />
                                     {errorMessage && <p className="text-red-600 text-xs">{errorMessage}</p>}
@@ -183,7 +193,7 @@ export default function Create({auth}){
                                         id="user_role"
                                         name="role"
                                         className="mt-1 block w-full"
-                                        defaultValue='user'
+                                        defaultValue={data.role}
                                         onChange={e => setData('role', e.target.value)} >
                                         <option value="">Select User Role </option>
                                         <option value="super_admin">Super Admin</option>

@@ -53,6 +53,7 @@ export default function Index({
 
         router.delete(route("user.destroy", user.id));
     };
+    console.log(users)
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -149,7 +150,7 @@ export default function Index({
 
                         <div className="h-auto">
                             <div className="grid grid-cols-3 gap-5">
-                                {users.data.map((user) => (
+                                {users.data.map((user,index) => (
                                     <div
                                         key={user.id}
                                         className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg w-full p-6 min-h-[200px] flex flex-col place-content-between"
@@ -227,10 +228,7 @@ export default function Index({
 
                                             <div className="flex justify-end items-center">
                                                 <Link
-                                                    href={route(
-                                                        "user.edit",
-                                                        user.id
-                                                    )}
+                                                  href={route('user.edit', user.id)}
                                                     className="text-blue-600 mx-1 hover:text-gray-600"
                                                 >
                                                     <div className="group relative">
