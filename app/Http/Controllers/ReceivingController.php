@@ -23,6 +23,7 @@ use App\Models\Item;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ReceivingController extends Controller
 {
@@ -127,20 +128,13 @@ class ReceivingController extends Controller
      * Store a newly created resource in storage.
      */
 
-    //  public function assignItem(Request $request, $itemId, $receivingId){
-    //     $item = Item::findorFail($itemId);
-    //     $receiving = Receiving::findorFail($receivingId);
-     
-
-    //     $receiving->items()->attach($item);
-    //     return response()->json(['message' => 'Item assigned successfully']);
-    //  }
     public function store(StoreReceivingRequest $request)
     {
 
         $data = $request->validated();
            dd($data);
         $items = $data['group_item_id'];
+        $data['user_id'] = Auth::id();
         $receiving =Receiving::create($data);
         $receiving->items()->attach($items);  
         // $data['created_by'] = Auth()->user()->id;
@@ -197,43 +191,50 @@ public function show(Receiving $receiving, Request $request)
      */
     public function edit(Receiving $receiving)
     {
-        $items = Item::query()->orderBy('name', 'asc')->get();
-        $clients =  Client::query()->distinct()->orderBy('name', 'asc')->get();
-        // $clients = Client::select('name')->distinct()->orderBy('name', 'asc')->get();
-        $delivers = Deliverables::query()->distinct()->orderBy('dr_no', 'asc')->get();
-        // dd($clients);
-        // Fetch brand name and category name for existing items
-        foreach ($items as $item) {
-            $item->brand_name = $item->brand->name;
-            $item->category_name = $item->category->name;
-            $item->sku_prefix = $item->category->sku_prefix;
-        }
-        // dd($receiving);
-        $parsedId = json_decode($receiving, true);
-    
-        // Access the value of the 'id' key
-        $id = $parsedId['id'];
-        
-        $receiving = Receiving::find($id);
-        $existingItems = $receiving->items;
-        //   dd($existingItems);
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
-        $existingItemIds= $receiving->items()->pluck('items.id');
-        // dd($existingItemIds);
-        // Convert array strings => array of integers
-        $existingItemIds = array_map('intval', $existingItemIds->toArray());
+        $response = Gate::authorize('update', $receiving);
 
-       
-       return inertia('Receiving/Edit',[
-        'items' => ItemResource::collection($items),
-        'clients' => ClientResource::collection($clients),
-            'receiving' => new ReceivingResource($receiving),
-            'existingItems' =>  $existingItems,
-            'existingItemIds' => $existingItemIds,
-            'delivers' => DeliverablesResource::collection($delivers),
-       ]
-       );
+                if ($response->allowed()) {
+                $items = Item::query()->orderBy('name', 'asc')->get();
+                $clients =  Client::query()->distinct()->orderBy('name', 'asc')->get();
+                // $clients = Client::select('name')->distinct()->orderBy('name', 'asc')->get();
+                $delivers = Deliverables::query()->distinct()->orderBy('dr_no', 'asc')->get();
+                // dd($clients);
+                // Fetch brand name and category name for existing items
+                foreach ($items as $item) {
+                    $item->brand_name = $item->brand->name;
+                    $item->category_name = $item->category->name;
+                    $item->sku_prefix = $item->category->sku_prefix;
+                }
+                // dd($receiving);
+                $parsedId = json_decode($receiving, true);
+            
+                // Access the value of the 'id' key
+                $id = $parsedId['id'];
+                
+                $receiving = Receiving::find($id);
+                $existingItems = $receiving->items;
+                //   dd($existingItems);
+                $sortField = request("sort_field", 'created_at');
+                $sortDirection = request("sort_direction", "desc");
+                $existingItemIds= $receiving->items()->pluck('items.id');
+                // dd($existingItemIds);
+                // Convert array strings => array of integers
+                $existingItemIds = array_map('intval', $existingItemIds->toArray());
+
+            
+            return inertia('Receiving/Edit',[
+                'items' => ItemResource::collection($items),
+                'clients' => ClientResource::collection($clients),
+                    'receiving' => new ReceivingResource($receiving),
+                    'existingItems' =>  $existingItems,
+                    'existingItemIds' => $existingItemIds,
+                    'delivers' => DeliverablesResource::collection($delivers),
+            ]
+            );
+        }
+        else{
+            return abort(403, $response->message());
+        }
     }
     /**
      * Update the specified resource in storage.
@@ -259,10 +260,16 @@ public function show(Receiving $receiving, Request $request)
      */
     public function destroy(Receiving $receiving)
     {
-        $id = $receiving->id;
-        $receiving->delete();
-        return to_route('receiving.index')
-       ->with('success', "Receiving \"$id\" was deleted");
+        $response = Gate::authorize('update', $location);
+
+        if ($response->allowed()) {
+            $id = $receiving->id;
+            $receiving->delete();
+            return to_route('receiving.index')
+        ->with('success', "Receiving \"$id\" was deleted");
+        }else{
+            return abort(403, $response->message());
+        }
     
     }
     public function myReceiving(Receiving $receivingId) {

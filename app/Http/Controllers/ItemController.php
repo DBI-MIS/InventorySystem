@@ -32,6 +32,9 @@ class ItemController extends Controller
      */
     public function index(User $user)
     {  
+        if (! Gate::allows('viewAny', Item::class)) { 
+            abort(403, 'You are not authorized to view items.');
+        }
         // dd($user);
         // $duser= auth()->user()->role;
         // dd($duser);
@@ -63,10 +66,6 @@ class ItemController extends Controller
             'success' => session('success'),
             'count' => isset($count) ? $count : null
              ]);
-          
-
-
-        
        
     }
 
@@ -75,6 +74,9 @@ class ItemController extends Controller
      */
     public function create(Item $item)
     {
+        if (! Gate::allows('create', $item)) {  
+            abort(403, 'You are not authorized to create items.');
+          }
          // select
          $brands = Brand::query()->orderBy('name', 'asc')->get();
          $categories = Category::query()->orderBy('name', 'asc')->get();
@@ -97,6 +99,7 @@ class ItemController extends Controller
         ]);
 
     }
+
     function generateSkuId() {
         // $id = "9";
         // $user->orders()->where('service_id', $request->service_id)->orderBy('id', 'DESC')->first();
@@ -107,15 +110,16 @@ class ItemController extends Controller
         return $sku;
         
     }
-  
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreItemRequest $request)
     {
         // dd($formData);
-        
         $data = $request->validated();
+        $data['user_id'] = Auth::id();
+    
         // dd($data);
         Item::create($data);
         return to_route('item.index')->with('success', 'Item was created');
@@ -125,19 +129,21 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $item ,User $user) 
+    public function show(Item $item, User $user) 
     { 
-        if (! Gate::allows('view', $item)) {  
-            abort(403, 'You are not authorized to access this page.');
-          }
-    
-        return (inertia('Item/Show', [
-            'item' => new ItemResource($item),
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            
-        ]))        
-        ;
+        $response = Gate::authorize('view', $item);
+
+        if ($response->allowed()) {
+            return (inertia('Item/Show', [
+                'item' => new ItemResource($item),
+                'queryParams' => request()->query() ?: null,
+                'success' => session('success'),
+                
+            ]));
+        } else
+        {
+            return redirect()->route('item.index')->with('error', $response->message());
+        }
    
     }
 
@@ -204,9 +210,13 @@ class ItemController extends Controller
         // dd($user);
         // true
         // abort_if(Auth::user()->isUser(), 403); 
-        if (! (Auth::user()->isUser()) || Auth::user()->isEditor())  {
-            abort(403, 'You are not authorized to delete this item.');
-        }
+        // if (! (Auth::user()->isUser()) || Auth::user()->isEditor())  {
+        //     abort(403, 'You are not authorized to delete this item.');
+        // }
+        if (! Gate::allows('delete', $item)) {  
+            abort(403, 'You are not authorized to delete items.');
+          }
+        
     
       //bort_unless() //false
         $name = $item->name;

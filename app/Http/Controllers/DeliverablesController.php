@@ -14,7 +14,9 @@ use App\Models\Client;
 use App\Models\Item;
 use App\Models\Receiving;
 use App\Models\StockRequisition;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class DeliverablesController extends Controller
@@ -24,6 +26,9 @@ class DeliverablesController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('viewAny', Deliverables::class)) { 
+            abort(403, 'You are not authorized to view delis.');
+        }
         $query = Deliverables::query() ;
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -98,7 +103,7 @@ class DeliverablesController extends Controller
     $data = $request->validated();
     $items = $data['items'];
     // dd($data);
-   
+    $data['user_id'] = Auth::id();
     foreach ($items as $item) {
         if ($item['qty_out'] > $item['quantity']) {
             return redirect()->back()->withInput()->withErrors(['items' => 'Quantity cannot exceed available amount.']);

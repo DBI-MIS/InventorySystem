@@ -16,7 +16,8 @@ class StockRequisition extends Model
         'sr_qty',
         'sr_unit',
         'sr_description',
-        'sr_notes'
+        'sr_notes',
+        'user_id'
     ];
 
     // public function stockrequisition()
@@ -32,7 +33,14 @@ class StockRequisition extends Model
     {
         return $this->belongsTo(Item::class);
     }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
+    public function sritems()
+    {
+        return $this->belongsToMany(Sritem::class, 'stock_sritem')->withTimestamps();
+    }
     // public function rsnoStockRequest()
     // {
     //     return $this->belongsToMany(Item::class, 'stockrequest_item')->withTimestamps();

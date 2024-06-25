@@ -30,6 +30,7 @@ class Item extends Model
         'employee_id',
         'statuses',
         'remark',
+        'user_id'
     
     ];
     public function brand(){
@@ -61,6 +62,9 @@ class Item extends Model
     }
     public function stockrequisition(){
         return $this->hasOne(StockRequisition::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
     }
  /**
      * The attributes that should be mutated to dates.

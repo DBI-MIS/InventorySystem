@@ -3,6 +3,7 @@
 use App\Models\Deliverables;
 use App\Models\Item;
 use App\Models\Receiving;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('employee_id')->nullable();
             $table->string('remarks')->nullable();
             $table->string('status')->default('pending');
+            $table->foreignIdFor(User::class)->constrained();
             $table->softDeletes();
             $table->timestamps();
         });

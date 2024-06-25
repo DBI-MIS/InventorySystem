@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -92,6 +93,7 @@ class ClientFactory extends Factory
             'tin_no' => $tin_no,
             'status' =>  $status,
             'remarks' =>  $remarks,
+            'user_id' => User::factory()
         ];
     }
 }

@@ -18,7 +18,6 @@ class Deliverables extends Model
     use HasFactory;
 
     protected $fillable = [
-        'list_item_id',
         'dr_no',
         'address',
         'stockrequest_id',
@@ -27,7 +26,7 @@ class Deliverables extends Model
         'client_id',
         'address_id',
         'remarks',
-        'created_by',
+         'user_id'
         
     ];
 
@@ -54,6 +53,9 @@ class Deliverables extends Model
     public function itemsDeliverables()
     {
         return $this->belongsToMany(Item::class, 'deliverable_item', 'deliverables_id', 'item_id')->withTimestamps();
+    }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     

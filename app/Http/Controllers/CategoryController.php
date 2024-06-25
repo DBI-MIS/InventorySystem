@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
@@ -16,7 +17,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-       
+        if (! Gate::allows('viewAny', Category::class)) { 
+            abort(403, 'You are not authorized to view categories.');
+        }
             $query = Category::query();
             $sortField = request("sort_field", 'created_at');
             $sortDirection = request("sort_direction", "desc");
@@ -53,6 +56,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = Auth::id();
         // dd($data);
         Category::create($data);
         return to_route('category.index')->with('success', 'Category was created');

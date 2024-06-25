@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -36,6 +37,7 @@ class CategoryFactory extends Factory
             'name'=> $name,
             'description'=> fake()->realText(),
             'sku_prefix'=> $prefix,
+            'user_id' => User::factory()
            
         ];
     }

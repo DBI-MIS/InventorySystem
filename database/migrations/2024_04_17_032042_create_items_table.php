@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->string('statuses')->default('pending');
             $table->string('remark')->nullable();
             $table->softDeletes();
+            $table->foreignIdFor(User::class)->constrained();
             $table->timestamps();
         });
     }

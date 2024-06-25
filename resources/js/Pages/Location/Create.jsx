@@ -9,7 +9,8 @@ export default function Create({auth}){
    const {data, setData, post,errors,reset} = useForm({
         name: '',
         company: '',
-        address: ''
+        address: '',
+        user_id:''
     })
 
     const onSubmit = (e) =>{
@@ -36,6 +37,13 @@ export default function Create({auth}){
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <form onSubmit={onSubmit}  data-page="{{ json_encode($page) }}"
                         className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
+                              <input type="text"
+                                 id="item_user_id"
+                                 name="user_id"
+                                 defaultValuee={data.user_id}
+                                 hidden="true"
+                                />
+                               
                         <div className="mt-4">
                             <InputLabel htmlFor="location_name" value="Location Name"/>
                             <TextInput 

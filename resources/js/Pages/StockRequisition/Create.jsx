@@ -15,6 +15,7 @@ export default function Create({ auth }) {
     sr_date: '',
     sr_notes: '',
     items: [],
+    user_id:''
 
   });
   console.log(data);
@@ -126,6 +127,13 @@ export default function Create({ auth }) {
           <form onSubmit={onSubmit} className="p-4 sm:p8  bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
 
            <div className="grid grid-cols-3 gap-2">
+           <input type="text"
+                                 id="item_user_id"
+                                 name="user_id"
+                                 defaultValuee={data.user_id}
+                                 hidden="true"
+                                />
+                               
                 <div className="col-span-1 grid grid-cols-2 gap-2 content-start">
                   <div className="mt-24 col-span-3">
                        <InputLabel htmlFor="stockrequest_sr_to" value="To."/>

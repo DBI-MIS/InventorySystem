@@ -24,6 +24,7 @@ export default function Create({
         dr_date: "",
         remarks: "",
         items: [],
+        user_id:''
     });
 
     console.log(data);
@@ -84,17 +85,17 @@ export default function Create({
         post(route("deliverables.store"));
     };
 
-    const onUpsert = (e) => {
-        e.preventDefault();
-        post(
-            route("item.upsert"),
-            { items: data.items },
-            {
-                preserveScroll: true,
-                preserveState: true,
-            }
-        );
-    };
+    // const onUpsert = (e) => {
+    //     e.preventDefault();
+    //     post(
+    //         route("item.upsert"),
+    //         { items: data.items },
+    //         {
+    //             preserveScroll: true,
+    //             preserveState: true,
+    //         }
+    //     );
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -167,6 +168,13 @@ export default function Create({
                                             className="mt-2"
                                         />
                                     </div>
+                                    <input type="text"
+                                    id="item_user_id"
+                                    name="user_id"
+                                    defaultValuee={data.user_id}
+                                    hidden="true"
+                                    />
+                                
                                     <div className="mt-4 col-span-2">
                                         <InputLabel
                                             htmlFor="deliverables_dr_date"

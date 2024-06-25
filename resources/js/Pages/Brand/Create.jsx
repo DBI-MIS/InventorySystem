@@ -9,6 +9,7 @@ export default function Create({auth}){
    const {data, setData, post,errors,reset} = useForm({
         name: '',
         description: '',
+        user_id: ''
     })
 
     const onSubmit = (e) =>{
@@ -34,6 +35,13 @@ export default function Create({auth}){
                         className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
                        
                         <div className=" ">
+                             <input type="text"
+                                 id="item_user_id"
+                                 name="user_id"
+                                 defaultValuee={data.user_id}
+                                 hidden="true"
+                                />
+                               
                                 <div className="mt-4">
                                     <InputLabel htmlFor="brand_name" value="Brand Name"/>
                                     <TextInput

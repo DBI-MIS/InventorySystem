@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -165,6 +166,7 @@ class ItemFactory extends Factory
             'created_at' => time(),
             'updated_at' => time(),
             'remark'=> fake()->realText(),
+            'user_id' => User::factory()
         ];
     }
 }

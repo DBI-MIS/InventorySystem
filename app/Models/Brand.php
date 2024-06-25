@@ -11,7 +11,8 @@ class Brand extends Model
 
     protected $fillable = [
         'name',
-        'description'
+        'description',
+          'user_id'
     ];
 
     public function item(){
@@ -25,5 +26,8 @@ class Brand extends Model
     }
     public function employee(){
         return $this->belongsTo(Employee::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

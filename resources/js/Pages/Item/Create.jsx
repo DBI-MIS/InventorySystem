@@ -24,7 +24,8 @@ export default function Create({auth,brands,sku, categories,employees,locations,
         quantity:'',
         statuses: '',
         remark:'',
-        location_id: '2' // == DBI
+        location_id: '2', // == DBI
+        user_id: ''
         
     })
     const statusesOptions = Object.keys(ITEM_STATUS_TEXT_MAP).map((key) => ({
@@ -71,6 +72,14 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                          <div className="col-span-2 grid grid-cols-2 gap-2 content-start">
 
                             {/* item */}
+                           
+                                <input type="text"
+                                 id="item_user_id"
+                                 name="user_id"
+                                 defaultValuee={data.user_id}
+                                 hidden="true"
+                                />
+                               
                             <div className="mt-6 col-span-1">
                                 <InputLabel htmlFor="item_name" value="Item Name"/>
                                   <TextInput 

@@ -15,7 +15,8 @@ class Client extends Model
         'contact_no',
         'tin_no',
         'status',
-        'remarks'
+        'remarks',
+        'user_id'
     ];
     public function receiving(){
         return $this->belongsTo(Employee::class);
@@ -25,5 +26,17 @@ class Client extends Model
     {
         return $this->hasMany(Deliverables::class);
     }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
+
+
+
+
+
+
+
 
 }

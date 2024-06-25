@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -17,9 +18,10 @@ class UserController extends Controller
     public function index(User $user)
     {
 
-        if ((Auth::user()->isUser()) || Auth::user()->isEditor())  {
-            abort(403, 'You are not allowed to view this page');
+        if (! Gate::allows('viewAny', User::class)) { 
+            abort(403, 'You are not authorized to view users.');
         }
+        
         $query = User::query();
 
         $sortField = request("sort_field", 'created_at');
@@ -73,10 +75,18 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-         //  dd($user);
-         return inertia('User/Edit',[
-            'user' => new UserResource($user),
-          ]);
+        $response = Gate::authorize('update', $user);
+
+        if ($response->allowed()) {
+            
+            return inertia('User/Edit',[
+                'user' => new UserResource($user),
+            ]);
+        }
+        else
+        {
+            return abort(403, $response->message());
+        }
     }
 
     /**
@@ -101,11 +111,18 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $response = Gate::authorize('delete', $user);
+
+        if ($response->allowed()) {
         
-        $name = $user->name;
-        $user->delete();
-       
-        
-        return to_route('user.index')->with('success', "User \" $name \" was deleted!");
+            $name = $user->name;
+            $user->delete();
+            
+            return to_route('user.index')->with('success', "User \" $name \" was deleted!");
+        }
+        else
+        {
+            return abort(403, $response->message());
+        }
     }
 }

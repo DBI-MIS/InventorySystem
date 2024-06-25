@@ -12,6 +12,7 @@ class Category extends Model
         'name',
         'description',
         'sku_prefix',
+        'user_id'
     ];
 
     public function item(){
@@ -19,5 +20,8 @@ class Category extends Model
     }
     public function receiving(){
         return $this->belongsTo(Receiving::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

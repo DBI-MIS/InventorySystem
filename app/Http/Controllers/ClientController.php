@@ -6,6 +6,8 @@ use App\Models\Client;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Http\Resources\ClientResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ClientController extends Controller
 {
@@ -14,7 +16,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        
+        if (! Gate::allows('viewAny', Client::class)) { 
+            abort(403, 'You are not authorized to view clients.');
+        }
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
         $query = Client::query();
@@ -41,6 +45,10 @@ class ClientController extends Controller
      */
     public function create()
     {
+        
+        if (! Gate::allows('create', Client::class)) {  
+            abort(403, 'You are not authorized to create clients.');
+          }
         return Inertia("Client/Create");
     }
 
@@ -50,6 +58,7 @@ class ClientController extends Controller
     public function store(StoreClientRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = Auth::id();
         // dd($data);
         Client::create($data);
         return to_route('client.index')->with('success', 'Client was created');
@@ -60,11 +69,19 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        return inertia('Client/Show', [
-            'client' => new ClientResource($client),
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-        ]);
+        $response = Gate::authorize('view', $client);
+
+        if ($response->allowed()) {
+            return inertia('Client/Show', [
+                'client' => new ClientResource($client),
+                'queryParams' => request()->query() ?: null,
+                'success' => session('success'),
+            ]);
+        }
+        else
+        {
+            return abort(403, $response->message());
+         }
     }
 
     /**
@@ -74,9 +91,15 @@ class ClientController extends Controller
    
     {
         //  dd($client);
-        return inertia('Client/Edit',[
-            'client' => new ClientResource($client),
-          ]);
+        $response = Gate::authorize('update', $client);
+
+            if ($response->allowed()) {
+            return inertia('Client/Edit',[
+                'client' => new ClientResource($client),
+            ]);
+        }else{
+            return abort(403, $response->message());
+        }
     }
 
     /**
@@ -96,9 +119,17 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        $name = $client->name;
-        $client->delete();
-       
-        return to_route('client.index')->with('success', "Client \" $name \" was deleted!");
+        $response = Gate::authorize('delete', $client);
+
+        if ($response->allowed()) {
+            $name = $client->name;
+            $client->delete();
+        
+            return to_route('client.index')->with('success', "Client \" $name \" was deleted!");
+        }
+        else
+        {
+             return abort(403, $response->message());
+        }
     }
 }

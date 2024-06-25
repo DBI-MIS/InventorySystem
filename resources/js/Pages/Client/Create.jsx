@@ -19,6 +19,7 @@ export default function Create({auth}){
         tin_no: '',
         status: '',
         remarks: '',
+        user_id: ''
     })
     const [errorMessage, setErrorMessage] = useState('');
     const [errorMessages, setErrorMessages] = useState('');
@@ -100,6 +101,14 @@ export default function Create({auth}){
 
                          {/* 1ST GRID COLUMN */}
                          <div className="col-span-2 grid grid-cols-2 gap-2 content-start">
+
+                         <input type="text"
+                                 id="item_user_id"
+                                 name="user_id"
+                                 defaultValuee={data.user_id}
+                                 hidden="true"
+                                />
+                               
                                 <div className="mt-6 col-span-2">
                                     <InputLabel htmlFor="client_name" value="Client / Project Name"/>
                                     <TextInput 

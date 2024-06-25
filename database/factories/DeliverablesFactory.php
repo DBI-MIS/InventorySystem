@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Client;
 use App\Models\StockRequisition;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,6 @@ class DeliverablesFactory extends Factory
     public function definition(): array
     {
         return [
-            'list_item_id'=>rand(1, 30),
             'dr_no'=> fake()->regexify('[0-9]{8}'),
             'address'=> fake()->address(),
             'dr_date'=> now(),
@@ -29,6 +29,7 @@ class DeliverablesFactory extends Factory
             'created_at' => time(),
             'updated_at' => time(),
             'remarks'=> fake()->realText(),
+            'user_id' => User::factory()
 
 
             

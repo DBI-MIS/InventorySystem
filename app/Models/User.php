@@ -86,4 +86,25 @@ class User extends Authenticatable
     public function receivings(){
         return $this->belongsToMany(Receiving::class);
     }
+    public function categories(){
+        return $this->hasMany(Category::class);
+    }
+    public function brands(){
+        return $this->hasMany(Brand::class);
+    }
+    public function clients(){
+        return $this->hasMany(Client::class);
+    }
+    public function deliverables(){
+        return $this->hasMany(Deliverables::class);
+    }
+    public function employees(){
+        return $this->hasMany(Employee::class);
+    }
+    public function locations(){
+        return $this->hasMany(Location::class);
+    }
+    public function stockrequisitions(){
+        return $this->hasMany(StockRequisition::class);
+    }
 }

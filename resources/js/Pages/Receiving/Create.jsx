@@ -22,6 +22,7 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
         si_no:'',
         address:'',
         remarks:'',
+        user_id: ''
     })
     console.log("CUrrent Data:" + data)
 // const newItem, setNewItem = 
@@ -55,7 +56,8 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
         quantity:'',
         status: '',
         remarks:'',
-        location_id: '1' // == DBI depends on factory what id 
+        location_id: '1', // == DBI depends on factory what id 
+        user_id:''
       });
   
     const  handleChange= (event) => {
@@ -105,6 +107,13 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
 
                             {/* 1ST GRID COLUMN */}
                             <div className="col-span-2 grid grid-cols-2 gap-2 content-start"> 
+                            <input type="text"
+                                 id="item_user_id"
+                                 name="user_id"
+                                 defaultValuee={data.user_id}
+                                 hidden="true"
+                                />
+                               
                                 <div className="mt-6 col-span-2">
                                     <InputLabel htmlFor="receiving_client_id" value="Client Name"/>
                                     <SelectInput

@@ -6,6 +6,8 @@ use App\Models\Location;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
 use App\Http\Resources\LocationResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class LocationController extends Controller
 {
@@ -50,6 +52,7 @@ class LocationController extends Controller
     {
         $data = $request->validated();
         // dd($data);
+        $data['user_id'] = Auth::id();
         Location::create($data);
         return to_route('location.index')->with('success', 'Location was created');
     }
@@ -67,10 +70,16 @@ class LocationController extends Controller
      */
     public function edit(Location $location)
     {
-        return inertia('Location/Edit',[
-          
-            'location' => new LocationResource($location),
-         ]);
+        $response = Gate::authorize('update', $location);
+
+        if ($response->allowed()) {
+            return inertia('Location/Edit',[
+            
+                'location' => new LocationResource($location),
+            ]);
+        }else{
+            return abort(403, $response->message());
+        }
     }
 
     /**
@@ -90,10 +99,16 @@ class LocationController extends Controller
      */
     public function destroy(Location $location)
     {
+        $response = Gate::authorize('delete', $location);
+
+        if ($response->allowed()) {
         $name = $location->name;
         $location->delete();
        
         return to_route('location.index')
         ->with('success', "Location \" $name \" was deleted!");
+    }else{
+        return abort(403, $response->message());
+    }
     }
 }

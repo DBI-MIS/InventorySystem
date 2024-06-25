@@ -12,9 +12,13 @@ class Location extends Model
         'name',
         'company',
         'address',
+        'user_id'
     ];
 
     public function item(){
         return $this->belongsTo(item::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

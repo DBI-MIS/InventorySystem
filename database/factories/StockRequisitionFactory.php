@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Item;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,6 +28,7 @@ class StockRequisitionFactory extends Factory
             'sr_notes'=>fake()->sentence(),
             'created_at' => time(),
             'updated_at' => time(),
+            'user_id' => User::factory()
         ];
     }
 }

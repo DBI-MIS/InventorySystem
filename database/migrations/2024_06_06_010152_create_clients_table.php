@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('tin_no')->nullable();
             $table->string('status')->default('active');
             $table->string('remarks')->nullable();
+            $table->foreignIdFor(User::class)->constrained();
             $table->timestamps();
         });
     }

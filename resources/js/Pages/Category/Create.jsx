@@ -9,7 +9,9 @@ export default function Create({auth}){
    const {data, setData, post,errors,reset} = useForm({
         name: '',
         description: '',
-        sku_prefix: ''
+        sku_prefix: '',
+        user_id: ''
+
     })
  
     const onInputChange = e => {
@@ -46,6 +48,13 @@ export default function Create({auth}){
                          <div className=" grid grid-cols-5 gap-2 content-start">
                             
                             <div className="col-span-3 mt-4">
+                            <input type="text"
+                                 id="item_user_id"
+                                 name="user_id"
+                                 defaultValuee={data.user_id}
+                                 hidden="true"
+                                />
+                               
                                 <InputLabel htmlFor="category_name" value="Category Name"/>
                                 <TextInput 
                                     id="category_name"
@@ -80,6 +89,7 @@ export default function Create({auth}){
                                 <InputError message={errors.sku_prefix} className="mt-2"/>
                           
                              </div>
+                             
                             
                         </div> 
                             <div className="mt-4">

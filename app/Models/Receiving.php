@@ -24,7 +24,7 @@ class Receiving extends Model
         'location_id',
         'employee_id',
         'remarks',
-        'created_by',
+        'user_id'
     
     ];
     
@@ -57,6 +57,8 @@ class Receiving extends Model
     // {
     //     return $this->belongsTo(User::class, 'created_by');
     // }
-    
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
 

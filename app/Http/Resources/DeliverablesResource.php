@@ -27,7 +27,6 @@ class DeliverablesResource extends JsonResource
             'address' => $this->address,
             // 'address' => new ReceivingResource($this->address),
             'dr_date' => (new Carbon($this->dr_date))->format('Y-m-d'),
-            'list_item_id' => $this->item_id,
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
             'remarks'=>  $this->remarks,
             'items' => ItemResource::collection($this->whenLoaded('itemsDeliverables')),

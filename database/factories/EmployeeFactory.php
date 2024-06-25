@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -56,6 +57,7 @@ class EmployeeFactory extends Factory
             'company'=> $company,
             'department'=> $department,
             'remarks'=> $remarks,
+            'user_id' => User::factory()
         ];
     }
 }

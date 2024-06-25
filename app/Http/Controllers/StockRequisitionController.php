@@ -7,6 +7,8 @@ use App\Http\Requests\StoreStockRequisitionRequest;
 use App\Http\Requests\UpdateStockRequisitionRequest;
 use App\Http\Resources\StockRequisitionResource;
 use App\Models\Item;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class StockRequisitionController extends Controller
 {
@@ -52,7 +54,7 @@ class StockRequisitionController extends Controller
     public function store(StoreStockRequisitionRequest $request)
     {
         $data = $request->validated();
-        
+        $data['user_id'] = Auth::id();
             StockRequisition::create($data);
         
         // StockRequisition::create($data);
@@ -80,10 +82,16 @@ class StockRequisitionController extends Controller
      */
     public function edit(StockRequisition $stockrequisition)
     {
-        // dd($stockrequisition);
-        return inertia('StockRequisition/Edit', [
-            'stockrequisition' => new StockRequisitionResource($stockrequisition)
-        ]);
+        $response = Gate::authorize('update', $stockrequisition);
+
+        if ($response->allowed()) {
+            // dd($stockrequisition);
+            return inertia('StockRequisition/Edit', [
+                'stockrequisition' => new StockRequisitionResource($stockrequisition)
+            ]);
+        }else{
+            return abort(403,$response->message());
+        }
     }
 
     /**
@@ -103,11 +111,18 @@ class StockRequisitionController extends Controller
      */
     public function destroy(StockRequisition $stockrequisition)
     {
-        // dd($stockrequisition);
-        $rsno = $stockrequisition->rs_no;
-        $stockrequisition->delete();
+        $response = Gate::authorize('delete', $stockrequisition);
 
-        return to_route('stockrequisition.index')->with('success', "Stock Requisition no.\"$rsno\" was deleted");
+            if ($response->allowed()) {
+            // dd($stockrequisition);
+            $rsno = $stockrequisition->rs_no;
+            $stockrequisition->delete();
+
+            return to_route('stockrequisition.index')->with('success', "Stock Requisition no.\"$rsno\" was deleted");
+        }
+        else{
+            return abort(403, $response->message());
+        }
     }
 
     public function myStockRequest(StockRequisition $stockrequestId)

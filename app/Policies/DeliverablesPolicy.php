@@ -6,7 +6,7 @@ use App\Models\Deliverables;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class DeliverablePolicy
+class DeliverablesPolicy
 {
     /**
      * Determine whether the user can view any models.

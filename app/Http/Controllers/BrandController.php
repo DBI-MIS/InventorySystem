@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class BrandController extends Controller
@@ -15,6 +16,9 @@ class BrandController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('viewAny', Brand::class)) { 
+            abort(403, 'You are not authorized to view brands.');
+        }
         $query = Brand::query();
        
         $sortField = request("sort_field", 'created_at');
@@ -54,6 +58,7 @@ class BrandController extends Controller
     public function store(StoreBrandRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = Auth::id();
         // dd($data);
         Brand::create($data);
         return to_route('brand.index')->with('success', 'Brand was created');

@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class EmployeeController extends Controller
 {
@@ -14,6 +16,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('viewAny', Employee::class)) { 
+            abort(403, 'You are not authorized to view employees.');
+        }
         $query = Employee::query();
 
         $sortField = request("sort_field", 'created_at');
@@ -48,6 +53,7 @@ class EmployeeController extends Controller
     {
         $data = $request->validated();
         // dd($data);
+        $data['user_id'] = Auth::id();
         Employee::create($data);
         return to_route('employee.index')->with('success', 'Employee was created');
     }

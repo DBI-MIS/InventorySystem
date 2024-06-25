@@ -7,6 +7,7 @@ use App\Models\Deliverables;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -111,6 +112,7 @@ class ReceivingFactory extends Factory
             'created_at' => time(),
             'updated_at' => time(),
             'remarks'=> fake()->realText(),
+            'user_id' => User::factory()
         ];
     }
 }
