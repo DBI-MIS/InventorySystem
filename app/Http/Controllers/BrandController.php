@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
+use Illuminate\Support\Facades\Gate;
 
 class BrandController extends Controller
 {
@@ -41,6 +42,9 @@ class BrandController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('create', Brand::class)) {  
+            abort(403, 'You are not authorized to create brands.');
+          }
         return Inertia("Brand/Create");
     }
 
@@ -60,11 +64,7 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        return inertia('Brand/Show', [
-            'brand' => new BrandResource($brand),
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-        ]);
+        
     }
 
     /**
@@ -72,9 +72,16 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-         return inertia('Brand/Edit',[
-            'brand' => new BrandResource($brand),
-          ]);
+        $response = Gate::authorize('update', $brand);
+
+        if ($response->allowed()) {
+          
+            return inertia('Brand/Edit',[
+                'brand' => new BrandResource($brand),
+            ]);
+        }else{
+            return abort(403, $response->message());
+        }
    }
     
 
@@ -95,9 +102,15 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        $name = $brand->name;
-        $brand->delete();
+        $response = Gate::authorize('delete', $brand);
+
+        if ($response->allowed()) {
+             $name = $brand->name;
+             $brand->delete();
        
-        return to_route('brand.index')->with('success', "Brand \" $name \" was deleted!");
+            return to_route('brand.index')->with('success', "Brand \" $name \" was deleted!");
+        }else{
+            return abort(403,$response->message());
+        }
     }
 }

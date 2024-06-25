@@ -127,6 +127,9 @@ class ItemController extends Controller
      */
     public function show(Item $item ,User $user) 
     { 
+        if (! Gate::allows('view', $item)) {  
+            abort(403, 'You are not authorized to access this page.');
+          }
     
         return (inertia('Item/Show', [
             'item' => new ItemResource($item),
@@ -143,7 +146,9 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
+        $response = Gate::authorize('update', $item);
 
+        if ($response->allowed()) {
         
         // dd($item);
        // show the stored info from creation
@@ -161,7 +166,9 @@ class ItemController extends Controller
                 'employees' => EmployeeResource::collection($employees),
                 
             ]
-            );
+            ); } else {
+                return redirect()->route('item.index')->with('error', $response->message());
+            }
     }
 
     /**
@@ -170,22 +177,23 @@ class ItemController extends Controller
     public function update(UpdateItemRequest $request, Item $item)
     {
 
-        $user = Auth::user();
+         $response = Gate::authorize('update', $item);
 
-        if (Gate::allows('update', $item)) {
-         $data = $request->validated();
-       
-         //    $data['updated_by'] = Auth::id();
-            $item->update($data);
-            // $item->update($request->validated());
-     
-            return to_route('item.index')
-            ->with('success', "Item \"$item->name\" was updated");
+        if ($response->allowed()) {
+            $data = $request->validated();
+            
+                $item->update($data);
+        
+                return to_route('item.index')
+                ->with('success', "Item \"$item->name\" was updated");
         } else {
-            abort(403, 'You are not authorized to update.');
+            return abort(403, $response->message()); 
         }
+
+        
      
     }
+
 
 
     /**

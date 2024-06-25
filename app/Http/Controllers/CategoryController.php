@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -14,29 +16,35 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $query = Category::query();
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
-        
-        if (request("name")) {
-            $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
-        }
-        $categories = $query->orderBy($sortField, $sortDirection)
-        ->paginate(12);
+       
+            $query = Category::query();
+            $sortField = request("sort_field", 'created_at');
+            $sortDirection = request("sort_direction", "desc");
+            
+            if (request("name")) {
+                $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower(request("name")) . "%"]);
+            }
+            $categories = $query->orderBy($sortField, $sortDirection)
+            ->paginate(12);
 
-        return inertia("Category/Index", [
-            "categories" => CategoryResource::collection($categories),
-            'queryParams' => request()-> query() ?: null,
-            'success' => session('success'),
-        ]);
+            return inertia("Category/Index", [
+                "categories" => CategoryResource::collection($categories),
+                'queryParams' => request()-> query() ?: null,
+                'success' => session('success'),
+            ]);
+        
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(User $user)
     {
-        return Inertia("Category/Create");
+        if (! Gate::allows('create', Category::class)) {  
+            abort(403, 'You are not authorized to create categories.');
+          }
+            return Inertia("Category/Create");
+         
     }
 
     /**
@@ -55,11 +63,6 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return inertia('Category/Show', [
-            'category' => new CategoryResource($category),
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-        ]);
     }
 
     /**
@@ -67,10 +70,16 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        $response = Gate::authorize('update', $category);
+
+        if ($response->allowed()) {
           
           return inertia('Category/Edit',[
             'category' => new CategoryResource($category),
           ]);
+        }else{
+            return abort(403,$response->message());
+        }
            
     }
 
@@ -91,9 +100,17 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $name = $category->name;
-        $category->delete();
-       
-        return to_route('category.index')->with('success', "Category \" $name \" was deleted!");
+
+        $response = Gate::authorize('delete', $category);
+
+        if ($response->allowed()) {
+          
+            $name = $category->name;
+            $category->delete();
+        
+            return to_route('category.index')->with('success', "Category \" $name \" was deleted!");
+        }else{
+            return abort(403, $response->message());
+        }
     }
 }
