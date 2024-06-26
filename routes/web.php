@@ -17,6 +17,7 @@ use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceivingController;
 use App\Http\Controllers\ReceivingItemController;
+use App\Http\Controllers\SritemController;
 use App\Http\Controllers\StockRequisitionController;
 use App\Http\Controllers\UserController;
 use App\Models\Item;
@@ -50,6 +51,7 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::resource('user', UserController::class);
         Route::resource('deliverables', DeliverablesController::class);
         Route::resource('stockrequisition', StockRequisitionController::class);
+        Route::resource('sritem', SritemController::class);
         Route::post('/receivings/{receivingId}/items/{itemId}',[ ReceivingController::class,'assignItem' ]);
         Route::resource('preview', PreviewController::class);
         Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;

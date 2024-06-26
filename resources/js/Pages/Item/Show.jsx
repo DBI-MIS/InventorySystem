@@ -245,7 +245,8 @@ export default function Show({ auth, item }) {
                                     Created Date :{" "}
                                 </dt>
                                 <dd className="text-base font-light">
-                                    {item.created_at ?? "No Updated Date"}
+                                {new Date(item.created_at ?? "No Updated Date" ).toLocaleDateString()}
+                                    
                                 </dd>
                             </div>
 

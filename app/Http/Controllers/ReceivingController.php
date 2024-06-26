@@ -23,6 +23,7 @@ use App\Models\Item;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class ReceivingController extends Controller
@@ -33,8 +34,6 @@ class ReceivingController extends Controller
     public function index()
     {
          $query = Receiving::query() ;
-        //  $itemssss = Receiving::with('deliverables')->get();
-        //  dd($itemssss );
          $sortField = request("sort_field", 'created_at');
          $sortDirection = request("sort_direction", "desc");
          
@@ -48,18 +47,10 @@ class ReceivingController extends Controller
             $query->where('category_id', (request("category_id")));
          }
     
-        //  $id = 51;
-        // $receiving = Receiving::find($id);
-        // $existingItems = $receiving->items;
-        
-        // dd($existingItems);
-        
-         $receivingPivot = Item::with('receivings')->get();
-        //  dd($receivingPivot);
 
          $receivings = $query->orderBy($sortField, $sortDirection)
          ->paginate(24);
-        //  dd($query);
+
          return inertia("Receiving/Index", [
              "receivings" => ReceivingResource::collection($receivings),
              'queryParams' => request()-> query() ?: null,
@@ -82,10 +73,10 @@ class ReceivingController extends Controller
        $clients =  Client::query()->distinct()->orderBy('name', 'asc')->get();
     //     $clients =  Client::select('name')->distinct()->orderBy('name', 'asc')->get();
       $delivers = Deliverables::query()->orderBy('dr_no', 'asc')->get();
-       $sku = $this->generateSkuId();
+    //    $sku = $this->generateSkuId();
     //    dd($deliverables);
-       $input['sku'] = $sku;
-       $mrrData = Receiving::select('mrr_no')->distinct()->get();
+    //    $input['sku'] = $sku;
+    //    $mrrData = Receiving::select('mrr_no')->distinct()->get();
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
         $input['mrr_no'] =  $mrr_no;
@@ -102,26 +93,30 @@ class ReceivingController extends Controller
           'clients' => ClientResource::collection($clients),
           'delivers' => DeliverablesResource::collection($delivers),
           'mrr_no' =>  $mrr_no,
-          'skuu' => $sku
+        //   'skuu' => $sku
       ]);
     }
-    function generateSkuId() {
-        // $id = "9";
-        // $user->orders()->where('service_id', $request->service_id)->orderBy('id', 'DESC')->first();
-        $id = Item::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
-            $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
-        $sku = str_pad( $stringID, 6, '0', STR_PAD_LEFT); 
-        // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left
-        return $sku;
+    
+    // function generateSkuId() {
+    //     // $id = "9";
+    //     // $user->orders()->where('service_id', $request->service_id)->orderBy('id', 'DESC')->first();
+    //     $id = Item::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
+    //         $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
+    //     $sku = str_pad( $stringID, 6, '0', STR_PAD_LEFT); 
+    //     // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left
+    //     return $sku;
         
-    }
+    // }
+    
     function generateMrrNo() {
 
         $id = Receiving::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
         $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
-        $mrr_no = str_pad( $stringID, 6, '2024', STR_PAD_LEFT); 
-        // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left
+        $mrr_no = str_pad( $stringID, 8, '0', STR_PAD_LEFT); 
+        // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left     
         return $mrr_no;
+
+
         
     }
     /**
@@ -132,14 +127,12 @@ class ReceivingController extends Controller
     {
 
         $data = $request->validated();
-           dd($data);
+
         $items = $data['group_item_id'];
         $data['user_id'] = Auth::id();
         $receiving =Receiving::create($data);
         $receiving->items()->attach($items);  
-        // $data['created_by'] = Auth()->user()->id;
-        // $data['created_by'] = Auth::id();
-        // $data['updated_by'] = Auth::id();
+     
        
         return redirect()->route('receiving.index')->with('success', "Receiving added successfully");
     }
@@ -157,31 +150,26 @@ class ReceivingController extends Controller
 
 public function show(Receiving $receiving, Request $request)
 {
-    $perPage = 10;
-    $groupItemIds = is_array($receiving->group_item_id) ? $receiving->group_item_id : [];
-    $receiving_items = collect(); // Initialize as an empty collection for validation 
+    
+    // $groupItemIds = is_array($receiving->group_item_id) ? $receiving->group_item_id : [];
+    // $receiving_items = collect(); // Initialize as an empty collection for validation 
 
-    if (count($groupItemIds) > 0) {
-        $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
-            ->whereIn('id', $groupItemIds)
-            ->get()
-        ;
-    }
+    // if (count($groupItemIds) > 0) {
+    //     $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
+    //         ->whereIn('id', $groupItemIds)
+    //         ->get()
+    //     ;
+    // }
 
-    // $paginationData = [
-    //     'currentPage' => $receiving_items->currentPage(),
-    //     'lastPage' => $receiving_items->lastPage(),
-    //     'total' => $receiving_items->total(),
-    //     'perPage' => $perPage,
-    //     'links' => $receiving_items->linkCollection()->toArray(),
-    // ];
+    $receiving->load('items.category'); // Load Relation to Item with relation to Category
 
+    
     return inertia('Receiving/Show', [
         'receiving' => new ReceivingResource($receiving),
         'queryParams' => $request->query() ?: null,
         'success' => session('success'),
-        // 'paginationData' => $paginationData,
-        'receiving_items' => $receiving_items // Ensure this is an array
+        'receiving_items' => $receiving->items, // Load Relation
+        
     ]);
 }
 
@@ -260,7 +248,13 @@ public function show(Receiving $receiving, Request $request)
      */
     public function destroy(Receiving $receiving)
     {
-        $response = Gate::authorize('update', $location);
+          
+
+            // $id = $receiving->id;
+            // $receiving->delete();
+            // return to_route('receiving.index')->with('success', "Receiving \"$id\" was deleted");
+
+        $response = Gate::authorize('update', $receiving);
 
         if ($response->allowed()) {
             $id = $receiving->id;

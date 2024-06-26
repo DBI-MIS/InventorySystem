@@ -12,6 +12,7 @@ use App\Models\Item;
 use App\Models\Location;
 use App\Models\Material;
 use App\Models\Receiving;
+use App\Models\Sritem;
 use App\Models\StockRequisition;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -135,11 +136,11 @@ foreach(Item::all() as $item){
         }
         }
 
-        // foreach(Item::all() as $item){
-        //     foreach(StockRequisition::all() as $stockrequisition){
-        //         $item->stockrequest_items()->attach($stockrequisition->id);
-        // }
-        // }
+         foreach(Sritem::all() as $sritem){
+            foreach(StockRequisition::all() as $stockrequisition){
+                 $sritem->sritems()->attach($stockrequisition->id);
+         }
+         }
 
 
     

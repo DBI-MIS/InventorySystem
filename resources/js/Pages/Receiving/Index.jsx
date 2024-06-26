@@ -106,9 +106,12 @@ const deleteReceiving = (receiving) => {
                                 <TableHeading  className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                                   sortChanged={sortChanged}
                                 >ID</TableHeading>
-                                <TableHeading  className="pr-10" name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                <TableHeading  className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                                   sortChanged={sortChanged}
                                 >MRR No. </TableHeading>
+                                <TableHeading  className="pr-10" name="sku"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                                  sortChanged={sortChanged}
+                                >Date </TableHeading>
                                 <TableHeading  className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                                  sortChanged={sortChanged}
                                 >Client Name</TableHeading>
@@ -146,6 +149,9 @@ const deleteReceiving = (receiving) => {
                                         </Link>
                                       </b>
                                       </td>
+                                      <td className="w-[120px] text-nowrap py-2 pl-4">
+                                                    {new Date(receiving.created_at ?? "No Date" ).toLocaleDateString()}
+                                                    </td>
                                       
                                       <td className="w-[300px] py-2 text-nowrap pl-4">{receiving.client && receiving.client.name ? receiving.client.name : "No Client Name"}</td>
                                       <td className="w-[180px] py-2 text-nowrap pl-4">{receiving.si_no ?? "No SI Number"}</td>

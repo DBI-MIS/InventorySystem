@@ -76,7 +76,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 <input type="text"
                                  id="item_user_id"
                                  name="user_id"
-                                 defaultValuee={data.user_id}
+                                 defaultValue={data.user_id}
                                  hidden="true"
                                 />
                                

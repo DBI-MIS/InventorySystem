@@ -84,6 +84,12 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
         e.preventDefault();
         post(route("receiving.store"));
      }
+
+     useEffect(() => {
+        // Set the mrr_no when the component mounts or mrr_no prop changes
+        setData(prevData => ({ ...prevData, mrr_no }));
+    }, [mrr_no]);
+    
     return(
         <AuthenticatedLayout
         user={auth.user}
@@ -110,7 +116,7 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                             <input type="text"
                                  id="item_user_id"
                                  name="user_id"
-                                 defaultValuee={data.user_id}
+                                 defaultValue={data.user_id}
                                  hidden="true"
                                 />
                                
@@ -154,11 +160,11 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                                         <div className=" flex h-[11]">
                                                         <TextInput 
                                                             id="receiving_mrr_no"
-                                                            type="number"
+                                                            type="text"
                                                             name="receiving_mrr_no"
                                                             readOnly
                                                             max={6}
-                                                            value={data.mrr_no=mrr_no} 
+                                                            value={data.mrr_no} 
                                                             className=" block w-full"
                                                             />
                                                         </div>

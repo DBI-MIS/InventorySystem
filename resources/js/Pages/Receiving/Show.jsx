@@ -25,6 +25,7 @@ export default function Show({ auth, receiving, receiving_items }) {
                     <div className="col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col justify-start h-fit relative">
                         <dl className="p-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                             <div className="">
+
                                 <div className="flex flex-row gap-2 items-center">
                                     <div className="min-w-8">
                                         <svg
@@ -67,7 +68,9 @@ export default function Show({ auth, receiving, receiving_items }) {
                                         </span>
                                     </div>
                                 </div>
+
                             </div>
+                            
                             <div className="flex flex-col pb-3 mt-2">
                                 <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
                                     Client/Project :
@@ -239,8 +242,7 @@ export default function Show({ auth, receiving, receiving_items }) {
                                                                             "No Receiving ID"} */}
                                                                     </td>
                                                                     <td className="px-3 py-2 text-nowrap text-center">
-                                                                        {receiving_item.category
-                                                                            ? receiving_item
+                                                                        {receiving_item.category ? receiving_item
                                                                                   .category
                                                                                   .sku_prefix
                                                                             : "No Sku Prefix "}

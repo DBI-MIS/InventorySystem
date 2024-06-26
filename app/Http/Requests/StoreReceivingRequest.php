@@ -24,8 +24,8 @@ class StoreReceivingRequest extends FormRequest
     {  return [
         "mrr_no" => [
             'required', 
-            'min:6',
-            'max:6'
+            'min:8',
+            'max:8'
            
         ],
         'group_item_id' => [

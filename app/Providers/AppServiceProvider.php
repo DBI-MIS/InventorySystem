@@ -15,7 +15,7 @@ use App\Models\User;
 use App\Policies\BrandPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\ClientPolicy;
-use App\Policies\DeliverablePolicy;
+use App\Policies\DeliverablesPolicy;
 use App\Policies\EmployeePolicy;
 use App\Policies\ItemPolicy;
 use App\Policies\LocationPolicy;
@@ -23,7 +23,7 @@ use App\Policies\ReceivingPolicy;
 use App\Policies\StockRequisitionPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         Brand::class => BrandPolicy::class,
         Category::class => CategoryPolicy::class,
         Client::class => ClientPolicy::class,
-        Deliverables::class => DeliverablePolicy::class,
+        Deliverables::class => DeliverablesPolicy::class,
         Employee::class => EmployeePolicy::class,
         Location::class => LocationPolicy::class,
         Receiving::class => ReceivingPolicy::class,

@@ -17,6 +17,7 @@ use App\Models\StockRequisition;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class DeliverablesController extends Controller
@@ -27,7 +28,7 @@ class DeliverablesController extends Controller
     public function index()
     {
         if (! Gate::allows('viewAny', Deliverables::class)) { 
-            abort(403, 'You are not authorized to view delis.');
+            abort(403, 'You are not authorized to view.');
         }
         $query = Deliverables::query() ;
         $sortField = request("sort_field", 'created_at');
@@ -37,34 +38,10 @@ class DeliverablesController extends Controller
             $query->where("dr_no", "like", "%" . request("dr_no") . "%");
         }
 
-        $deliverablePivot = Item::query()->with('deliverable_items')->get();
-
-        $stockrequisition = 
-    
-        // dd( $deliverabless);
         
-        // dd( $item_ids );
-        
-        // dd($deliverableListItems);
-        // $existingItems =  $deliverableListItem->items;
-        // foreach ($deliverabless as $deliverable) {
-                   
-        //             foreach ($deliverable->list_item_id as $item) {
-                           
-               
-        //         // echo "Created At: " . $item->deliverable_items->created_at . "\n";
-        //         // echo "Updated At: " . $item->pivot->updated_at . "\n";
-        //     }}
-            // dd($deliverable);
-        
-
-        
- 
-
         $deliverabless =  $query->orderBy($sortField, $sortDirection)
-        ->paginate(10)
+        ->paginate(20)
         ->onEachSide(1);
-// dd($query);
     return inertia("Deliverables/Index",[
         "deliverabless" => DeliverablesResource::collection($deliverabless),
         'queryParams' => request()->query() ?: null,
@@ -101,9 +78,11 @@ class DeliverablesController extends Controller
     public function store(StoreDeliverablesRequest $request)
 {
     $data = $request->validated();
+
     $items = $data['items'];
-    // dd($data);
+
     $data['user_id'] = Auth::id();
+
     foreach ($items as $item) {
         if ($item['qty_out'] > $item['quantity']) {
             return redirect()->back()->withInput()->withErrors(['items' => 'Quantity cannot exceed available amount.']);
@@ -141,33 +120,50 @@ class DeliverablesController extends Controller
      */
     public function edit(Deliverables $deliverable)
     {
-        // dd($deliverable);
-        $itemss = Item::query()->orderBy('name', 'asc')->get();
+        // // dd($deliverable);
+        // $itemss = Item::query()->orderBy('name', 'asc')->get();
+        // $clients = Client::query()->orderBy('name', 'asc')->get();
+        // $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
+
+        // $parsedID = json_decode($deliverable, true);
+        // $id = $parsedID['id'];
+
+        // $deliverable = Deliverables::find($id);
+        // $existingItemss = $deliverable->itemsDeliverables;
+
+        // // dd($existingItemss);
+
+        // $existingItemsIds= $deliverable->itemsDeliverables()->pluck('items.id');
+        // // dd($existingItemsIds);
+
+        // $existingItemsIds = array_map('intval', $existingItemsIds->toArray());
+
+        // return inertia('Deliverables/Edit',[
+        //     'itemss' => ItemResource::collection($itemss),
+        //     'clients' => ClientResource::collection($clients),
+        //     'stockrequests' => StockRequisitionResource::collection($stockrequests),
+        //     'deliverable' => new DeliverablesResource($deliverable),
+        //     'existingItemss' => $existingItemss,
+        //     'existingItemsIds' => $existingItemsIds
+
+        // ]);
+
+        $items = Item::query()->orderBy('name', 'asc')->get();
         $clients = Client::query()->orderBy('name', 'asc')->get();
         $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
 
-        $parsedID = json_decode($deliverable, true);
-        $id = $parsedID['id'];
+        $deliverable->load('client', 'stockrequest', 'itemsDeliverables');
 
-        $deliverable = Deliverables::find($id);
-        $existingItemss = $deliverable->itemsDeliverables;
+         return Inertia('Deliverables/Edit', [
+        'deliverablesss' => $deliverable,
+        'itemss' => ItemResource::collection($items),
+        'clients' => ClientResource::collection($clients), // Example of loading all clients
+        'stockrequests' => StockRequisitionResource::collection($stockrequests), // Example of loading all stock requests
+        'items' => $deliverable->itemsDeliverables, 
+    ]);
 
-        // dd($existingItemss);
 
-        $existingItemsIds= $deliverable->itemsDeliverables()->pluck('items.id');
-        // dd($existingItemsIds);
 
-        $existingItemsIds = array_map('intval', $existingItemsIds->toArray());
-
-        return inertia('Deliverables/Edit',[
-            'itemss' => ItemResource::collection($itemss),
-            'clients' => ClientResource::collection($clients),
-            'stockrequests' => StockRequisitionResource::collection($stockrequests),
-            'deliverable' => new DeliverablesResource($deliverable),
-            'existingItemss' => $existingItemss,
-            'existingItemsIds' => $existingItemsIds
-
-        ]);
 
     }
 
@@ -178,16 +174,23 @@ class DeliverablesController extends Controller
 
     public function update(UpdateDeliverablesRequest $request, Deliverables $deliverable)
     {
-        $data = $request->validated();
+        // $data = $request->validated();
 
-        if(isset($data['list_item_id'])) {
-            $itemss = $data['list_item_id'];
-            $deliverable->update($data);
-            $deliverable->itemsDeliverables()->sync($itemss);
-        }
+        // if(isset($data['list_item_id'])) {
+        //     $itemss = $data['list_item_id'];
+        //     $deliverable->update($data);
+        //     $deliverable->itemsDeliverables()->sync($itemss);
+        // }
 
-        return to_route('deliverables.index')
-           ->with('success', "Deliverables \"{$deliverable->id}\" was updated ");
+        // return to_route('deliverables.index')
+        //    ->with('success', "Deliverables \"{$deliverable->id}\" was updated ");
+
+        $validated = $request->validated(); 
+
+        $deliverable->update($validated);
+    
+        return Redirect::route('deliverables.index')
+            ->with('success', "Deliverables \"{$deliverable->id}\" was updated successfully");
         
     }
 

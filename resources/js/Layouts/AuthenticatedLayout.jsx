@@ -130,6 +130,13 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Stock Requisition</span>
                                 </div>
+                                <br />
+                                <div class="group relative">
+                                <NavLink href={route('sritem.index')} active={route().current('sritem.index')}>
+                                    <Srequest className="block h-7 w-auto fill-current  " /> 
+                                </NavLink>
+                                <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Stock Requisition Item</span>
+                                </div>
                                 
                                 
                             </div>

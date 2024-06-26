@@ -120,7 +120,7 @@ export default function Create({
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">
-                        Create New Delivery Receipt
+                        Create DR
                     </h2>
                 </div>
             }
@@ -171,8 +171,8 @@ export default function Create({
                                     <input type="text"
                                     id="item_user_id"
                                     name="user_id"
-                                    defaultValuee={data.user_id}
-                                    hidden="true"
+                                    defaultValue={data.user_id}
+                                    hidden={true}
                                     />
                                 
                                     <div className="mt-4 col-span-2">
@@ -184,7 +184,7 @@ export default function Create({
                                             id="deliverables_dr_date"
                                             type="date"
                                             name="dr_date"
-                                            value={data.dr_date}
+                                            value={data.dr_date || new Date().toISOString().split('T')[0]}
                                             className="mt-1 block w-full"
                                             isFocused={true}
                                             onChange={(e) =>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SritemResource;
 use App\Models\Sritem;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,22 @@ class SritemController extends Controller
      */
     public function index()
     {
-        //
+        
+        $query = Sritem::query();
+        
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        $sritems = $query->orderBy($sortField, $sortDirection)
+        ->paginate(10);
+        // dd($sritem);
+
+        return inertia("SrItem/Index", [
+            "sritems" => SritemResource::collection($sritems),
+            'queryParams' => request()-> query() ?: null,
+            // 'success' => session('success'),
+
+        ]);
     }
 
     /**
@@ -20,7 +36,7 @@ class SritemController extends Controller
      */
     public function create()
     {
-        //
+        return inertia("SrItem/Create");
     }
 
     /**

@@ -1,248 +1,326 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
+import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, useForm  } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { Inertia } from "@inertiajs/inertia";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-export default function Edit({ auth, existingItemss, existingItemsIds, clients, deliverable, stockrequests, itemss}){
-  console.log(stockrequests);
-
-    const {data, setData, post, errors, processing} = useForm({
-        address: deliverable.address || "",
-        dr_no:     deliverable.dr_no || "",
-        stockrequest_id: deliverable.stockrequest_id || "",
-        client_id: deliverable.client_id || "",
-        dr_date: deliverable.dr_date || "",
-        list_item_id:   existingItemsIds || "",
-        _method: "PUT",
+export default function Edit({
+    auth,
+    deliverablesss,
+    clients,
+    stockrequests,
+    items,
+    itemss,
+}) {
+    const { data, setData, post, errors } = useForm({
+        address: clients.address || "",
+        dr_no: deliverablesss.dr_no || "",
+        dr_date: deliverablesss.dr_date || "",
+        remarks: deliverablesss.remarks || "",
+        items: items || [],
+        user_id: auth.user_id || "",
+        client_id: clients.name || "",
+        stockrequest_id: stockrequests.stockrequest_id || "",
     });
 
-    const [databaseItemIds, setDatabaseItemIds] = useState(Array.isArray(existingItemsIds) ? existingItemsIds : []);
-    const existingItemsss = itemss.data.map(item => ({ ...item, id: parseInt(item.id) }));
-    const [notification, setNotification] = useState('');
-    const [allSelectedItemIds, setAllSelectedItemIds] = useState([]);
-    const [deliverables, setDeliverables] = useState([]);
-
-    const options = itemss.data.map(item => ({
-        value: item.id,
-        label: item.name
-    }));
-
-    const selectedValueItems = databaseItemIds.map(databaseItemId=> ({
-        value: databaseItemId.id,
-        label: databaseItemId.id,
-    }));
-
-    const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
-    const [selectedItemIds, setSelectedItemIds] = useState(selectedValueItems.map(option => option.value));
+    const [selectedOptions, setSelectedOptions] = useState([]);
 
     useEffect(() => {
-        setSelectedItemIds(selectedOptions.map(option => option.value));
-    }, [selectedOptions]);
-
-    const handleSelectChange = (selectedOption) => {
-        setSelectedOptions(selectedOption);
-        const selectedOptionsss = Array.from(selectedOption, (option) => option.value);
-        setSelectedItemIds(selectedOptionsss);
-        setSelectedOptions(selectedOption);
-    };
-    console.log("selected Item ids" + selectedItemIds)
-
-    const handleAddSelect = (e) => {
-        e.preventDefault();
-
-        const newSelectedItemIds = selectedItemIds.filter(id => !databaseItemIds.includes(parseInt(id, 10)));
-        if (newSelectedItemIds.length === 0) {
-            setNotification('Items are on the tables already!');
-            setSelectedOptions([]);
-            return;
+        if (items) {
+            const selectedOptions = data.items.map((item) => ({
+                value: item.id,
+                label: item.name,
+            }));
+            setSelectedOptions(selectedOptions);
         }
+    }, [items]);
 
-        console.log("check value :" + newSelectedItemIds );
-        const selectedItems = existingItemss.filter(item => newSelectedItemIds.includes(item.id.toString()));
-        
-        setDeliverables(prevDeliverables => [...prevDeliverables, ...selectedItems]);
+    const options = data.items.map((item) => ({
+      //values from the db
+      value: item.id,
+      label: item.name,
+  }));
 
-        const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
+    const allItems = data.items.map((item) => ({
+      ...item,
+      id: parseInt(items.id),
+  })); 
 
-        const newAllSelectedItemIds = [...allSelectedItemIds, ...intSelectedItemIds];
-        const newDatabaseItemIds = [...databaseItemIds, ...intSelectedItemIds];
+    const handleSelectChange = (selectedOptions) => {
+      setSelectedOptions(selectedOptions);
 
-        setAllSelectedItemIds(newAllSelectedItemIds);
-        setDatabaseItemIds(newDatabaseItemIds);
-        setData('list_item_id', newDatabaseItemIds);
+      const items = selectedOptions.map((option) => {
+          const selectedItem = allItems.find(
+              (item) => item.id === parseInt(option.value)
+          );
+          return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
+      });
 
-        setSelectedItemIds([]);
-        setSelectedOptions([]);
-        setNotification('');
+      setData(
+          "items",
+          data.items.map((item) => ({ ...item, list_item_id: item.id }))
+      );
+      
     };
 
-    useEffect(() => {
-        setData('list_item_id', databaseItemIds);
-    }, [databaseItemIds]);
+  //   const handleAddSelect = () => {
+      
+  //     const newItem = { value: 'newItemId', label: 'New Item' }; 
+  //     setSelectedOptions([...selectedOptions, newItem]);
+      
+    
+  // };
 
-    console.log("selected Item ids", selectedItemIds);
-      console.log("deliverables", deliverables);
-      console.log("existing Items", existingItemsss);
-      console.log("selectedOptions", selectedOptions);
-      console.log("allSelectedItemIds", allSelectedItemIds);
-      console.log("databaseItemIds", databaseItemIds);
+    const handleQtyChange = (id, qty) => {
+        const updatedItems = data.items.map((item) =>
+            item.id === id ? { ...item, qty_out: qty } : item
+        );
+        setData("items", updatedItems);
+    };
 
-      const handleRemoveExistingItem = (selectedItemId, index) => {
-        const remainIds = [...databaseItemIds];
-        remainIds.splice(index, 1);
-        setDatabaseItemIds(remainIds);
-        setAllSelectedItemIds(remainIds);
-      };
-      useEffect(() => {
-        console.log('Current data:', data);
-      }, [data]);
-
-      const handleClientChange = (e) => {
+    const handleClientChange = (e) => {
         const selectedClientId = e.target.value;
-        
-        const selectedClient = clients.data.find(client => client.id === parseInt(selectedClientId));
-   
+
+        const selectedClient = clients.data.find(
+            (client) => client.id === parseInt(selectedClientId)
+        );
+
         setData({
-           ...data,
-           client_id: selectedClientId,
-           address: selectedClient ? selectedClient.address : ''
+            ...data,
+            client_id: selectedClientId,
+            address: selectedClient ? selectedClient.address : "",
         });
-          
     };
 
-
-      const onSubmit = (e) =>{
+    const onSubmit = (e) => {
         e.preventDefault();
-        post(route("deliverables.update",deliverable.id));
-      }
+        post(route("deliverables.store"));
+    };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post(
+            route("item.upsert"),
+            { items: data.items },
+            {
+                preserveScroll: true,
+                preserveState: true,
+            }
+        );
+
+        post(route("deliverables.store"));
+    };
 
     return (
-      <Authenticated
-      user={auth.user}
-      header={
-        <div className="flex justify-between items-center"  >
-          <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Edit Delivery Receipt {deliverable.id}</h2>
-        </div>
-      }
-      >
-          <Head title="Delivery Receipt" />
+        <Authenticated
+            user={auth.user}
+            header={
+                <div className="flex justify-between items-center">
+                    <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">
+                        Edit DR
+                    </h2>
+                </div>
+            }
+        >
+            <Head title="Edit Delivery Receipt" />
 
-          <div className="py-12">
-  <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-    <div className="max-w-5/6"></div>
-      <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-      <form onSubmit={onSubmit} 
-                      className="p-4 sm:p8  bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
-                         <div className="flex">
-                              <div className="w-full">
-                                  <div className="mt-4  col-span-3">
-                                      <InputLabel htmlFor="deliverables_client_id" value="Project."/>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="max-w-5/6"></div>
 
-                                      <SelectInput
-                                      name="client_id"
-                                      id="deliverables_client_id"
-                                      value={data.client_id}
-                                      className="mt-1 block w-full"
-                                      onChange={handleClientChange}
-                                      >
-                                        
-                                        <option value="">Select Project</option>
-                                        {clients.data.map((client) => (
-                                          <option value={client.id} key={client.id}>
-                                            {client.name}
-                                          </option>
-                                        ))}
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <form
+                            onSubmit={(e) => onSubmit()}
+                            className="p-4 sm:p8  bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                            action=""
+                        >
+                            <div className="flex">
+                                <div className="w-full grid grid-cols-4 gap-2">
+                                    <div className="mt-4 col-span-2">
+                                        <InputLabel
+                                            htmlFor="deliverables_client_id"
+                                            value="Project."
+                                        />
+                                        <SelectInput
+                                            id="deliverables_client_id"
+                                            name="client_id"
+                                            className="mt-1 block w-full"
+                                            onChange={handleClientChange}
+                                            defaultValue={data.client_id}
+                                        >
+                                            <option value="">
+                                                Select project
+                                            </option>
+                                            {clients.data.map((client) => (
+                                                <option
+                                                    value={client.id}
+                                                    key={client.id}
+                                                >
+                                                    {client.name}
+                                                </option>
+                                            ))}
+                                        </SelectInput>
+                                        <InputError
+                                            message={errors.client_id}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="item_user_id"
+                                        name="user_id"
+                                        defaultValue={data.user_id}
+                                        hidden={true}
+                                    />
 
-                                      </SelectInput>
-                                      <InputError message={errors.client_id} className="mt-2"/>
-                                  </div>
+                                    <div className="mt-4 col-span-2">
+                                        <InputLabel
+                                            htmlFor="deliverables_dr_date"
+                                            value="Date."
+                                        />
+                                        <TextInput
+                                            id="deliverables_dr_date"
+                                            type="date"
+                                            name="dr_date"
+                                            value={
+                                                data.dr_date ||
+                                                new Date()
+                                                    .toISOString()
+                                                    .split("T")[0]
+                                            }
+                                            className="mt-1 block w-full"
+                                            isFocused={true}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "dr_date",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                        <InputError
+                                            message={errors.dr_date}
+                                            className="mt-2"
+                                        />
+                                    </div>
 
-                                  <div className="mt-4  col-span-3">
-                                      <InputLabel htmlFor="deliverables_address" value="Address."/>
-                                      <TextInput 
-                                      id="deliverables_address"
-                                      type="text"
-                                      name="address"
-                                      value={data.address}
-                                      className="mt-1 block w-full"
-                                      isFocused={true}
-                                      onChange={e => setData('address', e.target.value)}
-                                      />
-                                      <InputError message={errors.address} className="mt-2"/>
-                                  </div>
+                                    <div className="mt-4 col-span-2">
+                                        <InputLabel
+                                            htmlFor="deliverables_address"
+                                            value="Address."
+                                        />
+                                        <TextInput
+                                            id="deliverables_address"
+                                            type="text"
+                                            name="address"
+                                            value={data.address}
+                                            className="mt-1 block w-full"
+                                            isFocused={true}
+                                            readOnly
+                                            onChange={(e) =>
+                                                setData(
+                                                    "address",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                        <InputError
+                                            message={errors.address}
+                                            className="mt-2"
+                                        />
+                                    </div>
 
-                                  <div className="grid grid-cols-6 gap-2">
-                                     
-                                      <div className=" mt-4  col-span-2 ">
-                                          <InputLabel htmlFor="deliverables_dr_no" value="DR No."/>
-                                          
-                                          <TextInput 
-                                              id="deliverables_dr_no"
-                                              type="text"
-                                              name="dr_no"
-                                              value={data.dr_no} 
-                                              className="mt-1 block w-full"
-                                              isFocused={true}
-                                              onChange={e => setData('dr_no', e.target.value)}
-                                              />
-                                              <InputError message={errors.dr_no} className="mt-2"/>
-                                          
-                                      </div>
-                                      <div className="mt-4  col-span-2">
-                                            <InputLabel htmlFor="deliverables_stockrequest_id" value="RS No."/>
-                                            <SelectInput 
-                                                id="deliverables_stockrequest_id"
-                                           name="stockrequest_id"
-                                           value={data.stockrequest_id}
-                                           className="mt-1 block w-full"
-                                                onChange={e => setData('stockrequest_id', e.target.value)}
-                                            >
-                                                <option value="">Select RS No.</option>
-                                                {stockrequests.data.map((stockrequest) => (
-                                                    <option value={stockrequest.id} key={stockrequest.id}>
+                                    <div className=" mt-4 col-span-1 ">
+                                        <InputLabel
+                                            htmlFor="deliverables_dr_no"
+                                            value="DR No."
+                                        />
+
+                                        <TextInput
+                                            id="deliverables_dr_no"
+                                            type="text"
+                                            name="dr_no"
+                                            value={data.dr_no}
+                                            className="mt-1 block w-full"
+                                            isFocused={true}
+                                            onChange={(e) =>
+                                                setData("dr_no", e.target.value)
+                                            }
+                                        />
+                                        <InputError
+                                            message={errors.dr_no}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                    <div className="mt-4 col-span-1">
+                                        <InputLabel
+                                            htmlFor="deliverables_stockrequest_id"
+                                            value="RS No."
+                                        />
+                                        <SelectInput
+                                            id="deliverables_stockrequest_id"
+                                            name="stockrequest_id"
+                                            className="mt-1 block w-full"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "stockrequest_id",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">
+                                                Select RS No.
+                                            </option>
+                                            {stockrequests.data.map(
+                                                (stockrequest) => (
+                                                    <option
+                                                        value={stockrequest.id}
+                                                        key={stockrequest.id}
+                                                    >
                                                         {stockrequest.rs_no}
                                                     </option>
-                                                ))}
-                                                </SelectInput>
-                                            <InputError message={errors.stockrequest_id} className="mt-2"/>
+                                                )
+                                            )}
+                                        </SelectInput>
+                                        <InputError
+                                            message={errors.stockrequest_id}
+                                            className="mt-2"
+                                        />
+                                    </div>
+
+                                    <div className="mt-4 col-span-4">
+                                        <InputLabel
+                                            htmlFor="receiving Items"
+                                            value="Group of Items"
+                                        />
+                                        <div className="w-full">
+                                            <Select
+                                                value={selectedOptions}
+                                                onChange={handleSelectChange}
+                                                className="mt-1 block w-full"
+                                                isMulti={true}
+                                                options={options}
+                                                // options={data.items.map(
+                                                //     (item) => ({
+                                                //         value: item.id,
+                                                //         label: item.name,
+                                                //     })
+                                                // )}
+                                                isSearchable={true}
+                                                placeholder="Select Items"
+                                            ></Select>
+                                            <InputError
+                                                message={errors.items}
+                                                className="mt-2"
+                                            />
                                         </div>
-                                      <div className="mt-4  col-span-2">
-                                          <InputLabel htmlFor="deliverables_dr_date" value="Date."/>
-                                          <TextInput 
-                                              id="deliverables_dr_date"
-                                              type="date"
-                                              name="dr_date"
-                                              value={data.dr_date}
-                                              className="mt-1 block w-full"
-                                              isFocused={true}
-                                              onChange={e => setData('dr_date', e.target.value)}
-                                          />
-                                          <InputError message={errors.dr_date} className="mt-2"/>
-                                      </div>
-                                  </div>
-                                  
-                                  <div className="mt-4">
-                                      <InputLabel htmlFor="list_item_id" value="Group of Items"/>
-                                      <div className=" grid grid-cols-12 gap-5">
-                                          <div className="col-span-9 xs:col-span-6">
-                                              <Select
-                                                  value={selectedOptions}
-                                                  onChange={handleSelectChange}
-                                                  className="mt-1 block w-full"
-                                                  isMulti={true}
-                                                  options={options}
-                                                  isSearchable={true}
-                                                  placeholder="Select Items"
-                                              >
-                                              </Select>
-                                          </div>
-                                          <div className="col-span-3 xs:col-span-2">
-                                  <button
+
+                                        <div className="col-span-3 xs:col-span-2">
+                                  {/* <button
                                     className="flex flex-nowrap gap-2 font-semibold text-md bg-green-500 py-2 px-14 text-white rounded shadow transition-all hover:bg-green-700"
                                     onClick={handleAddSelect}
                                   >
@@ -257,104 +335,140 @@ export default function Edit({ auth, existingItemss, existingItemsIds, clients, 
                                      >
                                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
-                                  </button>
+                                  </button> */}
                               </div>
-                              </div>
-                              <div className="mt-2 mx-2">
-                            {notification && (
-                              <div className="text-red-600 font-semibold mt-2">
-                                {notification}
-                              </div>
-                            )}
-                          </div>
-                                          <div className="mt-5">
-                                              <h1 className="text-2xl text-center p-5 font-semibold">DELIVERY RECEIPT</h1>
-                                              <table className="min-w-full bg-white">
-                                              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                                  <tr>
-                                                  <th className="pr-10">ID</th>
-                                                  <th className="pr-10">QTY</th>
-                                                  <th className="pr-10">UNIT</th>
-                                                  <th className="pr-10">ITEM NAME</th>
-                                                  <th className="pr-10">ITEM DESCRIPTION</th>
-                                                  </tr>
-                                              </thead> 
-                                              {databaseItemIds && databaseItemIds.length >= 0 && ( 
-                                                  <tbody>
+                                        <div className="mt-5 min-h-[300px] w-full">
+                                            <h1 className="text-2xl text-center p-5 font-semibold">
+                                                DELIVERY RECEIPT ITEMS
+                                            </h1>
+                                            <table className="min-w-full bg-white">
+                                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                                    <tr>
+                                                        <th className="pr-10">
+                                                            ID
+                                                        </th>
+                                                        <th className="pr-10">
+                                                            QTY
+                                                        </th>
+                                                        <th className="pr-10">
+                                                            UNIT
+                                                        </th>
+                                                        <th className="pr-10">
+                                                            ITEM NAME
+                                                        </th>
+                                                        <th className="pr-10">
+                                                            ITEM DESCRIPTION
+                                                        </th>
+                                                    </tr>
+                                                </thead>
 
-                                                      {databaseItemIds.map((selectedItemId,index) => {
-                                                      const selectedItem = existingItemsss.find(item => item.id === selectedItemId);
-                                                      if (selectedItem) {
-                                                        return (
-                                                          <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
-                                                          <td className="px-3 py-2">{selectedItem.id}</td>
-                                                          <td className="px-3 py-2">
-                <div className="flex flex-row items-center">
-                  <input
-                    type="number"
-                    value={selectedItem.qty_out || ''}
-                    onChange={(e) => handleQtyChange(selectedItem.id, e.target.value)}
-                    className="mt-1 block w-max border-0 text-right"
-                  />
-                  <span className="text-xs">/ {selectedItem.quantity}</span>
+                                                <tbody>
+                                                    {data.items.map((item) => (
+                                                        <tr
+                                                            key={item.id}
+                                                            className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700"
+                                                        >
+                                                            <td className="px-3 py-2">
+                                                                {item.id}
+                                                            </td>
+                                                            <td className="px-3 py-2">
+                                                                <div className="flex flex-row items-center">
+                                                                    <input
+                                                                        type="number"
+                                                                        value={
+                                                                            item.qty_out
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            handleQtyChange(
+                                                                                item.id,
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            )
+                                                                        }
+                                                                        className="mt-1 block w-max border-0 text-right"
+                                                                    />
+                                                                    <span className="text-xs">
+                                                                        /{" "}
+                                                                        {
+                                                                            item.quantity
+                                                                        }
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <InputError
+                                                                message={
+                                                                    errors[
+                                                                        `items.${item.id}.qty_out`
+                                                                    ]
+                                                                }
+                                                                className="mt-2"
+                                                            />
+                                                            <td className="px-3 py-2">
+                                                                {item.uom}
+                                                            </td>
+                                                            <td className="px-3 py-2">
+                                                                {item.name}
+                                                            </td>
+                                                            <td className="px-3 py-2">
+                                                                {
+                                                                    item.description
+                                                                }
+                                                            </td>
+                                                          
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 col-span-4">
+                                        <InputLabel
+                                            htmlFor="deliverables_remarks"
+                                            value="Remarks."
+                                        />
+                                        <TextAreaInput
+                                            id="deliverables_remarks"
+                                            type="text"
+                                            name="remarks"
+                                            value={data.remarks}
+                                            className="mt-1 block w-full"
+                                            rows="4"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "remarks",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                        <InputError
+                                            message={errors.remarks}
+                                            className="mt-2"
+                                        />
+                                    </div>
+
+                                    <div className="mt-4 text-right col-span-4">
+                                        <Link
+                                            href={route("deliverables.index")}
+                                            className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
+                                        >
+                                            Cancel
+                                        </Link>
+                                        <button
+                                            onClick={handleSubmit}
+                                            className="bg-green-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-green-600"
+                                        >
+                                            Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                {errors[`items.${selectedItem.id}.qty_out`] && (
-                  <InputError
-                    message={errors[`items.${selectedItem.id}.qty_out`]}
-                    className="mt-2"
-                  />
-                )}
-              </td>
-                                                          <td className="px-3 py-2">{selectedItem.uom}</td>
-                                                          <td className="px-3 py-2 text-gray-600 text-nowrap hover:underline">
-                                                                <Link href={route('deliverables.show', selectedItem.id)}>
-                                                                {selectedItem.name}
-                                                                </Link> 
-                                                          </td>
-                                                          <td className="px-3 py-2">{selectedItem.description}</td>
-                                                          <td>
-
-                                                          <button
-                                              onClick={() => handleRemoveExistingItem(selectedItem.id, index)}
-                                              className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover:rounded-full mx-1"
-                                            >
-                                              Remove
-                                            </button>
-
-                                                          </td>
-                                                          </tr>
-                                                      );
-                                                      } else {
-                                                        return null;
-                                                      }
-                                                      
-                                                  })}
-                                                  </tbody>
-                                              )}                         
-                                              </table>
-                                          </div>
-                                   </div>
-                                   <br /><br /><br />
-                                   
-                                  <div className="mt-20 text-right">
-                                      <Link href={route('deliverables.index')}
-                                          className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
-                                      >
-                                      Cancel
-                                      </Link>
-                                      <button className="bg-green-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-green-600">
-                                          Submit
-                                      </button>
-                                  </div>
-                              </div>
-                         </div>
-                  </form>
-          
-
-      </div>
-  </div>
-          </div>
-
-      </Authenticated>
-    )
+            </div>
+        </Authenticated>
+    );
 }

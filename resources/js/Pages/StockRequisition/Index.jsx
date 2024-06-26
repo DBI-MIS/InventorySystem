@@ -133,15 +133,15 @@ const deleteStock = (stockrequisition) => {
                                 <TableHeading className="pr-10" name="sr_to"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>TO</TableHeading>
                                 <TableHeading className="pr-10" name="rs_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>RS NO.</TableHeading>
                                 <TableHeading className="pr-10" name="sr_date"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DATE</TableHeading>
-                                <TableHeading className="pr-10" name="sr_qty"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>QTY</TableHeading>
+                                {/* <TableHeading className="pr-10" name="sr_qty"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>QTY</TableHeading>
                                 <TableHeading className="pr-10" name="sr_unit"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>UNIT</TableHeading>
-                                <TableHeading className="pr-10" name="sr_description"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DESCRIPTION</TableHeading>
+                                <TableHeading className="pr-10" name="sr_description"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DESCRIPTION</TableHeading> */}
                                 <TableHeading className="pr-10" name="sr_notes"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>NOTES</TableHeading>
 
                               </tr>
 
                             </thead>
-                            <tbody>
+                            {/* <tbody>
   {stockrequest.data.map((stocks) => (
     <React.Fragment key={stocks.id}>
       <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700">
@@ -191,18 +191,15 @@ const deleteStock = (stockrequisition) => {
       ))}
     </React.Fragment>
   ))}
-</tbody>
+</tbody> */}
 
-                            {/* <tbody>
+                            <tbody>
                               {stockrequest.data.map((stocks)=>(
                                 <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={stocks.id}>
                                   <td className="px-3 py-2">{stocks.id}</td>
                                   <td className="px-3 py-2 hover:underline"><b><Link href={route('stockrequisition.show', stocks.id)}>{stocks.sr_to}</Link> </b></td>
                                   <td className="px-3 py-2">{stocks.rs_no}</td>
                                   <td className="px-3 py-2">{stocks.sr_date}</td>
-                                  <td className="px-3 py-2">{stocks.sr_qty}</td>
-                                  <td className="px-3 py-2">{stocks.sr_unit}</td>
-                                  <td className="px-3 py-2">{stocks.sr_description}</td>
                                   <td className="px-3 py-2">{stocks.sr_notes}</td>
                                   <td className="px-3 py-2 text-nowrap">
                                           <div className="flex">
@@ -222,7 +219,7 @@ const deleteStock = (stockrequisition) => {
                                     </td>
                                 </tr>
                               ))}
-                            </tbody> */}
+                            </tbody> 
 
                           </table>
                     
