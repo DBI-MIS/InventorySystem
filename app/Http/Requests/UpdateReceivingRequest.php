@@ -29,8 +29,8 @@ class UpdateReceivingRequest extends FormRequest
             ],
             "mrr_no" => [
                 'required', 
-                'min:6',
-                'max:6'
+                'min:1',
+               
             ],
             'group_item_id' => [
                 'nullable',

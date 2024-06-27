@@ -71,12 +71,7 @@ class ReceivingController extends Controller
        $employees = Employee::query()->orderBy('name', 'asc')->get();
        $locations = Location::query()->orderBy('name', 'asc')->get();
        $clients =  Client::query()->distinct()->orderBy('name', 'asc')->get();
-    //     $clients =  Client::select('name')->distinct()->orderBy('name', 'asc')->get();
       $delivers = Deliverables::query()->orderBy('dr_no', 'asc')->get();
-    //    $sku = $this->generateSkuId();
-    //    dd($deliverables);
-    //    $input['sku'] = $sku;
-    //    $mrrData = Receiving::select('mrr_no')->distinct()->get();
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
         $input['mrr_no'] =  $mrr_no;
@@ -93,20 +88,8 @@ class ReceivingController extends Controller
           'clients' => ClientResource::collection($clients),
           'delivers' => DeliverablesResource::collection($delivers),
           'mrr_no' =>  $mrr_no,
-        //   'skuu' => $sku
       ]);
     }
-    
-    // function generateSkuId() {
-    //     // $id = "9";
-    //     // $user->orders()->where('service_id', $request->service_id)->orderBy('id', 'DESC')->first();
-    //     $id = Item::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
-    //         $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
-    //     $sku = str_pad( $stringID, 6, '0', STR_PAD_LEFT); 
-    //     // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left
-    //     return $sku;
-        
-    // }
     
     function generateMrrNo() {
 
@@ -254,7 +237,7 @@ public function show(Receiving $receiving, Request $request)
             // $receiving->delete();
             // return to_route('receiving.index')->with('success', "Receiving \"$id\" was deleted");
 
-        $response = Gate::authorize('update', $receiving);
+        $response = Gate::authorize('delete', $receiving);
 
         if ($response->allowed()) {
             $id = $receiving->id;
@@ -306,5 +289,13 @@ public function show(Receiving $receiving, Request $request)
              
      // });
      }
+// public function restore(Receiving $receiving, $id)
+// {
+//     // $receiving->restore();
+//     $name = Receiving::withTrashed()->where('id',$id)->pluck('name')->first();
+//     Receiving::withTrashed()->where('id',$id)->first()->restore();
+
+//     return redirect()->route('archive.index')->with('success', "Receiving\"$name\" restored successfully!");
+// }
     
 }

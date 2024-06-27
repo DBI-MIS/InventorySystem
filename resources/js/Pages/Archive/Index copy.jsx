@@ -60,22 +60,7 @@ export default function Index({auth,items,receivings, queryParams = null, succes
     router.get(route('archive.index'), queryParams)
   }
 
-  const handleRestore = (item) => {
-    // console.log(item)
-    if(!window.confirm("Are you sure you want to restore")){
-      return;
-    }
-    
-    router.show(route('archive.show',item.id, "item"))
-  }
-  // handleRestoreMRR
-  const handleRestoreMRR= (receiving) => {
-    // console.log(item)
-    if(!window.confirm("Are you sure you want to restore")){
-      return;
-    }
-    router.show(route('archive.show', receiving.id, "receiving"))
-  }
+
   // deleteConfirmation modal
  const [id, setId] = useState(null);
  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
@@ -225,7 +210,7 @@ const deleteReceiving = (receiving) => {
                                     </td>
                                    <td className="w-[100px] py-2 text-nowrap">
                                        <div className="flex flex-row justify-end items-center">
-                                        <Link href={route('archive.update', item.id,"item") } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
+                                        <Link href={route('archive.update', item.id) } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3" />
                                             </svg>
@@ -254,7 +239,7 @@ const deleteReceiving = (receiving) => {
               </div>
 
               {/* receivings */}
-              <div className="bg-white mt-5 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+              <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                   <div className="p-6 text-gray-900 dark:text-gray-100">
                       <div className="overflow-auto">
                         <div className="float-right mb-5">
@@ -332,7 +317,7 @@ const deleteReceiving = (receiving) => {
                                       <td className="w-[180px] py-2 text-nowrap pl-4">{receiving.status ?? "No Status"}</td>
                                       <td className="w-[100px] py-2 text-nowrap">
                                           <div className="w-[100px] flex flex-row justify-end items-center">
-                                          <Link href={route('archive.update', receiving.id, receiving) } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
+                                          <Link href={route('archive.update', receiving.id) } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3" />
                                             </svg>
@@ -419,72 +404,57 @@ const deleteReceiving = (receiving) => {
                                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
                                         <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                             <tr className="">
-                                              <TableHeading  
-                                                className=""  
-                                                name="id"
-                                                sort_field={queryParams.sort_field}
-                                                sort_direction={queryParams.sort_direction}
-                                                sortChanged={sortChanged}
-                                              >Name</TableHeading>
-
-                                              <TableHeading  
-                                                className=""  
-                                                name="sku"
-                                                sort_field={queryParams.sort_field}
-                                                sort_direction={queryParams.sort_direction}
-                                                sortChanged={sortChanged}
-                                              >Sku </TableHeading>
-
-                                              <TableHeading  
-                                                className=""  
-                                                name="name"
-                                                sort_field={queryParams.sort_field}
-                                                sort_direction={queryParams.sort_direction}
-                                                sortChanged={sortChanged}
-                                              >ID</TableHeading>
-
-                                              <TableHeading  
-                                              className="pr-10" 
-                                              name="quantity"
-                                              sort_field={queryParams.sort_field}
-                                              sort_direction={queryParams.sort_direction}
-                                              sortChanged={sortChanged}
-                                              >Action</TableHeading>
+                                                <TableHeading
+                                                    className=""
+                                                    name="name"
+                                                    id="name"
+                                                    sort_field={
+                                                        queryParams.sort_field
+                                                    }
+                                                    sort_direction={
+                                                        queryParams.sort_direction
+                                                    }
+                                                    sortChanged={sortChanged}
+                                                >
+                                                    Item
+                                                </TableHeading>
+                                                <TableHeading
+                                                    className=""
+                                                    name="category_id"
+                                                    sort_field={
+                                                        queryParams.sort_field
+                                                    }
+                                                    sort_direction={
+                                                        queryParams.sort_direction
+                                                    }
+                                                    sortChanged={sortChanged}
+                                                >
+                                                    Total Qty
+                                                </TableHeading>
+                                                <TableHeading
+                                                    className=""
+                                                    name="status"
+                                                    sort_field={
+                                                        queryParams.sort_field
+                                                    }
+                                                    sort_direction={
+                                                        queryParams.sort_direction
+                                                    }
+                                                    sortChanged={sortChanged}
+                                                >
+                                                    Status
+                                                </TableHeading>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {items.data.map((item, index) => (
                                                 <tr key={index}>
-                                                    <td className="text-base font-bold ">  {item.name ? item.name : 'No Item Name '}</td>
-                                                    <td className="w-12"> {item.sku_prefix ? item.sku_prefix: 'No Sku Prefix'}-{ item.sku }</td>
+                                                    <td className="text-base">{item.name}</td>
+                                                    <td className="w-24 text-base font-bold text-center">{item.quantity}</td>
                                                     <td className="w-28">
                                                     <p className={`whitespace-no-wrap text-center rounded-lg
-                                                     `}>{item.id}</p></td>
-                                                    <td className="w-24">
-                                                      <div className="flex flex-row justify-end items-center">
-                                                      <button data-model-type="item" onClick={() => handleRestore(item.id)}>Restore Item</button>
-                                                      <Link to={`/archive/show/${id}/table1`}>
-                                                              Restore Table 1
-                                                            </Link>
-                                                        <Link href={route('archive.update', item.id) } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3" />
-                                                            </svg>
-                                                        </Link>
-                                                        <button
-                                                            className="px-2 py-1 text-red-500  hover:bg-red-600 hover:text-white hover:rounded-full"
-                                                            type="button"
-                                                            onClick={() => {[setShowModal(true),showDeleteModal(item.id)]; }}
-                                                        >
-                                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                                          </svg>
-                                                        </button>
-                                                            {showModal && <Modals setOpenModal={setShowModal} confirmModal={submitDelete} id={id} />}
-                                                          
-                                                      </div>
-                                                </td>
-                                                        
+                                                     `}>
+                                                        {item.status}</p></td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -550,20 +520,33 @@ const deleteReceiving = (receiving) => {
                                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
                                         <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                             <tr className="">
-                                            <TableHeading  
-                                              className="pr-10" 
-                                              name="id"
-                                              sort_field={queryParams.sort_field}
-                                              sort_direction={queryParams.sort_direction}
-                                                sortChanged={sortChanged}
-                                              >MRR No. </TableHeading>
-                                              <TableHeading  
-                                                className="pr-10" 
-                                                name="id"
-                                                sort_field={queryParams.sort_field}
-                                                sort_direction={queryParams.sort_direction}
-                                                sortChanged={sortChanged}
-                                              >Client Name</TableHeading>
+                                                <TableHeading
+                                                    className=""
+                                                    name="name"
+                                                    id="name"
+                                                    sort_field={
+                                                        queryParams.sort_field
+                                                    }
+                                                    sort_direction={
+                                                        queryParams.sort_direction
+                                                    }
+                                                    sortChanged={sortChanged}
+                                                >
+                                                    Item
+                                                </TableHeading>
+                                                <TableHeading
+                                                    className=""
+                                                    name="category_id"
+                                                    sort_field={
+                                                        queryParams.sort_field
+                                                    }
+                                                    sort_direction={
+                                                        queryParams.sort_direction
+                                                    }
+                                                    sortChanged={sortChanged}
+                                                >
+                                                    Total Qty
+                                                </TableHeading>
                                                 <TableHeading
                                                     className=""
                                                     name="status"
@@ -577,48 +560,17 @@ const deleteReceiving = (receiving) => {
                                                 >
                                                     Status
                                                 </TableHeading>
-                                                <TableHeading  
-                                              >Action</TableHeading>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {receivings.data.map((receiving, index) => (
+                                            {items.data.map((item, index) => (
                                                 <tr key={index}>
-                                                    <td className="text-base"> <b>
-                                                      <Link href={route('receiving.show', receiving.id)} >
-                                                        {receiving.mrr_no}
-                                                      </Link>
-                                                    </b></td>
-                                                    <td className="w-24 text-base font-bold text-center">{receiving.client && receiving.client.name ? receiving.client.name : "No Client Name"}</td>
+                                                    <td className="text-base">{item.name}</td>
+                                                    <td className="w-24 text-base font-bold text-center">{item.quantity}</td>
                                                     <td className="w-28">
                                                     <p className={`whitespace-no-wrap text-center rounded-lg
                                                      `}>
-                                                        {receiving.status ?? "No Status"}</p></td>
-                                                        <td className="w-24">
-                                                      <div className="flex flex-row justify-end items-center">
-                                                      <button data-model-type="receiving" onClick={() => handleRestoreMRR(receiving.id)}>Restore Item</button>
-
-                                                        <Link href={route('archive.update', receiving.id,'receiving') } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3" />
-                                                            </svg>
-                                                        </Link>
-                                                        <Link to={`/archive/show/${id}/table2`}>
-                                                              Restore Table 2 
-                                                            </Link>
-                                                        <button
-                                                            className="px-2 py-1 text-red-500  hover:bg-red-600 hover:text-white hover:rounded-full"
-                                                            type="button"
-                                                            onClick={() => {[setShowModal(true),showDeleteModal(item.id)]; }}
-                                                        >
-                                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                                          </svg>
-                                                        </button>
-                                                            {showModal && <Modals setOpenModal={setShowModal} confirmModal={submitDelete} id={id} />}
-                                                          
-                                                      </div>
-                                                </td>
+                                                        {item.status}</p></td>
                                                 </tr>
                                             ))}
                                         </tbody>

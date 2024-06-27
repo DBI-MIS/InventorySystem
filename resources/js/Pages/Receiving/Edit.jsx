@@ -20,7 +20,7 @@ export default function Edit({auth,existingItems,existingItemIds,receiving,items
     deliver_id: receiving.deliver_id || "",
     address: receiving. address || "",
     remarks: receiving. remarks || "",
-        _method: "PUT", 
+    _method: "PUT", 
     });
 
 

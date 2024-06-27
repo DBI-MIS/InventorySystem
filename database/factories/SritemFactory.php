@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,51 @@ class SritemFactory extends Factory
      */
     public function definition(): array
     {
+        $item = $this->faker->unique()->randomElement([
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+        ]);
+        $qty = $this->faker->unique()->randomElement([
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+        ]);
+        $uom = $this->faker->unique()->randomElement([
+            'p',
+            'c',
+            'p',
+            'c',
+            's',
+            'm',
+            'l',
+            'cm',
+            'si',
+            'i',
+        ]);
+
         return [
-            //
+            'item' => $item,
+            'qty' => $qty,
+            'uom' => $uom,
+            'description' => fake()->realText(),
+            'created_at' => time(),
+            'updated_at' => time(),
+            'user_id' => User::factory()
         ];
     }
 }

@@ -8,11 +8,11 @@ import React from "react";
 
 export default function Index({
     auth,
-    deliverabless,
+    deliverables,
     queryParams = null,
     success,
 }) {
-    console.log(deliverabless);
+    
     const [open, setOpen] = React.useState(true);
     queryParams = queryParams || {};
 
@@ -224,7 +224,7 @@ export default function Index({
                                     </thead>
 
                                     <tbody>
-                                        {deliverabless.data.map(
+                                        {deliverables.data.map(
                                             (deliverable, index) => (
                                                 <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`}
                                                     key={deliverable.id}
@@ -251,16 +251,14 @@ export default function Index({
                                                     </td>
 
                                                     <td className="py-2 pl-4">
-                                                        {deliverable
-                                                            .stockrequest
-                                                            .rs_no ??
+                                                        {deliverable.stockrequest.rs_no
+                                                             ??
                                                             "No RS Number"}
                                                     </td>
 
                                                     <td className="py-2 pl-4">
-                                                                {deliverable
-                                                                    .client
-                                                                    .name ??
+                                                                {deliverable.client.name                                                                   
+                                                                     ??
                                                                     "No Client Name"}{" "}
                                                         
                                                     </td>
@@ -332,7 +330,7 @@ export default function Index({
                                     </tbody>
                                 </table>
                             </div>
-                            <Pagination links={deliverabless.meta.links} />
+                            <Pagination links={deliverables.meta.links} />
                         </div>
                     </div>
                 </div>

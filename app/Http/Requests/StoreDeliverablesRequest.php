@@ -39,10 +39,6 @@ class StoreDeliverablesRequest extends FormRequest
                 'nullable',
                 'date'
             ],
-            "dr_qty" => [
-                'nullable',
-                'max:255'
-            ],
             "remarks" => [
                 'nullable',
                 'max:255'

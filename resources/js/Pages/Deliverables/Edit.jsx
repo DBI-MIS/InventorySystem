@@ -11,28 +11,33 @@ import Select from "react-select";
 
 export default function Edit({
     auth,
-    deliverablesss,
-    clients,
-    stockrequests,
-    items,
-    itemss,
+    deliverables, // data with relation
+    clients, // collection
+    stockrequests, // collection
+    list_items, // data items pivot
+    items, // collection
 }) {
     const { data, setData, post, errors } = useForm({
-        address: clients.address || "",
-        dr_no: deliverablesss.dr_no || "",
-        dr_date: deliverablesss.dr_date || "",
-        remarks: deliverablesss.remarks || "",
+        
+        dr_no: deliverables.dr_no || "",
+        dr_date: deliverables.dr_date || "",
+        remarks: deliverables.remarks || "",
+        // list_items: deliverables.itemsDeliverables || [],
         items: items || [],
-        user_id: auth.user_id || "",
-        client_id: clients.name || "",
-        stockrequest_id: stockrequests.stockrequest_id || "",
+        // list_items: list_items || [],
+        user_id: auth.user.id || "",
+        client_id: deliverables.client.id || "",
+        address: deliverables.client.address,
+        stockrequest_id: deliverables.stockrequest.id || "",
+        _method: "PUT", 
     });
 
     const [selectedOptions, setSelectedOptions] = useState([]);
+   
 
     useEffect(() => {
         if (items) {
-            const selectedOptions = data.items.map((item) => ({
+            const selectedOptions = list_items.map((item) => ({
                 value: item.id,
                 label: item.name,
             }));
@@ -40,44 +45,36 @@ export default function Edit({
         }
     }, [items]);
 
-    const options = data.items.map((item) => ({
-      //values from the db
+    const options = items.data.map((item) => ({
       value: item.id,
       label: item.name,
   }));
 
-    const allItems = data.items.map((item) => ({
+    const allItems = items.data.map((item) => ({
       ...item,
       id: parseInt(items.id),
   })); 
 
+
     const handleSelectChange = (selectedOptions) => {
-      setSelectedOptions(selectedOptions);
+        setSelectedOptions(selectedOptions);
 
-      const items = selectedOptions.map((option) => {
-          const selectedItem = allItems.find(
-              (item) => item.id === parseInt(option.value)
-          );
-          return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
-      });
+        const items = selectedOptions.map((option) => {
+            const selectedItem = allItems.find(
+                (item) => item.id === parseInt(option.value)
+            );
+            return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
+        });
 
-      setData(
-          "items",
-          data.items.map((item) => ({ ...item, list_item_id: item.id }))
-      );
-      
+        setData(
+            "items",
+            items.map((item) => ({ ...item, items: item.id }))
+        );
     };
 
-  //   const handleAddSelect = () => {
-      
-  //     const newItem = { value: 'newItemId', label: 'New Item' }; 
-  //     setSelectedOptions([...selectedOptions, newItem]);
-      
-    
-  // };
 
     const handleQtyChange = (id, qty) => {
-        const updatedItems = data.items.map((item) =>
+        const updatedItems = items.data.map((item) =>
             item.id === id ? { ...item, qty_out: qty } : item
         );
         setData("items", updatedItems);
@@ -90,16 +87,16 @@ export default function Edit({
             (client) => client.id === parseInt(selectedClientId)
         );
 
-        setData({
-            ...data,
+        setData((prevState) => ({
+            ...prevState,
             client_id: selectedClientId,
             address: selectedClient ? selectedClient.address : "",
-        });
+        }));
     };
 
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route("deliverables.store"));
+        post(route("deliverables.update"));
     };
 
     const handleSubmit = (e) => {
@@ -113,7 +110,7 @@ export default function Edit({
             }
         );
 
-        post(route("deliverables.store"));
+        post(route("deliverables.update", deliverables.id));
     };
 
     return (
@@ -151,11 +148,9 @@ export default function Edit({
                                             name="client_id"
                                             className="mt-1 block w-full"
                                             onChange={handleClientChange}
-                                            defaultValue={data.client_id}
+                                            value={data.client_id}
                                         >
-                                            <option value="">
-                                                Select project
-                                            </option>
+                                            
                                             {clients.data.map((client) => (
                                                 <option
                                                     value={client.id}
@@ -194,7 +189,6 @@ export default function Edit({
                                                     .split("T")[0]
                                             }
                                             className="mt-1 block w-full"
-                                            isFocused={true}
                                             onChange={(e) =>
                                                 setData(
                                                     "dr_date",
@@ -213,13 +207,13 @@ export default function Edit({
                                             htmlFor="deliverables_address"
                                             value="Address."
                                         />
+                                    
                                         <TextInput
                                             id="deliverables_address"
                                             type="text"
                                             name="address"
                                             value={data.address}
                                             className="mt-1 block w-full"
-                                            isFocused={true}
                                             readOnly
                                             onChange={(e) =>
                                                 setData(
@@ -272,9 +266,9 @@ export default function Edit({
                                                 )
                                             }
                                         >
-                                            <option value="">
+                                            {/* <option value="">
                                                 Select RS No.
-                                            </option>
+                                            </option> */}
                                             {stockrequests.data.map(
                                                 (stockrequest) => (
                                                     <option
@@ -294,7 +288,7 @@ export default function Edit({
 
                                     <div className="mt-4 col-span-4">
                                         <InputLabel
-                                            htmlFor="receiving Items"
+                                            htmlFor="Deliverable Items"
                                             value="Group of Items"
                                         />
                                         <div className="w-full">
@@ -304,12 +298,6 @@ export default function Edit({
                                                 className="mt-1 block w-full"
                                                 isMulti={true}
                                                 options={options}
-                                                // options={data.items.map(
-                                                //     (item) => ({
-                                                //         value: item.id,
-                                                //         label: item.name,
-                                                //     })
-                                                // )}
                                                 isSearchable={true}
                                                 placeholder="Select Items"
                                             ></Select>
@@ -363,7 +351,7 @@ export default function Edit({
                                                 </thead>
 
                                                 <tbody>
-                                                    {data.items.map((item) => (
+                                                    {items.data.map((item) => (
                                                         <tr
                                                             key={item.id}
                                                             className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700"
@@ -373,19 +361,13 @@ export default function Edit({
                                                             </td>
                                                             <td className="px-3 py-2">
                                                                 <div className="flex flex-row items-center">
-                                                                    <input
+                                                                <input
                                                                         type="number"
-                                                                        value={
-                                                                            item.qty_out
-                                                                        }
-                                                                        onChange={(
-                                                                            e
-                                                                        ) =>
+                                                                        value={item.qty_out}
+                                                                        onChange={(e) =>
                                                                             handleQtyChange(
                                                                                 item.id,
-                                                                                e
-                                                                                    .target
-                                                                                    .value
+                                                                                e.target.value
                                                                             )
                                                                         }
                                                                         className="mt-1 block w-max border-0 text-right"

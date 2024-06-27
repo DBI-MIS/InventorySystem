@@ -42,8 +42,9 @@ class DeliverablesController extends Controller
         $deliverabless =  $query->orderBy($sortField, $sortDirection)
         ->paginate(20)
         ->onEachSide(1);
+
     return inertia("Deliverables/Index",[
-        "deliverabless" => DeliverablesResource::collection($deliverabless),
+        "deliverables" => DeliverablesResource::collection($deliverabless),
         'queryParams' => request()->query() ?: null,
         'success' => session('success'),
 
@@ -120,33 +121,6 @@ class DeliverablesController extends Controller
      */
     public function edit(Deliverables $deliverable)
     {
-        // // dd($deliverable);
-        // $itemss = Item::query()->orderBy('name', 'asc')->get();
-        // $clients = Client::query()->orderBy('name', 'asc')->get();
-        // $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
-
-        // $parsedID = json_decode($deliverable, true);
-        // $id = $parsedID['id'];
-
-        // $deliverable = Deliverables::find($id);
-        // $existingItemss = $deliverable->itemsDeliverables;
-
-        // // dd($existingItemss);
-
-        // $existingItemsIds= $deliverable->itemsDeliverables()->pluck('items.id');
-        // // dd($existingItemsIds);
-
-        // $existingItemsIds = array_map('intval', $existingItemsIds->toArray());
-
-        // return inertia('Deliverables/Edit',[
-        //     'itemss' => ItemResource::collection($itemss),
-        //     'clients' => ClientResource::collection($clients),
-        //     'stockrequests' => StockRequisitionResource::collection($stockrequests),
-        //     'deliverable' => new DeliverablesResource($deliverable),
-        //     'existingItemss' => $existingItemss,
-        //     'existingItemsIds' => $existingItemsIds
-
-        // ]);
 
         $items = Item::query()->orderBy('name', 'asc')->get();
         $clients = Client::query()->orderBy('name', 'asc')->get();
@@ -155,11 +129,13 @@ class DeliverablesController extends Controller
         $deliverable->load('client', 'stockrequest', 'itemsDeliverables');
 
          return Inertia('Deliverables/Edit', [
-        'deliverablesss' => $deliverable,
-        'itemss' => ItemResource::collection($items),
-        'clients' => ClientResource::collection($clients), // Example of loading all clients
-        'stockrequests' => StockRequisitionResource::collection($stockrequests), // Example of loading all stock requests
-        'items' => $deliverable->itemsDeliverables, 
+        'deliverables' => $deliverable,
+        'items' => ItemResource::collection($items),
+        'clients' => ClientResource::collection($clients), 
+        'stockrequests' => StockRequisitionResource::collection($stockrequests),
+        'list_items' => $deliverable->itemsDeliverables,
+        'client' => $deliverable->client, 
+        'stockrequest' => $deliverable->stockrequest, 
     ]);
 
 
@@ -170,24 +146,33 @@ class DeliverablesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    protected $list_item_id = [];
+    // protected $list_item_id = [];
 
     public function update(UpdateDeliverablesRequest $request, Deliverables $deliverable)
     {
-        // $data = $request->validated();
 
-        // if(isset($data['list_item_id'])) {
-        //     $itemss = $data['list_item_id'];
-        //     $deliverable->update($data);
-        //     $deliverable->itemsDeliverables()->sync($itemss);
-        // }
+        $data = $request->validated(); 
 
-        // return to_route('deliverables.index')
-        //    ->with('success', "Deliverables \"{$deliverable->id}\" was updated ");
+        $deliverable->update($data);
 
-        $validated = $request->validated(); 
+        $items = $data['items'];
 
-        $deliverable->update($validated);
+        $data['user_id'] = Auth::id();
+
+     foreach ($items as $item) {
+        if ($item['qty_out'] > $item['quantity']) {
+            return redirect()->back()->withInput()->withErrors(['items' => 'Quantity cannot exceed available amount.']);
+        }
+    }
+
+    
+    $itemIds = array_map(function ($item) {
+        return (int) $item['id'];
+    }, $items);
+    
+    $deliverable->itemsDeliverables()->attach($itemIds);
+
+
     
         return Redirect::route('deliverables.index')
             ->with('success', "Deliverables \"{$deliverable->id}\" was updated successfully");

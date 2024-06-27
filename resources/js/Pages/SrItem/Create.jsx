@@ -62,7 +62,7 @@ export default function Create({ auth }) {
                                                <InputLabel htmlFor="sritem_qty" value="Quantity: " />
                                                <TextInput 
                                                 id="sritem_qty"
-                                                type="text"
+                                                type="number"
                                                 name="qty"
                                                 placeholder="Qty"
                                                 value={data.qty}

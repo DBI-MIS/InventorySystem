@@ -1,11 +1,16 @@
+import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
+import { Alert } from "@material-tailwind/react";
 import React from 'react';
 
-export default function Index({ auth, sritems, queryParams = null }) {
+export default function Index({ auth, sritems, success, queryParams = null }) {
 
+    queryParams = queryParams || {};
+
+    const [open, setOpen] = React.useState(true);
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value, ) => {
@@ -44,6 +49,13 @@ export default function Index({ auth, sritems, queryParams = null }) {
     //   router.delete(route('stockrequisition.destroy', stockrequisition.id))
     // }
 
+    const deleteSr = (sritem) => {
+      if(!window.confirm("Are you sure you want to delete the SrItem?")){
+        return;
+      }
+      router.delete(route('sritem.destroy', sritem.id))
+    }
+
     return (
         <Authenticated
         user={auth.user}
@@ -58,7 +70,7 @@ export default function Index({ auth, sritems, queryParams = null }) {
 
             <div className="py-12">
         <div className="max-w-5/6 mx-auto sm:px-6 lg:px-8 ">
-        {/* <div className="max-w-5/6">
+        <div className="max-w-5/6">
               {success && (
                   <Alert
                   className=" absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
@@ -70,7 +82,7 @@ export default function Index({ auth, sritems, queryParams = null }) {
                   }}
                 > {success}</Alert>
               )}
-            </div> */}
+            </div>
         
             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div className="p-6 text-gray-900 dark:text-gray-100">
@@ -92,7 +104,7 @@ export default function Index({ auth, sritems, queryParams = null }) {
                           </div>
                            <TextInput  className="w-[500px]" 
                                   defaultValue={queryParams.item}
-                                  placeholder="Search Name" 
+                                  placeholder="Search Item" 
                                   onBlur={(e) => searchFieldChanged('item', e.target.value)}
                                   onKeyPress={(e) => onKeyPress('item', e )}/>
                   </div>
@@ -112,22 +124,22 @@ export default function Index({ auth, sritems, queryParams = null }) {
                               </tr>
                             </thead>
                             <tbody>
-                              {sritems.data.map((stocksitems)=>(
-                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={stocksitems.id}>
-                                    <td className="px-3 py-2">{stocksitems.id}</td>
-                                    <td className="px-3 py-2 hover:underline">{stocksitems.item}</td>
-                                    <td className="px-3 py-2">{stocksitems.qty}</td>
-                                    <td className="px-3 py-2">{stocksitems.uom}</td>
-                                    <td className="px-3 py-2">{stocksitems.description}</td>
+                              {sritems.data.map((sritem)=>(
+                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={sritem.id}>
+                                    <td className="px-3 py-2">{sritem.id}</td>
+                                    <td className="px-3 py-2 hover:underline">{sritem.item}</td>
+                                    <td className="px-3 py-2">{sritem.qty}</td>
+                                    <td className="px-3 py-2">{sritem.uom}</td>
+                                    <td className="px-3 py-2">{sritem.description}</td>
                                     <td className="px-3 py-2 text-nowrap">
                                           <div className="flex">
-                                              <Link href={route('sritem.edit', stocks.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 
+                                              <Link href={route('sritem.edit', sritem.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 
                                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                   </svg>
                                               </Link>
                                               <button 
-                                                  onClick={(e) =>deleteStock(stocksitems)}
+                                                  onClick={(e) =>deleteSr(sritem)}
                                                   className="font-medium text-red-600 p-2 hover:bg-red-600 hover:text-white hover: rounded-full  hover:underline mx-1"> 
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                                                   <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
@@ -142,6 +154,7 @@ export default function Index({ auth, sritems, queryParams = null }) {
                     </table>
 
                     </div>
+                    <Pagination links={sritems.meta.links} />
                 </div>
             </div>
         </div>

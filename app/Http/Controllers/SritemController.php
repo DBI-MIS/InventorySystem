@@ -6,6 +6,8 @@ use App\Models\Sritem;
 use App\Http\Requests\StoreSritemRequest;
 use App\Http\Requests\UpdateSritemRequest;
 use App\Http\Resources\SritemResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class SritemController extends Controller
 {
@@ -18,6 +20,9 @@ class SritemController extends Controller
         
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
+        if (request("item")) {
+            $query->whereRaw("LOWER(item) LIKE ?", ["%" . strtolower(request("item")) . "%"]);
+        }
 
         $sritems = $query->orderBy($sortField, $sortDirection)
         ->paginate(10);
@@ -26,7 +31,7 @@ class SritemController extends Controller
         return inertia("SrItem/Index", [
             "sritems" => SritemResource::collection($sritems),
             'queryParams' => request()-> query() ?: null,
-            // 'success' => session('success'),
+            'success' => session('success'),
 
         ]);
     }
@@ -44,7 +49,12 @@ class SritemController extends Controller
      */
     public function store(StoreSritemRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $data['user_id'] = Auth::id();
+        Sritem::create($data);
+
+        return redirect()->route('sritem.index')->with('success', "Sr Item added successfully");
     }
 
     /**
@@ -60,7 +70,15 @@ class SritemController extends Controller
      */
     public function edit(Sritem $sritem)
     {
-        //
+        $response = Gate::authorize('update', $sritem);
+
+        if($response->allowed()) {
+            return inertia('SrItem/Edit', [
+                'sritem' => new SritemResource($sritem)
+            ]);
+        }else{
+            return abort(403, $response->message());
+        }
     }
 
     /**
@@ -68,7 +86,10 @@ class SritemController extends Controller
      */
     public function update(UpdateSritemRequest $request, Sritem $sritem)
     {
-        //
+        $data = $request->validated();
+        $sritem->update($data);
+
+        return to_route('sritem.index')->with('success', "Deliverables \"{$sritem->item}\" was updated successfully");
     }
 
     /**
@@ -76,6 +97,16 @@ class SritemController extends Controller
      */
     public function destroy(Sritem $sritem)
     {
-        //
+    
+        $response = Gate::authorize('delete', $sritem);
+
+        if ($response->allowed()) {
+            $item = $sritem->item;
+            $sritem->delete();
+
+            return to_route('sritem.index')->with('success', "Sr Item \" $item \" was deleted!");
+        }else{
+            return abort(403, $response->message());
+        }
     }
 }

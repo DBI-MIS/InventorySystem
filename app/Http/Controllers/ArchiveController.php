@@ -32,14 +32,14 @@ class ArchiveController extends Controller
             }
             $items = $query->onlyTrashed()->orderBy($sortField, $sortDirection)
             ->paginate(10);
-        //     $trashedReceiving = Receiving::withTrashed()->orderBy($sortField, $sortDirection)
-        //     ->paginate(10);
+            $trashedReceiving = Receiving::onlyTrashed()->orderBy($sortField, $sortDirection)
+            ->paginate(10);
         //   ;
 
 
             return inertia("Archive/Index", [
                 "items" => ItemResource::collection($items),
-                // "receivings" => ReceivingResource::collection($trashedReceiving),
+                "receivings" => ReceivingResource::collection($trashedReceiving),
                 'queryParams' => request()-> query() ?: null,
                 'success' => session('success'),
                 // $itemss
@@ -65,16 +65,19 @@ class ArchiveController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $item, $id)
+    public function show(Item $item, $id, Receiving $receiving)
     {
         
         $response = Gate::authorize('restore', $item);
-
         if ($response->allowed()) {
+            dd($id);
             //static value working siya.
             // $itemss = Item::withTrashed()->where('id', 17)->restore();
             $name = Item::withTrashed()->where('id',$id)->pluck('name')->first();
             Item::withTrashed()->where('id',$id)->first()->restore();
+
+
+            // Receiving::withTrashed()->where('id',$id)->first()->restore();
         
                 return to_route('archive.index')->with('success', "Item \"$name\" restored successfully!");
         }

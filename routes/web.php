@@ -45,6 +45,9 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::resource('employee', EmployeeController::class);
         Route::resource('archive', ArchiveController::class)->withTrashed();
         Route::resource('receiving', ReceivingController::class);
+        // Route::post('receiving/restore', ReceivingController::class)->name(receiving.restore);
+        // Route::post('/receiving/{id}restore', ['App\Http\Controllers\ReceivingController@restore','restore'])->name(receiving.restore);
+
         Route::resource('client', ClientController::class);
         Route::resource('mrrItem', MrrItemController::class);
         Route::resource('itemMrr', ItemController::class);
@@ -56,6 +59,7 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::resource('preview', PreviewController::class);
         Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;
         Route::get('/receiving/my-receiving/{receivingId}', [ReceivingController::class, 'myReceiving'])->name('receiving.myReceiving');
+     // Route::post('/receiving/{id}restore', ['App\Http\Controllers\ReceivingController@restore','restore'])->name(receiving.restore);
         Route::get('/deliverables/my-deliverable/{deliverableId}', [DeliverablesController::class, 'myDeliverable'])->name('deliverable.myDeliverable');
         Route::get('/stockrequisition/my-stockrequest/{stockrequestId}', [StockRequisitionController::class, 'myStockRequest'])->name('stockrequest.myStockRequest');
         Route::post('receiving/create', [ItemController::class,'storeItem'])->name('item.storeItem');

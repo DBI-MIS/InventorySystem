@@ -119,6 +119,7 @@ class ItemController extends Controller
         // dd($formData);
         $data = $request->validated();
         $data['user_id'] = Auth::id();
+        $data['updated_by'] = Auth::id(); //comment this
     
         // dd($data);
         Item::create($data);

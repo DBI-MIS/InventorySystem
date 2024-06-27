@@ -34,10 +34,6 @@ class UpdateDeliverablesRequest extends FormRequest
                 'nullable',
                 'date'
             ],
-            "dr_qty" => [
-                'nullable',
-                'max:255'
-            ],
             "remarks" => [
                 'nullable',
                 'max:255'
@@ -50,9 +46,13 @@ class UpdateDeliverablesRequest extends FormRequest
                 'required', 
                 'exists:stock_requisitions,id'
             ],
-            "list_item_id" => [
-                'required', 
-                'exists:items,id'
+           "items" => [
+                'required',
+            ],
+            "items.*.qty_out" => [
+                'required',
+                'integer',
+                'min:1',
             ],
             
         ];

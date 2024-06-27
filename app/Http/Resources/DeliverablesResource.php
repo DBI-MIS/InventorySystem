@@ -25,13 +25,11 @@ class DeliverablesResource extends JsonResource
             'stockrequest_id' => $this->stockrequest_id,
             'stockrequest' => new StockRequisitionResource($this->stockrequest),
             'address' => $this->address,
-            // 'address' => new ReceivingResource($this->address),
+            'status' => $this->status,
             'dr_date' => (new Carbon($this->dr_date))->format('Y-m-d'),
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
             'remarks'=>  $this->remarks,
             'items' => ItemResource::collection($this->whenLoaded('itemsDeliverables')),
-            
-          
            
 
 

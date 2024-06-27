@@ -117,6 +117,9 @@ class DatabaseSeeder extends Seeder
          ->count(20)
          ->create();
 
+        //  Sritem::factory()
+        //  ->count(20)
+        //  ->create();
         //  Deliverables::factory()
         //  ->count(20)
         //  ->create();

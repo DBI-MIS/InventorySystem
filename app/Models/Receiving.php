@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Receiving extends Model
 {
@@ -12,7 +13,7 @@ class Receiving extends Model
          'group_item_id' => 'array',
          'created_at' => 'date: m-d-Y'
 ];
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = [
         'mrr_no',
@@ -60,5 +61,11 @@ class Receiving extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
+/**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 }
 
