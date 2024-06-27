@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\SritemResource;
 use App\Models\Sritem;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreSritemRequest;
+use App\Http\Requests\UpdateSritemRequest;
+use App\Http\Resources\SritemResource;
 
 class SritemController extends Controller
 {
@@ -13,7 +14,6 @@ class SritemController extends Controller
      */
     public function index()
     {
-        
         $query = Sritem::query();
         
         $sortField = request("sort_field", 'created_at');
@@ -42,7 +42,7 @@ class SritemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSritemRequest $request)
     {
         //
     }
@@ -66,7 +66,7 @@ class SritemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sritem $sritem)
+    public function update(UpdateSritemRequest $request, Sritem $sritem)
     {
         //
     }

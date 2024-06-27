@@ -136,6 +136,7 @@ class ItemController extends Controller
         $item = Item::with('user')->find($itemId); 
         $userName = $item->user->name;
         // dd( $userName);
+        // dd($item);
         if ($response->allowed()) {
             return (inertia('Item/Show', [
                 'item' => new ItemResource($item),
@@ -191,7 +192,7 @@ class ItemController extends Controller
 
         if ($response->allowed()) {
             $data = $request->validated();
-            
+            $data['updated_by'] = Auth::id();
                 $item->update($data);
         
                 return to_route('item.index')

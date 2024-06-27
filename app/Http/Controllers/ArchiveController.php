@@ -6,6 +6,9 @@ use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Http\Resources\ItemResource;
+use App\Http\Resources\ReceivingResource;
+use App\Models\Category;
+use App\Models\Receiving;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -15,7 +18,7 @@ class ArchiveController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(User $user)
+    public function index(User $user )
     {
         if (! Gate::allows('viewAny',Item::class)) { 
             abort(403, 'You are not authorized to view archive.');
@@ -29,9 +32,14 @@ class ArchiveController extends Controller
             }
             $items = $query->onlyTrashed()->orderBy($sortField, $sortDirection)
             ->paginate(10);
+        //     $trashedReceiving = Receiving::withTrashed()->orderBy($sortField, $sortDirection)
+        //     ->paginate(10);
+        //   ;
+
 
             return inertia("Archive/Index", [
                 "items" => ItemResource::collection($items),
+                // "receivings" => ReceivingResource::collection($trashedReceiving),
                 'queryParams' => request()-> query() ?: null,
                 'success' => session('success'),
                 // $itemss

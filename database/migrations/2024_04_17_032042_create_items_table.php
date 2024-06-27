@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('remark')->nullable();
             $table->softDeletes();
             $table->foreignIdFor(User::class)->constrained();
+            $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
         });
     }

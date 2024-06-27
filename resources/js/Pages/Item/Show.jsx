@@ -255,7 +255,7 @@ export default function Show({ auth, item, userName }) {
                                     Updated by :{" "}
                                 </dt>
                                 <dd className="text-base font-light">
-                                    {item.updated ?? "No Update"}
+                                    {item.updatedBy.name ?? "No Update"}
                                 </dd>
                             </div>
 

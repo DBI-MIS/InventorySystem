@@ -166,7 +166,11 @@ class ItemFactory extends Factory
             'created_at' => time(),
             'updated_at' => time(),
             'remark'=> fake()->realText(),
-            'user_id' => User::factory()
+            'user_id' => User::factory(),
+            'updated_by' =>  User::factory(),
+            // User::factory(),
+            
+            
         ];
     }
 }

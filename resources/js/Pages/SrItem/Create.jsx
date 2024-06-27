@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { useForm } from '@inertiajs/inertia-react'
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import React from 'react'
 
 export default function Create({ auth }) {
@@ -18,7 +18,7 @@ export default function Create({ auth }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    post(route(""));
+    post(route("sritem.store"));
   };
 
   return (
@@ -110,7 +110,7 @@ export default function Create({ auth }) {
 
                          </div>    
                          <div className="mt-10 text-right">
-                            <Link href={route('location.index')}
+                            <Link href={route('sritem.index')}
                             className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
                             >
                             Cancel

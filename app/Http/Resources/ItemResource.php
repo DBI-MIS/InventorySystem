@@ -42,6 +42,7 @@ class ItemResource extends JsonResource
             'statuses' => $this->statuses,
             'remark' => $this->remark,
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
+            'updatedBy' => new UserResource($this->updatedBy),  
         ];
     }
 }

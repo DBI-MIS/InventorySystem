@@ -30,7 +30,8 @@ class Item extends Model
         'employee_id',
         'statuses',
         'remark',
-        'user_id'
+        'user_id',
+        'updated_by'
     
     ];
     public function brand(){
@@ -66,6 +67,11 @@ class Item extends Model
     public function user(){
         return $this->belongsTo(User::class,  'user_id', 'id');
     }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
  /**
      * The attributes that should be mutated to dates.
      *
