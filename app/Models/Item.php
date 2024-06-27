@@ -26,6 +26,7 @@ class Item extends Model
         'model_no',
         'uom',
         'quantity',
+        'qty_out',
         'location_id',
         'employee_id',
         'statuses',

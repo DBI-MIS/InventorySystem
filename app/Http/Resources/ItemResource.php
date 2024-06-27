@@ -35,6 +35,7 @@ class ItemResource extends JsonResource
             'model_no' => $this->model_no,
             'uom' => $this->uom,
             'quantity' => $this->quantity,
+            'qty_out' => $this->qty_out,
             'location_id' => $this->location_id,
             'employee_id' => $this->employee_id,
             'location' => new LocationResource($this->location),

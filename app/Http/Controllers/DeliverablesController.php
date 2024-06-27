@@ -130,12 +130,10 @@ class DeliverablesController extends Controller
 
          return Inertia('Deliverables/Edit', [
         'deliverables' => $deliverable,
-        'items' => ItemResource::collection($items),
+        'list_items' => ItemResource::collection($items),
         'clients' => ClientResource::collection($clients), 
         'stockrequests' => StockRequisitionResource::collection($stockrequests),
-        'list_items' => $deliverable->itemsDeliverables,
-        'client' => $deliverable->client, 
-        'stockrequest' => $deliverable->stockrequest, 
+        'item_deliverables' => $deliverable->itemsDeliverables,
     ]);
 
 

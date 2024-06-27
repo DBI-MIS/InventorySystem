@@ -79,6 +79,11 @@ class UpdateItemRequest extends FormRequest
             'numeric',
             'min:0',
           ],
+          "qty_out" => [ 
+            'nullable',
+            'numeric',
+            'min:1',
+          ],
           "location_id" => [
             'required',
             'numeric',

@@ -79,7 +79,11 @@ class StoreItemRequest extends FormRequest
             'required',
             'numeric',
             'min:1',
-          
+          ],
+          "qty_out" => [ 
+            'nullable',
+            'numeric',
+            'min:1',
           ],
           "location_id" => [
             'required',

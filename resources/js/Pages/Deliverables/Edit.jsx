@@ -14,17 +14,16 @@ export default function Edit({
     deliverables, // data with relation
     clients, // collection
     stockrequests, // collection
-    list_items, // data items pivot
-    items, // collection
+    item_deliverables, // data items pivot
+    list_items, // collection
 }) {
     const { data, setData, post, errors } = useForm({
         
         dr_no: deliverables.dr_no || "",
-        dr_date: deliverables.dr_date || "",
+        created_at: deliverables.created_at || "",
         remarks: deliverables.remarks || "",
         // list_items: deliverables.itemsDeliverables || [],
-        items: items || [],
-        // list_items: list_items || [],
+        items: item_deliverables || [],
         user_id: auth.user.id || "",
         client_id: deliverables.client.id || "",
         address: deliverables.client.address,
@@ -36,23 +35,23 @@ export default function Edit({
    
 
     useEffect(() => {
-        if (items) {
-            const selectedOptions = list_items.map((item) => ({
+        if (item_deliverables) {
+            const selectedOptions = item_deliverables.map((item) => ({
                 value: item.id,
-                label: item.name,
+                label: `${item.name} (${item.qty_out})`,
             }));
             setSelectedOptions(selectedOptions);
         }
-    }, [items]);
+    }, [item_deliverables]);
 
-    const options = items.data.map((item) => ({
+    const options = list_items.data.map((item) => ({
       value: item.id,
       label: item.name,
   }));
 
-    const allItems = items.data.map((item) => ({
+    const allItems = list_items.data.map((item) => ({
       ...item,
-      id: parseInt(items.id),
+      id: parseInt(list_items.id),
   })); 
 
 
@@ -68,17 +67,24 @@ export default function Edit({
 
         setData(
             "items",
-            items.map((item) => ({ ...item, items: item.id }))
+            data.list_items.map((item) => ({ ...item, items: item.id }))
         );
     };
 
+   
+    
 
     const handleQtyChange = (id, qty) => {
-        const updatedItems = items.data.map((item) =>
+        const items = data.items.map((item) =>
             item.id === id ? { ...item, qty_out: qty } : item
         );
-        setData("items", updatedItems);
+        setData(
+            "items",
+            data.items.map((item) => ({ ...item, items: item.id }))
+        );
     };
+
+   
 
     const handleClientChange = (e) => {
         const selectedClientId = e.target.value;
@@ -175,15 +181,15 @@ export default function Edit({
 
                                     <div className="mt-4 col-span-2">
                                         <InputLabel
-                                            htmlFor="deliverables_dr_date"
+                                            htmlFor="deliverables_created_at"
                                             value="Date."
                                         />
                                         <TextInput
-                                            id="deliverables_dr_date"
+                                            id="deliverables_created_at"
                                             type="date"
-                                            name="dr_date"
+                                            name="created_at"
                                             value={
-                                                data.dr_date ||
+                                                data.created_at ||
                                                 new Date()
                                                     .toISOString()
                                                     .split("T")[0]
@@ -191,13 +197,13 @@ export default function Edit({
                                             className="mt-1 block w-full"
                                             onChange={(e) =>
                                                 setData(
-                                                    "dr_date",
+                                                    "created_at",
                                                     e.target.value
                                                 )
                                             }
                                         />
                                         <InputError
-                                            message={errors.dr_date}
+                                            message={errors.created_at}
                                             className="mt-2"
                                         />
                                     </div>
@@ -351,7 +357,7 @@ export default function Edit({
                                                 </thead>
 
                                                 <tbody>
-                                                    {items.data.map((item) => (
+                                                    {data.items.map((item) => (
                                                         <tr
                                                             key={item.id}
                                                             className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700"
