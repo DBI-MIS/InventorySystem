@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { ITEM_STATUS_CLASS_MAP, ITEM_STATUS_TEXT_MAP } from "@/constants";
 import { Head, Link } from "@inertiajs/react";
-export default function Show({ auth, item }) {
+export default function Show({ auth, item, userName }) {
     console.log(item);
     return (
         <AuthenticatedLayout
@@ -236,7 +236,7 @@ export default function Show({ auth, item }) {
                                     Created by :{" "}
                                 </dt>
                                 <dd className="text-base font-light">
-                                    {item.created_by ?? "No User"}
+                                    {userName ?? "No User"}
                                 </dd>
                             </div>
 

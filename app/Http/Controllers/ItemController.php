@@ -132,10 +132,14 @@ class ItemController extends Controller
     public function show(Item $item, User $user) 
     { 
         $response = Gate::authorize('view', $item);
-
+        $itemId = $item['id'];
+        $item = Item::with('user')->find($itemId); 
+        $userName = $item->user->name;
+        // dd( $userName);
         if ($response->allowed()) {
             return (inertia('Item/Show', [
                 'item' => new ItemResource($item),
+                'userName' =>  $userName ?: null,
                 'queryParams' => request()->query() ?: null,
                 'success' => session('success'),
                 

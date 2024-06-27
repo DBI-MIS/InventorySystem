@@ -64,7 +64,7 @@ class Item extends Model
         return $this->hasOne(StockRequisition::class);
     }
     public function user(){
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class,  'user_id', 'id');
     }
  /**
      * The attributes that should be mutated to dates.
