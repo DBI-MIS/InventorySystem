@@ -34,7 +34,7 @@ export default function Authenticated({ user, header, children,}) {
                                     <DbitransparentLogo className="w-[32px] fill-current text-white" />
                                 </NavLink>
                             </div>
-                            <div className="items-center flex flex-col gap-2">
+                            <div className="items-center flex flex-col gap-2 space-y-5">
 
                                 <div class="group relative">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
@@ -42,7 +42,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Dashboard</span>
                                 </div>
-                                <br />
+                               
 
                                 <div class="group relative">
                                 <NavLink href={route('item.index')} active={route().current('item.index')}>
@@ -50,7 +50,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Items</span>
                                 </div>
-                                <br />
+                               
 
                                 <div class="group relative">
                                 <NavLink href={route('category.index')} active={route().current('category.index')}>
@@ -58,7 +58,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Categories</span>
                                 </div>
-                                <br />
+                               
 
                                 <div class="group relative">
                                 <NavLink href={route('brand.index')} active={route().current('brand.index')}>
@@ -66,7 +66,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Brands</span>
                                 </div>
-                                <br />
+                               
 
                                 <div class="group relative">
                                 <NavLink href={route('location.index')} active={route().current('location.index')}>
@@ -74,7 +74,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Locations</span>
                                 </div>
-                                <br />
+                               
 
                                 <div class="group relative">
                                 <NavLink href={route('employee.index')} active={route().current('employee.index')}>
@@ -82,7 +82,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Employees</span>
                                 </div>
-                                <br />
+                               
 
                                 <div class="group relative">
                                 <NavLink href={route('client.index')} active={route().current('client.index')}>
@@ -90,16 +90,17 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Clients</span>
                                 </div>
-                                <br />
-
+                               
+                                {(user.role === 'admin' || user.role === 'super_admin') && (
                                 <div class="group relative">
                                 <NavLink href={route('user.index')} active={route().current('user.index')}>
                                     <Nuser className="block h-9 w-auto fill-current " />
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">User</span>
                                 </div>
-                                <br />      
-                                {(user.isAdmin || user.isSuperAdmin) && (
+                                      )}
+
+                                {(user.role === 'admin' || user.role === 'super_admin') && (
                                 <div class="group relative">
                                 <NavLink href={route('archive.index')} active={route().current('archive.index')}>
                                     <Narchive className="block h-9 w-auto fill-current " />
@@ -108,7 +109,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </div>
                                 
                                 )}
-                                 <br />  
+                                  
                                    
 
                                 <div class="group relative">
@@ -117,7 +118,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">MRR</span>
                                 </div>
-                                <br />
+                               
 
                                 <div class="group relative">
                                 <NavLink href={route('deliverables.index')} active={route().current('deliverables.index')}>
@@ -125,7 +126,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">DR</span>
                                 </div>
-                                <br />
+                               
 
                                 <div class="group relative">
                                 <NavLink href={route('stockrequisition.index')} active={route().current('stockrequisition.index')}>
@@ -133,7 +134,7 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Stock Requisition</span>
                                 </div>
-                                <br />
+                               
                                 <div class="group relative">
                                 <NavLink href={route('sritem.index')} active={route().current('sritem.index')}>
                                     <Srequest className="block h-7 w-auto fill-current  " /> 

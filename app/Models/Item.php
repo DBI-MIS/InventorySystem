@@ -9,6 +9,7 @@ class Item extends Model
 {
     protected $casts =
      [ 'id' => 'string' ,
+     'created_at' => 'date: yyyy-MM-dd',
     
     //  'statuses' => 'array',
 ];

@@ -22,8 +22,8 @@ export default function Edit({
         dr_no: deliverables.dr_no || "",
         created_at: deliverables.created_at || "",
         remarks: deliverables.remarks || "",
-        // list_items: deliverables.itemsDeliverables || [],
-        items: item_deliverables || [],
+        item_deliverables: item_deliverables || [],
+        items: list_items || [],
         user_id: auth.user.id || "",
         client_id: deliverables.client.id || "",
         address: deliverables.client.address,
@@ -31,7 +31,9 @@ export default function Edit({
         _method: "PUT", 
     });
 
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState([
+        // data.list_items,
+    ]);
    
 
     useEffect(() => {
@@ -73,16 +75,23 @@ export default function Edit({
 
    
     
-
     const handleQtyChange = (id, qty) => {
-        const items = data.items.map((item) =>
+        const updatedItems = list_items.data.map((item) =>
             item.id === id ? { ...item, qty_out: qty } : item
         );
-        setData(
-            "items",
-            data.items.map((item) => ({ ...item, items: item.id }))
-        );
+    
+        setData("items", updatedItems);
     };
+
+    // const handleQtyChange = (id, qty) => {
+    //     const items = items.map((item) =>
+    //         item.id === id ? { ...item, qty_out: qty } : item
+    //     );
+    //     setData(
+    //         "items",
+    //         data.list_items.map((item) => ({ ...item, items: item.id }))
+    //     );
+    // };
 
    
 
@@ -357,7 +366,7 @@ export default function Edit({
                                                 </thead>
 
                                                 <tbody>
-                                                    {data.items.map((item) => (
+                                                    {item_deliverables.map((item) => (
                                                         <tr
                                                             key={item.id}
                                                             className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700"

@@ -137,10 +137,39 @@ class StockRequisitionController extends Controller
     public function update(UpdateStockRequisitionRequest $request, StockRequisition $stockrequisition)
     {
         // dd($stockrequisition);
-        $data = $request->validated();
-        $stockrequisition->update($data);
+        // $data = $request->validated();
+        // $stockrequisition->update($data);
 
-        return to_route('stockrequisition.index')->with('success', "StockRequest was updated");
+        // return to_route('stockrequisition.index')->with('success', "StockRequest was updated");
+        $validated = $request->validated();
+
+    // Update StockRequisition
+    $stockrequisition->update([
+        'sr_to' => $validated['sr_to'],
+        'rs_no' => $validated['rs_no'],
+        'sr_date' => $validated['sr_date'],
+        'sr_notes' => $validated['sr_notes'],
+    ]);
+
+    // Sync Sritems
+    $sritemIds = [];
+    foreach ($validated['items'] as $item) {
+        $sritem = Sritem::updateOrCreate(
+            ['id' => $item['id'] ?? null], // Use id if exists
+            [
+                'item' => $item['sr_item'],
+                'qty' => $item['sr_qty'],
+                'uom' => $item['sr_unit'],
+                'description' => $item['sr_description'],
+            ]
+        );
+        $sritemIds[] = $sritem->id;
+    }
+    
+    // Sync the sritems with the stockrequisition
+    $stockrequisition->sritems()->sync($sritemIds);
+
+    return redirect()->route('stockrequisition.index')->with('success', "Stock Request was updated");
     }
 
     /**
