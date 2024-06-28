@@ -15,7 +15,7 @@ export default function Create({ auth }) {
     sr_date: '',
     sr_notes: '',
     items: [],
-    user_id:''
+    user_id: auth.user.id
 
   });
   console.log(data);
@@ -79,6 +79,7 @@ export default function Create({ auth }) {
   // };
 
   const [item, setItem] = useState({
+    sr_item: '',
     sr_qty: '',
     sr_unit: '',
     sr_description: '',
@@ -95,6 +96,7 @@ export default function Create({ auth }) {
     }));
 
     setItem({
+      sr_item: '',
       sr_qty: '',
       sr_unit: '',
       sr_description: '',
@@ -103,6 +105,7 @@ export default function Create({ auth }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    post(route("sritem.store"));
     post(route("stockrequisition.store"));
   };
 
@@ -188,7 +191,25 @@ export default function Create({ auth }) {
           <br /><br />
           <div className="flex">
               <div className="w-full">
-                  <div className="grid grid-cols-7 gap-2">
+                  <div className="grid grid-cols-8 gap-2">
+
+                  <div className=" mt-4  col-span-1 ">
+                            <InputLabel htmlFor="stockrequest_sr_item" value="Item."/>
+                                            
+                            <TextInput 
+                              id="stockrequest_sr_item"
+                              type="text"
+                              name="sr_item"
+                              value={item.sr_item} 
+                              className="mt-1 block w-full"
+                              isFocused={true}
+                              onChange={e => setItem({ ...item, sr_item: e.target.value })}
+                              />
+                           <InputError message={errors.sr_item} className="mt-2"/>
+                                            
+                      </div>
+
+                  
 
                       <div className=" mt-4  col-span-1 ">
                             <InputLabel htmlFor="stockrequest_sr_qty" value="Qty."/>
@@ -265,6 +286,7 @@ export default function Create({ auth }) {
             <br />
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                   <tr className="text-nowrap">
+                  <th className="pr-10">ITEM</th>
                     <th className="pr-10">QTY</th>
                     <th className="pr-10">UNIT</th>
                     <th className="pr-10">DESCRIPTION</th>
@@ -273,6 +295,7 @@ export default function Create({ auth }) {
                 <tbody>
                   {data.items.map((row, index) => (
                     <tr key={index}>
+                      <td>{row.sr_item}</td>
                       <td>{row.sr_qty}</td>
                       <td>{row.sr_unit}</td>
                       <td>{row.sr_description}</td>

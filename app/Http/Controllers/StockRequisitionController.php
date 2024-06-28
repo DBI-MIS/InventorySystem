@@ -7,6 +7,7 @@ use App\Http\Requests\StoreStockRequisitionRequest;
 use App\Http\Requests\UpdateStockRequisitionRequest;
 use App\Http\Resources\StockRequisitionResource;
 use App\Models\Item;
+use App\Models\Sritem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -34,6 +35,8 @@ class StockRequisitionController extends Controller
         ->paginate(10)
         ->onEachSide(1);
 
+        
+
         return inertia("StockRequisition/Index", [
             "stockrequest" => StockRequisitionResource::collection($stockrequest),
             'queryParams' => request()->query() ?: null,
@@ -53,14 +56,48 @@ class StockRequisitionController extends Controller
      */
     public function store(StoreStockRequisitionRequest $request)
     {
-        $data = $request->validated();
-        $data['user_id'] = Auth::id();
-            StockRequisition::create($data);
+        // $data = $request->validated();
+        // $data['user_id'] = Auth::id();
+        //     StockRequisition::create($data);
         
-        // StockRequisition::create($data);
+        // // StockRequisition::create($data);
 
-        // return to_route('stockrequisition.index')->with('success', 'Stock Requisition was created');
-        return redirect()->route('stockrequisition.index')->with('success', 'Stock Requisition was created');
+        // // return to_route('stockrequisition.index')->with('success', 'Stock Requisition was created');
+        // return redirect()->route('stockrequisition.index')->with('success', 'Stock Requisition was created');
+        
+        $validated = $request->validate([
+            'sr_to' => 'required|string|max:255',
+            'rs_no' => 'required|string|max:255',
+            'sr_date' => 'required|date',
+            'sr_notes' => 'nullable|string',
+            'items' => 'required|array',
+            'items.*.sr_item' => 'required|string',
+            'items.*.sr_qty' => 'required|integer',
+            'items.*.sr_unit' => 'required|string',
+            'items.*.sr_description' => 'required|string',
+        ]);
+
+        // $validated['user_id'] = Auth::id();
+
+        $requisition = StockRequisition::create([
+            'sr_to' => $validated['sr_to'],
+            'rs_no' => $validated['rs_no'],
+            'sr_date' => $validated['sr_date'],
+            'sr_notes' => $validated['sr_notes'],
+            'user_id' => $request->user()->id,
+        ]);
+
+        foreach ($validated['items'] as $item) {
+            $sritem = Sritem::create([
+                'item' => $item['sr_item'],
+                'qty' => $item['sr_qty'],
+                'uom' => $item['sr_unit'],
+                'description' => $item['sr_description'],
+            ]);
+            $requisition->sritems()->attach($sritem->id);
+        }
+
+        return redirect()->route('stockrequisition.index')->with('success', 'Stock Requisition created successfully.');
 
     }
 

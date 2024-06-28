@@ -21,7 +21,7 @@ import Nuser from '@/Components/Nuser';
 
 export default function Authenticated({ user, header, children,}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
+  
     return (
         <div className="min-h-screen flex bg-gray-200">
             <nav className="bg-main border-b border-gray-100">
@@ -99,14 +99,17 @@ export default function Authenticated({ user, header, children,}) {
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">User</span>
                                 </div>
                                 <br />      
-
+                                {(user.isAdmin || user.isSuperAdmin) && (
                                 <div class="group relative">
                                 <NavLink href={route('archive.index')} active={route().current('archive.index')}>
                                     <Narchive className="block h-9 w-auto fill-current " />
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Trash</span>
                                 </div>
-                                <br />      
+                                
+                                )}
+                                 <br />  
+                                   
 
                                 <div class="group relative">
                                 <NavLink href={route('receiving.index')} active={route().current('receiving.index')}>

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('stock_sritem', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(StockRequisition::class);
-            $table->foreignIdFor(Sritem::class)->nullable();
+            $table->foreignId('stock_requisition_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sritem_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

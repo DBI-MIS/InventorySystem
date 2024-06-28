@@ -119,6 +119,7 @@ class ArchiveController extends Controller
             abort(403, 'You are not authorized to permanently delete items.');
           }
 
+          dd($id);
         // get the name of the selected item to be force deleted
         $name = Item::withTrashed()->where('id',$id)->pluck('name')->first();
 

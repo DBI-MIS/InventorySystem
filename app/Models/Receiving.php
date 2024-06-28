@@ -25,6 +25,7 @@ class Receiving extends Model
         'location_id',
         'employee_id',
         'remarks',
+        'status',
         'user_id'
     
     ];

@@ -59,9 +59,12 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::resource('preview', PreviewController::class);
         Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;
         Route::get('/receiving/my-receiving/{receivingId}', [ReceivingController::class, 'myReceiving'])->name('receiving.myReceiving');
-     // Route::post('/receiving/{id}restore', ['App\Http\Controllers\ReceivingController@restore','restore'])->name(receiving.restore);
         Route::get('item/{itemId}/restore',[ItemController::class, 'restoreItem'])->name('item.restoreItem');
-        Route::get('receiving/{id}/restore',[ReceivingController::class, 'restoreReceiving'])->name('receiving.restoreReceiving');;
+        Route::get('receiving/{id}/restore',[ReceivingController::class, 'restoreReceiving'])->name('receiving.restoreReceiving');
+
+        Route::delete('receiving/{id}/forceDelete',[ReceivingController::class, 'forceDelete'])->name('receiving.forceDelete');
+        Route::delete('item/{id}/forceDeleteItem',[ItemController::class, 'forceDeleteItem'])->name('item.forceDeleteItem');
+
         // Route::get('item/{itemId}/restore',[ItemController::class, 'restoreItem'])->name('item.restoreItem');;
 
         Route::get('/deliverables/my-deliverable/{deliverableId}', [DeliverablesController::class, 'myDeliverable'])->name('deliverable.myDeliverable');

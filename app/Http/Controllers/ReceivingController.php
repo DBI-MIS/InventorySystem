@@ -21,6 +21,7 @@ use App\Models\Deliverables;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +47,8 @@ class ReceivingController extends Controller
          if(request("category_id")){
             $query->where('category_id', (request("category_id")));
          }
+
+         
     
 
          $receivings = $query->orderBy($sortField, $sortDirection)
@@ -94,8 +97,10 @@ class ReceivingController extends Controller
     function generateMrrNo() {
 
         $id = Receiving::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
+        $year = Carbon::now()->format('Y');
         $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
-        $mrr_no = str_pad( $stringID, 8, '0', STR_PAD_LEFT); 
+        $mrr_no = ($year. str_pad( $stringID, 4, '0', STR_PAD_LEFT)); 
+        //000002
         // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left     
         return $mrr_no;
 
@@ -280,6 +285,18 @@ public function show(Receiving $receiving, Request $request)
         } else {
             return redirect()->back()->with('error', 'Item not found!');
         }
+    }
+    public function forceDelete(Receiving $receiving, $id)
+    {
+        if (! Gate::allows('forceDelete', $receiving)) {  
+            abort(403, 'You are not authorized to permanently delete items.');
+          }
+
+        $name = Receiving::withTrashed()->where('id',$id)->pluck('mrr_no')->first();
+
+         Receiving::withTrashed()->where('id',$id)->first()->forceDelete();
+
+          return to_route('archive.index')->with('success',"MRR \"$name\" is permanently deleted");
     }
 
     public function submitItem(StoreFormDataRequest $formData)

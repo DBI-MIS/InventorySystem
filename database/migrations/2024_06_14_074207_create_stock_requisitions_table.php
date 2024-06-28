@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('sr_to')->nullable();
             $table->string('rs_no')->nullable();
             $table->string('sr_date')->nullable();
+            $table->string('sr_item')->nullable();
             $table->string('sr_qty')->nullable();
             $table->string('sr_unit')->nullable();
             $table->string('sr_description')->nullable();

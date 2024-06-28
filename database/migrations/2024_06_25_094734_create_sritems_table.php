@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sritems', function (Blueprint $table) {
             $table->id();
+            // $table->foreignId('stock_requisition_id')->constrained()->onDelete('cascade');
             $table->string('item')->nullable();
             $table->integer('qty')->default(1);
             $table->string('uom')->nullable();

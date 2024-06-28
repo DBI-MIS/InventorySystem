@@ -34,6 +34,7 @@ class ReceivingResource extends JsonResource
             'address'=> $this->address,
             'location_id'=> $this->location_id,
             'location' => new LocationResource($this->location),
+            'status'=>  $this->status,
             'remarks'=>  $this->remarks,
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
             // 'createdBy' => new UserResource($this->createdBy),

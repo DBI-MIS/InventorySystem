@@ -244,6 +244,22 @@ class ItemController extends Controller
             return redirect()->back()->with('error', 'Item not found!');
         }
     }
+
+    public function forceDeleteItem(Item $item, $id)
+    {
+        if (! Gate::allows('forceDelete', $item)) {  
+            abort(403, 'You are not authorized to permanently delete items.');
+          }
+
+        //   dd($id);
+        // get the name of the selected item to be force deleted
+        $name = Item::withTrashed()->where('id',$id)->pluck('name')->first();
+
+         Item::withTrashed()->where('id',$id)->first()->forceDelete();
+
+          return to_route('archive.index')->with('success',"Item \"$name\" is permanently deleted");
+      
+    }
     
     public function itemMrr(StoreItemRequest $request)
     {

@@ -17,8 +17,12 @@ export default function PrintReceiving({ receiving,receiving_items,queryParams})
                    <MrrLogo className="block h-[32px] " />
                    
                 </div>
-               <div>
+               <div className="text-right">
                 <h2 class="font-extrabold text-xl  text-gray-800  dark:text-gray-200 leading-tight">Material Receiving Report </h2>
+                
+                <span className="text-xl text-gray-800  font-light "> No.: {receiving.mrr_no}</span>
+
+               
                 </div>
                 </div>
                 <h3 class="text-xs ">430 Lt. Artiaga St., San Juan Metro Manila, Philippines 1500</h3>
@@ -41,10 +45,7 @@ export default function PrintReceiving({ receiving,receiving_items,queryParams})
                             <label for="ReceivingId">DR No. :</label>
                             <span  className="mx-2">{receiving.deliver.dr_no}</span>
                         </div>
-                        <div>
-                            <label for="ReceivingId">MRR No. :</label>
-                            <span  className="mx-2">{receiving.mrr_no}</span>
-                        </div>
+                        
                     </div>
                     <div  className="font-light text-xs md:text-sm">
                         <div>
