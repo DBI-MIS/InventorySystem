@@ -61,6 +61,7 @@ class Receiving extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
+    
 /**
      * The attributes that should be mutated to dates.
      *

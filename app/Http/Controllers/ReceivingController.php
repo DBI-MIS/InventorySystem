@@ -269,6 +269,19 @@ public function show(Receiving $receiving, Request $request)
             
         ]);
     }
+    public function restoreReceiving($id)
+    {
+        $receiving= Receiving::onlyTrashed()->find($id);
+
+        if ($receiving) {
+            $name = Receiving::withTrashed()->where('id',$id)->pluck('mrr_no')->first();
+            $receiving->restore();
+            return to_route('archive.index')->with('success', "Item \"$name\" restored successfully!");
+        } else {
+            return redirect()->back()->with('error', 'Item not found!');
+        }
+    }
+
     public function submitItem(StoreFormDataRequest $formData)
     {
          // dd($formData);

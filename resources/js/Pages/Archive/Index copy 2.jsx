@@ -3,17 +3,14 @@ import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import { Alert} from "@material-tailwind/react";
-import React, { useRef } from "react";
+import React from "react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head,Link, router} from "@inertiajs/react";
 import { useState } from "react";
 import Modals from "@/Components/Modals";
 import { useEffect } from "react";
-import Nitem from "@/Components/NItem";
-import Deliver from "@/Components/Deliver";
-import Nreceiving from "@/Components/Nreceiving";
 
-export default function Index({auth,items,receivings, queryParams = null, success,deleteItem,item, setOpenModal}) {
+export default function Index({auth,items,receivings,trashedItems, queryParams = null, success,deleteItem,item, setOpenModal}) {
 
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = React.useState(true);
@@ -107,33 +104,6 @@ const deleteReceiving = (receiving) => {
   }
   router.delete(route('receiving.destroy', receiving.id))
 }
-const refReceiving = useRef(null);
-const refItem = useRef(null);
-const refDR = useRef(null);
-const handleClick = () => {
-  if (refReceiving.current) {
-    refReceiving.current.scrollIntoView({ behavior: 'smooth' });
-  }
-  if (refItem.current) {
-    refItem.current.scrollIntoView({ behavior: 'smooth' });
-  }
-  if (refDR.current) {
-    refDR.current.scrollIntoView({ behavior: 'smooth' });
-  }
-};
-const handleReceiving= () => {
-  if (refReceiving.current) {
-    refReceiving.current.scrollIntoView({ behavior: 'smooth' });
-  }
-  if (refDR.current) {
-    refDR.current.scrollIntoView({ behavior: 'smooth' });
-  }
-};
-const handleDR= () => {
-  if (refDR.current) {
-    refDR.current.scrollIntoView({ behavior: 'smooth' });
-  }
-};
 
 
   return (
@@ -160,20 +130,6 @@ const handleDR= () => {
                   }}
                 > {success}</Alert>
               )}
-             <button className="flex flex-row text-green-600" onClick={handleClick}> 
-              <Nitem className="block h-9 w-auto fill-green-500 " />
-              <span>ITEM</span> 
-            </button>
-            <button className="flex flex-row text-green-600" onClick={handleReceiving}> 
-            <Nreceiving className="block h-9 w-auto fill-current " /> 
-              <span>Receiving</span> 
-            </button>
-            <button className="flex flex-row text-green-600" onClick={handleClick}> 
-            <Deliver className="block h-7 w-auto fill-current  " /> 
-              <span>DR</span> 
-            </button>
-             
-            
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                   <div className="p-6 text-gray-900 dark:text-gray-100">
                       <div className="overflow-auto">
@@ -246,9 +202,9 @@ const handleDR= () => {
 
                               </tr>
                             </thead>
-                            <tbody className="h-28 ">
+                            <tbody>
                               {items.data.map((item)=>(
-                                   <tr className="bg-white border-b  text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={item.id}>
+                                   <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={item.id}>
                                    <td className="w-[50px] py-2">
                                        {item.id}
                                    </td>
@@ -349,7 +305,7 @@ const handleDR= () => {
                               </tr>
                             </thead>
                             
-                            <tbody className="h-28 ">
+                            <tbody>
                               {receivings.data.map((receiving, index)=>(
                                    <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`} key={receiving.id}>
                                       <td className="w-[50px] py-2 text-center">
@@ -409,7 +365,7 @@ const handleDR= () => {
                 <div className="w-full flex flex-row gap-2">
                 <div className=" grid grid-cols-2 gap-3 text-center w-full">
               
-                <div ref={refItem}  className="col-span-1 w-full ">
+                <div className="col-span-1 w-full ">
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 text-gray-900 dark:text-gray-100">
                                 <div className="overflow-auto">
@@ -496,7 +452,7 @@ const handleDR= () => {
                                               >Action</TableHeading>
                                             </tr>
                                         </thead>
-                                        <tbody className="h-28 ">
+                                        <tbody>
                                             {items.data.map((item, index) => (
                                                 <tr key={index}>
                                                     <td className="text-base font-bold ">  {item.name ? item.name : 'No Item Name '}</td>
@@ -510,7 +466,7 @@ const handleDR= () => {
                                                       <Link to={`/archive/show/${id}/table1`}>
                                                               Restore Table 1
                                                             </Link>
-                                                        <Link href={route('item.restoreItem', { itemId: item.id })} className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
+                                                        <Link href={route('archive.update', item.id) } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3" />
                                                             </svg>
@@ -540,7 +496,7 @@ const handleDR= () => {
 
                 </div>
 
-                <div ref={refReceiving} className="col-span-1 w-full">
+                <div className="col-span-1 w-full">
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 text-gray-900 dark:text-gray-100">
                                 <div className="overflow-auto">
@@ -625,7 +581,7 @@ const handleDR= () => {
                                               >Action</TableHeading>
                                             </tr>
                                         </thead>
-                                        <tbody className="h-28 ">
+                                        <tbody>
                                             {receivings.data.map((receiving, index) => (
                                                 <tr key={index}>
                                                     <td className="text-base"> <b>
@@ -640,11 +596,16 @@ const handleDR= () => {
                                                         {receiving.status ?? "No Status"}</p></td>
                                                         <td className="w-24">
                                                       <div className="flex flex-row justify-end items-center">
-                                                      <Link href={route('receiving.restoreReceiving',receiving.id) } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
+                                                      <button data-model-type="receiving" onClick={() => handleRestoreMRR(receiving.id)}>Restore Item</button>
+
+                                                        <Link href={route('archive.update', receiving.id,'receiving') } className="font-medium py-1 px-2 text-green-600 hover:bg-green-600 hover:text-white hover:rounded-full dark:text-green-500 hover:underline mx-1">
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3" />
                                                             </svg>
                                                         </Link>
+                                                        <Link to={`/archive/show/${id}/table2`}>
+                                                              Restore Table 2 
+                                                            </Link>
                                                         <button
                                                             className="px-2 py-1 text-red-500  hover:bg-red-600 hover:text-white hover:rounded-full"
                                                             type="button"
@@ -720,7 +681,7 @@ const handleDR= () => {
                                         </div>
                                     </div>
 
-                                    <table ref={handleDR} className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
+                                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
                                         <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                             <tr className="">
                                                 <TableHeading
@@ -765,11 +726,11 @@ const handleDR= () => {
                                                 </TableHeading>
                                             </tr>
                                         </thead>
-                                        <tbody className="h-28 ">
-                                            {items.data.map((item, index) => (
+                                        <tbody>
+                                            {trashedItems.map((trashedItem, index) => (
                                                 <tr key={index}>
-                                                    <td className="text-base">{item.name}</td>
-                                                    <td className="w-24 text-base font-bold text-center">{item.quantity}</td>
+                                                    <td className="text-base">{trashedItem.name}</td>
+                                                    <td className="w-24 text-base font-bold text-center">{trashedItem.trash_from}</td>
                                                     <td className="w-28">
                                                     <p className={`whitespace-no-wrap text-center rounded-lg
                                                      `}>

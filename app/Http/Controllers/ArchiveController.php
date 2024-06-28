@@ -18,7 +18,7 @@ class ArchiveController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(User $user )
+    public function index()
     {
         if (! Gate::allows('viewAny',Item::class)) { 
             abort(403, 'You are not authorized to view archive.');
@@ -70,14 +70,12 @@ class ArchiveController extends Controller
         
         $response = Gate::authorize('restore', $item);
         if ($response->allowed()) {
-            dd($id);
+            // dd($id);
             //static value working siya.
             // $itemss = Item::withTrashed()->where('id', 17)->restore();
-            $name = Item::withTrashed()->where('id',$id)->pluck('name')->first();
-            Item::withTrashed()->where('id',$id)->first()->restore();
+            $name = Receiving::withTrashed()->where('id',$id)->pluck('mrr_no')->first();
 
-
-            // Receiving::withTrashed()->where('id',$id)->first()->restore();
+            Receiving::withTrashed()->where('id',$id)->first()->restore();
         
                 return to_route('archive.index')->with('success', "Item \"$name\" restored successfully!");
         }

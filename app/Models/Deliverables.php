@@ -60,6 +60,10 @@ class Deliverables extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function archive()
+    {
+        return $this->belongsTo(Archive::class);
+    }
 
     
 }

@@ -232,6 +232,18 @@ class ItemController extends Controller
         return to_route('item.index')
         ->with('success', "Item \"$name\" was deleted");
     }
+    public function restoreItem($itemId)
+    {
+        $item = Item::onlyTrashed()->find($itemId);
+
+        if ($item) {
+            $name = Item::withTrashed()->where('id',$itemId)->pluck('name')->first();
+            $item->restore();
+            return to_route('archive.index')->with('success', "Item \"$name\" restored successfully!");
+        } else {
+            return redirect()->back()->with('error', 'Item not found!');
+        }
+    }
     
     public function itemMrr(StoreItemRequest $request)
     {

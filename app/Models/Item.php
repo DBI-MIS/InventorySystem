@@ -72,7 +72,9 @@ class Item extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+   
 
+    
  /**
      * The attributes that should be mutated to dates.
      *
@@ -80,3 +82,4 @@ class Item extends Model
      */
     protected $dates = ['deleted_at'];
 }
+
