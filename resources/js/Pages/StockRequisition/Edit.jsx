@@ -5,7 +5,7 @@ import TextAreaInput from '@/Components/TextAreaInput';
 import TextInput from '@/Components/TextInput';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function Edit({ auth, stockrequisition }) {
     console.log(stockrequisition);
@@ -14,19 +14,41 @@ export default function Edit({ auth, stockrequisition }) {
       sr_to: stockrequisition.sr_to || "",
       rs_no: stockrequisition.rs_no || "",
       sr_date: stockrequisition.sr_date || "",
-      sr_qty: stockrequisition.sr_qty || "",
-      sr_unit: stockrequisition.sr_unit || "",
-      sr_description: stockrequisition.sr_description || "",
       sr_notes: stockrequisition.sr_notes || "",
+      items: stockrequisition.items || [],
       _method: "PUT",
     })
     console.log(data);
 
+    const [item, setItem] = useState({
+      sr_item: '',
+      sr_qty: '',
+      sr_unit: '',
+      sr_description: '',
+  });
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        post(route("stockrequisition.update", stockrequisition.id));
-    };
+  const addRow = () => {
+      if (!item.sr_qty || !item.sr_unit || !item.sr_description) {
+          console.log('Please fill in all item fields before adding a row.');
+          return;
+      }
+      setData(prevData => ({
+          ...prevData,
+          items: [...prevData.items, item],
+      }));
+
+      setItem({
+          sr_item: '',
+          sr_qty: '',
+          sr_unit: '',
+          sr_description: '',
+      });
+  };
+
+  const onSubmit = (e) => {
+      e.preventDefault();
+      post(route('stockrequisition.update', stockrequisition.id));
+  };
   return (
     <Authenticated
     user={auth.user}
@@ -97,81 +119,123 @@ export default function Edit({ auth, stockrequisition }) {
                 </div>
           </div>
           <div className="flex">
-              <div className="w-full">
-                  <div className="grid grid-cols-7 gap-2">
+                                <div className="w-full">
+                                    <div className="grid grid-cols-8 gap-2">
+                                        <div className="mt-4 col-span-1">
+                                            <InputLabel htmlFor="stockrequest_sr_item" value="Item." />
+                                            <TextInput
+                                                id="stockrequest_sr_item"
+                                                type="text"
+                                                name="sr_item"
+                                                value={item.sr_item}
+                                                className="mt-1 block w-full"
+                                                isFocused={true}
+                                                onChange={e => setItem({ ...item, sr_item: e.target.value })}
+                                            />
+                                            <InputError message={errors.sr_item} className="mt-2" />
+                                        </div>
 
-                      <div className=" mt-4  col-span-1 ">
-                            <InputLabel htmlFor="stockrequest_sr_qty" value="Qty."/>
-                                            
-                            <TextInput 
-                              id="stockrequest_sr_qty"
-                              type="text"
-                              name="sr_qty"
-                              value={data.sr_qty} 
-                              className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_qty', e.target.value)}
-                              />
-                           <InputError message={errors.sr_qty} className="mt-2"/>
-                                            
-                      </div>
-                      <div className=" mt-4  col-span-1 ">
-                            <InputLabel htmlFor="stockrequest_sr_unit" value="Unit."/>
-                                            
-                            <SelectInput 
-                              id="stockrequest_sr_unit"
-                              type="text"
-                              name="sr_unit"
-                              value={data.sr_unit} 
-                              className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_unit', e.target.value)}
-                            >
-                              <option value="">Select UOM </option>
-                                <option value="M">Meters</option>
-                                <option value="Kg">Kilograms</option>
-                                <option value="L">Liters</option>
-                                <option value="Pcs">Pieces</option>
-                                <option value="Pc">Piece</option>
-                                <option value="Set">Set</option>
-                                <option value="Sets">Sets</option>
-                            </SelectInput>
-                           <InputError message={errors.sr_unit} className="mt-2"/>
-                                            
-                      </div>
-                      <div className="mt-1  col-span-5">
-                          <InputLabel htmlFor="stockrequest_sr_description" value="Description."/>
-                          <TextAreaInput 
-                              id="stockrequest_sr_description"
-                              type="text"
-                              name="sr_description"
-                              value={data.sr_description}
-                              className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_description', e.target.value)}
-                          />
-                          <InputError message={errors.sr_description} className="mt-2"/>
-                    </div>
+                                        <div className="mt-4 col-span-1">
+                                            <InputLabel htmlFor="stockrequest_sr_qty" value="Qty." />
+                                            <TextInput
+                                                id="stockrequest_sr_qty"
+                                                type="number"
+                                                name="sr_qty"
+                                                value={item.sr_qty}
+                                                className="mt-1 block w-full"
+                                                isFocused={true}
+                                                onChange={e => setItem({ ...item, sr_qty: e.target.value })}
+                                            />
+                                            <InputError message={errors.sr_qty} className="mt-2" />
+                                        </div>
+                                        <div className="mt-4 col-span-1">
+                                            <InputLabel htmlFor="stockrequest_sr_unit" value="Unit." />
+                                            <SelectInput
+                                                id="stockrequest_sr_unit"
+                                                type="text"
+                                                name="sr_unit"
+                                                value={item.sr_unit}
+                                                className="mt-1 block w-full"
+                                                isFocused={true}
+                                                onChange={e => setItem({ ...item, sr_unit: e.target.value })}
+                                            >
+                                                <option value="">Select UOM</option>
+                                                <option value="M">Meters</option>
+                                                <option value="Kg">Kilograms</option>
+                                                <option value="L">Liters</option>
+                                                <option value="Pcs">Pieces</option>
+                                            </SelectInput>
+                                            <InputError message={errors.sr_unit} className="mt-2" />
+                                        </div>
+                                        <div className="mt-4 col-span-5">
+                                            <InputLabel htmlFor="stockrequest_sr_description" value="Description." />
+                                            <TextAreaInput
+                                                id="stockrequest_sr_description"
+                                                type="text"
+                                                name="sr_description"
+                                                value={item.sr_description}
+                                                className="mt-1 block w-full"
+                                                isFocused={true}
+                                                onChange={e => setItem({ ...item, sr_description: e.target.value })}
+                                            />
+                                            <InputError message={errors.sr_description} className="mt-2" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br /><br />
+                            <div className="mt-4 col-span-3">
+                       <InputLabel htmlFor="stockrequest_sr_notes" value="Date:"/>
+                       <TextAreaInput
+                       id="deliverables_sr_date"
+                       type="text"
+                       name="sr_notes"
+                       value={data.sr_notes}
+                       className="mt-1 block w-full"
+                       isFocused={true}
+                       onChange={e => setData('sr_notes', e.target.value)}
+                       />
+                       <InputError message={errors.sr_date} className="mt-2"/>
                   </div>
-                  
-                    <div className="mt-4  col-span-3">
-                          <InputLabel htmlFor="stockrequest_sr_notes" value="Notes."/>
-                          <TextAreaInput 
-                              id="stockrequest_sr_notes"
-                              type="text"
-                              name="sr_notes"
-                              value={data.sr_notes}
-                              className="mt-1 block w-full"
-                              isFocused={true}
-                              onChange={e => setData('sr_notes', e.target.value)}
-                          />
-                          <InputError message={errors.sr_notes} className="mt-2"/>
-                    </div>
-              </div>
-          </div>
+                  <br /><br />
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Item
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Qty
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Unit
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Description
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {data.items.map((item, index) => (
+                                        <tr key={index}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.item}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.qty}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.uom}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.description}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
           <div className="mt-20 text-right">
+          <button
+                  type="button"
+                  onClick={addRow}
+                  className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
+                >
+                  Add Row
+                </button>
                 <Link href={route('stockrequisition.index')}
-                      className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
+                      className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2 ml-2"
                 >
                       Cancel
                 </Link>

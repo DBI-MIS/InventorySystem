@@ -68,7 +68,20 @@ class ReceivingController extends Controller
     public function create()
     {
        //
-       $items = Item::query()->orderBy('name', 'asc')->get();
+    //    $items = Item::query()->orderBy('name', 'asc')->get();
+       
+    // $items = $this->getItems();      $items = Item::query()->orderBy('name', 'asc')->groupBy('name')->get();
+    // dd($items);
+        $subquery = DB::table('items')
+        ->select(DB::raw('MAX(id) as id'))
+        ->groupBy('name');
+
+        $items = Item::select('items.*')
+        ->joinSub($subquery, 'latest_items', function ($join) {
+            $join->on('items.id', '=', 'latest_items.id');
+        })
+        ->get();
+     
        $brands = Brand::query()->orderBy('name', 'asc')->get();
        $categories = Category::query()->orderBy('name', 'asc')->get();
        $employees = Employee::query()->orderBy('name', 'asc')->get();
@@ -93,6 +106,17 @@ class ReceivingController extends Controller
           'mrr_no' =>  $mrr_no,
       ]);
     }
+    // public function getItems()
+    // {
+    //   $items = Item::query()
+    //     ->select('items.name')  
+    //     ->where('deleted_at', null)  
+    //     ->orderBy('name', 'asc')  
+    //     ->groupBy('name',)  
+    //     ->get();
+    
+    //   return $items;
+    // }
     
     function generateMrrNo() {
 
@@ -150,7 +174,9 @@ public function show(Receiving $receiving, Request $request)
     // }
 
     $receiving->load('items.category'); // Load Relation to Item with relation to Category
+    // $user->load('profile.address')
 
+// dd($receiving);
     
     return inertia('Receiving/Show', [
         'receiving' => new ReceivingResource($receiving),

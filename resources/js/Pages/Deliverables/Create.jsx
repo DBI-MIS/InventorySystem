@@ -4,59 +4,66 @@ import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, useForm, } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Select from "react-select";
 
 export default function Create({
     auth,
-    deliverablesss,
+    deliverables,
     clients,
     stockrequests,
     items,
 }) {
-    console.log(stockrequests);
-
-    const { data, setData, post, errors, success, } = useForm({
+    const { data, setData, post, errors, success } = useForm({
         address: "",
         dr_no: "",
         dr_date: "",
         remarks: "",
         items: [],
-        user_id:''
+        user_id: "",
     });
 
     console.log(data);
 
-    const options = deliverablesss.data.map((item) => ({
-        //values from the db
-        value: item.id,
-        label: item.name,
-    }));
+    const [selectedOptions, setSelectedOptions] = useState([]);
 
-    const allItems = deliverablesss.data.map((item) => ({
+    const [allItems, setAllItems] = useState([]);
+
+    const options = deliverables.data
+        .filter((item) => item.quantity !== item.qty_out)
+        .map((item) => ({
+            // values from the db
+            value: item.id,
+            label: item.name,
+        }));
+
+    const allListItems = deliverables.data.map((item) => ({
         ...item,
         id: parseInt(item.id),
     })); // to be used for checking
-    const [selectedOptions, setSelectedOptions] = useState([]);
 
+    // const [selectedOptions, setSelectedOptions] = useState([]);
 
-    const handleSelectChange = (selectedOptions) => {
-        setSelectedOptions(selectedOptions);
+    const handleSelectChange = useCallback(
+        (selectedOptions) => {
+            setSelectedOptions(selectedOptions);
 
-        const items = selectedOptions.map((option) => {
-            const selectedItem = allItems.find(
-                (item) => item.id === parseInt(option.value)
-            );
-            return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
-        });
+            const items = selectedOptions.map((option) => {
+                const selectedItem = allListItems.find(
+                    (item) => item.id === parseInt(option.value)
+                );
+                return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
+            });
 
-        setData(
-            "items",
-            items.map((item) => ({ ...item, list_item_id: item.id }))
-        );
-    };
+            setData({
+                ...data,
+                items: items.map((item) => ({ ...item, items: item.id })),
+            });
+        },
+        [allItems, setSelectedOptions, setData, data]
+    );
 
     const handleQtyChange = (id, qty) => {
         const updatedItems = data.items.map((item) =>
@@ -111,7 +118,7 @@ export default function Create({
 
         post(route("deliverables.store"));
 
-        e.target.reset();
+        // e.target.reset();
     };
 
     return (
@@ -168,13 +175,14 @@ export default function Create({
                                             className="mt-2"
                                         />
                                     </div>
-                                    <input type="text"
-                                    id="item_user_id"
-                                    name="user_id"
-                                    defaultValue={data.user_id}
-                                    hidden={true}
+                                    <input
+                                        type="text"
+                                        id="item_user_id"
+                                        name="user_id"
+                                        defaultValue={data.user_id}
+                                        hidden={true}
                                     />
-                                
+
                                     <div className="mt-4 col-span-2">
                                         <InputLabel
                                             htmlFor="deliverables_dr_date"
@@ -184,7 +192,12 @@ export default function Create({
                                             id="deliverables_dr_date"
                                             type="date"
                                             name="dr_date"
-                                            value={data.dr_date || new Date().toISOString().split('T')[0]}
+                                            value={
+                                                data.dr_date ||
+                                                new Date()
+                                                    .toISOString()
+                                                    .split("T")[0]
+                                            }
                                             className="mt-1 block w-full"
                                             isFocused={true}
                                             onChange={(e) =>
@@ -340,7 +353,6 @@ export default function Create({
                                                             </td>
                                                             <td className="px-3 py-2">
                                                                 <div className="flex flex-row items-center">
-                                                                    
                                                                     <input
                                                                         type="number"
                                                                         value={
@@ -364,16 +376,17 @@ export default function Create({
                                                                             item.quantity
                                                                         }
                                                                     </span>
-
-                                                                  
-                                                                     
                                                                 </div>
                                                             </td>
                                                             <InputError
-                                                                        message={errors[`items.${item.id}.qty_out`]}
-                                                                        className="mt-2"
-                                                                    />
-                                                                   
+                                                                message={
+                                                                    errors[
+                                                                        `items.${item.id}.qty_out`
+                                                                    ]
+                                                                }
+                                                                className="mt-2"
+                                                            />
+
                                                             <td className="px-3 py-2">
                                                                 {item.uom}
                                                             </td>

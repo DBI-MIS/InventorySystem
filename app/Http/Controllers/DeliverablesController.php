@@ -61,12 +61,13 @@ class DeliverablesController extends Controller
     public function create()
     {
         $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
+      
         // $clients = Client::query()->orderBy('name', 'asc')->get();
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
         $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
         // dd($stockrequisitions);
         return inertia("Deliverables/Create", [
-            "deliverablesss" => ItemResource::collection($deliverablesss),
+            "deliverables" => ItemResource::collection($deliverablesss),
             "clients" => ClientResource::collection($clients),
             "stockrequests" => StockRequisitionResource::collection($stockrequests)
         ]);
@@ -128,9 +129,15 @@ class DeliverablesController extends Controller
 
         $deliverable->load('client', 'stockrequest', 'itemsDeliverables');
 
+         foreach ($items as $item) {
+        if ($item->quantity == $item->qty_out) {
+            unset($item->id);
+        }
+    }
+
          return Inertia('Deliverables/Edit', [
         'deliverables' => $deliverable,
-        'list_items' => ItemResource::collection($items),
+        'items' => ItemResource::collection($items),
         'clients' => ClientResource::collection($clients), 
         'stockrequests' => StockRequisitionResource::collection($stockrequests),
         'item_deliverables' => $deliverable->itemsDeliverables,
@@ -162,13 +169,21 @@ class DeliverablesController extends Controller
             return redirect()->back()->withInput()->withErrors(['items' => 'Quantity cannot exceed available amount.']);
         }
     }
+    
+    foreach ($items as $item) {
+        $itemModel = Item::find($item['id']);
+        if ($itemModel) {
+            $itemModel->qty_out = $item['qty_out'];
+            $itemModel->save();
+        }
+    }
 
-    
-    $itemIds = array_map(function ($item) {
-        return (int) $item['id'];
-    }, $items);
-    
-    $deliverable->itemsDeliverables()->attach($itemIds);
+    // Sync the items with the deliverable (if needed)
+    $itemIds = collect($items)->pluck('id')->map(function ($id) {
+        return (int) $id;
+    })->toArray();
+
+    $deliverable->itemsDeliverables()->sync($itemIds);
 
 
     

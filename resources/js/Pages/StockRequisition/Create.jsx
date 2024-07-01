@@ -397,7 +397,7 @@ export default function Create({ auth }) {
                     
 
                 <Link href={route('stockrequisition.index')}
-                      className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2"
+                      className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2 ml-2"
                 >
                       Cancel
                 </Link>

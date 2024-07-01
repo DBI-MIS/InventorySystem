@@ -7,6 +7,7 @@ use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\ReceivingResource;
+use App\Models\Archive;
 use App\Models\Category;
 use App\Models\Receiving;
 use App\Models\User;
@@ -20,7 +21,7 @@ class ArchiveController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('viewAny',Item::class)) { 
+        if (! Gate::allows('viewAny',Archive::class)) { 
             abort(403, 'You are not authorized to view archive.');
         }
             $query = Item::query();

@@ -119,16 +119,25 @@ class StockRequisitionController extends Controller
      */
     public function edit(StockRequisition $stockrequisition)
     {
+        // $response = Gate::authorize('update', $stockrequisition);
+
+        // if ($response->allowed()) {
+        //     // dd($stockrequisition);
+        //     return inertia('StockRequisition/Edit', [
+        //         'stockrequisition' => new StockRequisitionResource($stockrequisition)
+        //     ]);
+        // }else{
+        //     return abort(403,$response->message());
+        // }
         $response = Gate::authorize('update', $stockrequisition);
 
-        if ($response->allowed()) {
-            // dd($stockrequisition);
-            return inertia('StockRequisition/Edit', [
-                'stockrequisition' => new StockRequisitionResource($stockrequisition)
-            ]);
-        }else{
-            return abort(403,$response->message());
-        }
+    if ($response->allowed()) {
+        return inertia('StockRequisition/Edit', [
+            'stockrequisition' => new StockRequisitionResource($stockrequisition->load('sritems'))
+        ]);
+    } else {
+        return abort(403, $response->message());
+    }
     }
 
     /**
@@ -157,10 +166,10 @@ class StockRequisitionController extends Controller
         $sritem = Sritem::updateOrCreate(
             ['id' => $item['id'] ?? null], // Use id if exists
             [
-                'item' => $item['sr_item'],
-                'qty' => $item['sr_qty'],
-                'uom' => $item['sr_unit'],
-                'description' => $item['sr_description'],
+                'sr_item' => $item['sr_item'],
+                'sr_qty' => $item['sr_qty'],
+                'sr_unit' => $item['sr_unit'],
+                'sr_description' => $item['sr_description'],
             ]
         );
         $sritemIds[] = $sritem->id;

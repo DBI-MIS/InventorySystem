@@ -13,7 +13,7 @@ class ArchivePolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->isSuperAdmin() || $user->isAdmin() || $user->isEditor() || $user->isUser()) {
+        if ($user->isSuperAdmin() || $user->isAdmin()) {
             return Response::allow(); 
         }
  
@@ -25,7 +25,7 @@ class ArchivePolicy
      */
     public function view(User $user, Item $item)
     {
-        if ($user->isSuperAdmin() || $user->isAdmin() || $user->isEditor() || $user->isUser()) {
+        if ($user->isSuperAdmin() || $user->isAdmin()) {
             return Response::allow(); 
         }
  

@@ -73,6 +73,21 @@ class Item extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
+     public function replicateItemDr()
+     {
+         if ($this->quantity > $this->qty_out) {
+             $newItem = $this->replicate();
+             $newItem->quantity = $this->quantity - $this->qty_out;
+             $newItem->qty_out = 0;
+             $newItem->remark = 'Split from item ' . $this->id;
+             $newItem->save();
+            //  convert parse int qty_out and quantity and diff ng qty_out and quantity 
+            // diff of sum
+         }
+     }
+
+     
    
 
     

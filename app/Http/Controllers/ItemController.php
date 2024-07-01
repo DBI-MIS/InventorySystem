@@ -87,6 +87,7 @@ class ItemController extends Controller
          $sku = $this->generateSkuId();
          $input['sku'] = $sku;
          $mrrData = Receiving::select('mrr_no')->distinct()->get(); //get only unique values
+        
         return Inertia("Item/Create",[
             'brands' => BrandResource::collection($brands),
             'categories' =>  CategoryResource::collection($categories),
@@ -121,7 +122,7 @@ class ItemController extends Controller
         $data['user_id'] = Auth::id();
         $data['updated_by'] = Auth::id(); //comment this
     
-        // dd($data);
+        // dd($data);s
         Item::create($data);
         return to_route('item.index')->with('success', 'Item was created');
         
@@ -136,6 +137,18 @@ class ItemController extends Controller
         $itemId = $item['id'];
         $item = Item::with('user')->find($itemId); 
         $userName = $item->user->name;
+
+
+        //  //  difference
+        // $remainingQuantity = $item->quantity - $item->qty_out;
+        // // dd($item);
+        // // Create new item only if there's a difference
+        // if ($remainingQuantity > 0) {
+        //     $newItem = $item->replicate(); // Replicate 
+        //     $newItem->quantity = $remainingQuantity;
+        //     $newItem->remark = 'Split from item ' . $item->id;
+        //     $newItem->create();
+        //      }
         // dd( $userName);
         // dd($item);
         if ($response->allowed()) {
@@ -301,10 +314,10 @@ class ItemController extends Controller
 
         if ($item) {
             $item->qty_out = $itemData['qty_out'];
-          
             $item->save();
+
+            // $item->replicateItemDr(); 
         } else {
-            
         }
     }
 

@@ -106,11 +106,11 @@ class DatabaseSeeder extends Seeder
          ->create();
 
          Item::factory()
-         ->count(30)
+         ->count(10)
          ->create();
          
          Receiving::factory()
-         ->count(20)
+         ->count(10)
          ->create();
 
          Client::factory()

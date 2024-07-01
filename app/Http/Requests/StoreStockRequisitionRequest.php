@@ -25,11 +25,14 @@ class StoreStockRequisitionRequest extends FormRequest
             "sr_to" => ['required', 'max:255'],
             "rs_no" => ['required', 'max:255'],
             "sr_date" => ['nullable', 'date'],
-            'items.*.sr_item' => 'required|string',
+            "sr_notes" => ['nullable', 'max:255'],
+            'items' => 'required|array',
+            'items.*.id' => 'nullable|exists:sritems,id',
+            'items.*.sr_item' => 'required|string|max:255',
             'items.*.sr_qty' => 'required|integer',
-        'items.*.sr_unit' => 'required|string',
-        'items.*.sr_description' => 'required|string',
-            "sr_notes" => ['nullable', 'max:255']
+            'items.*.sr_unit' => 'required|string|max:50',
+            'items.*.sr_description' => 'nullable|string',
+            
 
         ];
     }

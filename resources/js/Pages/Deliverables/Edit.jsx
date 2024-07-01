@@ -6,7 +6,7 @@ import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import Select from "react-select";
 
 export default function Edit({
@@ -15,28 +15,27 @@ export default function Edit({
     clients, // collection
     stockrequests, // collection
     item_deliverables, // data items pivot
-    list_items, // collection
+    items, // collection
 }) {
     const { data, setData, post, errors } = useForm({
-        
         dr_no: deliverables.dr_no || "",
         created_at: deliverables.created_at || "",
         remarks: deliverables.remarks || "",
-        item_deliverables: item_deliverables || [],
-        items: list_items || [],
+        items: item_deliverables || [],
         user_id: auth.user.id || "",
         client_id: deliverables.client.id || "",
         address: deliverables.client.address,
         stockrequest_id: deliverables.stockrequest.id || "",
-        _method: "PUT", 
+        _method: "PUT",
     });
 
-    const [selectedOptions, setSelectedOptions] = useState([
-        // data.list_items,
-    ]);
-   
+    console.log(data);
 
-    useEffect(() => {
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+    const [allItems, setAllItems] = useState([]);
+
+        useEffect(() => {
         if (item_deliverables) {
             const selectedOptions = item_deliverables.map((item) => ({
                 value: item.id,
@@ -46,54 +45,61 @@ export default function Edit({
         }
     }, [item_deliverables]);
 
-    const options = list_items.data.map((item) => ({
-      value: item.id,
-      label: item.name,
-  }));
+    const options = items.data
+        .filter((item) => item.quantity !== item.qty_out)
+        .map((item) => ({
+            value: item.id,
+            label: `${item.name} (${item.quantity})`,
+        }));
 
-    const allItems = list_items.data.map((item) => ({
-      ...item,
-      id: parseInt(list_items.id),
-  })); 
+    const allListItems = items.data.map((item) => ({
+        ...item,
+        id: parseInt(item.id),
+    }));
 
+    const handleSelectChange = useCallback(
+        (selectedOptions) => {
+            setSelectedOptions(selectedOptions);
 
-    const handleSelectChange = (selectedOptions) => {
-        setSelectedOptions(selectedOptions);
+            const items = selectedOptions.map((option) => {
+                const selectedItem = allListItems.find(
+                    (item) => item.id === parseInt(option.value)
+                );
+                return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
+            });
 
-        const items = selectedOptions.map((option) => {
-            const selectedItem = allItems.find(
-                (item) => item.id === parseInt(option.value)
-            );
-            return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
-        });
+            setData({
+                ...data,
+                items: items.map((item) => ({ ...item, items: item.id })),
+            });
+        },
+        [allItems, setSelectedOptions, setData, data]
+    );
 
-        setData(
-            "items",
-            data.list_items.map((item) => ({ ...item, items: item.id }))
-        );
-    };
-
-   
-    
     const handleQtyChange = (id, qty) => {
-        const updatedItems = list_items.data.map((item) =>
-            item.id === id ? { ...item, qty_out: qty } : item
-        );
-    
-        setData("items", updatedItems);
+        setData({
+            ...data,
+            items: data.items.map(item =>
+                item.id === id ? { ...item, qty_out: parseInt(qty, 10) } : item
+            )
+        });
     };
 
     // const handleQtyChange = (id, qty) => {
-    //     const items = items.map((item) =>
-    //         item.id === id ? { ...item, qty_out: qty } : item
+    //     const updatedItems = data.items.map((item) =>
+    //         item.id === id ? { ...item, qty_out: parseInt(qty, 10) } : item
     //     );
-    //     setData(
-    //         "items",
-    //         data.list_items.map((item) => ({ ...item, items: item.id }))
-    //     );
+
+    //     setData("items", updatedItems);
     // };
 
-   
+    // const deleteExistingItem = (id, index) => {
+    //     const updatedSelectedOptions = selectedOptions.filter((_, idx) => idx !== index);
+    //     setSelectedOptions(updatedSelectedOptions);
+
+    //     const updatedItems = data.items.filter(item => item.id !== id);
+    //     setData("items", updatedItems);
+    // };
 
     const handleClientChange = (e) => {
         const selectedClientId = e.target.value;
@@ -109,20 +115,20 @@ export default function Edit({
         }));
     };
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        post(route("deliverables.update"));
-    };
+    // const onSubmit = (e) => {
+    //     e.preventDefault();
+    //     post(route("deliverables.update"));
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         post(
             route("item.upsert"),
             { items: data.items },
-            {
-                preserveScroll: true,
-                preserveState: true,
-            }
+            // {
+            //     preserveScroll: true,
+            //     preserveState: true,
+            // }
         );
 
         post(route("deliverables.update", deliverables.id));
@@ -165,7 +171,6 @@ export default function Edit({
                                             onChange={handleClientChange}
                                             value={data.client_id}
                                         >
-                                            
                                             {clients.data.map((client) => (
                                                 <option
                                                     value={client.id}
@@ -222,7 +227,7 @@ export default function Edit({
                                             htmlFor="deliverables_address"
                                             value="Address."
                                         />
-                                    
+
                                         <TextInput
                                             id="deliverables_address"
                                             type="text"
@@ -323,7 +328,7 @@ export default function Edit({
                                         </div>
 
                                         <div className="col-span-3 xs:col-span-2">
-                                  {/* <button
+                                            {/* <button
                                     className="flex flex-nowrap gap-2 font-semibold text-md bg-green-500 py-2 px-14 text-white rounded shadow transition-all hover:bg-green-700"
                                     onClick={handleAddSelect}
                                   >
@@ -339,7 +344,7 @@ export default function Edit({
                                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
                                   </button> */}
-                              </div>
+                                        </div>
                                         <div className="mt-5 min-h-[300px] w-full">
                                             <h1 className="text-2xl text-center p-5 font-semibold">
                                                 DELIVERY RECEIPT ITEMS
@@ -366,7 +371,7 @@ export default function Edit({
                                                 </thead>
 
                                                 <tbody>
-                                                    {item_deliverables.map((item) => (
+                                                    {data.items.map((item) => (
                                                         <tr
                                                             key={item.id}
                                                             className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700"
@@ -376,13 +381,19 @@ export default function Edit({
                                                             </td>
                                                             <td className="px-3 py-2">
                                                                 <div className="flex flex-row items-center">
-                                                                <input
+                                                                    <input
                                                                         type="number"
-                                                                        value={item.qty_out}
-                                                                        onChange={(e) =>
+                                                                        value={
+                                                                            item.qty_out
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
                                                                             handleQtyChange(
                                                                                 item.id,
-                                                                                e.target.value
+                                                                                e
+                                                                                    .target
+                                                                                    .value
                                                                             )
                                                                         }
                                                                         className="mt-1 block w-max border-0 text-right"
@@ -414,7 +425,16 @@ export default function Edit({
                                                                     item.description
                                                                 }
                                                             </td>
-                                                          
+                                                            <td className="w-[100px] flex flex-row justify-center items-center">
+                                                                {/* <button
+                                              onClick={(e) => deleteExistingItem(item.id)}
+                                              className="text-red-600 mx-1 hover:text-gray-600"
+                                            >
+                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                                  <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                                                </svg>
+                                            </button> */}
+                                                            </td>
                                                         </tr>
                                                     ))}
                                                 </tbody>

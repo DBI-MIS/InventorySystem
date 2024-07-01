@@ -130,8 +130,8 @@ const deleteStock = (stockrequisition) => {
                               <tr className="text-nowrap ">
 
                                 <TableHeading className="pr-10" name="id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ID</TableHeading>
-                                <TableHeading className="pr-10" name="sr_to"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>TO</TableHeading>
                                 <TableHeading className="pr-10" name="rs_no"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>RS NO.</TableHeading>
+                                <TableHeading className="pr-10" name="sr_to"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>TO</TableHeading>
                                 <TableHeading className="pr-10" name="sr_date"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>DATE</TableHeading>
                                 {/* <TableHeading className="pr-10" name="sr_item"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>ITEM</TableHeading>
                                 <TableHeading className="pr-10" name="sr_qty"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}sortChanged={sortChanged}>QTY</TableHeading>
@@ -198,8 +198,8 @@ const deleteStock = (stockrequisition) => {
                               {stockrequest.data.map((stocks)=>(
                                 <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={stocks.id}>
                                   <td className="px-3 py-2">{stocks.id}</td>
-                                  <td className="px-3 py-2 hover:underline"><b><Link href={route('stockrequisition.show', stocks.id)}>{stocks.sr_to}</Link> </b></td>
-                                  <td className="px-3 py-2">{stocks.rs_no}</td>
+                                  <td className="px-3 py-2 hover:underline"><b><Link href={route('stockrequisition.show', stocks.id)}>{stocks.rs_no}</Link></b></td>
+                                  <td className="px-3 py-2">{stocks.sr_to}</td>
                                   <td className="px-3 py-2">{stocks.sr_date}</td>
                                   <td className="px-3 py-2">{stocks.sr_notes}</td>
                                   {/* <td className="px-3 py-2">{stocks.sr_item}</td>

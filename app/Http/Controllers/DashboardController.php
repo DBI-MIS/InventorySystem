@@ -39,8 +39,10 @@ class DashboardController extends Controller
         $items = $itemsQuery->get()->map(function ($item) {
             $item->total_qty = $item->total_quantity_in - $item->total_quantity_out;
             $item->status = $this->determineStatus($item->total_qty);
-            return $item;
+            return $item->total_qty > 0 ? $item : ''; //if diff is 0 hide/ leave emptystring as value
         });
+
+        
 
 
 

@@ -24,6 +24,12 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
         remarks:'',
         user_id: ''
     })
+
+    // const [status, setStatus] = useState( 'pending');
+
+    // const handleStatusChange = (event) => {
+    //   setStatus(event.target.value);
+    // };
     console.log("CUrrent Data:" + data)
 // const newItem, setNewItem = 
     const  options = items.data.map(item => ({ //values from the db
@@ -120,7 +126,7 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                  hidden="true"
                                 />
                                
-                                <div className="mt-6 col-span-2">
+                                <div className="mt-6 col-span-1">
                                     <InputLabel htmlFor="receiving_client_id" value="Client Name"/>
                                     <SelectInput
                                         id="receiving_client_id"
@@ -136,6 +142,25 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                                     </SelectInput>
                                     <InputError message={errors.client_id} className="mt-2"/>
                                 </div>
+                                <div className="mt-6 col-span-1">
+                                    <InputLabel htmlFor="receiving_status" value="Status"/>
+                                    {/* <div>
+                                    <select value={status} onChange={handleStatusChange}>
+                                        <option value="pending">Pending</option>
+                                        <option value="processing">Processing</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div> */}
+                                    <InputError message={errors.status} className="mt-2"/>
+                                </div>
+                                {/* <div>
+                                    <label>Status:</label>
+                                    <select value={status} onChange={handleStatusChange}>
+                                        <option value="pending">Pending</option>
+                                        <option value="processing">Processing</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div> */}
                         
                                 <div className="mt-4 col-span-2">
                                     <InputLabel htmlFor="receiving_address" value="Address"/>
