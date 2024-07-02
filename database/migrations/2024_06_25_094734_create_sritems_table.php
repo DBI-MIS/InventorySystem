@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('sritems', function (Blueprint $table) {
             $table->id();
             // $table->foreignId('stock_requisition_id')->constrained()->onDelete('cascade');
-            $table->string('item')->nullable();
-            $table->integer('qty')->default(1);
-            $table->string('uom')->nullable();
-            $table->longText('description')->nullable()->charset('binary');
+            $table->string('sr_item')->nullable();
+            $table->integer('sr_qty')->default(1);
+            $table->string('sr_unit')->nullable();
+            $table->longText('sr_description')->nullable()->charset('binary');
             $table->timestamps();
         });
     }

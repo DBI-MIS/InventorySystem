@@ -60,7 +60,17 @@ class DeliverablesController extends Controller
      */
     public function create()
     {
-        $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
+
+        $subquery = DB::table('items')
+        ->select(DB::raw('MAX(id) as id'))
+        ->groupBy('name');
+
+        $deliverablesss = Item::select('items.*')
+        ->joinSub($subquery, 'latest_items', function ($join) {
+            $join->on('items.id', '=', 'latest_items.id');
+        })
+        ->get();
+        // $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
       
         // $clients = Client::query()->orderBy('name', 'asc')->get();
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();

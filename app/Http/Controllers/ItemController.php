@@ -151,6 +151,15 @@ class ItemController extends Controller
         //      }
         // dd( $userName);
         // dd($item);
+        $replicatedItem = Item::where('remark', 'like', 'Split from item ' . $item->id)->first();
+    
+        if ($replicatedItem) {
+          $this->replicateEditItemDr($item, $replicatedItem); 
+        } else {
+          $item->replicateItemDr();
+        }
+        // dd($replicatedItem);
+
         if ($response->allowed()) {
             return (inertia('Item/Show', [
                 'item' => new ItemResource($item),
@@ -304,23 +313,60 @@ class ItemController extends Controller
     }
 
    
-
     public function upsert(UpsertItemRequest $request, Item $item)
-{
-    $items = $request->input('items');
+    {
+      $items = $request->input('items');
 
-    foreach ($items as $itemData) {
+    //   $replicatedItem = Item::where('remark', 'like', 'Split from item ' . $item->id)->first();
+      foreach ($items as $itemData) {
         $item = Item::find($itemData['id']);
-
+    
         if ($item) {
-            $item->qty_out = $itemData['qty_out'];
-            $item->save();
-
-            // $item->replicateItemDr(); 
-        } else {
+          $item->qty_out = $itemData['qty_out'];
+          $item->save();
+          $item->replicateItemDr();
+           $item->itemEqual();
+    
+        
+    
+        //   if ($replicatedItem) {
+        //     $this->replicateEditItemDr($item, $replicatedItem); 
+        //   } else {
+        //     $item->replicateItemDr();
+        //     // $item->itemEqual();
+        //   }
         }
+      }
+    
+      return redirect()->back()->with('success', 'Items updated successfully.');
     }
+    
+    public function replicateEditItemDr(Item $item, Item $replicatedItem)
+    {
+      $replicatedQuantity = max(0, $item->quantity - $item->qty_out);
+    
+      if ($replicatedQuantity !== $replicatedItem->quantity) {
+        $replicatedItem->quantity = $replicatedQuantity;
+        $replicatedItem->update();
+      }
+    }
+}
+//     public function upsert(UpsertItemRequest $request, Item $item)
+// {
+//     $items = $request->input('items');
 
-    return redirect()->back()->with('success', 'Items updated successfully.');
-}
-}
+//     foreach ($items as $itemData) {
+//         $item = Item::find($itemData['id']);
+
+//         if ($item) {
+//             $item->qty_out = $itemData['qty_out'];
+//             $item->save();
+
+//             $item->replicateItemDr(); 
+//         } else {
+//         }
+//     }
+
+//     return redirect()->back()->with('success', 'Items updated successfully.');
+// }
+// }

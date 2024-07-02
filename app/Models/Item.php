@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Item extends Model
 {
     protected $casts =
-     [ 'id' => 'string' ,
-     'created_at' => 'date: yyyy-MM-dd',
+     [ 
+     'created_at' => 'date: M d, Y',
     
     //  'statuses' => 'array',
 ];
@@ -74,19 +74,75 @@ class Item extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-     public function replicateItemDr()
-     {
-         if ($this->quantity > $this->qty_out) {
-             $newItem = $this->replicate();
-             $newItem->quantity = $this->quantity - $this->qty_out;
-             $newItem->qty_out = 0;
-             $newItem->remark = 'Split from item ' . $this->id;
-             $newItem->save();
-            //  convert parse int qty_out and quantity and diff ng qty_out and quantity 
-            // diff of sum
-         }
-     }
+    public function replicateItemDr()
+    {
+           $quantity = (int) $this->quantity;
+           $qty_out = (int) $this->qty_out;
 
+           $diff = max(0, $quantity - $qty_out);
+
+           if ($diff > 0) {
+               $newItem = $this->replicate();
+               $newItem->quantity = $diff;
+               $newItem->qty_out = intval("0");
+               $newItem->remark = 'Split from item ' . $this->id;
+
+            //    $newItem->id = (int) $newItem->id;
+               $newItem->save();
+           }
+               
+    }
+
+    public function itemEqual(){
+        $this->quantity =  $this->qty_out;
+        $this->save();
+
+        
+    }
+
+    // public function replicateEditItemDr()
+    // {
+    //     $quantity = (int) $this->quantity;
+    //     $qty_out = (int) $this->qty_out;
+    
+    //     $diff = max(0, $quantity - $qty_out);
+    
+    //     $replicatedItem = Item::where('remark', 'like', 'Split from item ' . $this->id)->first();
+    //     if ($replicatedItem) {
+    //         $replicatedItem->quantity = $diff;
+    //         $replicatedItem->save();
+    //     }
+    // }
+    
+
+//     public function replicateEditItemDr()
+// {
+//     $quantity = (int) $this->quantity;
+//     $qty_out = (int) $this->qty_out;
+
+//     $diff = max(0, $quantity - $qty_out);
+
+//     $replicatedItem = self::where('qty_out', 0)->first();
+
+//     if ($diff > 0) {
+
+//        if ($replicatedItem) {
+//             $replicatedItem->quantity = $diff;
+//             $replicatedItem->save();
+//         } else {
+//             $newItem = $this->replicate();
+//             $newItem->quantity = $diff;
+//             $newItem->qty_out = 0;
+//             $newItem->remark = 'Split from item ' . $this->id;
+//             $newItem->save();
+//         }
+//     } elseif ($replicatedItem) {
+//         $replicatedItem->delete();
+//     }
+// }
+
+
+    
      
    
 

@@ -22,10 +22,10 @@ class UpdateSritemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "item" => ['required', 'max:255'],
-            "qty" => ['required', 'max:255'],
-            "uom" => ['required', 'max:255'],
-            "description" => ['required', 'max:255'],
+            "sr_item" => ['required', 'max:255'],
+            "sr_qty" => ['required', 'max:255'],
+            "sr_unit" => ['required', 'max:255'],
+            "sr_description" => ['required', 'max:255'],
         ];
     }
 }

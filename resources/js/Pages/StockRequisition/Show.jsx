@@ -44,7 +44,7 @@ export default function Show({ auth, stockrequisition, queryParams }) {
                   </div>
                   <div className="flex flex-col pb-3 mt-6">
                     <dt className="mb-1 text-gray-500 text-md dark:text-gray-400">QUANTITY : </dt>
-                    <dd className="text-lg font-light">{stockrequisition.rs_qty ?? "No Quantity Available"} {stockrequisition.sr_unit ?? "No Unit Available"}</dd>
+                    <dd className="text-lg font-light">{stockrequisition.sr_qty ?? "No Quantity Available"} {stockrequisition.sr_unit ?? "No Unit Available"}</dd>
                   </div>
                 </dl>
                 </div>

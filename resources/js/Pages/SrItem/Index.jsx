@@ -127,10 +127,10 @@ export default function Index({ auth, sritems, success, queryParams = null }) {
                               {sritems.data.map((sritem)=>(
                                 <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={sritem.id}>
                                     <td className="px-3 py-2">{sritem.id}</td>
-                                    <td className="px-3 py-2 hover:underline">{sritem.item}</td>
-                                    <td className="px-3 py-2">{sritem.qty}</td>
-                                    <td className="px-3 py-2">{sritem.uom}</td>
-                                    <td className="px-3 py-2">{sritem.description}</td>
+                                    <td className="px-3 py-2 hover:underline">{sritem.sr_item}</td>
+                                    <td className="px-3 py-2">{sritem.sr_qty}</td>
+                                    <td className="px-3 py-2">{sritem.sr_unit}</td>
+                                    <td className="px-3 py-2">{sritem.sr_description}</td>
                                     <td className="px-3 py-2 text-nowrap">
                                           <div className="flex">
                                               <Link href={route('sritem.edit', sritem.id)} className="p-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white hover: rounded-full hover:underline mx-1"> 

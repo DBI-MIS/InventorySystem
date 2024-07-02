@@ -86,7 +86,7 @@ export default function Create({ auth }) {
   });
 
   const addRow = () => {
-    if (!item.sr_qty || !item.sr_unit || !item.sr_description) {
+    if ( !item.sr_item || !item.sr_qty || !item.sr_unit || !item.sr_description) {
       console.log('Please fill in all item fields before adding a row.');
       return;
     }

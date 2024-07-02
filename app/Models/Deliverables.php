@@ -14,7 +14,7 @@ class Deliverables extends Model
     protected $casts = [
         'id' => 'string',
         'list_item_id' => 'array',
-        'created_at' => 'date: m-d-Y',
+        'created_at' => 'date: M d, Y',
 
     ];
 

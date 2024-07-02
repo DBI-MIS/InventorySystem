@@ -56,17 +56,33 @@ export default function Edit({
         ...item,
         id: parseInt(item.id),
     }));
-
+console.log("checkallListItems", allListItems);
     const handleSelectChange = useCallback(
         (selectedOptions) => {
             setSelectedOptions(selectedOptions);
-
+            console.log("selectedOptions",selectedOptions);
             const items = selectedOptions.map((option) => {
                 const selectedItem = allListItems.find(
-                    (item) => item.id === parseInt(option.value)
+                    
+                    (item) => parseInt(item.id) === parseInt(option.value)
+                    
                 );
-                return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
+                console.log("parsed value:", parseInt(option.value));
+                console.log("Selected Item:", selectedItem);
+                console.log("allListItems:", allListItems);
+
+                if (!selectedItem) {
+                    throw new Error("Item not found in allListItems");
+                  }
+                  
+                 return { ...selectedItem, qty_out: selectedItem.qty_out || 1 };
+                //   return { ...selectedItem, qty_out: parseInt(selectedItem.qty_out || 1, 10) };
+          
+                // return { ...selectedItem, qty_out: parseInt(selectedItem.qty_out || 1, 10) };
+                
             });
+
+            
 
             setData({
                 ...data,

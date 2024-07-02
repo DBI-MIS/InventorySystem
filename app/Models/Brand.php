@@ -9,6 +9,10 @@ class Brand extends Model
 {
     use HasFactory;
 
+    protected $casts = [ 
+    'created_at' => 'date: M d, Y',
+    ];
+
     protected $fillable = [
         'name',
         'description',

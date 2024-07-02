@@ -9,10 +9,10 @@ import React from 'react'
 export default function Create({ auth }) {
 
   const {data, setData, post, errors, reset} = useForm({
-    item: '',
-    qty: '',
-    uom: '',
-    description: '',
+    sr_item: '',
+    sr_qty: '',
+    sr_unit: '',
+    sr_description: '',
     user_id: '',
   })
 
@@ -45,62 +45,62 @@ export default function Create({ auth }) {
                                  {/* <div className="col-span-1 grid grid-cols-2 gap-2 content-start"> */}
                                  <div>
                                         <div className="mt-4">
-                                               <InputLabel htmlFor="sritem_item" value="Item: " />
+                                               <InputLabel htmlFor="sritem_sr_item" value="Item: " />
                                                <TextInput 
-                                                id="sritem_item"
+                                                id="sritem_sr_item"
                                                 type="text"
-                                                name="item"
+                                                name="sr_item"
                                                 placeholder="Item"
-                                                value={data.item}
+                                                value={data.sr_item}
                                                 className="mt-1 block w-full"
                                                 isFocused={true}
-                                                onChange={e => setData('item', e.target.value)}
+                                                onChange={e => setData('sr_item', e.target.value)}
                                                />
-                                               <InputError message={errors.item} className="mt-2"/>
+                                               <InputError message={errors.sr_item} className="mt-2"/>
                                         </div>
                                         <div className="mt-4">
-                                               <InputLabel htmlFor="sritem_qty" value="Quantity: " />
+                                               <InputLabel htmlFor="sritem_sr_qty" value="Quantity: " />
                                                <TextInput 
-                                                id="sritem_qty"
+                                                id="sritem_sr_qty"
                                                 type="number"
-                                                name="qty"
+                                                name="sr_qty"
                                                 placeholder="Qty"
-                                                value={data.qty}
+                                                value={data.sr_qty}
                                                 className="mt-1 block w-full"
                                                 isFocused={true}
-                                                onChange={e => setData('qty', e.target.value)}
+                                                onChange={e => setData('sr_qty', e.target.value)}
                                                />
-                                               <InputError message={errors.qty} className="mt-2"/>
+                                               <InputError message={errors.sr_qty} className="mt-2"/>
                                         </div>
                                   </div>
                                   <div>
                                         <div className="mt-4">
-                                               <InputLabel htmlFor="sritem_uom" value="Uom: " />
+                                               <InputLabel htmlFor="sritem_sr_unit" value="Uom: " />
                                                <TextInput 
-                                                id="sritem_uom"
+                                                id="sritem_sr_unit"
                                                 type="text"
-                                                name="uom"
-                                                placeholder="Uom"
-                                                value={data.uom}
+                                                name="sr_unit"
+                                                placeholder="Unit"
+                                                value={data.sr_unit}
                                                 className="mt-1 block w-full"
                                                 isFocused={true}
-                                                onChange={e => setData('uom', e.target.value)}
+                                                onChange={e => setData('sr_unit', e.target.value)}
                                                />
-                                               <InputError message={errors.uom} className="mt-2"/>
+                                               <InputError message={errors.sr_unit} className="mt-2"/>
                                         </div>
                                         <div className="mt-4">
-                                               <InputLabel htmlFor="sritem_description" value="Description: " />
+                                               <InputLabel htmlFor="sritem_sr_description" value="Description: " />
                                                <TextInput 
-                                                id="sritem_description"
+                                                id="sritem_sr_description"
                                                 type="text"
-                                                name="description"
+                                                name="sr_description"
                                                 placeholder="Description"
-                                                value={data.description}
+                                                value={data.sr_description}
                                                 className="mt-1 block w-full"
                                                 isFocused={true}
-                                                onChange={e => setData('description', e.target.value)}
+                                                onChange={e => setData('sr_description', e.target.value)}
                                                />
-                                               <InputError message={errors.description} className="mt-2"/>
+                                               <InputError message={errors.sr_description} className="mt-2"/>
                                         </div>
                                   </div>
                                  {/* </div> */}

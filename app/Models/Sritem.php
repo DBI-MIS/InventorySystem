@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Sritem extends Model
 {
     use HasFactory;
+
+    protected $casts = [ 
+        'created_at' => 'date: M d, Y',
+    ];
     
     protected $fillable = [
-        'item',
-        'qty',
-        'uom',
-        'description', 
+        'sr_item',
+        'sr_qty',
+        'sr_unit',
+        'sr_description', 
      ];
  
      public function sritem_stock()

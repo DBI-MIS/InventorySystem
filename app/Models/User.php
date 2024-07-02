@@ -11,6 +11,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $casts = [ 
+        'created_at' => 'date: M d, Y',
+    ];
+
 
     const ROLE_SUPER_ADMIN = 'super_admin';
     const ROLE_ADMIN = 'admin';

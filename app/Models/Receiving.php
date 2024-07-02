@@ -11,7 +11,7 @@ class Receiving extends Model
     protected $casts = [ 
         'id' => 'string' ,
          'group_item_id' => 'array',
-         'created_at' => 'date: m-d-Y'
+         'created_at' => 'date: M d, Y',
 ];
     use HasFactory,SoftDeletes;
 

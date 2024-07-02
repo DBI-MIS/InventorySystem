@@ -89,10 +89,10 @@ class StockRequisitionController extends Controller
 
         foreach ($validated['items'] as $item) {
             $sritem = Sritem::create([
-                'item' => $item['sr_item'],
-                'qty' => $item['sr_qty'],
-                'uom' => $item['sr_unit'],
-                'description' => $item['sr_description'],
+                'sr_item' => $item['sr_item'],
+                'sr_qty' => $item['sr_qty'],
+                'sr_unit' => $item['sr_unit'],
+                'sr_description' => $item['sr_description'],
             ]);
             $requisition->sritems()->attach($sritem->id);
         }
@@ -107,8 +107,10 @@ class StockRequisitionController extends Controller
     public function show(StockRequisition $stockrequisition)
     {
         
+
+        
         return inertia('StockRequisition/Show', [
-            'stockrequisition' => new StockRequisitionResource($stockrequisition),
+            'stockrequisition' => new StockRequisitionResource($stockrequisition->load('sritems')),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
         ]);
@@ -164,7 +166,7 @@ class StockRequisitionController extends Controller
     $sritemIds = [];
     foreach ($validated['items'] as $item) {
         $sritem = Sritem::updateOrCreate(
-            ['id' => $item['id'] ?? null], // Use id if exists
+            ['id' => $item['id']],
             [
                 'sr_item' => $item['sr_item'],
                 'sr_qty' => $item['sr_qty'],

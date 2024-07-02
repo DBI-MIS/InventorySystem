@@ -10,6 +10,10 @@ class Archive extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $casts = [ 
+    'created_at' => 'date: M d, Y',
+    ];
+    
     protected $fillable = [
         'item_id',
         'mrr_id',

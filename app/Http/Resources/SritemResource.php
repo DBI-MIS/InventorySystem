@@ -17,10 +17,10 @@ class SritemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'item' => $this->item,
-            'qty' => $this->qty,
-            'uom' => $this->uom,
-            'description' => $this->description,
+            'sr_item' => $this->sr_item,
+            'sr_qty' => $this->sr_qty,
+            'sr_unit' => $this->sr_unit,
+            'sr_description' => $this->sr_description,
         ];
     }
 }
