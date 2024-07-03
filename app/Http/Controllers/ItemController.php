@@ -137,7 +137,15 @@ class ItemController extends Controller
         $itemId = $item['id'];
         $item = Item::with('user')->find($itemId); 
         $userName = $item->user->name;
-
+        $replicatedItemId = $item->getKey(); 
+        // dd($replicatedItemId); 
+        
+        if (is_int($replicatedItemId)) {
+            return response()->json(['message' => 'The item ID is an integer.', 'item_id' => $replicatedItemId]);
+        } else {
+            return response()->json(['message' => 'The item ID is not an integer.', 'item_id' => $replicatedItemId]);
+        }
+        
 
         //  //  difference
         // $remainingQuantity = $item->quantity - $item->qty_out;
@@ -151,17 +159,18 @@ class ItemController extends Controller
         //      }
         // dd( $userName);
         // dd($item);
-        $replicatedItem = Item::where('remark', 'like', 'Split from item ' . $item->id)->first();
+        // $replicatedItem = Item::where('remark', 'like', 'Split from item ' . $item->id)->first();
     
-        if ($replicatedItem) {
-          $this->replicateEditItemDr($item, $replicatedItem); 
-        } else {
-          $item->replicateItemDr();
-        }
+        // if ($replicatedItem) {
+        //   $this->replicateEditItemDr($item, $replicatedItem); 
+        // } else {
+        //   $item->replicateItemDr();
+        // }
         // dd($replicatedItem);
 
         if ($response->allowed()) {
             return (inertia('Item/Show', [
+                'replicatedItemId' =>$replicatedItemId,
                 'item' => new ItemResource($item),
                 'userName' =>  $userName ?: null,
                 'queryParams' => request()->query() ?: null,
@@ -186,6 +195,7 @@ class ItemController extends Controller
         
         // dd($item);
        // show the stored info from creation
+   
             $categories = Category::query()->orderBy('name', 'asc')->get();
             $brands =Brand::query()->orderBy('name', 'asc')->get();
             $locations = Location::query()->orderBy('name', 'asc')->get();
@@ -317,40 +327,101 @@ class ItemController extends Controller
     {
       $items = $request->input('items');
 
-    //   $replicatedItem = Item::where('remark', 'like', 'Split from item ' . $item->id)->first();
       foreach ($items as $itemData) {
         $item = Item::find($itemData['id']);
     
         if ($item) {
           $item->qty_out = $itemData['qty_out'];
-          $item->save();
-          $item->replicateItemDr();
-           $item->itemEqual();
+
+          
+        //   REPLICATE ITEM
+          $quantity = (int) $item->quantity;
+          $qty_out = (int) $itemData['qty_out'];
+
+          $diff = max(0, $quantity - $qty_out);
+           
+          if ($diff > 0) {
+              $newItem = $item->replicate();
+              $newItem->quantity = $diff;
+              $newItem->qty_out = intval("0");
+              $newItem->remark = 'Split from item ' . $item->id;
+
+              $newItem->save();
+
+             // Retrieve the ID (assuming framework method)
+             $replicatedItemId = $newItem->getKey();
+
+            // Validate and convert to integer if necessary
+            if (!is_int($replicatedItemId)) {
+            $replicatedItemId = (int) $replicatedItemId; 
+            
+            if (is_int($replicatedItemId)) {
+                $newItem->id = $replicatedItemId;  
+                $newItem->save();  
+                } 
+            }
+          }
+       
+          $item->quantity = $itemData['qty_out'];
+           $item->save();
+
     
         
     
-        //   if ($replicatedItem) {
-        //     $this->replicateEditItemDr($item, $replicatedItem); 
-        //   } else {
-        //     $item->replicateItemDr();
-        //     // $item->itemEqual();
-        //   }
+       
         }
       }
     
       return redirect()->back()->with('success', 'Items updated successfully.');
     }
+
     
-    public function replicateEditItemDr(Item $item, Item $replicatedItem)
+    // public function replicateItemDr(Item $item, UpsertItemRequest $request)
+    // {
+    //        $quantity = (int) $item->quantity;
+    //        $qty_out = (int) $request->qty_out;
+
+    //        $diff = max(0, $quantity - $qty_out);
+            
+    //        if ($diff > 0) {
+    //            $newItem = $item->replicate();
+    //            $newItem->quantity = $diff;
+    //            $newItem->qty_out = intval("0");
+    //            $newItem->remark = 'Split from item ' . $item->id;
+
+    //         //    $newItem->id = (int) $newItem->id;
+    //            $newItem->save();
+    //        }
+               
+    // }
+
+   public function replicateEditItemDr(UpsertItemRequest $request, Item $item)
     {
-      $replicatedQuantity = max(0, $item->quantity - $item->qty_out);
+        $quantity = (int) $item->quantity;
+        $qty_out = (int) $request->qty_out;
     
-      if ($replicatedQuantity !== $replicatedItem->quantity) {
-        $replicatedItem->quantity = $replicatedQuantity;
-        $replicatedItem->update();
-      }
+        $diff = max(0, $quantity - $qty_out);
+    
+        $replicatedItem = Item::where('remark', 'like', 'Split from item ' . $item->id)->first();
+        if ($replicatedItem) {
+            $replicatedItem->quantity = $diff;
+            $replicatedItem->save();
+        }
     }
+    
+
+
 }
+//     public function replicateEditItemDr(Item $item, Item $replicatedItem)
+//     {
+//       $replicatedQuantity = max(0, $item->quantity - $item->qty_out);
+    
+//       if ($replicatedQuantity !== $replicatedItem->quantity) {
+//         $replicatedItem->quantity = $replicatedQuantity;
+//         $replicatedItem->update();
+//       }
+//     }
+// }
 //     public function upsert(UpsertItemRequest $request, Item $item)
 // {
 //     $items = $request->input('items');

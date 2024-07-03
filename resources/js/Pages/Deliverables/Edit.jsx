@@ -16,6 +16,7 @@ export default function Edit({
     stockrequests, // collection
     item_deliverables, // data items pivot
     items, // collection
+    itemResults
 }) {
     const { data, setData, post, errors } = useForm({
         dr_no: deliverables.dr_no || "",
@@ -30,7 +31,8 @@ export default function Edit({
     });
 
     console.log(data);
-
+    console.log("item_deliverables", item_deliverables);
+    console.log("items", items);
     const [selectedOptions, setSelectedOptions] = useState([]);
 
     const [allItems, setAllItems] = useState([]);
@@ -56,6 +58,11 @@ export default function Edit({
         ...item,
         id: parseInt(item.id),
     }));
+    // const allListItems = items.data.map((item) => {
+    //     const id = typeof item.id === 'number' ? item.id : parseInt(item.id, 10); // Use radix 10 for decimal
+    //     return { ...item, id };
+    // });
+    
 console.log("checkallListItems", allListItems);
     const handleSelectChange = useCallback(
         (selectedOptions) => {
@@ -139,7 +146,7 @@ console.log("checkallListItems", allListItems);
     const handleSubmit = (e) => {
         e.preventDefault();
         post(
-            route("item.upsert"),
+            route("item.replicateEditItemDr"),
             { items: data.items },
             // {
             //     preserveScroll: true,
@@ -361,6 +368,18 @@ console.log("checkallListItems", allListItems);
                                     </svg>
                                   </button> */}
                                         </div>
+                                        {/* <div>
+                                            <h1>Items List</h1>
+                                            <ul>
+                                                {items.data.map((item, index) => (
+                                                <li key={index}>
+                                                    <p>Item Name: {item.name}</p>
+                                                    <p>Item ID: {item.id}</p>
+                                                    <p>Message: {itemResults[index]?.message}</p>
+                                                </li>
+                                                ))}
+                                            </ul>
+                                            </div> */}
                                         <div className="mt-5 min-h-[300px] w-full">
                                             <h1 className="text-2xl text-center p-5 font-semibold">
                                                 DELIVERY RECEIPT ITEMS

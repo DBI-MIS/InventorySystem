@@ -107,12 +107,13 @@ class StockRequisitionController extends Controller
     public function show(StockRequisition $stockrequisition)
     {
         
-
+        $stockrequisition->load('sritems');
         
         return inertia('StockRequisition/Show', [
-            'stockrequisition' => new StockRequisitionResource($stockrequisition->load('sritems')),
+            'stockrequisition' => new StockRequisitionResource($stockrequisition),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
+            'stock_sritem' => $stockrequisition->sritems,
         ]);
     }
 
@@ -204,9 +205,12 @@ class StockRequisitionController extends Controller
 
     public function myStockRequest(StockRequisition $stockrequestId)
     {
+        $stock_sritem = $stockrequestId->sritems;
+
         return inertia("StockRequisition/PrintStockRequest", [
-            'stockrequest' => new StockRequisitionResource($stockrequestId),
+            'stockrequest' => new StockRequisitionResource($stockrequestId->load('sritems')),
             'queryParams' => request()->query() ?: null,
+            'stock_sritem' => $stock_sritem
         ]);
     }
 }

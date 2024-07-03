@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\UpsertItemRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,12 +10,14 @@ class Item extends Model
 {
     protected $casts =
      [ 
+        'id' => 'integer',
      'created_at' => 'date: M d, Y',
     
     //  'statuses' => 'array',
 ];
     use HasFactory, SoftDeletes;
     protected $fillable = [
+        
         'sku_prefix',
         'sku',
         'name',
@@ -74,28 +77,28 @@ class Item extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function replicateItemDr()
-    {
-           $quantity = (int) $this->quantity;
-           $qty_out = (int) $this->qty_out;
+    // public function replicateItemDr(Item $item, UpsertItemRequest $request)
+    // {
+    //        $quantity = (int) $item->quantity;
+    //        $qty_out = (int) $request->qty_out;
 
-           $diff = max(0, $quantity - $qty_out);
+    //        $diff = max(0, $quantity - $qty_out);
 
-           if ($diff > 0) {
-               $newItem = $this->replicate();
-               $newItem->quantity = $diff;
-               $newItem->qty_out = intval("0");
-               $newItem->remark = 'Split from item ' . $this->id;
+    //        if ($diff > 0) {
+    //            $newItem = $item->replicate();
+    //            $newItem->quantity = $diff;
+    //            $newItem->qty_out = intval("0");
+    //            $newItem->remark = 'Split from item ' . $item->id;
 
-            //    $newItem->id = (int) $newItem->id;
-               $newItem->save();
-           }
+    //         //    $newItem->id = (int) $newItem->id;
+    //            $newItem->save();
+    //        }
                
-    }
+    // }
 
-    public function itemEqual(){
-        $this->quantity =  $this->qty_out;
-        $this->save();
+    public function itemEqual(Item $item, UpsertItemRequest $request){
+        $item->quantity =  $request->qty_out;
+        $item->save();
 
         
     }

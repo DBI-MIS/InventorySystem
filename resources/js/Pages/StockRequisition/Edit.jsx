@@ -198,7 +198,7 @@ const onSubmit = (e) => {
                             </div> */}
                             <br />
                             <div className="mt-4 col-span-3">
-                       <InputLabel htmlFor="stockrequest_sr_notes" value="Date:"/>
+                       <InputLabel htmlFor="stockrequest_sr_notes" value="Notes:"/>
                        <TextAreaInput
                        id="deliverables_sr_date"
                        type="text"

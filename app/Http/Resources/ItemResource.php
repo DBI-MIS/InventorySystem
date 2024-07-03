@@ -19,7 +19,7 @@ class ItemResource extends JsonResource
     public function toArray(Request $request): array
     {
         return[
-            'id' => $this->id,
+            'id' => $this->id ,
             'sku_prefix' => $this->category ? $this->category->sku_prefix : null,
             'sku' => $this->sku,
             'name' => $this->name,

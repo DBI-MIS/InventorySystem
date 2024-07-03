@@ -134,20 +134,42 @@ class DeliverablesController extends Controller
     {
 
         $items = Item::query()->orderBy('name', 'asc')->get();
+        // dd($items);
+            $itemResults = [];
+
+            // Check if each item has an integer ID
+            foreach ($items as $item) {
+                $itemId = $item->getKey(); 
+
+                if (is_int($itemId)) {
+                    //  integer
+                    $itemResults[] = [
+                        'item' => $item,
+                        'message' => 'Item ID is an integer.'
+                    ];
+                } else {
+                    //  not an integer
+                    $itemResults[] = [
+                        'item' => $item,
+                        'message' => 'Item ID is not an integer.'
+                    ];
+                }
+            }
         $clients = Client::query()->orderBy('name', 'asc')->get();
         $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
 
         $deliverable->load('client', 'stockrequest', 'itemsDeliverables');
 
-         foreach ($items as $item) {
-        if ($item->quantity == $item->qty_out) {
-            unset($item->id);
-        }
-    }
+        //  foreach ($items as $item) {
+        // if ($item->quantity == $item->qty_out) {
+        //     unset($item->id);
+        // }
+        // }
 
          return Inertia('Deliverables/Edit', [
         'deliverables' => $deliverable,
         'items' => ItemResource::collection($items),
+        'itemResults' => $itemResults,
         'clients' => ClientResource::collection($clients), 
         'stockrequests' => StockRequisitionResource::collection($stockrequests),
         'item_deliverables' => $deliverable->itemsDeliverables,
@@ -157,6 +179,7 @@ class DeliverablesController extends Controller
 
 
     }
+
 
     /**
      * Update the specified resource in storage.

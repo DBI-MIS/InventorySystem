@@ -74,6 +74,7 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::post('/item/submit', [ItemController::class, 'submit'])->name('item.submit');
         Route::post('receiving/submit', [ReceivingController::class, 'submitItem'])->name('receiving.submitItem');
         Route::post('/item/upsert', [ItemController::class, 'upsert'])->name('item.upsert');
+        Route::post('item/replicateEditItemDr', [ItemController::class, 'replicateEditItemDrt'])->name('item.replicateEditItemDr');
         // lagay name
         // itemMrr
     
