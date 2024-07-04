@@ -76,7 +76,9 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::post('/item/upsert', [ItemController::class, 'upsert'])->name('item.upsert');
         Route::post('item/replicateEditItemDr', [ItemController::class, 'replicateEditItemDrt'])->name('item.replicateEditItemDr');
         Route::get('deliverables/{id}/updateDone',[DeliverablesController::class, 'updateDone'])->name('deliverables.updateDone');
+        // Route::get('deliverables/{id}/updateDone',[DeliverablesController::class, 'updateDone'])->name('deliverables.updateDone');
         Route::get('item/{id}/updateDone',[ItemController::class, 'updateDone'])->name('item.updateDone');
+        
         // lagay name
         // itemMrr
     

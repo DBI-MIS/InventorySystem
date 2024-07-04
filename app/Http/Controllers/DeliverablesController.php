@@ -169,6 +169,7 @@ class DeliverablesController extends Controller
         $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
 
         $deliverable->load('client', 'stockrequest', 'itemsDeliverables');
+        // dd($deliverable->itemsDeliverables);
 
         //  foreach ($items as $item) {
         // if ($item->quantity == $item->qty_out) {
@@ -266,13 +267,30 @@ class DeliverablesController extends Controller
             
         ]);
     }
-    public function updateDone($id) {
+
+    // UpdateDoneRequest $request,
+    public function updateDone(Item $item, $id) {
         $deliverable = Deliverables::find($id);
     
         if ($deliverable) {
 
             $deliverable->is_done = !$deliverable->is_done;
             $deliverable->save();
+
+             
+
+            // dd($deliverable);
+            if($deliverable->is_done == "processed"){
+            //     $deliverable->load( 'itemsDeliverables');
+            //  dd($deliverable->itemsDeliverables);
+             $items = $deliverable->load('itemsDeliverables');
+
+            //  foreach()
+            //  loop yung items to access yung is_done per item
+
+            }
+
+
         }
     
         return back(); 

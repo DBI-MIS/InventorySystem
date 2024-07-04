@@ -410,17 +410,38 @@ class ItemController extends Controller
             $replicatedItem->save();
         }
     }
-    public function updateDone($id) {
-        $item = Item::find($id);
+    // public function updateDone($id) {
+    //     $item = Item::find($id);
     
-        if ($item) {
+    //     if ($item) {
 
-            $item->is_done = !$item->is_done;
-            $item->save();
+    //         $item->is_done = !$item->is_done;
+    //         $item->save();
+    //     }
+    
+    //     return back(); 
+    // }
+    public function updateDone(UpdateDoneRequest $request,Item $item, $id) {
+        $deliver = $request;
+        dd($deliver);
+        $deliverable = Deliverables::find($id);
+    
+        if ($deliverable) {
+
+            $deliverable->is_done = !$deliverable->is_done;
+            $deliverable->save();
+            dd($deliverable);
+            if($deliverable->is_done == "processed"){
+
+
+            }
+
+
         }
     
         return back(); 
     }
+    
     
 
 
