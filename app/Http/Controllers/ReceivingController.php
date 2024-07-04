@@ -21,6 +21,7 @@ use App\Models\Deliverables;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Location;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,7 +66,7 @@ class ReceivingController extends Controller
      * Show the form for creating a new resource.
      */
 
-    public function create()
+    public function create(User $user)
     {
        //
     //    $items = Item::query()->orderBy('name', 'asc')->get();
@@ -91,6 +92,8 @@ class ReceivingController extends Controller
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
         $input['mrr_no'] =  $mrr_no;
+        $sku = $this->generateSkuId();
+        $input['sku'] = $sku;
 
         //use dd for checking
         //dd($name)
@@ -104,8 +107,21 @@ class ReceivingController extends Controller
           'clients' => ClientResource::collection($clients),
           'delivers' => DeliverablesResource::collection($delivers),
           'mrr_no' =>  $mrr_no,
+            'skuu' =>  $sku,
       ]);
     }
+
+    function generateSkuId() {
+        // $id = "9";
+        // $user->orders()->where('service_id', $request->service_id)->orderBy('id', 'DESC')->first();
+        $id = Item::select('id')->get()->last(); // e.g id = 35 -> latest id ang kinukuha
+            $stringID= $id["id"]+1;      // add +1 kasi new code sya para sa bagong iccreate na item meaning mag iincrement
+        $sku = str_pad( $stringID, 6, '0', STR_PAD_LEFT); 
+        // 35 = 000035 --> 6 digits, zeros are being added on the left kaya str pad left
+        return $sku;
+        
+    }
+
     // public function getItems()
     // {
     //   $items = Item::query()

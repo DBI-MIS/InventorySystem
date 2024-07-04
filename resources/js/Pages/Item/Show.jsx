@@ -3,7 +3,7 @@ import { ITEM_STATUS_CLASS_MAP, ITEM_STATUS_TEXT_MAP } from "@/constants";
 import { Head, Link } from "@inertiajs/react";
 export default function Show({ auth, item, userName, replicatedItemId }) {
     console.log(item);
-    console.log(replicatedItemId);
+    // console.log(replicatedItemId);
     return (
         <AuthenticatedLayout
             user={auth.user}

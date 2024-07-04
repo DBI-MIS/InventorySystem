@@ -81,7 +81,7 @@ export default function PrintStockRequest({ stock_sritem, stockrequest }){
       </div>
         </div>
         <div >
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-evenly">
             <div className="min-w-[100px]">
                 <br />
             <label htmlFor="" className="text-m">Prepared By:</label>

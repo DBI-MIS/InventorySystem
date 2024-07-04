@@ -137,14 +137,14 @@ class ItemController extends Controller
         $itemId = $item['id'];
         $item = Item::with('user')->find($itemId); 
         $userName = $item->user->name;
-        $replicatedItemId = $item->getKey(); 
-        // dd($replicatedItemId); 
+        // $replicatedItemId = $item->getKey(); 
+        // // dd($replicatedItemId); 
         
-        if (is_int($replicatedItemId)) {
-            return response()->json(['message' => 'The item ID is an integer.', 'item_id' => $replicatedItemId]);
-        } else {
-            return response()->json(['message' => 'The item ID is not an integer.', 'item_id' => $replicatedItemId]);
-        }
+        // if (is_int($replicatedItemId)) {
+        //     return response()->json(['message' => 'The item ID is an integer.', 'item_id' => $replicatedItemId]);
+        // } else {
+        //     return response()->json(['message' => 'The item ID is not an integer.', 'item_id' => $replicatedItemId]);
+        // }
         
 
         //  //  difference
@@ -170,7 +170,7 @@ class ItemController extends Controller
 
         if ($response->allowed()) {
             return (inertia('Item/Show', [
-                'replicatedItemId' =>$replicatedItemId,
+                // 'replicatedItemId' =>$replicatedItemId,
                 'item' => new ItemResource($item),
                 'userName' =>  $userName ?: null,
                 'queryParams' => request()->query() ?: null,
@@ -311,6 +311,8 @@ class ItemController extends Controller
     {
         // dd($formData);
         $validatedData = $formData->validated();
+        
+        $validatedData['user_id'] = Auth::id();
         // dd($validatedData);
        Item::create($validatedData);
        $item = Item::query()->latest('created_at')->first();

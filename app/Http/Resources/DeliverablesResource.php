@@ -26,6 +26,7 @@ class DeliverablesResource extends JsonResource
             'stockrequest' => new StockRequisitionResource($this->stockrequest),
             'address' => $this->address,
             'status' => $this->status,
+            'is_done' => $this->is_done ? 'processed' : 'pending',
             'dr_date' => (new Carbon($this->dr_date))->format('Y-m-d'),
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
             'remarks'=>  $this->remarks,

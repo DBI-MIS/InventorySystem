@@ -15,6 +15,7 @@ class Deliverables extends Model
         'id' => 'string',
         'list_item_id' => 'array',
         'created_at' => 'date: M d, Y',
+        'is_done' => 'boolean'
 
     ];
 
@@ -29,6 +30,8 @@ class Deliverables extends Model
         'client_id',
         'address_id',
         'remarks',
+        'status',
+        'is_done',
          'user_id'
         
     ];

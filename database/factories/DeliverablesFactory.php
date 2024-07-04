@@ -29,6 +29,7 @@ class DeliverablesFactory extends Factory
             'created_at' => time(),
             'updated_at' => time(),
             'remarks'=> fake()->realText(),
+            'is_done' => fake()->randomElement(['true','false']),
             'user_id' => User::factory()
 
 

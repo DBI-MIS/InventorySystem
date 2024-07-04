@@ -63,3 +63,20 @@ export const CLIENT_STATUS_CLASS_MAP = {
         editor: "bg-red-900",
         user: "bg-sky",
       };
+
+      export const DONE_TEXT_MAP = {
+        processed: "Processed",
+        pending: "Pending",
+        true: "Processed",
+        false: "Pending",
+       
+      };
+  
+  
+      export const DONE_CLASS_MAP = {
+        //equivalent value on the database(leftside) & corresponding color and text appearance
+        processed: "bg-green-600",
+        pending: "bg-red-600",
+        true: "bg-green-600",
+        false: "bg-red-600",
+        };

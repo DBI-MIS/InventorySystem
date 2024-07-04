@@ -10,7 +10,7 @@ import { Head, Link,useForm } from "@inertiajs/react";
 import { useEffect,  useState} from "react";
 import Select from "react-select"
 import React from "react";
-export default function Create({auth,delivers ,mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
+export default function Create({auth,delivers , mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
     
     console.log(delivers);
   
@@ -41,10 +41,11 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
     const [selectedOptions, setSelectedOptions] = useState([]);
     
     const handleSelectChange = (selectedOptions) => {
-        
+        setSelectedOptions(formData);
         setSelectedOptions(selectedOptions);
         const selectedValues = selectedOptions.map(option => parseInt(option.value));
         setData("group_item_id", selectedValues);
+        
     };
 
     const [showModal, setShowModal] = useState(false);
@@ -63,7 +64,7 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
         status: '',
         remarks:'',
         location_id: '1', // == DBI depends on factory what id 
-        user_id:''
+        user_id: '',
       });
   
     const  handleChange= (event) => {
@@ -111,7 +112,7 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
         </div>
         <div className="w-5/6 mx-auto sm:px-6 lg:px-8">
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <form onSubmit={onSubmit}  data-page="{{ json_encode($page) }}"
+                    <form onSubmit={(e) => onSubmit}  data-page="{{ json_encode($page) }}"
                         className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
                         
                          {/* START */}
@@ -340,12 +341,12 @@ export default function Create({auth,delivers ,mrr_no,items,clients,categories,e
                     <ModalReceiving 
                     onClose={(e)=>setShowModal(false)}
                     isVisible={showModal}
-                    onSubmit={handleNewItemSubmit}>
+                    onSubmit={(e) => handleNewItemSubmit}>
                                         <div className="">
                                       
                                            <div className="q-full sm:px-6 lg:px-8">
                                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                                     <form onSubmit={handleNewItemSubmit} 
+                                                     <form onSubmit={(e)=>handleNewItemSubmit} 
                                                     className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" >
                                                    <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Item</h2>     
                                                         {/* START */}

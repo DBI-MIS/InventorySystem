@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MarkAsDoneRequest;
 use App\Models\Deliverables;
 use App\Http\Requests\StoreDeliverablesRequest;
 use App\Http\Requests\UpdateDeliverablesRequest;
@@ -25,7 +26,7 @@ class DeliverablesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(MarkAsDoneRequest $request)
     {
         if (! Gate::allows('viewAny', Deliverables::class)) { 
             abort(403, 'You are not authorized to view.');
@@ -38,6 +39,15 @@ class DeliverablesController extends Controller
             $query->where("dr_no", "like", "%" . request("dr_no") . "%");
         }
 
+       
+        if($request->is_done == true){
+            
+        }
+        //query is done
+        // if($done == true){
+            //method ng replicate
+            // $status equivalent sa processed
+        // }
         
         $deliverabless =  $query->orderBy($sortField, $sortDirection)
         ->paginate(20)
@@ -256,6 +266,17 @@ class DeliverablesController extends Controller
             
         ]);
     }
+    public function updateDone($id) {
+        $deliverable = Deliverables::find($id);
+    
+        if ($deliverable) {
 
+            $deliverable->is_done = !$deliverable->is_done;
+            $deliverable->save();
+        }
+    
+        return back(); 
+    }
+    
    
 }
