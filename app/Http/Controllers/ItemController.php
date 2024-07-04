@@ -313,7 +313,7 @@ class ItemController extends Controller
         $validatedData = $formData->validated();
         
         $validatedData['user_id'] = Auth::id();
-        // dd($validatedData);
+        dd($validatedData);
        Item::create($validatedData);
        $item = Item::query()->latest('created_at')->first();
     //    dd($item);
@@ -409,6 +409,17 @@ class ItemController extends Controller
             $replicatedItem->quantity = $diff;
             $replicatedItem->save();
         }
+    }
+    public function updateDone($id) {
+        $item = Item::find($id);
+    
+        if ($item) {
+
+            $item->is_done = !$item->is_done;
+            $item->save();
+        }
+    
+        return back(); 
     }
     
 

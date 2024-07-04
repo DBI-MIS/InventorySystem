@@ -163,6 +163,7 @@ class ItemFactory extends Factory
             'location_id'=>rand(1,5),
             'employee_id'=>rand(1,4),
             'statuses'=> $statuses,
+            'is_done' => fake()->randomElement(['true','false']),
             'created_at' => time(),
             'updated_at' => time(),
             'remark'=> fake()->realText(),

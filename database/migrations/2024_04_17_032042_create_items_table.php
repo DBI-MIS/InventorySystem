@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('location_id')->nullable();
             $table->string('employee_id')->nullable();
             $table->string('statuses')->default('pending');
+            $table->boolean('is_done')->default(false);
             $table->string('remark')->nullable();
             $table->softDeletes();
             $table->foreignIdFor(User::class)->constrained();

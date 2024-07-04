@@ -339,6 +339,7 @@ export default function Create({
                                                         <th className="pr-10">
                                                             ITEM DESCRIPTION
                                                         </th>
+                                                        
                                                     </tr>
                                                 </thead>
 

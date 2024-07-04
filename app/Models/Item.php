@@ -12,6 +12,7 @@ class Item extends Model
      [ 
         'id' => 'integer',
      'created_at' => 'date: M d, Y',
+       'is_done' => 'boolean'
     
     //  'statuses' => 'array',
 ];
@@ -34,6 +35,7 @@ class Item extends Model
         'location_id',
         'employee_id',
         'statuses',
+        'is_done',
         'remark',
         'user_id',
         'updated_by'

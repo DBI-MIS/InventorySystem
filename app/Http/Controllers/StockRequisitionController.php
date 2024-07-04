@@ -179,6 +179,7 @@ class StockRequisitionController extends Controller
     }
     
     // Sync the sritems with the stockrequisition
+    
     $stockrequisition->sritems()->sync($sritemIds);
 
     return redirect()->route('stockrequisition.index')->with('success', "Stock Request was updated");

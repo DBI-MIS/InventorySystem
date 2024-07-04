@@ -7,7 +7,8 @@ import React, { useEffect, useRef, useState } from "react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head, Link, router} from "@inertiajs/react" ;
 import SelectInput from "@/Components/SelectInput";
-import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP } from "@/constants";
+import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP, DONE_CLASS_MAP, DONE_TEXT_MAP } from "@/constants";
+import SwitchButton from "@/Components/SwitchButton";
 export default function Index({auth,items, queryParams = null, success,count}) {
 
 const [open, setOpen] = useState(true);
@@ -19,6 +20,16 @@ const [open, setOpen] = useState(true);
 
 //   return () => clearTimeout(timer); // Clear the timeout 
 // }, [success]);
+const SwitchButton = ({ route, itemId, isDone, doneText = "Done", pendingText = "Not Done/Pending", classes }) => {
+  const [isChecked, setIsChecked] = useState(isDone); // Initialize state based on isDone
+  const switchRef = useRef(null); // Ref to access the switch element
+
+  const handleClick = () => {
+    setIsChecked(!isChecked);
+    // Handle route update or other actions based on the new state
+    // ... (e.g., call route('item.updateDone', itemId) if needed)
+  };
+}
 
 console.log(items)
 queryParams = queryParams || {};
@@ -166,6 +177,8 @@ const deleteItem = (item) => {
                               sortChanged={sortChanged}>Category</TableHeading>
                                 <TableHeading className=""  name="statuseses"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Status</TableHeading>
+                               <TableHeading className=""  name="is_done"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
+                              sortChanged={sortChanged}>Done</TableHeading>
                                 <TableHeading  className=""  name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                               sortChanged={sortChanged}>Qty</TableHeading>
                                 <div className="text-right">Actions</div>
@@ -193,6 +206,17 @@ const deleteItem = (item) => {
                                             {ITEM_STATUS_TEXT_MAP[item.statuses] || 'No Status'}
                                         </span>
                                       </td>
+                                      <td className="w-[100px] py-2 pl-4">
+                                                        <Link
+                                                        href={route('item.updateDone', item.id)}  
+                                                        className={"px-2 py-1 font-semibold tracking-wide rounded-full text-white " +
+                                                         DONE_CLASS_MAP[item.is_done ] }>
+                                                             {DONE_TEXT_MAP[ item.is_done] ?? "Not Done/Pending"}
+
+                                                        </Link>
+                                       </td>
+
+                                    
                                       <td className="w-[100px] py-2 text-nowrap ">{item.quantity ?? "No quantity"} {item.uom ?? "No UOM"} </td>
                                       <td className="w-[100px] py-2 text-nowrap">
                                           <div className="w-[100px] flex flex-row justify-end items-center">

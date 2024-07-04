@@ -8,6 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 import { useCallback, useState, useEffect } from "react";
 import Select from "react-select";
+import { DONE_CLASS_MAP, DONE_TEXT_MAP } from "@/constants";
 
 export default function Edit({
     auth,
@@ -402,6 +403,9 @@ console.log("checkallListItems", allListItems);
                                                         <th className="pr-10">
                                                             ITEM DESCRIPTION
                                                         </th>
+                                                        <th className="pr-10">
+                                                           DONE
+                                                        </th>
                                                     </tr>
                                                 </thead>
 
@@ -460,6 +464,21 @@ console.log("checkallListItems", allListItems);
                                                                     item.description
                                                                 }
                                                             </td>
+                                                            <td className="w-[80px]px-6 py-2">
+                                                         
+                                                        <Link
+                                                        href={route('item.updateDone', item.id)}  
+                                                        onClick={item.is_done ? (e) => e.preventDefault() : null}
+                                                        className={" px-2 py-1 font-semibold  rounded-full text-white " +
+                                                         DONE_CLASS_MAP[item.is_done ] }>
+                                                            <span>
+                                                            {DONE_TEXT_MAP[ item.is_done] ?? "Not Done/Pending"}
+
+                                                            </span>
+                                                            
+
+                                                        </Link>
+                                       </td>
                                                             <td className="w-[100px] flex flex-row justify-center items-center">
                                                                 {/* <button
                                               onClick={(e) => deleteExistingItem(item.id)}

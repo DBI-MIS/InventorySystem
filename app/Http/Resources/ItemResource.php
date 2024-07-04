@@ -41,6 +41,7 @@ class ItemResource extends JsonResource
             'location' => new LocationResource($this->location),
             'employee' => new EmployeeResource($this->employee),
             'statuses' => $this->statuses,
+            'is_done' => $this->is_done ? 'processed' : 'pending',
             'remark' => $this->remark,
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
             'updatedBy' => new UserResource($this->updatedBy),  
