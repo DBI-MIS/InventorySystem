@@ -8,7 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 import { useCallback, useState, useEffect } from "react";
 import Select from "react-select";
-import { DONE_CLASS_MAP, DONE_TEXT_MAP } from "@/constants";
+import { DONE_STATUS_CLASS_MAP, DONE_TEXT_MAP} from "@/constants";
 
 export default function Edit({
     auth,
@@ -17,7 +17,8 @@ export default function Edit({
     stockrequests, // collection
     item_deliverables, // data items pivot
     items, // collection
-    itemResults
+    itemResults,
+    success
 }) {
     const { data, setData, post, errors } = useForm({
         dr_no: deliverables.dr_no || "",
@@ -111,38 +112,7 @@ console.log("checkallListItems", allListItems);
     const handleClick = (isDone, itemId) => {
         console.log(`Item ${itemId} is now ${isDone ? 'done' : 'pending'}`); 
       };
-
-    // const handleClick = (itemId, is_done) => {
-    //     console.log(is_done)
-    //         setItems(items.map((item) =>
-    //           item.id === itemId ? { ...item, isDone: !isDone } : item
-    //         ));
-          
-    //     // const updatedItems = items.map((item) =>
-    //     //   item.id === itemId ? { ...item, is_done: !is_done } : item
-    //     // );
-    //     // setItems(updatedItems);
-    //   };
-    
-
-    // const handleQtyChange = (id, qty) => {
-    //     const updatedItems = data.items.map((item) =>
-    //         item.id === id ? { ...item, qty_out: parseInt(qty, 10) } : item
-    //     );
-
-    //     setData("items", updatedItems);
-    // };
-
-    // const deleteExistingItem = (id, index) => {
-    //     const updatedSelectedOptions = selectedOptions.filter((_, idx) => idx !== index);
-    //     setSelectedOptions(updatedSelectedOptions);
-
-    //     const updatedItems = data.items.filter(item => item.id !== id);
-    //     setData("items", updatedItems);
-    // };
-
-    
-
+      
     const handleClientChange = (e) => {
         const selectedClientId = e.target.value;
 
@@ -188,7 +158,24 @@ console.log("checkallListItems", allListItems);
             }
         >
             <Head title="Edit Delivery Receipt" />
-
+            <div className="max-w-5/6">
+                        {success && (
+                            <Alert
+                            className={`absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 ${
+                                success.includes('Errors') || success.includes('Error') || success.includes('Warning') ? 'bg-red-100 ring-2 ring-red-800' : 'bg-green-100 ring-2 ring-green-800'
+                            }`}
+                                open={open}
+                                onClose={() => setOpen(false)}
+                                animate={{
+                                    mount: { y: 0 },
+                                    unmount: { y: 100 },
+                                }}
+                            >
+                                {" "}
+                                {success}
+                            </Alert>
+                        )}
+                    </div>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="max-w-5/6"></div>
@@ -485,7 +472,7 @@ console.log("checkallListItems", allListItems);
                                                             <td className="w-[100px] py-2 pl-4">
                                                                 <span
                                                                 className={"px-2 py-1 font-semibold tracking-wide rounded-full text-white " +
-                                                                DONE_CLASS_MAP[item.is_done ] }>
+                                                                    DONE_STATUS_CLASS_MAP[item.is_done ] }>
                                                                     {DONE_TEXT_MAP[ item.is_done] ?? "Not Done/Pending"}
 
                                                                 </span>

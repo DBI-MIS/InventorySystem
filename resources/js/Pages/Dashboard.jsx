@@ -11,6 +11,10 @@ import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP } from "@/constants";
 import { useState } from "react";
 // import CustomBarChart from "@/Components/BarChart";
 import { usePage } from "@inertiajs/inertia-react";
+import CanvasJSReact from '@canvasjs/react-charts';
+
+const CanvasJS = CanvasJSReact.CanvasJS;
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 export default function Dashboard({
     auth,
@@ -29,6 +33,7 @@ export default function Dashboard({
     latestMrrs,
     latestDrs,
     itemsByLocation,
+    chartData  = usePage().props,
     // dailyItemCounts = usePage().props,
 }) {
     queryParams = queryParams || {};
@@ -75,6 +80,22 @@ export default function Dashboard({
         Inertia.visit(url, { preserveScroll: true, preserveState: true });
     };
 
+   
+        const options = {
+            animationEnabled: true,
+            exportEnabled: false,
+            theme: "light1", // "light1", "dark1", "dark2"
+            title: {
+                text: ""
+            },
+            data: [{
+                type: "pie",
+                indexLabel: "{label}: {y}",
+                startAngle: -90,
+                dataPoints: chartData
+            }]
+        };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -92,6 +113,8 @@ export default function Dashboard({
                 <span className="font-light text-xl">Welcome! {userName}</span>
                 <span className="font-light text-lg">{currentDateTime}</span>
             </div>
+
+            
 
             <div className="px-5 pt-2 w-full">
                 <div className="flex flex-row gap-2">
@@ -549,11 +572,15 @@ export default function Dashboard({
                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 text-gray-900 dark:text-gray-100">
                                 <div className="overflow-auto">
+                                
+                                <div className="p-4" ><span className="text-lg font-bold">Available Stocks</span>
+                                <CanvasJSChart options={options} containerProps={{ width: '100%', height: '300px' }} />
+                                </div>
+
                                     <div className="w-full flex flex-row justify-between items-center mb-2">
                                         <div>
-                                            <span>Available Stocks</span>
                                         </div>
-                                        <div className="flex flex-row items-center relative gap-2">
+                                        <div className="flex flex-row items-center relative w-full">
                                             <div>
                                                 <th className="flex flex-row cursor-pointer items-center relative"></th>
                                             </div>

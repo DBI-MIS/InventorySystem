@@ -86,7 +86,9 @@ export default function Index({
                     <div className="max-w-5/6">
                         {success && (
                             <Alert
-                                className=" absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
+                            className={`absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 ${
+                                success.includes('Errors') || success.includes('Error') || success.includes('Warning') ? 'bg-red-100 ring-2 ring-red-800' : 'bg-green-100 ring-2 ring-green-800'
+                            }`}
                                 open={open}
                                 onClose={() => setOpen(false)}
                                 animate={{
@@ -99,6 +101,7 @@ export default function Index({
                             </Alert>
                         )}
                     </div>
+
 
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
@@ -273,9 +276,10 @@ export default function Index({
                                                     <td className="w-[100px] py-2 pl-4">
                                               
                                                     <Link
-                                                        href={deliverable.is_done !== "processed" && deliverable.is_done !== true ? route('deliverables.updateDone', deliverable.id) : route('deliverables.updateDone', deliverable.id)}
+                                                        href={deliverable.is_done !== "processed" && deliverable.is_done !== true ? route('deliverables.updateDone', deliverable.id) : "#"}
                                                         //  "#"
-                                                        className={`px-2 py-1 font-semibold tracking-wide rounded-full text-white ${DONE_CLASS_MAP[deliverable.is_done]}`}>
+                                                        className={`px-2 py-1 font-semibold tracking-wide rounded-full text-white 
+                                                         ${DONE_CLASS_MAP[deliverable.is_done]}`}>
                                                         {DONE_TEXT_MAP[deliverable.is_done] ?? "Not Done/Pending"}
                                                     </Link>
 

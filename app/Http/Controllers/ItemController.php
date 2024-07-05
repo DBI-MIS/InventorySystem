@@ -318,7 +318,7 @@ class ItemController extends Controller
        $item = Item::query()->latest('created_at')->first();
     //    dd($item);
         $newItem = $item->id;
-        // dd($newItem );
+        dd($newItem );
         Inertia::share('success', 'Item created successfully!');
     Inertia::share('newItem', $item->id);
         return redirect()->route('receiving.create')->with('message', 'Item created successfully!');

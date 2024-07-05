@@ -103,6 +103,13 @@ export default function Create({ auth }) {
     });
   };
 
+  const deleteRow = (index) => {
+    setData(prevData => ({
+      ...prevData,
+      items: prevData.items.filter((_, i) => i !== index),
+    }));
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
     post(route("sritem.store"));
@@ -281,26 +288,55 @@ export default function Create({ auth }) {
                     </div>
               </div>
           </div>
-          <br /><br /><br />
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
+          <div className="mt-20 text-right">
+          
+          <button
+                  type="button"
+                  onClick={addRow}
+                  className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
+                >
+                  Add Row
+                </button>
+            </div>
+          <table className="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
             <br />
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                  <tr className="text-nowrap">
-                  <th className="pr-10">ITEM</th>
-                    <th className="pr-10">QTY</th>
-                    <th className="pr-10">UNIT</th>
-                    <th className="pr-10">DESCRIPTION</th>
+                <tr className="text-nowrap">
+                    <th className="">#</th>
+                    <th scope="col" className="px-6 py-3">Item</th>
+                    <th scope="col" className="px-6 py-3">Qty</th>
+                    <th scope="col" className="px-6 py-3">Unit</th>
+                    <th scope="col" className="px-6 py-3">Description</th>
+                    <th scope="col" className="px-6 py-3">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.items.map((row, index) => (
-                    <tr key={index}>
-                      <td>{row.sr_item}</td>
-                      <td>{row.sr_qty}</td>
-                      <td>{row.sr_unit}</td>
-                      <td>{row.sr_description}</td>
+                  {data.items.length > 0 ? (
+                    data.items.map((item, index) => (
+                      <tr key={index} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{index + 1}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.sr_item}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.sr_qty}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.sr_unit}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.sr_description}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          <button
+                            type="button"
+                            onClick={() => deleteRow(index)}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center py-4 text-gray-500">
+                        No items added yet.
+                      </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
           {/* <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
@@ -386,16 +422,6 @@ export default function Create({ auth }) {
               <br /><br /><br /><br /><br /><br />
            
           <div className="mt-20 text-right">
-          
-          <button
-                  type="button"
-                  onClick={addRow}
-                  className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
-                >
-                  Add Row
-                </button>
-                    
-
                 <Link href={route('stockrequisition.index')}
                       className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2 ml-2"
                 >

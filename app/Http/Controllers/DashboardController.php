@@ -43,7 +43,15 @@ class DashboardController extends Controller
             //   return $item->total_qty > 0 ? $item : ''; 
         });
 
-        
+        $itemsChart = $itemsQuery->get()->map(function ($item) {
+            $total_qty = $item->total_quantity_in - $item->total_quantity_out;
+            return [
+                'y' => $total_qty,
+                'label' => $item->name
+            ];
+        })->filter(function ($item) {
+            return $item['y'] != 0; // Filter out items with a quantity of 0
+        })->values(); // Re-index the array
 
 
 
@@ -108,6 +116,7 @@ class DashboardController extends Controller
             'latestDrs' => $latestDrs,
             'dailyItemCounts' => $dailyItemCounts,
             'itemsByLocation' =>  $itemsByLocation,
+            'chartData' => $itemsChart,
         ]);
     }
 

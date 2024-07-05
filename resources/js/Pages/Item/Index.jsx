@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head, Link, router} from "@inertiajs/react" ;
 import SelectInput from "@/Components/SelectInput";
-import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP, DONE_CLASS_MAP, DONE_TEXT_MAP } from "@/constants";
+import { ITEM_STATUS_TEXT_MAP, ITEM_STATUS_CLASS_MAP, DONE_TEXT_MAP, DONE_STATUS_CLASS_MAP } from "@/constants";
 import SwitchButton from "@/Components/SwitchButton";
 export default function Index({auth,items, queryParams = null, success,count}) {
 
@@ -20,16 +20,6 @@ const [open, setOpen] = useState(true);
 
 //   return () => clearTimeout(timer); // Clear the timeout 
 // }, [success]);
-const SwitchButton = ({ route, itemId, isDone, doneText = "Done", pendingText = "Not Done/Pending", classes }) => {
-  const [isChecked, setIsChecked] = useState(isDone); // Initialize state based on isDone
-  const switchRef = useRef(null); // Ref to access the switch element
-
-  const handleClick = () => {
-    setIsChecked(!isChecked);
-    // Handle route update or other actions based on the new state
-    // ... (e.g., call route('item.updateDone', itemId) if needed)
-  };
-}
 
 console.log(items)
 queryParams = queryParams || {};
@@ -43,9 +33,6 @@ const searchFieldChanged = (name, value) => {
   // change the url path everytime option changes
  router.get(route('item.index'), queryParams)
 };
-
-
- 
 
   const onKeyPress = (name, e) => {
 
@@ -209,7 +196,7 @@ const deleteItem = (item) => {
                                       <td className="w-[100px] py-2 pl-4">
                                                         <span
                                                         className={"px-2 py-1 font-semibold tracking-wide rounded-full text-white " +
-                                                         DONE_CLASS_MAP[item.is_done ] }>
+                                                          DONE_STATUS_CLASS_MAP[item.is_done ] }>
                                                              {DONE_TEXT_MAP[ item.is_done] ?? "Not Done/Pending"}
 
                                                         </span>

@@ -80,3 +80,9 @@ export const CLIENT_STATUS_CLASS_MAP = {
         true: "bg-green-600",
         false: "bg-red-600",
         };
+        export const DONE_STATUS_CLASS_MAP = {
+          processed: "bg-emerald " , // translated via resource
+          pending: "bg-red-600",
+          true: "bg-emerald", //incase only
+          false: "bg-red-600",
+          };

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class DeliverablesController extends Controller
@@ -57,6 +58,8 @@ class DeliverablesController extends Controller
         "deliverables" => DeliverablesResource::collection($deliverabless),
         'queryParams' => request()->query() ?: null,
         'success' => session('success'),
+        
+       
 
     ] );
 
@@ -132,7 +135,6 @@ class DeliverablesController extends Controller
         return inertia('Deliverables/Show', [
             'deliverable' => new DeliverablesResource($deliverable),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
             'deliverables_items' =>  $deliverable->itemsDeliverables, //Load relationship
         ]);
     }
@@ -201,38 +203,55 @@ class DeliverablesController extends Controller
     {
 
         $data = $request->validated(); 
+       
 
-        $deliverable->update($data);
+        $allItemsDone = true;
+        foreach ($data['items'] as $item) {
+            if (!$item['is_done']) {
+                $allItemsDone = false;
+                break;
+            }
+        };
 
-        $items = $data['items'];
 
-        $data['user_id'] = Auth::id();
+        if (!$deliverable->is_done || !$allItemsDone) {
+            $deliverable->update($data);
 
-     foreach ($items as $item) {
-        if ($item['qty_out'] > $item['quantity']) {
-            return redirect()->back()->withInput()->withErrors(['items' => 'Quantity cannot exceed available amount.']);
-        }
-    }
+            $items = $data['items'];
     
-    foreach ($items as $item) {
-        $itemModel = Item::find($item['id']);
-        if ($itemModel) {
-            $itemModel->qty_out = $item['qty_out'];
-            $itemModel->save();
-        }
-    }
-
-    // Sync the items with the deliverable (if needed)
-    $itemIds = collect($items)->pluck('id')->map(function ($id) {
-        return (int) $id;
-    })->toArray();
-
-    $deliverable->itemsDeliverables()->sync($itemIds);
-
-
+            $data['user_id'] = Auth::id();
     
-        return Redirect::route('deliverables.index')
-            ->with('success', "Deliverables \"{$deliverable->id}\" was updated successfully");
+                foreach ($items as $item) {
+                    if ($item['qty_out'] > $item['quantity']) {
+                        return redirect()->back()->withInput()->withErrors(['items' => 'Quantity cannot exceed available amount.']);
+                    }
+                }
+                
+                foreach ($items as $item) {
+                    $itemModel = Item::find($item['id']);
+                    if ($itemModel) {
+                        $itemModel->qty_out = $item['qty_out'];
+                        $itemModel->save();
+                    }
+                }
+            
+                // Sync the items with the deliverable (if needed)
+                $itemIds = collect($items)->pluck('id')->map(function ($id) {
+                    return (int) $id;
+                })->toArray();
+            
+                $deliverable->itemsDeliverables()->sync($itemIds);
+                
+             return Redirect::route('deliverables.index')
+            ->with('success', "Deliverables \"{$deliverable->dr_no}\" was updated successfully");
+        }
+        else{
+
+            return redirect()->route('deliverables.index')->with('success', "Error: You cannot update DR \"{$deliverable->dr_no}\" already been processed.");
+          
+        }
+        
+      
         
     }
 
@@ -269,44 +288,53 @@ class DeliverablesController extends Controller
     }
 
     // UpdateDoneRequest $request,
+    
     public function updateDone(Item $item, int $id) {
-
         $deliverable = Deliverables::find($id);
     
         if ($deliverable) {
-            $deliverable->is_done = !$deliverable->is_done; //opposite value of the current is_done value
-            $deliverable->save();
+           
+            $hasProcessedItems = $deliverable->itemsDeliverables()->where('is_done', true)->exists();
     
-            if ($deliverable->is_done) {
-                // load all related items for dr
-                $deliverable->load('itemsDeliverables');
-        
-                    foreach ($deliverable->itemsDeliverables as $item) {
-                        // dd($item);
-                        // REPLICATE ITEM START
-                        $quantity = (int) $item->quantity;
-                        $qty_out = (int) $item->qty_out;
-                        $diff = max(0, $quantity - $qty_out);
-                        
-                        if ($diff > 0) {
-                            $newItem = $item->replicate();
-                            $newItem->quantity = $diff;
-                            $newItem->qty_out = intval("0");
-                            $newItem->is_done = false; //set value to false, "meaning available"
-                            $newItem->remark = 'Split from item ' . $item->id;
-                            // dd($newItem);
-                            $newItem->save();
-                        }
-                    
-                            $item->quantity = $item->qty_out;
-                            $item->is_done = true; //not available, already taken / processed
-                            $item->save();
+            if ($hasProcessedItems) {  //check if theres item that has processed status if true throw error message.
+                
+                return back()->with('success', 'Warning: Some selectecd Items have already been processed. Kindly remove the items  or delete the DR.');
+            } else { 
+                // if all items are pending we can push through to process DR and replication of items
+               
+                $deliverable->is_done = true; // Set deliverable as done
+                $deliverable->save();
+    
+               
+                foreach ($deliverable->itemsDeliverables as $item) {
+                  
+                    $quantity = (int) $item->quantity;
+                    $qty_out = (int) $item->qty_out;
+                    $diff = max(0, $quantity - $qty_out);
+    
+                    if ($diff > 0) {
+                        $newItem = $item->replicate();
+                        $newItem->quantity = $diff;
+                        $newItem->qty_out = 0;
+                        $newItem->is_done = false; // Set as available
+                        $newItem->remark = 'Split from item ' . $item->id;
+                        $newItem->save();
                     }
+    
+                  
+                    $item->quantity = $qty_out; 
+                    $item->is_done = true; 
+                    $item->save();
                 }
+    
+              
+                return back()->with('success', "DR \"{$deliverable->dr_no}\" marked as Processed and items updated.");
+            }
         }
-        return back(); 
+    
+       
+        return back()->with('success', "Error: DR \"{$deliverable->id}\" not found.");
     }
-            
     
    
 }

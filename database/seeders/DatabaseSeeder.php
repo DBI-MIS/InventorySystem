@@ -106,7 +106,7 @@ class DatabaseSeeder extends Seeder
          ->create();
 
          Item::factory()
-         ->count(5)
+         ->count(10)
          ->create();
          
          Receiving::factory()
@@ -120,12 +120,12 @@ class DatabaseSeeder extends Seeder
         //  Sritem::factory()
         //  ->count(20)
         //  ->create();
-        //  Deliverables::factory()
-        //  ->count(20)
-        //  ->create();
-        //  StockRequisition::factory()
-        //  ->count(10)
-        //  ->create();
+         Deliverables::factory()
+         ->count(10)
+         ->create();
+         StockRequisition::factory()
+         ->count(10)
+         ->create();
          
 foreach(Item::all() as $item){
     foreach(Receiving::all() as $receiving){

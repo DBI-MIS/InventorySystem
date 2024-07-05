@@ -1,3 +1,4 @@
+import { DONE_STATUS_CLASS_MAP, DONE_TEXT_MAP } from '@/constants';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import React from 'react'
@@ -117,6 +118,17 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
                                         {ITEM_STATUS_TEXT_MAP[item.statuses] ||
                                             "No Item Status"}
                                     </span> */}
+                                </dd>
+                            </div>
+                            <div className="flex flex-col pb-3 mt-2">
+                                <dt className="mb-1 text-gray-500 text-sm dark:text-gray-400">
+                                    Status :
+                                </dt>
+                                <dd className="text-lg font-light">
+                                    <span
+                                            className={`px-3 py-1 font-semibold tracking-wide rounded-full text-white ${DONE_STATUS_CLASS_MAP[deliverable.is_done]}`}>
+                                        {DONE_TEXT_MAP[deliverable.is_done] ?? "Not Done/Pending"}
+                                    </span>
                                 </dd>
                             </div>
 
