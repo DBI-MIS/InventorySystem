@@ -34,11 +34,11 @@ export default function Authenticated({ user, header, children,}) {
                                     <DbitransparentLogo className="w-[32px] fill-current text-white" />
                                 </NavLink>
                             </div>
-                            <div className="items-center flex flex-col gap-2 space-y-5">
+                            <div className="items-center flex flex-col gap-5">
 
                                 <div class="group relative">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    <Dboard className="block h-9 w-auto fill-current " />
+                                    <Dboard className="block h-9 w-auto" />
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Dashboard</span>
                                 </div>

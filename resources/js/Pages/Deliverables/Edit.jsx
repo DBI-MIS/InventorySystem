@@ -482,32 +482,14 @@ console.log("checkallListItems", allListItems);
                                                                     item.description
                                                                 }
                                                             </td>
-                                                            {/* <td className="px-3 py-2">
-                                                                <label className="toggle-switch">
-                                                                    <input
-                                                                    type="checkbox"
-                                                                    checked={item.is_done} 
-                                                                    onChange={(event) => handleClick(event.target.checked, item.id)} 
-                                                                    />
-                                                                    <span className={`toggle-slider ${item.is_done ? 'green' : 'red'}`}>
-                                                                    <span className="hidden">Processed</span>
-                                                                    <span className="visually-hidden">Pending</span>
-                                                                    </span>
-                                                                </label>
-                                                                </td> */}
-                                                            {/* <td className="w-[80px]px-6 py-2">
-                                                         
-                                                                <div
-                                                                className={" px-2 py-1 font-semibold  rounded-full text-white " +
+                                                            <td className="w-[100px] py-2 pl-4">
+                                                                <span
+                                                                className={"px-2 py-1 font-semibold tracking-wide rounded-full text-white " +
                                                                 DONE_CLASS_MAP[item.is_done ] }>
-                                                                    <span>
                                                                     {DONE_TEXT_MAP[ item.is_done] ?? "Not Done/Pending"}
 
-                                                                    </span>
-                                                                    
-
-                                                                </div>
-                                                         </td> */}
+                                                                </span>
+                                                            </td>
                                                             <td className="w-[100px] flex flex-row justify-center items-center">
                                                                 {/* <button
                                               onClick={(e) => deleteExistingItem(item.id)}

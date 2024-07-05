@@ -66,31 +66,7 @@ export default function Index({
         router.delete(route("deliverables.destroy", deliverable.id));
     };
 
-    // const [isDone, setIsDone] = useState(data.deliverable.is_done);
-    const [isDone, setIsDone] = useState();
-    const handleToggle = () => {
-      setIsDone(!isDone);
-      
-      const toggleFilter = (newFilter) => {
-        setFilter(newFilter);
-      };
-    
-      const toggleDeliverable = (id) => {
-        const updatedDeliverables = deliverables.map((deliverable) =>
-          deliverable.id === id ? { ...deliverable, is_done: !deliverable.is_done } : deliverable
-        );
-        setIsDone(updatedDeliverables);
-      };
-
-      const filteredDeliverables = deliverables.filter((deliverable) => {
-      if (filter === 'processed') {
-          return deliverable.is_done === true;
-        } else if (filter === 'pending') {
-          return deliverable.is_done === false;
-        }
-      });
-}
-  
+   
 
     return (
         <Authenticated
@@ -295,13 +271,22 @@ export default function Index({
                                                         
                                                     </td>
                                                     <td className="w-[100px] py-2 pl-4">
-                                                        <Link
+                                              
+                                                    <Link
+                                                        href={deliverable.is_done !== "processed" && deliverable.is_done !== true ? route('deliverables.updateDone', deliverable.id) : route('deliverables.updateDone', deliverable.id)}
+                                                        //  "#"
+                                                        className={`px-2 py-1 font-semibold tracking-wide rounded-full text-white ${DONE_CLASS_MAP[deliverable.is_done]}`}>
+                                                        {DONE_TEXT_MAP[deliverable.is_done] ?? "Not Done/Pending"}
+                                                    </Link>
+
+
+                                                        {/* <Link
                                                         href={route('deliverables.updateDone', deliverable.id)}  
                                                         className={"px-2 py-1 font-semibold tracking-wide rounded-full text-white " +
                                                          DONE_CLASS_MAP[deliverable.is_done ] }>
                                                              {DONE_TEXT_MAP[ deliverable.is_done] ?? "Not Done/Pending"}
 
-                                                        </Link>
+                                                        </Link> */}
                                                     </td>
         
 

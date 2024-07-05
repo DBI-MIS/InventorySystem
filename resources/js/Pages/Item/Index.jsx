@@ -207,13 +207,12 @@ const deleteItem = (item) => {
                                         </span>
                                       </td>
                                       <td className="w-[100px] py-2 pl-4">
-                                                        <Link
-                                                        href={route('item.updateDone', item.id)}  
+                                                        <span
                                                         className={"px-2 py-1 font-semibold tracking-wide rounded-full text-white " +
                                                          DONE_CLASS_MAP[item.is_done ] }>
                                                              {DONE_TEXT_MAP[ item.is_done] ?? "Not Done/Pending"}
 
-                                                        </Link>
+                                                        </span>
                                        </td>
 
                                     

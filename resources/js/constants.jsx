@@ -75,7 +75,7 @@ export const CLIENT_STATUS_CLASS_MAP = {
   
       export const DONE_CLASS_MAP = {
         //equivalent value on the database(leftside) & corresponding color and text appearance
-        processed: "bg-green-600 " ,
+        processed: "bg-green-600 disabled opacity-50 cursor-not-allowed" ,
         pending: "bg-red-600",
         true: "bg-green-600",
         false: "bg-red-600",

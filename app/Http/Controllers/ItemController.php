@@ -334,37 +334,6 @@ class ItemController extends Controller
     
         if ($item) {
           $item->qty_out = $itemData['qty_out'];
-
-          
-        //   REPLICATE ITEM
-          $quantity = (int) $item->quantity;
-          $qty_out = (int) $itemData['qty_out'];
-
-          $diff = max(0, $quantity - $qty_out);
-           
-          if ($diff > 0) {
-              $newItem = $item->replicate();
-              $newItem->quantity = $diff;
-              $newItem->qty_out = intval("0");
-              $newItem->remark = 'Split from item ' . $item->id;
-
-              $newItem->save();
-
-             // Retrieve the ID (assuming framework method)
-             $replicatedItemId = $newItem->getKey();
-
-            // Validate and convert to integer if necessary
-            if (!is_int($replicatedItemId)) {
-            $replicatedItemId = (int) $replicatedItemId; 
-            
-            if (is_int($replicatedItemId)) {
-                $newItem->id = $replicatedItemId;  
-                $newItem->save();  
-                } 
-            }
-          }
-       
-          $item->quantity = $itemData['qty_out'];
            $item->save();
 
     
@@ -421,26 +390,26 @@ class ItemController extends Controller
     
     //     return back(); 
     // }
-    public function updateDone(UpdateDoneRequest $request,Item $item, $id) {
-        $deliver = $request;
-        dd($deliver);
-        $deliverable = Deliverables::find($id);
+    // public function updateDone(UpdateDoneRequest $request,Item $item, $id) {
+    //     $deliver = $request;
+    //     dd($deliver);
+    //     $deliverable = Deliverables::find($id);
     
-        if ($deliverable) {
+    //     if ($deliverable) {
 
-            $deliverable->is_done = !$deliverable->is_done;
-            $deliverable->save();
-            dd($deliverable);
-            if($deliverable->is_done == "processed"){
-
-
-            }
+    //         $deliverable->is_done = !$deliverable->is_done;
+    //         $deliverable->save();
+    //         dd($deliverable);
+    //         if($deliverable->is_done == "processed"){
 
 
-        }
+    //         }
+
+
+    //     }
     
-        return back(); 
-    }
+    //     return back(); 
+    // }
     
     
 

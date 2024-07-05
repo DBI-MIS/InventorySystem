@@ -269,32 +269,44 @@ class DeliverablesController extends Controller
     }
 
     // UpdateDoneRequest $request,
-    public function updateDone(Item $item, $id) {
+    public function updateDone(Item $item, int $id) {
+
         $deliverable = Deliverables::find($id);
     
         if ($deliverable) {
-
-            $deliverable->is_done = !$deliverable->is_done;
+            $deliverable->is_done = !$deliverable->is_done; //opposite value of the current is_done value
             $deliverable->save();
-
-             
-
-            // dd($deliverable);
-            if($deliverable->is_done == "processed"){
-            //     $deliverable->load( 'itemsDeliverables');
-            //  dd($deliverable->itemsDeliverables);
-             $items = $deliverable->load('itemsDeliverables');
-
-            //  foreach()
-            //  loop yung items to access yung is_done per item
-
-            }
-
-
-        }
     
+            if ($deliverable->is_done) {
+                // load all related items for dr
+                $deliverable->load('itemsDeliverables');
+        
+                    foreach ($deliverable->itemsDeliverables as $item) {
+                        // dd($item);
+                        // REPLICATE ITEM START
+                        $quantity = (int) $item->quantity;
+                        $qty_out = (int) $item->qty_out;
+                        $diff = max(0, $quantity - $qty_out);
+                        
+                        if ($diff > 0) {
+                            $newItem = $item->replicate();
+                            $newItem->quantity = $diff;
+                            $newItem->qty_out = intval("0");
+                            $newItem->is_done = false; //set value to false, "meaning available"
+                            $newItem->remark = 'Split from item ' . $item->id;
+                            // dd($newItem);
+                            $newItem->save();
+                        }
+                    
+                            $item->quantity = $item->qty_out;
+                            $item->is_done = true; //not available, already taken / processed
+                            $item->save();
+                    }
+                }
+        }
         return back(); 
     }
+            
     
    
 }
