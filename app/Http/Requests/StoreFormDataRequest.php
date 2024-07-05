@@ -22,7 +22,6 @@ class StoreFormDataRequest extends FormRequest
     public function rules(): array
     {
         return [
-          "sku_prefix" => [ 'max:255'],
           "sku" => [ 'max:255'],
           "name" => [ 'max:255'],
           'brand_id' => [
@@ -42,13 +41,17 @@ class StoreFormDataRequest extends FormRequest
           "model_no" => [ 'max:255'],
           "uom" => [ 'max:20'],
           "quantity" => [ 'max:255'],
+          "qty_out" => [ 
+            'nullable',
+            'max:255'
+          ],
           "location_id" => [
             
           'exists:locations,id',],
           "employee_id" => [
           'exists:employees,id',
           ],
-          'status' => ['max:255'],
+          'statuses' => ['max:255'],
           "remark" => ['max:255'],
       ];
   }

@@ -28,7 +28,7 @@ export default function Edit({
         user_id: auth.user.id || "",
         client_id: deliverables.client.id || "",
         address: deliverables.client.address,
-        stockrequest_id: deliverables.stockrequest.id || "",
+        stockrequest_id: deliverables.stockrequest?.id ? deliverables.stockrequest.id : "" || "",
         _method: "PUT",
     });
 
@@ -308,6 +308,7 @@ console.log("checkallListItems", allListItems);
                                             id="deliverables_stockrequest_id"
                                             name="stockrequest_id"
                                             className="mt-1 block w-full"
+                                            defaultValue={data.stockrequest_id ?? "Set New RS"}
                                             onChange={(e) =>
                                                 setData(
                                                     "stockrequest_id",
@@ -318,6 +319,7 @@ console.log("checkallListItems", allListItems);
                                             {/* <option value="">
                                                 Select RS No.
                                             </option> */}
+                                            <option value="">Set New RS</option>
                                             {stockrequests.data.map(
                                                 (stockrequest) => (
                                                     <option

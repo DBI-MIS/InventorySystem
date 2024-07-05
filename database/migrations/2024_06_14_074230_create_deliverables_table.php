@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('deliverables', function (Blueprint $table) {
             $table->id();
             $table->string('dr_no')->nullable();
-            $table->foreignId('stockrequest_id')->constrained('stock_requisitions');
+            $table->foreignId('stockrequest_id')->nullable();
             $table->string('address')->nullable();
             $table->string('dr_date')->nullable();
             $table->string('remarks')->nullable();

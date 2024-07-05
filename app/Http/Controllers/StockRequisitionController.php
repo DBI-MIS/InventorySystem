@@ -40,6 +40,7 @@ class StockRequisitionController extends Controller
         return inertia("StockRequisition/Index", [
             "stockrequest" => StockRequisitionResource::collection($stockrequest),
             'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
         ]);
     }
 
@@ -211,7 +212,8 @@ class StockRequisitionController extends Controller
         return inertia("StockRequisition/PrintStockRequest", [
             'stockrequest' => new StockRequisitionResource($stockrequestId->load('sritems')),
             'queryParams' => request()->query() ?: null,
-            'stock_sritem' => $stock_sritem
+            'stock_sritem' => $stock_sritem,
+            'success' => session('success'),
         ]);
     }
 }

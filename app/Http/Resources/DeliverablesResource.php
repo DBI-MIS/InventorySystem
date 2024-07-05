@@ -24,6 +24,7 @@ class DeliverablesResource extends JsonResource
             'dr_no' => $this->dr_no,
             'stockrequest_id' => $this->stockrequest_id,
             'stockrequest' => new StockRequisitionResource($this->stockrequest),
+            'rs_no' => new StockRequisitionResource($this->rs_no),
             'address' => $this->address,
             'status' => $this->status,
             'is_done' => $this->is_done ? 'processed' : 'pending',

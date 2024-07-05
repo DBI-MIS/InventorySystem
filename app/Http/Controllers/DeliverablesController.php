@@ -89,6 +89,7 @@ class DeliverablesController extends Controller
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
         $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
         // dd($stockrequisitions);
+        // if existing na sa DR di na isasama -- vheck through relationship sa stockrequest
         return inertia("Deliverables/Create", [
             "deliverables" => ItemResource::collection($deliverablesss),
             "clients" => ClientResource::collection($clients),
@@ -303,6 +304,7 @@ class DeliverablesController extends Controller
                 // if all items are pending we can push through to process DR and replication of items
                
                 $deliverable->is_done = true; // Set deliverable as done
+                $deliverable->status = true;
                 $deliverable->save();
     
                

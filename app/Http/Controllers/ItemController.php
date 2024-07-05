@@ -313,15 +313,20 @@ class ItemController extends Controller
         $validatedData = $formData->validated();
         
         $validatedData['user_id'] = Auth::id();
+        $validatedData['updated_by'] = Auth::id(); //comment this
         dd($validatedData);
        Item::create($validatedData);
        $item = Item::query()->latest('created_at')->first();
     //    dd($item);
         $newItem = $item->id;
-        dd($newItem );
-        Inertia::share('success', 'Item created successfully!');
-    Inertia::share('newItem', $item->id);
-        return redirect()->route('receiving.create')->with('message', 'Item created successfully!');
+        // dd($newItem );
+    //     Inertia::share('success', 'Item created successfully!');
+    // Inertia::share('newItem', $item->id);
+    //     return redirect()->route('receiving.create')->with('message', 'Item created successfully!');
+    return Inertia("Item/Create",[
+        'newItem' =>  $newItem,
+        
+    ]);
     }
 
    

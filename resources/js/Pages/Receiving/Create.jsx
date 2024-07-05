@@ -10,9 +10,10 @@ import { Head, Link,useForm } from "@inertiajs/react";
 import { useEffect,  useState} from "react";
 import Select from "react-select"
 import React from "react";
-export default function Create({auth,delivers , mrr_no,items,clients,categories,employees, locations,skuu,brands,}){
+export default function Create({auth,delivers , mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
     
     console.log(delivers);
+    console.log(newItem)
   
     // MAIN FORM OF RECEIVING
    const {data, setData,post,errors} = useForm({
@@ -61,8 +62,8 @@ export default function Create({auth,delivers , mrr_no,items,clients,categories,
         model_no: '',
         uom: '',
         quantity:'',
-        status: '',
-        remarks:'',
+        statuses: '',
+        remark:'',
         location_id: '1', // == DBI depends on factory what id 
         user_id: '',
       });
@@ -81,7 +82,7 @@ export default function Create({auth,delivers , mrr_no,items,clients,categories,
 
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
-    
+    alert(formData);
         Inertia.post(route('item.submit'), formData)
       };
 
@@ -505,7 +506,7 @@ export default function Create({auth,delivers , mrr_no,items,clients,categories,
                                                                      className="mt-1 block w-full"
                                                                      onChange={handleChange}
                                                                 />
-                                                                 <InputError message={errors.item_status} className="mt-2"/>
+                                                                 <InputError message={errors.item_statuses} className="mt-2"/>
                                                              </div>
 
                                                             <div className="mt-4 col-span-1">
