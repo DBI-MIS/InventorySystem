@@ -264,7 +264,7 @@ export default function Index({
                                                     <td className="py-2 pl-4">
                                                         {deliverable.stockrequest ?.rs_no
                                                              ??
-                                                            "No RS Number"}
+                                                            "No RS #"}
                                                     </td>
 
                                                     <td className="py-2 pl-4">

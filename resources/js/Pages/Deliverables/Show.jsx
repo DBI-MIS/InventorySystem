@@ -140,7 +140,7 @@ function Show({ auth , deliverable, deliverables_items , queryParams }) {
                                     <span className="">
                                     {deliverable.stockrequest ?.rs_no
                                                              ??
-                                                            "No RS Number"}
+                                                            "No RS #"}
                                     </span>
                                 </dd>
                             </div>
