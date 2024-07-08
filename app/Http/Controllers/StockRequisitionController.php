@@ -25,9 +25,9 @@ class StockRequisitionController extends Controller
         $sortFields = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
-        // if(request("rs_no")) {
-        //     $query->where("rs_no", "like", "%" . request("rs_no") . "%");
-        // }
+         if(request("rs_no")) {
+             $query->where("rs_no", "like", "%" . request("rs_no") . "%");
+         }
 
         // $stockrequisitionPivot = Item::query()->with('stockrequest_items')->get();  
 
@@ -183,7 +183,7 @@ class StockRequisitionController extends Controller
     
     $stockrequisition->sritems()->sync($sritemIds);
 
-    return redirect()->route('stockrequisition.index')->with('success', "Stock Request was updated");
+    return redirect()->route('stockrequisition.index')->with('success', "Stock Request RS No. : \" $stockrequisition->rs_no \" was updated");
     }
 
     /**

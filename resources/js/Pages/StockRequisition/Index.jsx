@@ -9,6 +9,7 @@ import React from 'react'
 export default function Index({ auth, stockrequest, queryParams = null, success }) {
 
     queryParams = queryParams || {};
+    const [open, setOpen] = React.useState(true);
 
   const searchFieldChanged = (name, value, ) => {
     if(value){
@@ -81,18 +82,23 @@ const deleteStock = (stockrequisition) => {
                         )}
                     </div> */}
         <div className="max-w-5/6">
-              {success && (
-                  <Alert
-                  className=" absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 bg-green-100 ring-2 ring-green-800"
-                  open={open}
-                  onClose={() => setOpen(false)}
-                  animate={{
-                    mount: { y: 0 },
-                    unmount: { y: 100 },
-                  }}
-                > {success}</Alert>
-              )}
-            </div>
+                        {success && (
+                            <Alert
+                            className={`absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 ${
+                                success.includes('Errors') || success.includes('Error') || success.includes('Warning') ? 'bg-red-100 ring-2 ring-red-800' : 'bg-green-100 ring-2 ring-green-800'
+                            }`}
+                                open={open}
+                                onClose={() => setOpen(false)}
+                                animate={{
+                                    mount: { y: 0 },
+                                    unmount: { y: 100 },
+                                }}
+                            >
+                                {" "}
+                                {success}
+                            </Alert>
+                        )}
+                    </div>
         
             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div className="p-6 text-gray-900 dark:text-gray-100">
@@ -131,10 +137,10 @@ const deleteStock = (stockrequisition) => {
 
 
                           <TextInput  className="w-[500px]" 
-                                  defaultValue={queryParams.dr_no}
-                                  placeholder="Search Dr No. Here" 
-                                  onBlur={(e) => searchFieldChanged('dr_no', e.target.value)}
-                                  onKeyPress={(e) => onKeyPress('dr_no', e )}/>
+                                  defaultValue={queryParams.rs_no}
+                                  placeholder="Search RS No. Here" 
+                                  onBlur={(e) => searchFieldChanged('rs_no', e.target.value)}
+                                  onKeyPress={(e) => onKeyPress('rs_no', e )}/>
                                   
                                 
                           </div>
@@ -215,7 +221,7 @@ const deleteStock = (stockrequisition) => {
 
                             <tbody>
                               {stockrequest.data.map((stocks)=>(
-                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={stocks.id}>
+                                <tr className={`${stocks % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`} key={stocks.id}>
                                   <td className="px-3 py-2">{stocks.id}</td>
                                   <td className="px-3 py-2 hover:underline"><b><Link href={route('stockrequisition.show', stocks.id)}>{stocks.rs_no}</Link></b></td>
                                   <td className="px-3 py-2">{stocks.sr_to}</td>

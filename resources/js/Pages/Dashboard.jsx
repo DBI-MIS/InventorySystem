@@ -341,7 +341,7 @@ export default function Dashboard({
                                                 <span>Recent Stocks</span>
 
                                                 {/* Add Stock */}
-                                                <div>
+                                                <div className="">
                                                     <Link
                                                         href={route(
                                                             "item.create"
@@ -372,7 +372,7 @@ export default function Dashboard({
                                                     </Link>
                                                 </div>
                                             </div>
-                                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
+                                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4 min-h-[356px]">
                                                 <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                                     <tr className="">
                                                         <th>Date</th>
