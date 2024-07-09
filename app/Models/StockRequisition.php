@@ -32,7 +32,7 @@ class StockRequisition extends Model
 
     public function deliverables()
     {
-        return $this->hasOne(Deliverables::class);
+        return $this->hasOne(Deliverables::class,'stockrequest_id');
     }
     public function item()
     {

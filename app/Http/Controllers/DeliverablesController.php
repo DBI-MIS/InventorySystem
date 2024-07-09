@@ -87,7 +87,7 @@ class DeliverablesController extends Controller
       
         // $clients = Client::query()->orderBy('name', 'asc')->get();
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
-        $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
+        $stockrequests = StockRequisition::whereDoesntHave('deliverables')->orderBy('rs_no', 'asc')->get();
         // dd($stockrequisitions);
         // if existing na sa DR di na isasama -- vheck through relationship sa stockrequest
         return inertia("Deliverables/Create", [
@@ -145,31 +145,12 @@ class DeliverablesController extends Controller
      */
     public function edit(Deliverables $deliverable)
     {
-
         $items = Item::query()->orderBy('name', 'asc')->get();
-        // dd($items);
-            $itemResults = [];
-
-            // Check if each item has an integer ID
-            foreach ($items as $item) {
-                $itemId = $item->getKey(); 
-
-                if (is_int($itemId)) {
-                    //  integer
-                    $itemResults[] = [
-                        'item' => $item,
-                        'message' => 'Item ID is an integer.'
-                    ];
-                } else {
-                    //  not an integer
-                    $itemResults[] = [
-                        'item' => $item,
-                        'message' => 'Item ID is not an integer.'
-                    ];
-                }
-            }
         $clients = Client::query()->orderBy('name', 'asc')->get();
-        $stockrequests = StockRequisition::query()->orderBy('rs_no', 'asc')->get();
+
+        // fetching available rs number and the current rs number associated with the dr being edited
+        $drRsNo = $deliverable->stockrequest_id;
+        $stockrequests = StockRequisition::whereDoesntHave('deliverables')->orWhere('id', $drRsNo)->orderBy('rs_no', 'asc')->get();
 
         $deliverable->load('client', 'stockrequest', 'itemsDeliverables');
         // dd($deliverable->itemsDeliverables);
@@ -183,7 +164,6 @@ class DeliverablesController extends Controller
          return Inertia('Deliverables/Edit', [
         'deliverables' => $deliverable,
         'items' => ItemResource::collection($items),
-        'itemResults' => $itemResults,
         'clients' => ClientResource::collection($clients), 
         'stockrequests' => StockRequisitionResource::collection($stockrequests),
         'item_deliverables' => $deliverable->itemsDeliverables,
