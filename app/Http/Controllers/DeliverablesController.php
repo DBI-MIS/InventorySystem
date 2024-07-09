@@ -304,7 +304,7 @@ class DeliverablesController extends Controller
                 // if all items are pending we can push through to process DR and replication of items
                
                 $deliverable->is_done = true; // Set deliverable as done
-                $deliverable->status = true;
+                $deliverable->status = "processed";
                 $deliverable->save();
     
                

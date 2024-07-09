@@ -34,7 +34,8 @@ module.exports = withMT( {
             textColor: {
                 "third": "#6b90da",
                 "header": "#2d5bb7",
-                "main": "#3366cc"
+                "main": "#3366cc",
+                "emerald": "#10b981",
                 
             },
             fontSize: {

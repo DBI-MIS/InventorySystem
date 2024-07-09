@@ -75,14 +75,14 @@ export const CLIENT_STATUS_CLASS_MAP = {
   
   export const DONE_CLASS_MAP = {
         //equivalent value on the database(leftside) & corresponding color and text appearance
-        processed: "bg-green-600 disabled opacity-50 cursor-not-allowed" ,
-        pending: "bg-red-600",
+        processed: "text-emerald disabled opacity-70 cursor-not-allowed " ,
+        pending: "text-red-600",
         true: "bg-green-600",
         false: "bg-red-600",
         };
-     export const DONE_STATUS_CLASS_MAP = {
+   export const DONE_STATUS_CLASS_MAP = {
           processed: "bg-emerald " , // translated via resource
           pending: "bg-red-600",
           true: "bg-emerald", //incase only
           false: "bg-red-600",
-          };
+   };

@@ -2,10 +2,13 @@ import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { DONE_CLASS_MAP, DONE_TEXT_MAP } from "@/constants";
+import { DONE_CLASS_MAP, DONE_STATUS_CLASS_MAP, DONE_TEXT_MAP } from "@/constants";
 import { Head, Link, router } from "@inertiajs/react";
 import { Alert } from "@material-tailwind/react";
+import { space } from "postcss/lib/list";
 import React, { useState } from "react";
+
+
 
 export default function Index({
     auth,
@@ -273,18 +276,33 @@ export default function Index({
                                                                     "No Client Name"}{" "}
                                                         
                                                     </td>
-                                                    <td className="w-[100px] py-2 pl-4">
-                                                    {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-  <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
-</svg> */}
-
-                                                    <Link
-                                                        href={deliverable.is_done !== "processed" && deliverable.is_done !== true ? route('deliverables.updateDone', deliverable.id) : "#"}
+                                                    <td className="w-[100px]  pl-4">
+                                                        <Link
+                                                        href={
+                                                            deliverable.is_done !== "processed" && deliverable.is_done !== true
+                                                            ? route('deliverables.updateDone', deliverable.id)
+                                                            : "#"
+                                                        }
+                                                        className={`flex justify-center ${DONE_CLASS_MAP[deliverable.is_done]}`}
+                                                        >
+                                                        {deliverable.is_done === "processed" || deliverable.is_done === true ? (
+                                                        
+                                                            <svg xmlns="http://www.w3. org/2000/svg" viewBox="0 0 24 24" fill="currentColor"  class="w-8 h-8">
+                                                                <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        
+       
+                                                        ) : (
                                                     
-                                                        className={`px-2 py-1 font-semibold tracking-wide rounded-full text-white 
-                                                         ${DONE_CLASS_MAP[deliverable.is_done]}`}>
-                                                        {DONE_TEXT_MAP[deliverable.is_done]  ?? "Not Done/Pending"}
-                                                    </Link>
+                                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"  class="w-8 h-8">
+                                                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm3 10.5a.75.75 0 0 0 0-1.5H9a.75.75 0 0 0 0 1.5h6Z" clip-rule="evenodd" />
+                                                          </svg>
+                                                          
+                                                        
+                                                            
+                                                        )}
+                                                        {DONE_TEXT_MAP[deliverable.is_done] ? "": "Not Done/Pending"}
+                                                        </Link>
 
 
                                                         {/* <Link
@@ -298,8 +316,10 @@ export default function Index({
         
 
                                                     <td className="w-[100px] py-2 pl-4">
-                                                        {deliverable.status ??
-                                                            "No Status"}
+                                                        <span className={"px-2 py-1 font-semibold tracking-wide rounded-full text-white " +
+                                                        DONE_STATUS_CLASS_MAP[deliverable.status] }>
+                                                                {deliverable.status ?? "No Status"}                                            
+                                                        </span>
                                                     </td>
 
                                                     <td className="w-[100px] py-2 text-nowrap">
