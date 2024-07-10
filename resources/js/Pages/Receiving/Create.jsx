@@ -132,6 +132,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
         e.preventDefault();
         
         Inertia.post(route('item.submit'), formData)
+        post(route("receiving.store"));
     //     const newSkus = [...skus, formData.sku];
     // setSkus(newSkus);
     // localStorage.setItem('savedSkus', JSON.stringify(newSkus));

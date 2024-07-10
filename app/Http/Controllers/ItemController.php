@@ -318,6 +318,7 @@ class ItemController extends Controller
     //    Item::create($validatedData);
        
    Item::create($validatedData);
+//    Receiving::create($validatedData);
     // dd($latestItem);
 
     // return redirect()->back()->with([
