@@ -6,7 +6,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head,Link, router} from "@inertiajs/react" ;
 import React from "react";
 import TextInput from "@/Components/TextInput";
-export default function Index({auth,receivings, queryParams = null, success}) {
+import { RECEIVING_STATUS_CLASS_MAP, RECEIVING_STATUS_TEXT_MAP } from "@/constants";
+export default function Index({auth,receivings, queryParams = null, success,user}) {
   const [open, setOpen] = React.useState(true);
 queryParams = queryParams || {};
   const searchFieldChanged = (mrr_no, value, ) => {
@@ -127,6 +128,8 @@ const deleteReceiving = (receiving) => {
                                 <TableHeading className="pr-10" name="category_id"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                                   sortChanged={sortChanged}
                                 >Status</TableHeading>
+                                 <TableHeading className="pr-16" 
+                                >Controls</TableHeading>
                                 <TableHeading  className="pr-10" name="quantity"sort_field={queryParams.sort_field}sort_direction={queryParams.sort_direction}
                                   sortChanged={sortChanged}
                                 >Action</TableHeading>
@@ -157,7 +160,76 @@ const deleteReceiving = (receiving) => {
                                       <td className="w-[180px] py-2 text-nowrap pl-4">{receiving.si_no ?? "No SI Number"}</td>
                                       <td className="w-[180px] py-2 text-nowrap pl-4">{receiving.deliver && receiving.deliver.dr_no ? receiving.deliver.dr_no : " No DR Number "}</td>
                                       {/* <td className="w-[300px] py-2 text-wrap pl-4">{receiving.remarks ?? "No Remarks"}</td> */}
-                                      <td className="w-[180px] py-2 text-nowrap pl-4">{receiving.status ?? "No Status"}</td>
+                                      <td className="w-[300px] py-2 ">
+                                        <span className={`px-2 py-1 font-semibold rounded ${RECEIVING_STATUS_CLASS_MAP[receiving.status]} text-white`}>
+                                            {RECEIVING_STATUS_TEXT_MAP[receiving.status] || 'No Status'}
+                                        </span>
+                                      </td>
+                                      {(auth.user.role === 'user' || auth.user.role === 'super_admin') && (
+                                       
+                                      <td className="w-[60px]">
+                                          {receiving.status === "pending" && (
+                                            <Link
+                                              href={route('receiving.updatemrrStatus', receiving.id)}
+                                              className="bg-red-400 px-2 py-1 font-semibold rounded-full text-nowrap text-white"
+                                            >
+                                              For approval
+                                            </Link>
+                                          )}
+                                        </td> 
+                                      )}
+
+                                      {(auth.user.role === 'editor' || auth.user.role === 'admin') && (
+                                       <>
+                                        <td className="w-[60px] ">
+                                        
+                                            <Link
+                                              href={
+                                                receiving.status === "for_approval"
+                                                ? route('receiving.updateApprove', receiving.id)
+                                                : "#" }
+                                              className={`px-2 py-1 font-semibold rounded-full text-nowrap text-white ${
+                                                  receiving.status === "for_approval" ? "bg-emerald" : "bg-emerald opacity-50 cursor-not-allowed"
+                                                }`} >
+                                              Approve
+                                             </Link>
+                                             <Link
+                                            href={
+                                              receiving.status === "for_approval"
+                                              ? route('receiving.updateReject', receiving.id)
+                                              : "#"}
+                                            className={`px-2 mx-2 py-1 font-semibold rounded-full text-nowrap text-white ${
+                                                receiving.status === "for_approval" ? "bg-crimson" : "bg-crimson opacity-50 cursor-not-allowed"
+                                            }`}>
+                                            Rejected
+                                          </Link>
+                                          <Link
+                                            href={
+                                              receiving.status === "for_approval"
+                                              ? route('receiving.updateCancel', receiving.id)
+                                              : "#"}
+                                            className={`px-2 py-1 font-semibold rounded-full text-nowrap text-white ${
+                                                receiving.status === "for_approval" ? "bg-red-400" : "bg-red-400 opacity-50 cursor-not-allowed"
+                                              }`}>
+                                              Cancel
+                                          </Link>
+                                        </td>
+                                         
+                                          
+                                          </>
+                                      )}
+{/* 
+                                      <td className="w-[60px]">
+                                          {receiving.status === "pending" && (
+                                            <Link
+                                              href={route('receiving.updatemrrStatus', receiving.id)}
+                                              className="bg-red-400 px-2 py-1 font-semibold rounded-full text-nowrap text-white"
+                                            >
+                                              For approval
+                                            </Link>
+                                          )}
+                                        </td> */}
+
                                       <td className="w-[100px] py-2 text-nowrap">
                                           <div className="w-[100px] flex flex-row justify-end items-center">
                                               <Link href={route('receiving.edit', receiving.id)} className="text-blue-600 mx-1 hover:text-gray-600"> 

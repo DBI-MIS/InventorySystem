@@ -11,12 +11,11 @@ import { useCallback, useEffect,  useState} from "react";
 import Select from "react-select"
 import React from "react";
 import { ITEM_STATUS_TEXT_MAP } from "@/constants";
-export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
+export default function Create({auth,delivers,mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
     
     console.log(delivers);
-    console.log(latestItem);
- 
-  
+    // console.log(latestItem);
+
     // MAIN FORM OF RECEIVING
    const {data, setData,post,errors} = useForm({
         client_id: '',
@@ -28,9 +27,8 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
         items: [],
     })
 
-    
     console.log("CUrrent Data:" + data)
-// const newItem, setNewItem = 
+
     const  options = items.data.map(item => ({ //values from the db
         value: item.id,
         label: item.name
@@ -39,19 +37,11 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
       const [newAllItems, setnewAllItems] = useState([])
     const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [latestItemIds, setLatestItemIds] = useState([]) ;
-     useEffect(() => {
-        if (latestItem) {
-            setLatestItemIds(prevIds => [...prevIds, latestItem]);
-        }
-    }, [latestItem]);
 
-    useEffect(() => {
-        console.log('latest Item Ids', latestItemIds);
-    }, [latestItemIds]);
+
     const handleSelectChange = useCallback(
         (selectedOptions) => {
-            setSelectedOptions(latestItem);
+            // setSelectedOptions(latestItem);
             setSelectedOptions(selectedOptions);
 
             const items = selectedOptions.map((option) => {
@@ -94,14 +84,37 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
         label: ITEM_STATUS_TEXT_MAP[key],
       }));
 
-    //  const statusesOptions =useState(["hi", "hello"]);
+      const [skus, setSkus] = useState([]);
+
+      // Load SKUs from localStorage on component mount
+      useEffect(() => {
+        const savedSkus = JSON.parse(localStorage.getItem('savedSkus')) || [];
+        setSkus(savedSkus);
+      }, [])
+ 
+    // Function to remove SKU
+    const handleRemoveSKU = (index) => {
+        const newSkus = [...skus];
+        newSkus.splice(index, 1);
+        setSkus(newSkus);
+        localStorage.setItem('savedSkus', JSON.stringify(newSkus));
+    };
+    console.log("All SKUs:", skus);
+
+        // Function to handle adding SKU
+        //  const handleAddSKU = () => {
+        //     const newSkus = [...skus, formData.sku];
+        //     setSkus(newSkus);
+        //     localStorage.setItem('savedSkus', JSON.stringify(newSkus));
+        //   };
+        //  const statusesOptions =useState(["hi", "hello"]);
      const [isClearable, setIsClearable] = useState(true);
      const [isSearchable, setIsSearchable] = useState(true);
      const [isDisabled, setIsDisabled] = useState(false);
      const [isLoading, setIsLoading] = useState(false);
      const [isRtl, setIsRtl] = useState(false);
-  
-  
+     let skuIds = [];
+
     const  handleChange= (event) => {
         const { name, value } = event.target;
         setFormData(prevState => ({
@@ -114,10 +127,37 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
     }, [formData]);
     console.log(data);
 
+    console.log("sku ids", skuIds)
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
         
         Inertia.post(route('item.submit'), formData)
+    //     const newSkus = [...skus, formData.sku];
+    // setSkus(newSkus);
+    // localStorage.setItem('savedSkus', JSON.stringify(newSkus));
+
+    // skus.forEach(savedSku => {
+    //     const itemWithSameSKU = items.data.find(item => item.sku === savedSku);
+    //     if (itemWithSameSKU) {
+    //       const { id } = itemWithSameSKU;
+    //       skuIds.push(id); 
+    //     }
+    //   });
+    //   sessionStorage.setItem('skuIds', JSON.stringify(skuIds));
+      };
+
+      const handleAddSKU = () => {
+    
+         skus.forEach(savedSku => {
+        const itemWithSameSKU = items.data.find(item => item.sku === savedSku);
+        if (itemWithSameSKU) {
+          const { id } = itemWithSameSKU;
+          console.log(`Item ID with SKU ${savedSku}: ${id}`);
+          setSelectedOptions(id);
+        } else {
+          console.log(`No item found with SKU ${savedSku}`);
+        }
+      });
       };
 
     //SUBMIT OF MAIN FORM
@@ -225,7 +265,9 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                                                             />
                                                         </div>
                                         </div>
-
+                                       {/* <button type="button" onClick={handleAddSKU}>
+                                            newly created Items
+                                        </button> */}
                                         <div className="mt-6 col-span-1">
                                         <InputLabel htmlFor="receiving_si_no" value="SI No."/>
                                                         <TextInput 

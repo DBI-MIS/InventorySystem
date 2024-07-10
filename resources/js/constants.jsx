@@ -86,3 +86,20 @@ export const CLIENT_STATUS_CLASS_MAP = {
           true: "bg-emerald", //incase only
           false: "bg-red-600",
    };
+
+   export const RECEIVING_STATUS_TEXT_MAP = {
+   
+    pending: "Pending",
+    for_approval: "For Approval",
+    approved:'Approved',
+    rejected: 'Rejected',
+    cancel: 'Cancel',
+  };
+  export const RECEIVING_STATUS_CLASS_MAP = {
+    pending: 'bg-orange-700',
+    for_approval:'bg-green-300',
+    rejected: 'bg-crimson',
+    cancel: 'bg-red-500',
+    approved:'bg-emerald'
+   
+  };

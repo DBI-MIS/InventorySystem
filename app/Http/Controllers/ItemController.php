@@ -307,7 +307,7 @@ class ItemController extends Controller
         // $item = Item::create($validatedData);//
         return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
     }
-    public function submit(StoreFormDataRequest $formData, Item $item)
+    public function submit(StoreFormDataRequest $formData)
     {
         // dd($formData);
         $validatedData = $formData->validated();

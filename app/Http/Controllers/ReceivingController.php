@@ -33,10 +33,13 @@ class ReceivingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(User $user)
     {
+        $user = auth()->user();
+        $userRole = $user->role;
+
          $query = Receiving::query() ;
-         $sortField = request("sort_field", 'created_at');
+         $sortField = request("sort_field", "created_at");
          $sortDirection = request("sort_direction", "desc");
          
          if (request("mrr_no")) {
@@ -48,9 +51,16 @@ class ReceivingController extends Controller
          if(request("category_id")){
             $query->where('category_id', (request("category_id")));
          }
+        //  $user = Auth::id();
+        //  dd($user->name);
 
          
-    
+        if ($userRole === 'editor') { //it shoould be editor  for testing lang muna kaya super_admin
+            $query->where('status', '!=', 'pending');
+        } 
+        // elseif (in_array($userRole, ['user', 'admin','super_admin'])) {
+        //     $query->where('status', '!=', 'for_approval');  //if ever ieexclude yung for approval
+        // }
 
          $receivings = $query->orderBy($sortField, $sortDirection)
          ->paginate(24);
@@ -59,6 +69,7 @@ class ReceivingController extends Controller
              "receivings" => ReceivingResource::collection($receivings),
              'queryParams' => request()-> query() ?: null,
              'success' => session('success'),
+             'user' => $user
               ]);
     }
 
@@ -93,7 +104,7 @@ class ReceivingController extends Controller
 
       $userId =Auth::id(); 
       $item = Item::where('user_id', $userId)->latest()->first(); 
-      $latestItem = $item->id;
+    //   $latestItem = $item->id;
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
         $input['mrr_no'] =  $mrr_no;
@@ -113,7 +124,7 @@ class ReceivingController extends Controller
           'delivers' => DeliverablesResource::collection($delivers),
           'mrr_no' =>  $mrr_no,
             'skuu' =>  $sku,
-        'latestItem' => $latestItem
+        // 'latestItem' => $latestItem
       ]);
     }
 
@@ -373,13 +384,32 @@ public function show(Receiving $receiving, Request $request)
              
      // });
      }
-// public function restore(Receiving $receiving, $id)
-// {
-//     // $receiving->restore();
-//     $name = Receiving::withTrashed()->where('id',$id)->pluck('name')->first();
-//     Receiving::withTrashed()->where('id',$id)->first()->restore();
+        // public function restore(Receiving $receiving, $id)
+        // {
+        //     // $receiving->restore();
+        //     $name = Receiving::withTrashed()->where('id',$id)->pluck('name')->first();
+        //     Receiving::withTrashed()->where('id',$id)->first()->restore();
 
-//     return redirect()->route('archive.index')->with('success', "Receiving\"$name\" restored successfully!");
-// }
-    
+        //     return redirect()->route('archive.index')->with('success', "Receiving\"$name\" restored successfully!");
+        // }
+    public function updatemrrStatus(int $id) {
+        $receiving = Receiving::find($id);
+        $receiving->status = "for_approval";
+        $receiving->save();
+    }
+     public function updateApprove(int $id) {
+            $receiving = Receiving::find($id);
+            $receiving->status = "approved";
+            $receiving->save();
+    }
+    public function updateReject(int $id) {
+        $receiving = Receiving::find($id);
+        $receiving->status = "rejected";
+        $receiving->save();
+    }
+    public function updateCancel(int $id) {
+        $receiving = Receiving::find($id);
+        $receiving->status = "cancel";
+        $receiving->save();
+    }
 }

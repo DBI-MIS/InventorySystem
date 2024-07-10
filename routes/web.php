@@ -78,6 +78,10 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::get('deliverables/{id}/updateDone',[DeliverablesController::class, 'updateDone'])->name('deliverables.updateDone');
         // Route::get('deliverables/{id}/updateDone',[DeliverablesController::class, 'updateDone'])->name('deliverables.updateDone');
         Route::get('item/{id}/updateDone',[ItemController::class, 'updateDone'])->name('item.updateDone');
+        Route::get('receiving/{id}/updatemrrStatus',[ReceivingController::class, 'updatemrrStatus'])->name('receiving.updatemrrStatus');
+        Route::get('receiving/{id}/updateApprove',[ReceivingController::class, 'updateApprove'])->name('receiving.updateApprove');
+        Route::get('receiving/{id}/updateReject',[ReceivingController::class, 'updateReject'])->name('receiving.updateReject');
+        Route::get('receiving/{id}/updateCancel',[ReceivingController::class, 'updateCancel'])->name('receiving.updateCancel');
         
         // lagay name
         // itemMrr

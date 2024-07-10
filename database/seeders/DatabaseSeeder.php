@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
          ->create();
          
          Receiving::factory()
-         ->count(5)
+         ->count(15)
          ->create();
 
          Client::factory()
