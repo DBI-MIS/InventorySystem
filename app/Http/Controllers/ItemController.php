@@ -307,26 +307,36 @@ class ItemController extends Controller
         // $item = Item::create($validatedData);//
         return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
     }
-    public function submit(StoreFormDataRequest $formData)
+    public function submit(StoreFormDataRequest $formData, Item $item)
     {
         // dd($formData);
         $validatedData = $formData->validated();
         
         $validatedData['user_id'] = Auth::id();
         $validatedData['updated_by'] = Auth::id(); //comment this
-        dd($validatedData);
-       Item::create($validatedData);
-       $item = Item::query()->latest('created_at')->first();
-    //    dd($item);
-        $newItem = $item->id;
-        // dd($newItem );
-    //     Inertia::share('success', 'Item created successfully!');
-    // Inertia::share('newItem', $item->id);
-    //     return redirect()->route('receiving.create')->with('message', 'Item created successfully!');
-    return Inertia("Item/Create",[
-        'newItem' =>  $newItem,
-        
-    ]);
+        // dd($validatedData);
+    //    Item::create($validatedData);
+       
+   Item::create($validatedData);
+    // dd($latestItem);
+
+    // return redirect()->back()->with([
+    //     'success' => 'Item created successfully!',
+    //     'latestItem' => $latestItem
+    // ]);
+
+    // $item = Item::latest()->first(); 
+    // $latestItem = $item->id;
+    // dd($latestItem );
+    // return redirect()->back()->with('latestItem', $latestItem->id);
+    // return  $latestItem ;
+    
+    return redirect()->back()->with('success', 'Item created successfully!');
+    
+
+    // session()->flash('latestItem', $latestItem);
+
+    // return redirect()->route('receiving.create');
     }
 
    

@@ -28,10 +28,6 @@ class StoreReceivingRequest extends FormRequest
             'max:12'
            
         ],
-        'group_item_id' => [
-           'nullable',
-            'exists:items,id'
-        ],
         "client_id"=>
         [
             'required',  
@@ -53,6 +49,9 @@ class StoreReceivingRequest extends FormRequest
             'nullable',
             'string'
         ],
+        "items" =>[
+            'required'
+        ]
     ];
     }
     public function messages(){

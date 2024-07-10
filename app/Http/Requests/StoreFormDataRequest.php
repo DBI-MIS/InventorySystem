@@ -21,38 +21,86 @@ class StoreFormDataRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-          "sku" => [ 'max:255'],
-          "name" => [ 'max:255'],
-          'brand_id' => [
-            
-            'exists:brands,id',
-        ],
-          "category_id" => [
-          'exists:categories,id',
-        ],
-      //   "receving_item_id" => ['required',
-      //   'exists:receving_items,id',
-      //  ],
-          "description" => ['string'],
-          "specs" => ['string'],
-          "part_no" => [ 'max:255'],
-          "serial_no" => [ 'max:255'],
-          "model_no" => [ 'max:255'],
-          "uom" => [ 'max:20'],
-          "quantity" => [ 'max:255'],
-          "qty_out" => [ 
-            'nullable',
+      return [
+        "sku" => [
+          'required',
+          'numeric',
+           'min:2',
             'max:255'
-          ],
-          "location_id" => [
-            
-          'exists:locations,id',],
-          "employee_id" => [
-          'exists:employees,id',
-          ],
-          'statuses' => ['max:255'],
-          "remark" => ['max:255'],
-      ];
+        ],
+        "name" => [
+          'required',
+          'regex:/^[A-Za-z0-9 ]+$/',
+          'min:2',
+          'max:255'
+        ],
+        'brand_id' => [
+          'required',
+          'min:1',
+          'exists:brands,id',
+        ],
+        "category_id" => [
+          'required',
+          'min:1',
+        'exists:categories,id',
+       ],
+        "description" => [
+          'required',
+          'min:2',
+          'string'
+        ],
+        "specs" => [
+          'required',
+          'alpha_num',
+          'string'
+        ],
+        "part_no" => [
+          'nullable',
+          'alpha_num',
+          'max:255'
+        ],
+        "serial_no" => [
+          'nullable',
+          'alpha_num',
+           'max:255'
+        ],
+        "model_no" => [ 
+          'nullable',
+          'alpha_num',
+          'max:255'
+        ],
+        "uom" => [ 
+          'required',
+          'alpha',
+          'max:20'
+        ],
+        "quantity" => [ 
+          'required',
+          'numeric',
+          'min:1',
+        ],
+        "qty_out" => [ 
+          'nullable',
+          'numeric',
+          'min:1',
+        ],
+        "location_id" => [
+          'required',
+        'exists:locations,id'
+       ],
+        "employee_id" => [
+          'nullable',
+        'exists:employees,id',
+        ],
+        'statuses' => [
+          'required',
+          'max:255'
+        ],
+        "remark" => [
+          'required',
+          'alpha_num',
+          'max:255'
+        ],
+    ];
   }
 }

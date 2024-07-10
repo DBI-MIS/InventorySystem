@@ -88,12 +88,16 @@ class DeliverablesController extends Controller
         // $clients = Client::query()->orderBy('name', 'asc')->get();
         $clients = Client::select('id', 'name', 'address')->distinct()->orderBy('name', 'asc')->get();
         $stockrequests = StockRequisition::whereDoesntHave('deliverables')->orderBy('rs_no', 'asc')->get();
+// 
+        // $latestItem = Item::orderBy('created_at', 'desc')->first();
         // dd($stockrequisitions);
         // if existing na sa DR di na isasama -- vheck through relationship sa stockrequest
         return inertia("Deliverables/Create", [
             "deliverables" => ItemResource::collection($deliverablesss),
             "clients" => ClientResource::collection($clients),
-            "stockrequests" => StockRequisitionResource::collection($stockrequests)
+            "stockrequests" => StockRequisitionResource::collection($stockrequests),
+            
+            // 'latestItem' => $latestItem
         ]);
     }
 

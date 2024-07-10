@@ -6,16 +6,15 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Inertia } from "@inertiajs/inertia";
-import { Head, Link,useForm, usePage } from "@inertiajs/react";
-import { useCallback, useEffect,  useState} from "react";
+import { Head, Link,useForm } from "@inertiajs/react";
+import { useEffect,  useState} from "react";
 import Select from "react-select"
 import React from "react";
 import { ITEM_STATUS_TEXT_MAP } from "@/constants";
-export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
+export default function Create({auth,delivers , mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
     
     console.log(delivers);
-    console.log(latestItem);
- 
+    console.log(newItem)
   
     // MAIN FORM OF RECEIVING
    const {data, setData,post,errors} = useForm({
@@ -25,10 +24,13 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
         si_no:'',
         address:'',
         remarks:'',
-        items: [],
     })
 
-    
+    // const [status, setStatus] = useState( 'pending');
+
+    // const handleStatusChange = (event) => {
+    //   setStatus(event.target.value);
+    // };
     console.log("CUrrent Data:" + data)
 // const newItem, setNewItem = 
     const  options = items.data.map(item => ({ //values from the db
@@ -36,40 +38,17 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
         label: item.name
       }));
 
-      const [newAllItems, setnewAllItems] = useState([])
     const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [latestItemIds, setLatestItemIds] = useState([]) ;
-     useEffect(() => {
-        if (latestItem) {
-            setLatestItemIds(prevIds => [...prevIds, latestItem]);
-        }
-    }, [latestItem]);
-
-    useEffect(() => {
-        console.log('latest Item Ids', latestItemIds);
-    }, [latestItemIds]);
-    const handleSelectChange = useCallback(
-        (selectedOptions) => {
-            setSelectedOptions(latestItem);
-            setSelectedOptions(selectedOptions);
-
-            const items = selectedOptions.map((option) => {
-                const selectedItem = allItems.find(
-                    (item) => item.id === parseInt(option.value)
-                );
-                return { ...selectedItem };
-            });
-
-            setData({
-                ...data,
-                items: items.map((item) => ({ ...item, items: item.id })),
-            });
-        },
-        [newAllItems, setSelectedOptions, setData, data]
-    );
-    console.log("SelectedOptions")
     
+    const handleSelectChange = (selectedOptions) => {
+        setSelectedOptions(formData);
+        setSelectedOptions(selectedOptions);
+        const selectedValues = selectedOptions.map(option => parseInt(option.value));
+        setData("group_item_id", selectedValues);
+        
+    };
+
     const [showModal, setShowModal] = useState(false);
     
     // ADD ITEM MODAL FORM
@@ -115,9 +94,11 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
     console.log(data);
 
     const handleNewItemSubmit = (e) => {
+        alert("hi");
         e.preventDefault();
-        
+    alert("hi");
         Inertia.post(route('item.submit'), formData)
+        // post(route("item.submit"));
       };
 
     //SUBMIT OF MAIN FORM
@@ -147,7 +128,7 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
         </div>
         <div className="w-5/6 mx-auto sm:px-6 lg:px-8">
               <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <form onSubmit={onSubmit}   data-page="{{ json_encode($page) }}"
+                    <form onSubmit={(e) => onSubmit}  data-page="{{ json_encode($page) }}"
                         className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" action="">
                         
                          {/* START */}
@@ -171,8 +152,6 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                                     </SelectInput>
                                     <InputError message={errors.client_id} className="mt-2"/>
                                 </div>
-                                
-
                                 {/* <div className="mt-6 col-span-1">
                                     <InputLabel htmlFor="receiving_status" value="Status"/>
                                     <div>
@@ -296,8 +275,6 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                                     </div>
                                     <span className="mt-2 text-sm text-gray-600"><b>Note:</b> If items are not available on the lists, you can add new Item.</span>
                                  </div>
-                               
-          
 
                                  <div className="mt-5 min-h-[300px]">
                                      <h1 className="text-2xl text-center text-blue-800 p-5 font-semibold">LIST OF ITEMS</h1>
@@ -314,30 +291,33 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                                             <th className="text-left">Quantity</th>
                                             </tr>
                                         </thead> 
-                   
+                                         {selectedOptions && selectedOptions.length >= 0 && ( 
                                          <tbody>
-                                         {data.items.map((item,index) => (
-                                         
-                                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={item.id}>
+                                             {selectedOptions.map((option, index) => {
+                                            const selectedItem = allItems.find(item => item.id === parseInt(option.value));
+
+                                             return (
+                                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
                                                 <td className="w-[60px] py-2 text-sm">
                                                     {index + 1}
                                                     {/* {selectedItem.id ?? "No Item ID"} */}
                                                     </td>
-                                                <td className="w-[160px] py-2 text-sm">{item.sku_prefix ?? "No Sku Prefix"}-{item.sku ?? "No Sku"}</td>
+                                                <td className="w-[160px] py-2 text-sm">{selectedItem.sku_prefix ?? "No Sku Prefix"}-{selectedItem.sku ?? "No Sku"}</td>
                                                 <th className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
-                                                    <Link href={route('item.show', item.id)}>
-                                                    {item.name ?? "No Item Name"}
+                                                    <Link href={route('item.show', selectedItem.id)}>
+                                                    {selectedItem.name ?? "No Item Name"}
                                                     </Link>
                                                 </th>
-                                                <td className="w-[160px] py-2 text-sm"> {item.brand && item.brand.name ? item.brand.name : 'No Brand Name'}</td>
-                                                 <td className="w-[160px] py-2 text-sm">{item.category && item.category.name ? item.category.name: "No Category Name"}</td>
-                                                 <td className="w-[200px] py-2 text-sm">{item.model_no ?? "No Model Number"}</td>
-                                                 <td className="w-[300px] py-2 text-sm">{item.part_no ?? "No Part Number"}</td>
-                                                 <td className="w-[160px] py-2 ">{item.quantity ? (item.quantity + ' ' + (item.uom ?? "No UOM")) : 'No Quantity'}</td>
+                                                <td className="w-[160px] py-2 text-sm"> {selectedItem.brand && selectedItem.brand.name ? selectedItem.brand.name : 'No Brand Name'}</td>
+                                                 <td className="w-[160px] py-2 text-sm">{selectedItem.category && selectedItem.category.name ? selectedItem.category.name: "No Category Name"}</td>
+                                                 <td className="w-[200px] py-2 text-sm">{selectedItem.model_no ?? "No Model Number"}</td>
+                                                 <td className="w-[300px] py-2 text-sm">{selectedItem.part_no ?? "No Part Number"}</td>
+                                                 <td className="w-[160px] py-2 ">{selectedItem.quantity ? (selectedItem.quantity + ' ' + (selectedItem.uom ?? "No UOM")) : 'No Quantity'}</td>
                                                  </tr>
-                                        ))}
+                                             );
+                                        })}
                                         </tbody>
-                                                                        
+                                                )}                         
                                      </table>
                                  </div>
                         </div>
@@ -370,12 +350,12 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                     <ModalReceiving 
                     onClose={(e)=>setShowModal(false)}
                     isVisible={showModal}
-                    onSubmit={ handleNewItemSubmit}>
+                    onSubmit={(e) => handleNewItemSubmit}>
                                         <div className="">
                                       
                                            <div className="q-full sm:px-6 lg:px-8">
                                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                                     <form onSubmit={handleNewItemSubmit} 
+                                                     <form onSubmit={(e)=>handleNewItemSubmit} 
                                                     className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow sm:rounded-lg" >
                                                    <h2 className="font-semibold text-2xl text-blue-500 dark:text-gray-200 leading-tight">Create New Item</h2>     
                                                         {/* START */}
@@ -390,7 +370,7 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                                                             id="item_user_id"
                                                             name="user_id"
                                                             defaultValue={data.user_id}
-                                                            hidden={true}
+                                                            hidden="true"
                                                             />
                                                                <div className="mt-6 col-span-1">
                                                                     <InputLabel htmlFor="item_name" value="Item Name"/>

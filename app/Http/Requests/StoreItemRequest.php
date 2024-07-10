@@ -90,7 +90,7 @@ class StoreItemRequest extends FormRequest
           'exists:locations,id'
          ],
           "employee_id" => [
-            'required',
+            'nullable',
           'exists:employees,id',
           ],
           'statuses' => [

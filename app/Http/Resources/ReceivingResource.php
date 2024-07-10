@@ -37,8 +37,7 @@ class ReceivingResource extends JsonResource
             'status'=>  $this->status,
             'remarks'=>  $this->remarks,
             'created_at' => (new Carbon($this->created_at))->format('m-d-Y'),
-            // 'createdBy' => new UserResource($this->createdBy),
-            // 'created_by' => $this->user ? $this->user->name : null,
+            'items' => ItemResource::collection($this->whenLoaded('items'))
              
 
         ];

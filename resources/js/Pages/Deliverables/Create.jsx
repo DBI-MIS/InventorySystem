@@ -88,7 +88,6 @@ export default function Create({
     };
 
     const onSubmit = (e) => {
-        // post function declared above
         e.preventDefault();
         post(route("deliverables.store"));
     };

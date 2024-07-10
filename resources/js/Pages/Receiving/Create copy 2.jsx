@@ -7,15 +7,27 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Inertia } from "@inertiajs/inertia";
 import { Head, Link,useForm, usePage } from "@inertiajs/react";
-import { useCallback, useEffect,  useState} from "react";
+import { useEffect,  useState} from "react";
 import Select from "react-select"
 import React from "react";
 import { ITEM_STATUS_TEXT_MAP } from "@/constants";
-export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
+export default function Create({auth,delivers,flash, mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
     
+  
+    // const { flash } = usePage().props;
+    console.log("Flash Data", flash);
+
     console.log(delivers);
-    console.log(latestItem);
- 
+    // console.log("Latest Item", flash.latestItem || 'Not available');
+    const latestItem = flash ? flash.latestItem : null;
+    console.log("Latest Item", latestItem);
+
+
+    // console.log("New Item", flash.newItem);
+    // console.log("Latest Item", flash.latestItem);
+    //  console.log("Latest Item",latestItem);
+    // const { latestItem } = usePage().props;
+
   
     // MAIN FORM OF RECEIVING
    const {data, setData,post,errors} = useForm({
@@ -28,7 +40,11 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
         items: [],
     })
 
-    
+    // const [status, setStatus] = useState( 'pending');
+
+    // const handleStatusChange = (event) => {
+    //   setStatus(event.target.value);
+    // };
     console.log("CUrrent Data:" + data)
 // const newItem, setNewItem = 
     const  options = items.data.map(item => ({ //values from the db
@@ -36,39 +52,21 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
         label: item.name
       }));
 
-      const [newAllItems, setnewAllItems] = useState([])
     const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [latestItemIds, setLatestItemIds] = useState([]) ;
-     useEffect(() => {
-        if (latestItem) {
-            setLatestItemIds(prevIds => [...prevIds, latestItem]);
-        }
-    }, [latestItem]);
-
-    useEffect(() => {
-        console.log('latest Item Ids', latestItemIds);
-    }, [latestItemIds]);
-    const handleSelectChange = useCallback(
-        (selectedOptions) => {
-            setSelectedOptions(latestItem);
-            setSelectedOptions(selectedOptions);
-
-            const items = selectedOptions.map((option) => {
-                const selectedItem = allItems.find(
-                    (item) => item.id === parseInt(option.value)
-                );
-                return { ...selectedItem };
-            });
-
-            setData({
-                ...data,
-                items: items.map((item) => ({ ...item, items: item.id })),
-            });
-        },
-        [newAllItems, setSelectedOptions, setData, data]
-    );
-    console.log("SelectedOptions")
+    
+    const handleSelectChange = (selectedOptions) => {
+        console.log("selected Options", selectedOptions);
+        
+        // Extracting item IDs from selectedOptions
+        const items = selectedOptions.map(option => parseInt(option.value));
+    
+        // Updating the state with the new items
+        setData({
+            ...data,
+            items: items.map(itemId => ({ id: itemId }))  // Assuming 'items' in 'data' is an array of objects with 'id'
+        });
+    };
     
     const [showModal, setShowModal] = useState(false);
     
@@ -116,10 +114,12 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
 
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
-        
-        Inertia.post(route('item.submit'), formData)
+        post(route('item.submit'), formData)
       };
-
+//   useEffect(() => {
+//       console.log('Latest Itemmmm:', latestItem);
+    
+//   }, [latestItem]);
     //SUBMIT OF MAIN FORM
     const onSubmit = (e) =>{
         // alert("hi");
@@ -171,8 +171,14 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                                     </SelectInput>
                                     <InputError message={errors.client_id} className="mt-2"/>
                                 </div>
-                                
-
+                                <div> 
+                                    {flash.latestItem && <p>{flash.latestItem}</p>}
+                                </div>
+{/* 
+                                <div>
+                                    <h2>Latest Itemdsd:</h2>
+                                    <p>{latestItem}</p>
+                                </div> */}
                                 {/* <div className="mt-6 col-span-1">
                                     <InputLabel htmlFor="receiving_status" value="Status"/>
                                     <div>
@@ -296,7 +302,12 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                                     </div>
                                     <span className="mt-2 text-sm text-gray-600"><b>Note:</b> If items are not available on the lists, you can add new Item.</span>
                                  </div>
-                               
+                                 <span><h1>New Item:</h1>
+                                    {newItem}
+                                 </span>
+                                 <div>
+                                        {flash.newItem && <p>New item ID: {flash.newItem}</p>}
+                                 </div>
           
 
                                  <div className="mt-5 min-h-[300px]">
@@ -314,30 +325,33 @@ export default function Create({auth,delivers, latestItem,mrr_no,items,newItem,c
                                             <th className="text-left">Quantity</th>
                                             </tr>
                                         </thead> 
-                   
+                                         {selectedOptions && selectedOptions.length >= 0 && ( 
                                          <tbody>
-                                         {data.items.map((item,index) => (
-                                         
-                                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={item.id}>
+                                             {selectedOptions.map((option, index) => {
+                                            const selectedItem = allItems.find(item => item.id === parseInt(option.value));
+
+                                             return (
+                                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={selectedItem.id}>
                                                 <td className="w-[60px] py-2 text-sm">
                                                     {index + 1}
                                                     {/* {selectedItem.id ?? "No Item ID"} */}
                                                     </td>
-                                                <td className="w-[160px] py-2 text-sm">{item.sku_prefix ?? "No Sku Prefix"}-{item.sku ?? "No Sku"}</td>
+                                                <td className="w-[160px] py-2 text-sm">{selectedItem.sku_prefix ?? "No Sku Prefix"}-{selectedItem.sku ?? "No Sku"}</td>
                                                 <th className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
-                                                    <Link href={route('item.show', item.id)}>
-                                                    {item.name ?? "No Item Name"}
+                                                    <Link href={route('item.show', selectedItem.id)}>
+                                                    {selectedItem.name ?? "No Item Name"}
                                                     </Link>
                                                 </th>
-                                                <td className="w-[160px] py-2 text-sm"> {item.brand && item.brand.name ? item.brand.name : 'No Brand Name'}</td>
-                                                 <td className="w-[160px] py-2 text-sm">{item.category && item.category.name ? item.category.name: "No Category Name"}</td>
-                                                 <td className="w-[200px] py-2 text-sm">{item.model_no ?? "No Model Number"}</td>
-                                                 <td className="w-[300px] py-2 text-sm">{item.part_no ?? "No Part Number"}</td>
-                                                 <td className="w-[160px] py-2 ">{item.quantity ? (item.quantity + ' ' + (item.uom ?? "No UOM")) : 'No Quantity'}</td>
+                                                <td className="w-[160px] py-2 text-sm"> {selectedItem.brand && selectedItem.brand.name ? selectedItem.brand.name : 'No Brand Name'}</td>
+                                                 <td className="w-[160px] py-2 text-sm">{selectedItem.category && selectedItem.category.name ? selectedItem.category.name: "No Category Name"}</td>
+                                                 <td className="w-[200px] py-2 text-sm">{selectedItem.model_no ?? "No Model Number"}</td>
+                                                 <td className="w-[300px] py-2 text-sm">{selectedItem.part_no ?? "No Part Number"}</td>
+                                                 <td className="w-[160px] py-2 ">{selectedItem.quantity ? (selectedItem.quantity + ' ' + (selectedItem.uom ?? "No UOM")) : 'No Quantity'}</td>
                                                  </tr>
-                                        ))}
+                                             );
+                                        })}
                                         </tbody>
-                                                                        
+                                                )}                         
                                      </table>
                                  </div>
                         </div>

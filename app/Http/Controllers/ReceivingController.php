@@ -89,12 +89,17 @@ class ReceivingController extends Controller
        $locations = Location::query()->orderBy('name', 'asc')->get();
        $clients =  Client::query()->distinct()->orderBy('name', 'asc')->get();
       $delivers = Deliverables::query()->orderBy('dr_no', 'asc')->get();
+
+
+      $userId =Auth::id(); 
+      $item = Item::where('user_id', $userId)->latest()->first(); 
+      $latestItem = $item->id;
         //  for Mrr No
         $mrr_no= $this->generateMrrNo();
         $input['mrr_no'] =  $mrr_no;
         $sku = $this->generateSkuId();
         $input['sku'] = $sku;
-
+        // dd($latestItem);
         //use dd for checking
         //dd($name)
 
@@ -108,6 +113,7 @@ class ReceivingController extends Controller
           'delivers' => DeliverablesResource::collection($delivers),
           'mrr_no' =>  $mrr_no,
             'skuu' =>  $sku,
+        'latestItem' => $latestItem
       ]);
     }
 
@@ -156,14 +162,20 @@ class ReceivingController extends Controller
 
         $data = $request->validated();
 
-        $items = $data['group_item_id'];
+        $items = $data['items'];
+        // dd($items);
         $data['user_id'] = Auth::id();
         $receiving =Receiving::create($data);
-        $receiving->items()->attach($items);  
-     
+      
+        $itemreceivingIds = array_map(function ($item) {
+            return (int) $item['id'];
+        }, $items);
+        
+        $receiving->items()->attach($itemreceivingIds);  
        
         return redirect()->route('receiving.index')->with('success', "Receiving added successfully");
     }
+
     public function storeItem(StoreItemRequest $request)
     {
         $data = $request->validated();

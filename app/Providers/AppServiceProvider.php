@@ -24,6 +24,8 @@ use App\Policies\StockRequisitionPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,5 +60,14 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewPulse', function (User $user) {
             return $user->isAdmin() || $user->isSuperAdmin();
         });
+
+        Inertia::share([
+            'flash' => function () {
+                return [
+                    'newItem' => Session::get('newItem'),
+                ];
+            },
+        ]);
     }
+ 
 }

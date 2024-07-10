@@ -41,7 +41,6 @@ export default function Create({auth,brands,sku, categories,employees,locations,
      const [isRtl, setIsRtl] = useState(false);
   
     const onSubmit = (e) =>{
-        // post function declared above
         e.preventDefault();
         post(route("item.store"));
     }
@@ -317,7 +316,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 <InputError message={errors.location_id} className="mt-2"/>
                             </div>
 
-                            <div className="mt-4 col-span-1">
+                            {/* <div className="mt-4 col-span-1">
                             <InputLabel htmlFor="item_employee_id" value="Created By:"/>
                             <SelectInput
                             id="item_employee_id"
@@ -331,7 +330,7 @@ export default function Create({auth,brands,sku, categories,employees,locations,
                                 ))}
                             </SelectInput>
                             <InputError message={errors.employee_id} className="mt-2"/>
-                        </div>
+                        </div> */}
 
                          </div>
  

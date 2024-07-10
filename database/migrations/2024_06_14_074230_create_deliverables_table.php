@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('remarks')->nullable();
             $table->string('status')->default('pending');
             $table->boolean('is_done')->default(false);
-            $table->string('list_item_id')->nullable();
              $table->foreignIdFor(Client::class)->nullable();
              $table->foreignIdFor(User::class)->constrained();
              $table->softDeletes();
