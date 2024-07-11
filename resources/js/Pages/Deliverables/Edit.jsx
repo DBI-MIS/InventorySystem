@@ -8,7 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 import { useCallback, useState, useEffect } from "react";
 import Select from "react-select";
-import { DONE_STATUS_CLASS_MAP, DONE_TEXT_MAP} from "@/constants";
+import { DONE_STATUS_CLASS_MAP, DONE_TEXT_MAP, ITEM_STATUS_CLASS_MAP, ITEM_STATUS_TEXT_MAP} from "@/constants";
 
 export default function Edit({
     auth,
@@ -413,6 +413,9 @@ console.log("checkallListItems", allListItems);
                                                         <th className="pr-10">
                                                            DONE
                                                         </th>
+                                                        <th className="pr-10">
+                                                          STATUS
+                                                        </th>
                                                     </tr>
                                                 </thead>
 
@@ -477,6 +480,11 @@ console.log("checkallListItems", allListItems);
                                                                     DONE_STATUS_CLASS_MAP[item.is_done ] }>
                                                                     {DONE_TEXT_MAP[ item.is_done] ?? "Not Done/Pending"}
 
+                                                                </span>
+                                                            </td>
+                                                            <td className="w-[100px] py-2 pl-4 text-nowrap ">
+                                                                <span className={`px-2 py-1 font-semibold rounded ${ITEM_STATUS_CLASS_MAP[item.statuses] || 'bg-gray-300'} ${item.statuses ? 'text-white' : 'text-black'}`}>
+                                                                    {ITEM_STATUS_TEXT_MAP[item.statuses] || 'No Status'}
                                                                 </span>
                                                             </td>
                                                             <td className="w-[100px] flex flex-row justify-center items-center">

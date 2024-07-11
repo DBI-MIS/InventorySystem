@@ -82,7 +82,11 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::get('receiving/{id}/updateApprove',[ReceivingController::class, 'updateApprove'])->name('receiving.updateApprove');
         Route::get('receiving/{id}/updateReject',[ReceivingController::class, 'updateReject'])->name('receiving.updateReject');
         Route::get('receiving/{id}/updateCancel',[ReceivingController::class, 'updateCancel'])->name('receiving.updateCancel');
-        
+
+        Route::get('deliverables/{id}/updateDrStatus',[DeliverablesController::class, 'updateDrStatus'])->name('deliverables.updateDrStatus');
+        Route::get('deliverables/{id}/updateApprove',[DeliverablesController::class, 'updateApprove'])->name('deliverables.updateApprove');
+        Route::get('deliverables/{id}/updateReject',[DeliverablesController::class, 'updateReject'])->name('deliverables.updateReject');
+        Route::get('deliverables/{id}/updateCancel',[DeliverablesController::class, 'updateCancel'])->name('deliverables.updateCancel');
         // lagay name
         // itemMrr
     

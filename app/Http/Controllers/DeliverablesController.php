@@ -32,6 +32,10 @@ class DeliverablesController extends Controller
         if (! Gate::allows('viewAny', Deliverables::class)) { 
             abort(403, 'You are not authorized to view.');
         }
+
+        $user = auth()->user();
+        $userRole = $user->role;
+
         $query = Deliverables::query() ;
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -49,7 +53,9 @@ class DeliverablesController extends Controller
             //method ng replicate
             // $status equivalent sa processed
         // }
-        
+        if ($userRole === 'editor') { //it shoould be editor  for testing lang muna kaya super_admin
+            $query->where('status', '!=', 'pending');
+        } 
         $deliverabless =  $query->orderBy($sortField, $sortDirection)
         ->paginate(20)
         ->onEachSide(1);
@@ -74,15 +80,19 @@ class DeliverablesController extends Controller
     public function create()
     {
 
+            
         $subquery = DB::table('items')
         ->select(DB::raw('MAX(id) as id'))
         ->groupBy('name');
 
         $deliverablesss = Item::select('items.*')
-        ->joinSub($subquery, 'latest_items', function ($join) {
-            $join->on('items.id', '=', 'latest_items.id');
-        })
-        ->get();
+            ->joinSub($subquery, 'latest_items', function ($join) {
+                $join->on('items.id', '=', 'latest_items.id');
+            })
+            ->whereNotIn('items.statuses', ['on_process', 'processed'])
+            ->get();
+
+        
         // $deliverablesss = Item::query()->orderBy('name', 'asc')->get();
       
         // $clients = Client::query()->orderBy('name', 'asc')->get();
@@ -149,6 +159,7 @@ class DeliverablesController extends Controller
      */
     public function edit(Deliverables $deliverable)
     {
+        // dd($deliverable);
         $items = Item::query()->orderBy('name', 'asc')->get();
         $clients = Client::query()->orderBy('name', 'asc')->get();
 
@@ -188,18 +199,28 @@ class DeliverablesController extends Controller
     {
 
         $data = $request->validated(); 
-       
 
         $allItemsDone = true;
+        $hasProcessedItems = false;
         foreach ($data['items'] as $item) {
+            // for is_done
             if (!$item['is_done']) {
                 $allItemsDone = false;
-                break;
+            }
+        
+            if ($item['statuses'] === "processed") {
+                $hasProcessedItems = true;
             }
         };
+        //if at least one of item status is processed, show error mess
+        if ($hasProcessedItems) { 
+       
+            return redirect()->route('deliverables.index')->with('success', "Error: Cannot update or send approval for DR \"{$deliverable->dr_no}\".Some items have been processed!");
+   
+        }
 
 
-        if (!$deliverable->is_done || !$allItemsDone) {
+        if (!$deliverable->is_done || !$allItemsDone ) {
             $deliverable->update($data);
 
             $items = $data['items'];
@@ -253,26 +274,25 @@ class DeliverablesController extends Controller
 
     public function myDeliverable(Deliverables $deliverableId) {
         //  dd($deliverableId);
-        $listItemIds = is_array($deliverableId->list_item_id) ? $deliverableId->list_item_id : [];
-        $deliverable_items = collect(); // Initialize as an empty collection for validation 
+        // $listItemIds = is_array($deliverableId->list_item_id) ? $deliverableId->list_item_id : [];
+        // $deliverable_items = collect(); // Initialize as an empty collection for validation 
         
-        if (count($listItemIds) > 0) {
-            // Fetch receiving items with relationships only if there are item ids
-            $deliverable_items = Item::with(['brand', 'category', 'employee', 'location'])
-                ->whereIn('id', $listItemIds)
-                ->get();
-        }
+        // if (count($listItemIds) > 0) {
+        //     // Fetch receiving items with relationships only if there are item ids
+        //     $deliverable_items = Item::with(['brand', 'category', 'employee', 'location'])
+        //         ->whereIn('id', $listItemIds)
+        //         ->get();
+        // }
+        $deliverableId->load('itemsDeliverables');
 
         return inertia("Deliverables/PrintDeliverables", [
             'deliverable' => new DeliverablesResource($deliverableId),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
-            'deliverable_items' =>  $deliverable_items
+            'deliverable_items' => $deliverableId->itemsDeliverables,
             
         ]);
     }
-
-    // UpdateDoneRequest $request,
     
     public function updateDone(Item $item, int $id) {
         $deliverable = Deliverables::find($id);
@@ -288,28 +308,13 @@ class DeliverablesController extends Controller
                 // if all items are pending we can push through to process DR and replication of items
                
                 $deliverable->is_done = true; // Set deliverable as done
-                $deliverable->status = "processed";
+                $deliverable->status = "for_approval";
                 $deliverable->save();
-    
-               
+
+                               
                 foreach ($deliverable->itemsDeliverables as $item) {
                   
-                    $quantity = (int) $item->quantity;
-                    $qty_out = (int) $item->qty_out;
-                    $diff = max(0, $quantity - $qty_out);
-    
-                    if ($diff > 0) {
-                        $newItem = $item->replicate();
-                        $newItem->quantity = $diff;
-                        $newItem->qty_out = 0;
-                        $newItem->is_done = false; // Set as available
-                        $newItem->remark = 'Split from item ' . $item->id;
-                        $newItem->save();
-                    }
-    
-                  
-                    $item->quantity = $qty_out; 
-                    $item->is_done = true; 
+                    $item->statuses = "on_process";
                     $item->save();
                 }
     
@@ -321,6 +326,127 @@ class DeliverablesController extends Controller
        
         return back()->with('success', "Error: DR \"{$deliverable->id}\" not found.");
     }
+
+    public function updateApprove(int $id) {
+        $deliverable = Deliverables::find($id);
+       
+
+        if ($deliverable) {
+                    $hasProcessedItems = $deliverable->itemsDeliverables()->where('is_done', true)->exists();
+            
+                    if ($hasProcessedItems) {  //check if theres item that has processed status if true throw error message.
+                        
+                        return back()->with('success', 'Warning: Some selectecd Items have already been processed. Kindly remove the items  or delete the DR.');
+                    } else { 
+                        // if all items are pending we can push through to process DR and replication of items
+                       
+                        $deliverable->is_done = true; // Set deliverable as done
+                        $deliverable->status = "approved";
+                        $deliverable->save();
+            
+                       
+                        foreach ($deliverable->itemsDeliverables as $item) {
+                          
+                            $quantity = (int) $item->quantity;
+                            $qty_out = (int) $item->qty_out;
+                            $diff = max(0, $quantity - $qty_out);
+            
+                            if ($diff > 0) {
+                                $newItem = $item->replicate();
+                                $newItem->quantity = $diff;
+                                $newItem->qty_out = 0;
+                                $newItem->statuses= "pending";
+                                $newItem->is_done = false; // Set as available
+                                $newItem->remark = 'Split from item ' . $item->id;
+                                $newItem->save();
+
+                            }
+            
+                          
+                            $item->quantity = $qty_out; 
+                            $item->is_done = true; 
+                            $item->statuses= "processed";
+                            $item->save();
+                        }
+                            $updatedStatus =  $deliverable->status;
+                      
+                        return back()->with('success', `DR \"{$deliverable->dr_no}\" marked as $updatedStatus and items updated.`);
+                    }
+                }
+            
+               
+                return back()->with('success', "Error: DR \"{$deliverable->id}\" not found.");
+    }
+    public function updateReject(int $id) {
+        $deliverable = Deliverables::find($id);
+        $deliverable->status = "rejected";
+        $deliverable->save();
+
+        foreach ($deliverable->itemsDeliverables as $item) {
+                          
+            
+            $item->is_done = false; 
+            $item->statuses = "pending"; 
+            $item->save();
+        }
+    }
+    public function updateCancel(int $id) {
+        $deliverable = Deliverables::find($id);
+        $deliverable->status = "cancel";
+        $deliverable->save();
+
+        foreach ($deliverable->itemsDeliverables as $item) {
+            $item->is_done = false; 
+            $item->statuses = "pending"; 
+            $item->save();
+        }
+    }
     
-   
+    // public function updateDone(Item $item, int $id) {
+    //     $deliverable = Deliverables::find($id);
+    
+    //     if ($deliverable) {
+           
+    //         $hasProcessedItems = $deliverable->itemsDeliverables()->where('is_done', true)->exists();
+    
+    //         if ($hasProcessedItems) {  //check if theres item that has processed status if true throw error message.
+                
+    //             return back()->with('success', 'Warning: Some selectecd Items have already been processed. Kindly remove the items  or delete the DR.');
+    //         } else { 
+    //             // if all items are pending we can push through to process DR and replication of items
+               
+    //             $deliverable->is_done = true; // Set deliverable as done
+    //             $deliverable->status = "processed";
+    //             $deliverable->save();
+    
+               
+    //             foreach ($deliverable->itemsDeliverables as $item) {
+                  
+    //                 $quantity = (int) $item->quantity;
+    //                 $qty_out = (int) $item->qty_out;
+    //                 $diff = max(0, $quantity - $qty_out);
+    
+    //                 if ($diff > 0) {
+    //                     $newItem = $item->replicate();
+    //                     $newItem->quantity = $diff;
+    //                     $newItem->qty_out = 0;
+    //                     $newItem->is_done = false; // Set as available
+    //                     $newItem->remark = 'Split from item ' . $item->id;
+    //                     $newItem->save();
+    //                 }
+    
+                  
+    //                 $item->quantity = $qty_out; 
+    //                 $item->is_done = true; 
+    //                 $item->save();
+    //             }
+    
+              
+    //             return back()->with('success', "DR \"{$deliverable->dr_no}\" marked as Processed and items updated.");
+    //         }
+    //     }
+    
+       
+    //     return back()->with('success', "Error: DR \"{$deliverable->id}\" not found.");
+    // }
 }

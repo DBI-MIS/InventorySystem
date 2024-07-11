@@ -93,12 +93,12 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
       }, [])
  
     // Function to remove SKU
-    const handleRemoveSKU = (index) => {
-        const newSkus = [...skus];
-        newSkus.splice(index, 1);
-        setSkus(newSkus);
-        localStorage.setItem('savedSkus', JSON.stringify(newSkus));
-    };
+    // const handleRemoveSKU = (index) => {
+    //     const newSkus = [...skus];
+    //     newSkus.splice(index, 1);
+    //     setSkus(newSkus);
+    //     localStorage.setItem('savedSkus', JSON.stringify(newSkus));
+    // };
     console.log("All SKUs:", skus);
 
         // Function to handle adding SKU
@@ -131,38 +131,8 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
         
-        // Inertia.post(route('item.submit'), formData)
-        // post(route("receiving.store"));
+        Inertia.post(route('item.submit'), formData)
 
-        const newItem = {
-            id: data.items.length + 1, // Generate a unique ID as per your logic
-            name: formData.name,
-            category_id: formData.category_id,
-            brand_id: formData.brand_id,
-            quantity: formData.quantity,
-            uom: formData.uom,
-            description: formData.description,
-            specs: formData.specs,
-            remark: formData.remark,
-            serial_no: formData.serial_no,
-            model_no: formData.model_no,
-            part_no: formData.part_no,
-            location_id: formData.location_id,
-            statuses: formData.statuses,
-            // Add more fields as needed
-        };
-    
-        // Update data.items state to include the new item
-        setData((prevData) => ({
-            ...prevData,
-            items: [...prevData.items, newItem],
-        }));
-    
-        // Reset formData state or clear form fields as needed
-        setFormData(initialFormData);
-    
-        // Close modal or handle UI state
-        setShowModal(false);
     //     const newSkus = [...skus, formData.sku];
     // setSkus(newSkus);
     // localStorage.setItem('savedSkus', JSON.stringify(newSkus));
@@ -177,19 +147,19 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     //   sessionStorage.setItem('skuIds', JSON.stringify(skuIds));
       };
 
-      const handleAddSKU = () => {
+    //   const handleAddSKU = () => {
     
-         skus.forEach(savedSku => {
-        const itemWithSameSKU = items.data.find(item => item.sku === savedSku);
-        if (itemWithSameSKU) {
-          const { id } = itemWithSameSKU;
-          console.log(`Item ID with SKU ${savedSku}: ${id}`);
-          setSelectedOptions(id);
-        } else {
-          console.log(`No item found with SKU ${savedSku}`);
-        }
-      });
-      };
+    //      skus.forEach(savedSku => {
+    //     const itemWithSameSKU = items.data.find(item => item.sku === savedSku);
+    //     if (itemWithSameSKU) {
+    //       const { id } = itemWithSameSKU;
+    //       console.log(`Item ID with SKU ${savedSku}: ${id}`);
+    //       setSelectedOptions(id);
+    //     } else {
+    //       console.log(`No item found with SKU ${savedSku}`);
+    //     }
+    //   });
+    //   };
 
     //SUBMIT OF MAIN FORM
     const onSubmit = (e) =>{

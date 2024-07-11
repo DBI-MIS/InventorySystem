@@ -36,6 +36,7 @@ module.exports = withMT( {
                 "header": "#2d5bb7",
                 "main": "#3366cc",
                 "emerald": "#10b981",
+                "crimson": "#9f1239",
                 
             },
             fontSize: {

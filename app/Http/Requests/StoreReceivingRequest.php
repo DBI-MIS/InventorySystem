@@ -49,9 +49,22 @@ class StoreReceivingRequest extends FormRequest
             'nullable',
             'string'
         ],
-        "items" =>[
-            'required'
-        ]
+        // "items" =>[
+        //     'required'
+        // ],
+        'items' => 'required|array',
+        'items.*.id' => 'nullable|exists:item_receiving,id',
+        'items.*.name' => 'required|regex:/^[A-Za-z0-9 ]+$/|min:2|max:255',
+        'items.*.sku' => 'required|numeric|min:2|max:255',
+        'items.*.brand_id' => 'required|min:1|exists:brands,id',
+        'items.*.category_id' => 'required|min:1|exists:categories,id',
+        'items.*.description' => 'required|min:2|string',
+        'items.*.specs' => 'required|alpha_num|string',
+        'items.*.part_no' => 'nullable|alpha_num|max:255',
+        'items.*.serial_no' => 'nullable|alpha_num|max:255',
+        'items.*.model_no' => 'nullable|alpha_num|max:255',
+        'items.*.uom' => 'required|alpha|max:20',
+        
     ];
     }
     public function messages(){

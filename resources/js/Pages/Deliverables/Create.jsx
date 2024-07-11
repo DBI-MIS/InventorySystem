@@ -8,7 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 import { useCallback, useState } from "react";
 import Select from "react-select";
-import { DONE_CLASS_MAP, DONE_TEXT_MAP } from "@/constants";
+import { DONE_CLASS_MAP, DONE_STATUS_CLASS_MAP, DONE_TEXT_MAP } from "@/constants";
 
 export default function Create({
     auth,
@@ -25,6 +25,7 @@ export default function Create({
         items: [],
         user_id: "",
     });
+    
 
     console.log(data);
 
@@ -407,7 +408,7 @@ export default function Create({
                                                             <td className="w-[100px] py-2 pl-4">
                                                                 <span
                                                                 className={"px-2 py-1 font-semibold tracking-wide rounded-full text-white " +
-                                                                DONE_CLASS_MAP[item.is_done ] }>
+                                                                    DONE_STATUS_CLASS_MAP[item.is_done ] }>
                                                                     {DONE_TEXT_MAP[ item.is_done] ?? "Not Done/Pending"}
 
                                                                 </span>

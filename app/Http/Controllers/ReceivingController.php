@@ -319,23 +319,28 @@ public function show(Receiving $receiving, Request $request)
         }
     
     }
-    public function myReceiving(Receiving $receivingId) {
-        // dd($receivingId);
-        $groupItemIds = is_array($receivingId->group_item_id) ? $receivingId->group_item_id : [];
-        $receiving_items = collect(); // Initialize as an empty collection for validation 
+    public function myReceiving(Receiving  $receivingId) {
         
-        if (count($groupItemIds) > 0) {
-            // Fetch receiving items with relationships only if there are item ids
-            $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
-                ->whereIn('id', $groupItemIds)
-                ->get();
-        }
+        // dd($receivingId);
+        // $receiving = Receiving::
+        // $groupItemIds = is_array($receivingId->group_item_id) ? $receivingId->group_item_id : [];
+        // $receiving_items = collect(); // Initialize as an empty collection for validation 
+        
+        // if (count($groupItemIds) > 0) {
+        //     // Fetch receiving items with relationships only if there are item ids
+        //     $receiving_items = Item::with(['brand', 'category', 'employee', 'location'])
+        //         ->whereIn('id', $groupItemIds)
+        //         ->get();
+        // }
+        // $receiving = Receiving::find($id);
+        // dd($receiving);
+        $receivingId->load('items.category');
 
         return inertia("Receiving/PrintReceiving", [
             'receiving' => new ReceivingResource($receivingId),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
-            'receiving_items' =>  $receiving_items
+            'receiving_items' =>  $receivingId->items
             
         ]);
     }

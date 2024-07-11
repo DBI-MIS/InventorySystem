@@ -22,6 +22,7 @@ export const CLIENT_STATUS_CLASS_MAP = {
     reviewing: 'Reviewing',
     unassigned: 'Unassigned',
     processed:'Processed',
+    on_process:'On Process',
   };
   export const ITEM_STATUS_CLASS_MAP = {
     //equivalent value on the database(leftside) & corresponding color and text appearance
@@ -34,7 +35,8 @@ export const CLIENT_STATUS_CLASS_MAP = {
     delivered:'bg-sky',
     reviewing: 'bg-lime-500',
     unassigned: 'bg-stone',
-    processed:'bg-green-500',
+    on_process:"bg-green-300",
+    processed: "bg-emerald"
   };
   export const EMPLOYEE_STATUS_CLASS_MAP = {
     //equivalent value on the database(leftside) & corresponding color and text appearance
