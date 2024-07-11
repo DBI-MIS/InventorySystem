@@ -1,3 +1,4 @@
+import { RECEIVING_STATUS_CLASS_MAP, RECEIVING_STATUS_TEXT_MAP } from "@/constants";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 export default function Show({ auth, receiving, receiving_items }) {
@@ -96,21 +97,11 @@ export default function Show({ auth, receiving, receiving_items }) {
                                     Status :
                                 </dt>
                                 <dd className="text-lg font-light">
-                                    {receiving.status ?? "No Status"}
-                                    {/* <span
-                                        className={`px-2 py-1 font-semibold tracking-wide rounded ${
-                                            ITEM_STATUS_CLASS_MAP[
-                                                item.statuses
-                                            ] || "bg-gray-300"
-                                        } ${
-                                            item.statuses
-                                                ? "text-white"
-                                                : "text-black"
-                                        }`}
-                                    >
-                                        {ITEM_STATUS_TEXT_MAP[item.statuses] ||
-                                            "No Item Status"}
-                                    </span> */}
+                                    {/* {receiving.status ?? "No Status"} */}
+                                    <span className={`px-2 py-1 font-semibold rounded 
+                                        ${RECEIVING_STATUS_CLASS_MAP[receiving.status]} text-white`}>
+                                            {RECEIVING_STATUS_TEXT_MAP[receiving.status] || 'No Status'}
+                                        </span>
                                 </dd>
                             </div>
 

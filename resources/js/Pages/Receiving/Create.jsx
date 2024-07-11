@@ -131,8 +131,38 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
         
-        Inertia.post(route('item.submit'), formData)
-        post(route("receiving.store"));
+        // Inertia.post(route('item.submit'), formData)
+        // post(route("receiving.store"));
+
+        const newItem = {
+            id: data.items.length + 1, // Generate a unique ID as per your logic
+            name: formData.name,
+            category_id: formData.category_id,
+            brand_id: formData.brand_id,
+            quantity: formData.quantity,
+            uom: formData.uom,
+            description: formData.description,
+            specs: formData.specs,
+            remark: formData.remark,
+            serial_no: formData.serial_no,
+            model_no: formData.model_no,
+            part_no: formData.part_no,
+            location_id: formData.location_id,
+            statuses: formData.statuses,
+            // Add more fields as needed
+        };
+    
+        // Update data.items state to include the new item
+        setData((prevData) => ({
+            ...prevData,
+            items: [...prevData.items, newItem],
+        }));
+    
+        // Reset formData state or clear form fields as needed
+        setFormData(initialFormData);
+    
+        // Close modal or handle UI state
+        setShowModal(false);
     //     const newSkus = [...skus, formData.sku];
     // setSkus(newSkus);
     // localStorage.setItem('savedSkus', JSON.stringify(newSkus));

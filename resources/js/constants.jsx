@@ -71,7 +71,22 @@ export const CLIENT_STATUS_CLASS_MAP = {
         false: "Pending",
        
       };
-  
+      export const DELIVERABLES_STATUS_TEXT_MAP = {
+   
+        pending: "Pending",
+        for_approval: "Pending Approval",
+        approved:'Processed',
+        rejected: 'Rejected',
+        cancel: 'Cancel',
+      };
+      export const DELIVERABLES_STATUS_CLASS_MAP = {
+        pending: 'bg-orange-700/40 !text-gray-600',
+        for_approval:'bg-gray-500',
+        rejected: 'bg-black',
+        cancel: 'bg-red-500',
+        approved:'bg-emerald'
+       
+      };
   
   export const DONE_CLASS_MAP = {
         //equivalent value on the database(leftside) & corresponding color and text appearance
@@ -90,15 +105,15 @@ export const CLIENT_STATUS_CLASS_MAP = {
    export const RECEIVING_STATUS_TEXT_MAP = {
    
     pending: "Pending",
-    for_approval: "For Approval",
+    for_approval: "Pending Approval",
     approved:'Approved',
     rejected: 'Rejected',
     cancel: 'Cancel',
   };
   export const RECEIVING_STATUS_CLASS_MAP = {
-    pending: 'bg-orange-700',
-    for_approval:'bg-green-300',
-    rejected: 'bg-crimson',
+    pending: 'bg-orange-700/40 !text-gray-600',
+    for_approval:'bg-gray-500',
+    rejected: 'bg-black',
     cancel: 'bg-red-500',
     approved:'bg-emerald'
    

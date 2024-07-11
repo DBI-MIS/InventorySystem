@@ -173,7 +173,7 @@ const deleteReceiving = (receiving) => {
                                               href={route('receiving.updatemrrStatus', receiving.id)}
                                               className="bg-red-400 px-2 py-1 font-semibold rounded-full text-nowrap text-white"
                                             >
-                                              For approval
+                                              Send to approver
                                             </Link>
                                           )}
                                         </td> 
