@@ -65,6 +65,10 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     // ADD ITEM MODAL FORM
     const [formData, setFormData] = useState({
         name: '',
+        category_id: '',
+        brand_id: '',
+        quantity: '',
+        uom: '',
         description: '',
         sku: skuu,
         specs: '',
@@ -117,10 +121,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
 
     const  handleChange= (event) => {
         const { name, value } = event.target;
-        setFormData(prevState => ({
-        ...prevState,
-        [name]: value
-        }));
+        setFormData({ ...formData, [name]: value });
     };
     useEffect(() => {
         console.log('Current MODAL data:', formData); 
@@ -131,8 +132,18 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
         
-        Inertia.post(route('item.submit'), formData)
-
+        Inertia.post('/your-route-to-submit', formData, {
+            onSuccess: () => {
+                setShowModal(false);
+                Inertia.reload();
+            },
+            onError: (errors) => {
+                setErrors(errors);
+            }
+        });
+        // Inertia.post(route('item.submit'), formData)
+        // Inertia.post(route('item.submit'), formData)
+            
     //     const newSkus = [...skus, formData.sku];
     // setSkus(newSkus);
     // localStorage.setItem('savedSkus', JSON.stringify(newSkus));
@@ -145,7 +156,9 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     //     }
     //   });
     //   sessionStorage.setItem('skuIds', JSON.stringify(skuIds));
+             
       };
+      
 
     //   const handleAddSKU = () => {
     
@@ -410,8 +423,11 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                             </button>
                         </div>
                     </form>
+                    <div>
+                    <button onClick={() => setShowModal(true)}>Add Item</button>
+                    {showModal && (
                     <ModalReceiving 
-                    onClose={(e)=>setShowModal(false)}
+                    onClose={()=>setShowModal(false)}
                     isVisible={showModal}
                     onSubmit={ handleNewItemSubmit}>
                                         <div className="">
@@ -682,10 +698,13 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                              </button>
                                                              </div>
                                                      </form>
+                                                     
                                                 </div>
                                            </div>
                                        </div> 
                                     </ModalReceiving>
+                    )}
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

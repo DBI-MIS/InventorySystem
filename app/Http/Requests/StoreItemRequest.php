@@ -120,6 +120,7 @@ class StoreItemRequest extends FormRequest
         'quantity.required' => 'Item quantity is required.',
         'location_id.required' => 'Location is required.',
         'employee_id.required' => 'Employee is required.',
+        'serial_no.required' => 'serial_no is required.',
         'statuses.required' => 'Item Status is required.',
         'remark.required' => 'Item Remarks is required.',
     ];

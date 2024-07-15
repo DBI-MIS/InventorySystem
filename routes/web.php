@@ -66,7 +66,8 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::delete('item/{id}/forceDeleteItem',[ItemController::class, 'forceDeleteItem'])->name('item.forceDeleteItem');
 
         // Route::get('item/{itemId}/restore',[ItemController::class, 'restoreItem'])->name('item.restoreItem');;
-
+         Route::post('/items', [ItemController::class, 'submit'])->name('item.submit');
+        // Route::post('/items/store', [ItemController::class, 'store'])->name('items.store');
         Route::get('/deliverables/my-deliverable/{deliverableId}', [DeliverablesController::class, 'myDeliverable'])->name('deliverable.myDeliverable');
         Route::get('/stockrequisition/my-stockrequest/{stockrequestId}', [StockRequisitionController::class, 'myStockRequest'])->name('stockrequest.myStockRequest');
         Route::post('receiving/create', [ItemController::class,'storeItem'])->name('item.storeItem');

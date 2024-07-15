@@ -17,6 +17,18 @@ class Receiving extends Model
 
     protected $fillable = [
         'mrr_no',
+        'sku_prefix',
+        'sku',
+        'name',
+        'brand_id',
+        'category_id',
+        'description',
+        'specs',
+        'part_no',
+        'serial_no',
+        'model_no',
+        'uom',
+        'quantity',
         'group_item_id', 
         'client_id',
         'si_no',

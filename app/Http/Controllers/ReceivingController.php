@@ -191,8 +191,10 @@ class ReceivingController extends Controller
     {
         $data = $request->validated();
         // dd($data);
-        Item::create($data);
-        return to_route('receiving.create')->with('success', 'Item was created');
+        $item = Item::create($data);
+        return inertia("Receiving/Create", [
+            'newItem' => $item,
+        ])->with('success', 'Item was created');
         // Determine where to redirect based on the source
     }
     /**

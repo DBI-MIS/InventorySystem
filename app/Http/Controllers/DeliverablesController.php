@@ -160,7 +160,7 @@ class DeliverablesController extends Controller
     public function edit(Deliverables $deliverable)
     {
         // dd($deliverable);
-        $items = Item::query()->orderBy('name', 'asc')->get();
+        $items = Item::query()->whereNotIn('items.statuses', ['on_process', 'processed'])->orderBy('name', 'asc')->get();
         $clients = Client::query()->orderBy('name', 'asc')->get();
 
         // fetching available rs number and the current rs number associated with the dr being edited
@@ -220,7 +220,7 @@ class DeliverablesController extends Controller
         }
 
 
-        if (!$deliverable->is_done || !$allItemsDone ) {
+        if (!$deliverable->is_done || !$allItemsDone || !$hasProcessedItems  ) {
             $deliverable->update($data);
 
             $items = $data['items'];
@@ -300,7 +300,11 @@ class DeliverablesController extends Controller
         if ($deliverable) {
            
             $hasProcessedItems = $deliverable->itemsDeliverables()->where('is_done', true)->exists();
-    
+            $hasOnProcessStatuses = $deliverable->itemsDeliverables()->where('statuses', 'on_process')->exists();
+            // dd(   $hasOnProcessStatuses);
+            if ($hasOnProcessStatuses) { 
+                return back()->with('success', 'Warning: Some selectecd Items are on process status . Kindly remove the items  or delete the DR.');
+            } 
             if ($hasProcessedItems) {  //check if theres item that has processed status if true throw error message.
                 
                 return back()->with('success', 'Warning: Some selectecd Items have already been processed. Kindly remove the items  or delete the DR.');
@@ -379,15 +383,27 @@ class DeliverablesController extends Controller
     }
     public function updateReject(int $id) {
         $deliverable = Deliverables::find($id);
+
+        if (!$deliverable) {
+            return back()->withErrors(['error' => 'Deliverable not found.']);
+        }
+    
         $deliverable->status = "rejected";
         $deliverable->save();
 
-        foreach ($deliverable->itemsDeliverables as $item) {
-                          
-            
-            $item->is_done = false; 
-            $item->statuses = "pending"; 
-            $item->save();
+        $hasProcessedStatuses = $deliverable->itemsDeliverables()->where('is_done', true)->exists();
+        if ($hasProcessedStatuses) { 
+           
+            return back()->with('success', `DR \"{$deliverable->dr_no}\" successfully rejected!`);
+        }
+       else { 
+
+            foreach ($deliverable->itemsDeliverables as $item) {
+                $item->is_done = false; 
+                $item->statuses = "pending"; 
+                $item->save();
+            }
+            return back()->with('success', `DR \"{$deliverable->dr_no}\" successfully rejected!`);
         }
     }
     public function updateCancel(int $id) {
@@ -395,10 +411,19 @@ class DeliverablesController extends Controller
         $deliverable->status = "cancel";
         $deliverable->save();
 
-        foreach ($deliverable->itemsDeliverables as $item) {
-            $item->is_done = false; 
-            $item->statuses = "pending"; 
-            $item->save();
+        $hasProcessedItems = $deliverable->itemsDeliverables()->where('is_done', true)->exists();
+            
+        if ($hasProcessedItems) {  
+           
+            return back()->with('success', `DR \"{$deliverable->dr_no}\" successfully cancel!`);
+        } else { 
+
+            foreach ($deliverable->itemsDeliverables as $item) {
+                $item->is_done = false; 
+                $item->statuses = "pending"; 
+                $item->save();
+            }
+            return back()->with('success', `DR \"{$deliverable->dr_no}\" successfully cancel!`);
         }
     }
     
