@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class StockRequisition extends Model
 {
-    use HasFactory;
+    use HasFactory,LogsActivity;
 
     protected $casts = [ 
         'created_at' => 'date: M d, Y',
@@ -24,6 +26,23 @@ class StockRequisition extends Model
         'sr_notes',
         'user_id'
     ];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('stockrequisition')
+            ->setDescriptionForEvent(fn(string $eventName) => "Stock Requisition has been {$eventName}")
+            ->logOnly([
+                'sr_to',
+                'rs_no',
+                'sr_date',
+                'sr_qty',
+                'sr_unit',
+                'sr_item',
+                'sr_description',
+                'sr_notes',
+                'user_id'
+            ]); 
+    }
 
     // public function stockrequisition()
     // {

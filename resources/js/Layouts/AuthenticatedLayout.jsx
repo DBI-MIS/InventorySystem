@@ -18,6 +18,7 @@ import Nclient from '@/Components/Nclient';
 import Deliver from '@/Components/Deliver';
 import Srequest from '@/Components/Srequest';
 import Nuser from '@/Components/Nuser';
+import NactivityLog from '@/Components/NactivityLog';
 
 export default function Authenticated({ user, header, children,}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -74,7 +75,14 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Locations</span>
                                 </div>
-                               
+
+                                <div class="group relative">
+                                <ResponsiveNavLink href={route('log.index')} active={route().current('log.index')}>
+                                    <NactivityLog className="block h-9 w-auto fill-current " />
+                                 </ResponsiveNavLink>
+                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Activity Logs</span>
+                              </div>
+
 
                                 <div class="group relative">
                                 <NavLink href={route('employee.index')} active={route().current('employee.index')}>
@@ -134,7 +142,9 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Stock Requisition</span>
                                 </div>
-                               
+                               {/* huwag burahin ito |
+                                                 _
+                                                 V */}
                                 {/* <div class="group relative">
                                 <NavLink href={route('sritem.index')} active={route().current('sritem.index')}>
                                     <Srequest className="block h-7 w-auto fill-current  " /> 

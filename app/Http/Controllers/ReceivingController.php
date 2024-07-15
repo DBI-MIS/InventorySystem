@@ -2,9 +2,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFormDataRequest;
+use App\Http\Requests\StoreItemReceivingRequest;
 use App\Http\Requests\StoreItemRequest;
 use App\Models\Receiving;
 use App\Http\Requests\StoreReceivingRequest;
+use App\Http\Requests\UpdateItemReceivingRequest;
 use App\Http\Requests\UpdateReceivingRequest;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\CategoryResource;
@@ -418,5 +420,57 @@ public function show(Receiving $receiving, Request $request)
         $receiving = Receiving::find($id);
         $receiving->status = "cancel";
         $receiving->save();
+    }
+
+    public function storeItemReceiving(StoreItemReceivingRequest $request)
+    {
+        $validated = $request->validate();
+
+        $itemreceived = Receiving::create([
+            "mrr_no" => [
+            'required', 
+            'min:8',
+            'max:12'
+           
+        ],
+        "client_id"=>
+        [
+            'required',  
+            'min:1',
+            'exists:clients,id'
+        ],
+        "si_no" =>[
+            'required',
+            'max:255'
+        ],
+        "deliver_id"=>[
+            'required',
+            'exists:deliverables,id'
+        ],
+        "address"=>[
+            'nullable','string'
+        ],
+        "remarks"=>[
+            'nullable',
+            'string'
+        ],
+         "items" =>[
+             'nullable'
+         ],
+         "items.*.id" => [
+                'nullable', 'exists:items,id'
+            ],
+        ]);
+
+        foreach ($validated['items'] as $item) {
+            $item = Item::create([
+                'sku_prefix' => $validated['sku_prefix']
+            ]);
+        }
+    }
+
+    public function updateItemReceiving(UpdateItemReceivingRequest $request, Receiving $receiving)
+    {
+    
     }
 }

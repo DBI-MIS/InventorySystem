@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory,LogsActivity;
 
     protected $casts = [ 
         'created_at' => 'date: M d, Y',
@@ -21,6 +23,20 @@ class Employee extends Model
         'user_id'
     
     ];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('employee')
+            ->setDescriptionForEvent(fn(string $eventName) => "employee has been {$eventName}")
+            ->logOnly([
+                'name',
+                'company',
+                'department',
+                'remarks',
+                'user_id'
+               
+            ]); 
+    }
 
     public function item(){
         return $this->belongsTo(item::class);

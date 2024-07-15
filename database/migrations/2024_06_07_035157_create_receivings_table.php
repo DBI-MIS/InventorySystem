@@ -18,17 +18,6 @@ return new class extends Migration
         Schema::create('receivings', function (Blueprint $table) {
             $table->id();
             $table->string('mrr_no')->unique();
-            $table->string('sku')->nullable();
-            $table->string('name')->nullable();
-            $table->string('brand_id')->nullable();
-            $table->string('category_id')->nullable();
-            $table->longText('description')->charset('binary')->nullable();
-            $table->string('specs')->nullable();
-            $table->string('part_no')->nullable();
-            $table->string('serial_no')->nullable();
-            $table->string('model_no')->nullable();
-            $table->string('uom')->nullable();
-            $table->integer('quantity')->nullable();
             // $table->string('group_item_id')->nullable();
             $table->string('client_id')->nullable();
             $table->string('si_no')->nullable();

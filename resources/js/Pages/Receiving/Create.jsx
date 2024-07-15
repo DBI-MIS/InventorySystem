@@ -65,10 +65,6 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     // ADD ITEM MODAL FORM
     const [formData, setFormData] = useState({
         name: '',
-        category_id: '',
-        brand_id: '',
-        quantity: '',
-        uom: '',
         description: '',
         sku: skuu,
         specs: '',
@@ -121,7 +117,10 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
 
     const  handleChange= (event) => {
         const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+        }));
     };
     useEffect(() => {
         console.log('Current MODAL data:', formData); 
@@ -132,17 +131,9 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     const handleNewItemSubmit = (e) => {
         e.preventDefault();
         
-        Inertia.post('/your-route-to-submit', formData, {
-            onSuccess: () => {
-                setShowModal(false);
-                Inertia.reload();
-            },
-            onError: (errors) => {
-                setErrors(errors);
-            }
-        });
+        
         // Inertia.post(route('item.submit'), formData)
-        // Inertia.post(route('item.submit'), formData)
+        post(route('item.submit'), formData)
             
     //     const newSkus = [...skus, formData.sku];
     // setSkus(newSkus);

@@ -6,6 +6,9 @@ use App\Http\Requests\UpsertItemRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+
 class Item extends Model
 {
     protected $casts =
@@ -16,7 +19,7 @@ class Item extends Model
     
     //  'statuses' => 'array',
 ];
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
     protected $fillable = [
         
         'sku_prefix',
@@ -41,6 +44,10 @@ class Item extends Model
         'updated_by'
     
     ];
+
+
+
+
     public function brand(){
         return $this->belongsTo(Brand::class);
     }
@@ -79,6 +86,64 @@ class Item extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('item')
+            ->setDescriptionForEvent(fn(string $eventName) => "Item has been {$eventName}")
+            ->logOnly([
+                'id',
+                'sku',
+                'name',
+                'brand_id',
+                'category_id',
+                'description',
+                'specs',
+                'part_no',
+                'serial_no',
+                'model_no',
+                'uom',
+                'quantity',
+                'qty_out',
+                'location_id',
+                'employee_id',
+                'statuses',
+                'is_done',
+                'remark',
+                'user_id',
+                'updated_by'
+            ]);
+            // ->logOnlyDirty();
+        }
+    
+        // public function restore()
+        // {
+        //     parent::restore();
+        //     activity()
+        //         ->performedOn($this)
+        //         ->causedBy(auth()->user())
+        //         ->withProperties(['attributes' => $this->attributesToArray()])
+        //         ->useLogName('item')
+        //         ->log('restored');
+        // }
+    
+        // public function forceDelete()
+        // {
+        //     activity()
+        //         ->performedOn($this)
+        //         ->causedBy(auth()->user())
+        //         ->withProperties(['attributes' => $this->attributesToArray()])
+        //         ->useLog('item_force_deleted')
+        //         ->log('force deleted');
+            
+        //     parent::forceDelete();
+        // }
+    // public function getActivitylogOptions()
+    // {
+    //     return LogOptions::defaults()
+    //         ->logFillable()
+    //         ->logAll();
+    // }
     // public function replicateItemDr(Item $item, UpsertItemRequest $request)
     // {
     //        $quantity = (int) $item->quantity;

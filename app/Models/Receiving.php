@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Receiving extends Model
 {
@@ -13,10 +15,19 @@ class Receiving extends Model
          'group_item_id' => 'array',
          'created_at' => 'date: M d, Y',
 ];
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'mrr_no',
+        'group_item_id', 
+        'client_id',
+        'si_no',
+        'deliver_id',
+        'address',
+        'location_id',
+        'employee_id',
+        'remarks',
+        'status',
         'sku_prefix',
         'sku',
         'name',
@@ -29,18 +40,30 @@ class Receiving extends Model
         'model_no',
         'uom',
         'quantity',
-        'group_item_id', 
-        'client_id',
-        'si_no',
-        'deliver_id',
-        'address',
-        'location_id',
-        'employee_id',
-        'remarks',
-        'status',
         'user_id'
     
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('receiving')
+            ->setDescriptionForEvent(fn(string $eventName) => "Receiving has been {$eventName}")
+            ->logOnly([
+                'mrr_no',
+                'client_id',
+                'si_no',
+                'deliver_id',
+                'address',
+                'location_id',
+                'employee_id',
+                'remarks',
+                'status',
+                'user_id'
+               
+            ]); 
+    }
+
     
     public function location(){
         return $this->belongsTo(Location::class);

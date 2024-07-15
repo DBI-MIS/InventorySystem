@@ -90,7 +90,7 @@ export default function Index({
                         {success && (
                             <Alert
                             className={`absolute z-50 w-11/12 px-4 py-4 mb-5 rounded text-slate-800 ${
-                                success.includes('Errors') || success.includes('Error') || success.includes('Warning') ? 'bg-red-100 ring-2 ring-red-800' : 'bg-green-100 ring-2 ring-green-800'
+                                success.includes('Errors') || success.includes('Error') || success.includes('Warning') ? 'bg-red-100 ring-2 ring-red-800' :  success.includes('Success') || success.includes('successfully') ? 'bg-green-100 ring-2 ring-green-800' :'bg-green-100 ring-2 ring-green-800'
                             }`}
                                 open={open}
                                 onClose={() => setOpen(false)}
@@ -229,7 +229,7 @@ export default function Index({
                                             </th>
 
                                             <th className="pl-4" name="status">
-                                               DONE
+                                              CONTROL
                                             </th>
                                             
                                             <th className="pl-4" name="status">
@@ -287,62 +287,82 @@ export default function Index({
                                                     </td>    
                                                     {(auth.user.role === 'user' || auth.user.role === 'super_admin') && (
                                                         <td className="w-[100px] pl-4">
-                                                            {deliverable.is_done === "pending" && (
-                                                            <Link
-                                                             href={ route('deliverables.updateDone', deliverable.id)}
-                                                             className="bg-red-400 px-2 py-1 font-semibold rounded-full text-nowrap text-white"
-                                                            >
-                                                                Send to Approver
-                                                            </Link>
-                                                            )}
-                                                        </td> 
+                                                            {deliverable.is_done === "pending" ? (
+                                                                <Link
+                                                                    href={ route('deliverables.updateDone', deliverable.id) }
+                                                                    className="bg-red-400 px-2 py-1 font-semibold rounded-full text-nowrap text-white"
+                                                                    // onClick={() => {
+                                                                    //     if (deliverable.is_done === "pending") {
+                                                                    //         alert("Are you sure you want to send the DR for approval?");
+                                                                    //     }
+                                                                    // }}
+                                                                >
+                                                                    Send to Approver
+                                                                </Link>
+                                                            ) : deliverable.status === "for_approval" ? (
+                                                                <Link
+                                                                    href={ route('deliverables.undoApproval', deliverable.id) }
+                                                                    className="bg-red-400 px-2 py-1 font-semibold rounded-full text-nowrap text-white"
+                                                                >
+                                                                    Undo
+                                                                </Link>
+                                                            ) : 
+                                                            ''
+                                                            }
+                                                        </td>
                                                     )}
-                                                    
-
 
                                                     {(auth.user.role === 'editor' || auth.user.role === 'admin') && (
                                                         <>
-                                                            <td className="flex ">
-                                                            
+                                                            <td className="flex">
                                                                 <Link
-                                                                href={
-                                                                    deliverable.is_done === "processed" || deliverable.status !== "approved"
-                                                                    ? route('deliverables.updateApprove', deliverable.id)
-                                                                    : "#" }
-                                                                     className={`px-2 py-1 font-semibold rounded-full text-nowrap text-emerald`} >
-                                                                        <svg xmlns="http://www.w3. org/2000/svg" viewBox="0 0 24 24" fill="currentColor"  class="w-8 h-8">
-                                                                        <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                                                                    href={
+                                                                        deliverable.is_done === "processed" || deliverable.status !== "approved"
+                                                                            ? route('deliverables.updateApprove', deliverable.id)
+                                                                            : "#"
+                                                                    }
+                                                                    className={`px-2 py-1 font-semibold rounded-full text-nowrap text-emerald`}
+                                                                    onClick={() => {
+                                                                        if (deliverable.is_done === "processed" || deliverable.status !== "approved") {
+                                                                            alert("DR has been processed!");
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+                                                                        <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
                                                                     </svg>
                                                                 </Link>
 
                                                                 <Link
-                                                                href={
-                                                                deliverable.status !== "approved"
-                                                               ? route('deliverables.updateReject', deliverable.id)
-                                                                : "#"
-                                                              }
-                                                                className={`px-2 mx-2 py-1 font-semibold rounded-full text-nowrap text-crimson`}>
-                                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"  class="w-8 h-8">
-                                                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm3 10.5a.75.75 0 0 0 0-1.5H9a.75.75 0 0 0 0 1.5h6Z" clip-rule="evenodd" />
-                                                          </svg>
-                                                            </Link>
-                                                            <Link
-                                                                href={
-                                                                    deliverable.status !== "approved"
-                                                                    ? route('deliverables.updateCancel', deliverable.id)
-                                                                     : "#"
-                                                                }
-                                                                className={`px-2 py-1 font-semibold rounded-full text-nowrap text-red-400 `}>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8">
-                                                                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
-                                                                </svg>
+                                                                    href={deliverable.status !== "approved" ? route('deliverables.updateReject', deliverable.id) : "#"}
+                                                                    className={`px-2 mx-2 py-1 font-semibold rounded-full text-nowrap text-crimson`}
+                                                                    onClick={() => {
+                                                                        if (deliverable.status !== "approved") {
+                                                                            alert("DR rejected");
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+                                                                        <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm3 10.5a.75.75 0 0 0 0-1.5H9a.75.75 0 0 0 0 1.5h6Z" clipRule="evenodd" />
+                                                                    </svg>
+                                                                </Link>
 
-                                                            </Link>
+                                                                <Link
+                                                                    href={deliverable.status !== "approved" ? route('deliverables.updateCancel', deliverable.id) : "#"}
+                                                                    className={`px-2 py-1 font-semibold rounded-full text-nowrap text-red-400`}
+                                                                    onClick={() => {
+                                                                        if (deliverable.status !== "approved") {
+                                                                            alert("DR cancelled");
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8">
+                                                                        <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clipRule="evenodd" />
+                                                                    </svg>
+                                                                </Link>
                                                             </td>
-                                                            
-                                                            
-                                                            </>
-                                                        )}
+                                                        </>
+                                                    )}
 
                                                     <td className="w-[100px] py-2 text-nowrap">
                                                         <div className="w-[100px] flex flex-row justify-end items-center">

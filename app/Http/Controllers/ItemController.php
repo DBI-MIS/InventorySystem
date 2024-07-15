@@ -307,38 +307,38 @@ class ItemController extends Controller
         // $item = Item::create($validatedData);//
         return redirect()->route('receiving.create')->with('success', 'Item created successfully!');
     }
-    public function submit(StoreFormDataRequest $formData)
-    {
-        // dd($formData);
-        $validatedData = $formData->validated();
+//     public function submit(StoreFormDataRequest $formData)
+//     {
+//         // dd($formData);
+//         $validatedData = $formData->validated();
         
-        $validatedData['user_id'] = Auth::id();
-        $validatedData['updated_by'] = Auth::id(); //comment this
-        // dd($validatedData);
-    //    Item::create($validatedData);
+//         $validatedData['user_id'] = Auth::id();
+//         $validatedData['updated_by'] = Auth::id(); //comment this
+//         // dd($validatedData);
+//     //    Item::create($validatedData);
        
-   Item::create($validatedData);
-//    Receiving::create($validatedData);
-    // dd($latestItem);
+//    Item::create($validatedData);
+// //    Receiving::create($validatedData);
+//     // dd($latestItem);
 
-    // return redirect()->back()->with([
-    //     'success' => 'Item created successfully!',
-    //     'latestItem' => $latestItem
-    // ]);
+//     // return redirect()->back()->with([
+//     //     'success' => 'Item created successfully!',
+//     //     'latestItem' => $latestItem
+//     // ]);
 
-    // $item = Item::latest()->first(); 
-    // $latestItem = $item->id;
-    // dd($latestItem );
-    // return redirect()->back()->with('latestItem', $latestItem->id);
-    // return  $latestItem ;
+//     // $item = Item::latest()->first(); 
+//     // $latestItem = $item->id;
+//     // dd($latestItem );
+//     // return redirect()->back()->with('latestItem', $latestItem->id);
+//     // return  $latestItem ;
     
-    return redirect()->back()->with('success', 'Item created successfully!');
+//     return redirect()->back()->with('success', 'Item created successfully!');
     
 
-    // session()->flash('latestItem', $latestItem);
+//     // session()->flash('latestItem', $latestItem);
 
-    // return redirect()->route('receiving.create');
-    }
+//     // return redirect()->route('receiving.create');
+//     }
 
    
     public function upsert(UpsertItemRequest $request, Item $item)

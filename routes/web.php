@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\StockSearchController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MrrItemController;
 use App\Http\Controllers\PDFController;
@@ -44,6 +46,9 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::resource('location', LocationController::class);
         Route::resource('employee', EmployeeController::class);
         Route::resource('archive', ArchiveController::class)->withTrashed();
+        Route::resource('log', LogController::class);
+        // Route::get('/activity-logs', [LogController::class, 'index'])->name('activity.logs');
+        // Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity.logs');
         Route::resource('receiving', ReceivingController::class);
         // Route::post('receiving/restore', ReceivingController::class)->name(receiving.restore);
         // Route::post('/receiving/{id}restore', ['App\Http\Controllers\ReceivingController@restore','restore'])->name(receiving.restore);
@@ -57,7 +62,7 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::resource('sritem', SritemController::class);
         Route::post('/receivings/{receivingId}/items/{itemId}',[ ReceivingController::class,'assignItem' ]);
         Route::resource('preview', PreviewController::class);
-        Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');;
+        Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf.generatePDF');
         Route::get('/receiving/my-receiving/{receivingId}', [ReceivingController::class, 'myReceiving'])->name('receiving.myReceiving');
         Route::get('item/{itemId}/restore',[ItemController::class, 'restoreItem'])->name('item.restoreItem');
         Route::get('receiving/{id}/restore',[ReceivingController::class, 'restoreReceiving'])->name('receiving.restoreReceiving');
@@ -66,17 +71,20 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         Route::delete('item/{id}/forceDeleteItem',[ItemController::class, 'forceDeleteItem'])->name('item.forceDeleteItem');
 
         // Route::get('item/{itemId}/restore',[ItemController::class, 'restoreItem'])->name('item.restoreItem');;
-         Route::post('/items', [ItemController::class, 'submit'])->name('item.submit');
+        // Route::post('/items', [ItemController::class, 'store'])->name('item.submit');
         // Route::post('/items/store', [ItemController::class, 'store'])->name('items.store');
         Route::get('/deliverables/my-deliverable/{deliverableId}', [DeliverablesController::class, 'myDeliverable'])->name('deliverable.myDeliverable');
         Route::get('/stockrequisition/my-stockrequest/{stockrequestId}', [StockRequisitionController::class, 'myStockRequest'])->name('stockrequest.myStockRequest');
+        Route::post('/receiving/itemreceiving/store', [ReceivingController::class, 'storeItemReceiving'])->name('receiving.item.store');
+        Route::put('/receiving/itemreceiving/{receiving}', [ReceivingController::class, 'updateItemReceiving'])->name('receiving.item.update');
         Route::post('receiving/create', [ItemController::class,'storeItem'])->name('item.storeItem');
         Route::post('receiving/create', [ItemController::class,'itemMrr'])->name('item.itemMrr');
-        Route::post('/item/submit', [ItemController::class, 'submit'])->name('item.submit');
+        // Route::post('/item/submit', [ItemController::class, 'submit'])->name('item.submit');
         Route::post('receiving/submit', [ReceivingController::class, 'submitItem'])->name('receiving.submitItem');
         Route::post('/item/upsert', [ItemController::class, 'upsert'])->name('item.upsert');
         Route::post('item/replicateEditItemDr', [ItemController::class, 'replicateEditItemDrt'])->name('item.replicateEditItemDr');
         Route::get('deliverables/{id}/updateDone',[DeliverablesController::class, 'updateDone'])->name('deliverables.updateDone');
+        Route::get('deliverables/{id}/undoApproval',[DeliverablesController::class, 'undoApproval'])->name('deliverables.undoApproval');
         // status routes
         Route::get('item/{id}/updateDone',[ItemController::class, 'updateDone'])->name('item.updateDone');
         Route::get('receiving/{id}/updatemrrStatus',[ReceivingController::class, 'updatemrrStatus'])->name('receiving.updatemrrStatus');

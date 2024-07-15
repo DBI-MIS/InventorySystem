@@ -323,7 +323,7 @@ class DeliverablesController extends Controller
                 }
     
               
-                return back()->with('success', "DR \"{$deliverable->dr_no}\" marked as Processed and items updated.");
+                return back()->with('success', "DR \"{$deliverable->dr_no}\"  is pending for and items are on process.");
             }
         }
     
@@ -331,6 +331,29 @@ class DeliverablesController extends Controller
         return back()->with('success', "Error: DR \"{$deliverable->id}\" not found.");
     }
 
+
+    public function undoApproval(Item $item, int $id) {
+        $deliverable = Deliverables::find($id);
+
+        if ($deliverable) {
+    
+                $deliverable->is_done = false; // Set deliverable as pending
+                $deliverable->status = "pending";
+                $deliverable->save();
+
+                               
+                foreach ($deliverable->itemsDeliverables as $item) {
+                  
+                    $item->statuses = "pending";
+                    $item->save();
+                }
+
+                return back()->with('success', "Successfully undo Approval for  DR \"{$deliverable->id}\", DR is now pending ");
+    
+            }
+       
+        return back()->with('success', "Error: DR \"{$deliverable->id}\" not found.");
+    }
     public function updateApprove(int $id) {
         $deliverable = Deliverables::find($id);
        
@@ -374,7 +397,7 @@ class DeliverablesController extends Controller
                         }
                             $updatedStatus =  $deliverable->status;
                       
-                        return back()->with('success', `DR \"{$deliverable->dr_no}\" marked as $updatedStatus and items updated.`);
+                        return back()->with('success', `Success: DR \"{$deliverable->dr_no}\" marked as $updatedStatus and items updated.`);
                     }
                 }
             
@@ -405,6 +428,7 @@ class DeliverablesController extends Controller
             }
             return back()->with('success', `DR \"{$deliverable->dr_no}\" successfully rejected!`);
         }
+          return back()->with('success', `DR \"{$deliverable->dr_no}\" successfully rejected!`);
     }
     public function updateCancel(int $id) {
         $deliverable = Deliverables::find($id);

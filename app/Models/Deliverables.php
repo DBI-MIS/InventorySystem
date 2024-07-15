@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Deliverables extends Model
 {
 
-    Use SoftDeletes;
+    Use SoftDeletes,LogsActivity;
 
     protected $casts = [
         'id' => 'string',
@@ -35,6 +37,26 @@ class Deliverables extends Model
          'user_id'
         
     ];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('deliverable')
+            ->setDescriptionForEvent(fn(string $eventName) => "Deliverable has been {$eventName}")
+            ->logOnly([
+                'dr_no',
+                'address',
+                'stockrequest_id',
+                'dr_date',
+                'dr_qty',
+                'client_id',
+                'address_id',
+                'remarks',
+                'status',
+                'is_done',
+                 'user_id'
+               
+            ]); 
+    }
 
 
     public function item()

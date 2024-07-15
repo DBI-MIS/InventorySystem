@@ -20,6 +20,8 @@ class Archive extends Model
         'deliverable_id',
         'trashed_from',
     ];
+
+
     public function items()
     {
         return $this->hasMany(Item::class);
