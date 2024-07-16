@@ -464,9 +464,24 @@ public function show(Receiving $receiving, Request $request)
 
         foreach ($validated['items'] as $item) {
             $item = Item::create([
-                'sku_prefix' => $validated['sku_prefix']
+                'sku_prefix' => $validated['sku_prefix'],
+                'sku' => $validated['sku'],
+                'name' => $validated['name'],
+                'brand_id' => $validated['brand_id'],
+                'category_id' => $validated['category_id'],
+                'description' => $validated['description'],
+                'specs' => $validated['specs'],
+                'part_no' => $validated['part_no'],
+                'serial_no' => $validated['serial_no'],
+                'model_no' => $validated['model_no'],
+                'uom' => $validated['uom'],
+                'quantity' => $validated['quantity'],
+                'location_id' => $validated['location_id'],
+                'employee_id' => $validated['employee_id'],
             ]);
+            $itemreceived->items()->attach($item->id);
         }
+        return redirect()->route('receiving.create');
     }
 
     public function updateItemReceiving(UpdateItemReceivingRequest $request, Receiving $receiving)

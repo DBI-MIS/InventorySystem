@@ -7,7 +7,17 @@ export default function Index({logs, auth}) {
 
 console.log(logs)
 // const activityLogs = logs.data;
-
+// format the attributes to make it more readable
+const formatAttributes = (attributes) => {
+  return Object.entries(attributes).map(([key, value]) => (
+    <span
+      key={key}
+      className="inline-block px-2 py-1 mr-2 mb-2 text-xs font-semibold text-white bg-main/60 rounded"
+    >
+      <strong>{key}:</strong> {key === 'id' ? Number(value) : String(value)}
+    </span>
+  ));
+};
 
   return (
     <AuthenticatedLayout
@@ -56,24 +66,31 @@ console.log(logs)
                                 <TableHeading  className=""  
                               >Properties</TableHeading>
                               {/* <TableHeading className="" 
-                              >Event</TableHeading>
+                              >Event</TableHeading> */}
                               <TableHeading className=""  
                               >Created Date</TableHeading>
-                                <div className="text-right">Actions</div> */}
+                               
                               </tr>
                             </thead>
                                 <tbody>
                                     {logs.data.map((log, index)=>(
                                          <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`} key={log.id}>
                                             <td  className="w-[50px] py-2 ">{log.id}</td>
-                                            <td className="w-[300px] py-2 ">{log.log_name}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap ">{log.log_name}</td>
                                             <td className="w-[300px] py-2 ">{log.description}</td>
                                             {/* <td className="w-[300px] py-2 ">{log.subject_type}</td> */}
-                                            <td className="w-[300px] py-2 ">{log.subject_id}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap ">{log.subject_id}</td>
                                             {/* <td className="w-[300px] py-2 ">{log.causer_id}</td> */}
-                                            <td className="text-wrap">{JSON.stringify(log.properties)}</td>
-                                            {/* <td>{log.event}</td>
-                                            <td>{new Date(log.created_at).toLocaleString()}</td> */}
+                                            {/* <td className="text-wrap">{JSON.stringify(log.properties)}</td> */}
+                                            <td>
+                                            {log.properties.attributes ? (
+                                              formatAttributes(log.properties.attributes)
+                                            ) : (
+                                              'No attributes found'
+                                            )}
+                                          </td>
+                                            {/* <td className="px-6 py-4 whitespace-nowrap ">{log.event}</td> */}
+                                            <td className="px-6 py-4 whitespace-nowrap ">{new Date(log.created_at).toLocaleString()}</td>
                                         </tr>
                                     ))}
                                 </tbody>

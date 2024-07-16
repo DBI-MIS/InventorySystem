@@ -24,7 +24,7 @@ class StoreClientRequest extends FormRequest
         return [
             "name" => ['required', 'regex:/^[\w\s]+$/', 'min:2','max:255'],
             "address" => ['required', 'regex:/(^[-0-9A-Za-z.,\/ ]+$)/','min:2','max:255'],
-            "contact_person"=> ['required','min:3', 'alpha','max:255'],
+            "contact_person"=> ['required','min:3', 'regex:/^[a-zA-Z ]+$/','max:255'],
             "contact_no"=> ['required','regex:/^[0-9+]+$/', 'max:13', "min:12"],
             "tin_no"=> ['required','regex:/^[0-9-]+$/', 'max:15', 'min:12'], //num & hypen only
             "status"=> ['required','min:2', 'max:20'],

@@ -133,7 +133,8 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
         
         
         // Inertia.post(route('item.submit'), formData)
-        post(route('item.submit'), formData)
+        post(route("receiving.storeItemReceiving"));
+        post(route("item.store"));
             
     //     const newSkus = [...skus, formData.sku];
     // setSkus(newSkus);

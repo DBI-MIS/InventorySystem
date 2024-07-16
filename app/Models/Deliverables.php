@@ -58,7 +58,12 @@ class Deliverables extends Model
             ]); 
     }
 
+   
 
+    public function itemsDeliverables()
+    {
+        return $this->belongsToMany(Item::class, 'deliverable_item', 'deliverables_id', 'item_id')->withTimestamps();
+    }
     public function item()
     {
         return $this->belongsTo(Item::class);
@@ -78,10 +83,7 @@ class Deliverables extends Model
     }
     
 
-    public function itemsDeliverables()
-    {
-        return $this->belongsToMany(Item::class, 'deliverable_item', 'deliverables_id', 'item_id')->withTimestamps();
-    }
+   
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
