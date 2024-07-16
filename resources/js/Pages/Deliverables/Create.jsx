@@ -28,6 +28,7 @@ export default function Create({
     
 
     console.log(data);
+    console.log("stockrequest", stockrequests);
 
     const [selectedOptions, setSelectedOptions] = useState([]);
 

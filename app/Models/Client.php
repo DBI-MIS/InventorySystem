@@ -39,7 +39,7 @@ class Client extends Model
                 'tin_no',
                 'status',
                 'remarks',
-                'user_id'
+                'user.name'
                
             ]); 
     }

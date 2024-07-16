@@ -14,13 +14,18 @@ class LogController extends Controller
     {
         
 
-        $query =  Activity::query();
+        $query = Activity::with('causer'); // Ensure the causer relationship is loaded
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
-
-        
-        $logs  = $query->orderBy($sortField, $sortDirection)
-        ->paginate(10);
+    
+        $logs = $query->orderBy($sortField, $sortDirection)->paginate(10);
+    
+        // Transform the logs to include causer's name
+        $logs->getCollection()->transform(function ($log) {
+            $log->causer_name = $log->causer ? $log->causer->name : 'Unknown';
+            return $log;
+        });
+    
         // dd($logs);
         return inertia("Log/Index", [
             'logs' => $logs,

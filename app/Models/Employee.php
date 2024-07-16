@@ -33,7 +33,7 @@ class Employee extends Model
                 'company',
                 'department',
                 'remarks',
-                'user_id'
+                 'user.name'
                
             ]); 
     }

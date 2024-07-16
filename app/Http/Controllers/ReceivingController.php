@@ -422,70 +422,53 @@ public function show(Receiving $receiving, Request $request)
         $receiving->save();
     }
 
-    public function storeItemReceiving(StoreItemReceivingRequest $request)
-    {
-        $validated = $request->validate();
+     public function storeItemReceiving(StoreItemReceivingRequest $request)
+     {
+         $validated = $request->validate();
 
-        $itemreceived = Receiving::create([
-            "mrr_no" => [
-            'required', 
-            'min:8',
-            'max:12'
-           
-        ],
-        "client_id"=>
-        [
-            'required',  
-            'min:1',
-            'exists:clients,id'
-        ],
-        "si_no" =>[
-            'required',
-            'max:255'
-        ],
-        "deliver_id"=>[
-            'required',
-            'exists:deliverables,id'
-        ],
-        "address"=>[
-            'nullable','string'
-        ],
-        "remarks"=>[
-            'nullable',
-            'string'
-        ],
-         "items" =>[
-             'nullable'
-         ],
-         "items.*.id" => [
-                'nullable', 'exists:items,id'
-            ],
-        ]);
+         $itemreceived = Receiving::create([
+            
+             'sku_prefix' => $validated['sku_prefix'],
+                 'sku' => $validated['sku'],
+                 'name' => $validated['name'],
+                 'brand_id' => $validated['brand_id'],
+                 'category_id' => $validated['category_id'],
+                 'description' => $validated['description'],
+                 'specs' => $validated['specs'],
+                 'part_no' => $validated['part_no'],
+                 'serial_no' => $validated['serial_no'],
+                 'model_no' => $validated['model_no'],
+                 'uom' => $validated['uom'],
+                 'quantity' => $validated['quantity'],
+                 'location_id' => $validated['location_id'],
+                 'employee_id' => $validated['employee_id'],
+            
+         ]);
 
-        foreach ($validated['items'] as $item) {
-            $item = Item::create([
-                'sku_prefix' => $validated['sku_prefix'],
-                'sku' => $validated['sku'],
-                'name' => $validated['name'],
-                'brand_id' => $validated['brand_id'],
-                'category_id' => $validated['category_id'],
-                'description' => $validated['description'],
-                'specs' => $validated['specs'],
-                'part_no' => $validated['part_no'],
-                'serial_no' => $validated['serial_no'],
-                'model_no' => $validated['model_no'],
-                'uom' => $validated['uom'],
-                'quantity' => $validated['quantity'],
-                'location_id' => $validated['location_id'],
-                'employee_id' => $validated['employee_id'],
-            ]);
-            $itemreceived->items()->attach($item->id);
-        }
-        return redirect()->route('receiving.create');
-    }
+         foreach ($validated['items'] as $item) {
+             $newItem = Item::create([
+                 'sku_prefix' => $item['sku_prefix'],
+                 'sku' => $item['sku'],
+                 'name' => $item['name'],
+                 'brand_id' => $item['brand_id'],
+                 'category_id' => $item['category_id'],
+                 'description' => $item['description'],
+                 'specs' => $item['specs'],
+                 'part_no' => $item['part_no'],
+                 'serial_no' => $item['serial_no'],
+                 'model_no' => $item['model_no'],
+                 'uom' => $item['uom'],
+                 'quantity' => $item['quantity'],
+                 'location_id' => $item['location_id'],
+                 'employee_id' => $item['employee_id'],
+             ]);
+             $itemreceived->items()->attach($newItem->id);
+         }
+         return redirect()->route('receiving.create');
+     }
 
-    public function updateItemReceiving(UpdateItemReceivingRequest $request, Receiving $receiving)
-    {
+    // public function updateItemReceiving(UpdateItemReceivingRequest $request, Receiving $receiving)
+    // {
     
-    }
+    // }
 }

@@ -31,7 +31,7 @@ class Category extends Model
                 'name',
                 'description',
                 'sku_prefix',
-                'user_id'
+                 'user.name'
                
             ]); 
     }

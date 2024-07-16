@@ -26,18 +26,6 @@ return new class extends Migration
             $table->string('location_id')->default(1);
             $table->string('remarks')->nullable();
             $table->string('status')->default('pending');
-            $table->string('sku');
-            $table->string('name');
-            $table->string('brand_id')->nullable();
-            $table->string('category_id')->nullable();
-            $table->longText('description')->charset('binary')->nullable();
-            $table->string('specs')->nullable();
-            $table->string('part_no')->nullable();
-            $table->string('serial_no')->nullable();
-            $table->string('model_no')->nullable();
-            $table->string('employee_id')->nullable();
-            $table->string('uom');
-            $table->integer('quantity');
             $table->foreignIdFor(User::class)->constrained();
             $table->softDeletes();
             $table->timestamps();

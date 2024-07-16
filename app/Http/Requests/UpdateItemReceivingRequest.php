@@ -22,57 +22,35 @@ class UpdateItemReceivingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "mrr_no" => [
-            'required', 
-            'min:8',
-            'max:12'
-           
-        ],
-        "client_id"=>
-        [
-            'required',  
-            'min:1',
-            'exists:clients,id'
-        ],
-        "si_no" =>[
-            'required',
-            'max:255'
-        ],
-        "deliver_id"=>[
-            'required',
-            'exists:deliverables,id'
-        ],
-        "address"=>[
-            'nullable','string'
-        ],
-        "remarks"=>[
-            'nullable',
-            'string'
-        ],
-         "items" =>[
-             'nullable'
-         ],
-         "items.*.id" => [
-                'nullable', 'exists:items,id'
-            ],
-         'items' => 'required|array',
-         'items.*.id' => 'nullable|exists:item_receiving,id',
-         'items.*.name' => 'required|regex:/^[A-Za-z0-9 ]+$/|min:2|max:255',
-         'items.*.sku' => 'required|numeric|min:2|max:255',
-         'items.*.brand_id' => 'required|min:1|exists:brands,id',
-         'items.*.category_id' => 'required|min:1|exists:categories,id',
-         'items.*.description' => 'required|min:2|string',
-         'items.*.specs' => 'required|alpha_num|string',
-         'items.*.part_no' => 'nullable|alpha_num|max:255',
-         'items.*.serial_no' => 'nullable|alpha_num|max:255',
-         'items.*.model_no' => 'nullable|alpha_num|max:255',
-         'items.*.uom' => 'required|alpha|max:20',
-         'items.*.quantity' => 'required|numeric|min:1',
-         'items.*.qty_out' => 'nullable|numeric|min:1',
-         'items.*.location_id' => 'required|exists:locations,id',
-         'items.*.employee_id' => 'nullable|exists:employees,id',
-         'items.*.statuses' => 'required|max:255',
-         'items.*.remark' => 'required|alpha_num|max:255',
+            'sku_prefix' => 'required|string',
+            'sku' => 'required|string',
+            'name' => 'required|string',
+            'brand_id' => 'required|integer',
+            'category_id' => 'required|integer',
+            'description' => 'nullable|string',
+            'specs' => 'nullable|string',
+            'part_no' => 'nullable|string',
+            'serial_no' => 'nullable|string',
+            'model_no' => 'nullable|string',
+            'uom' => 'required|string',
+            'quantity' => 'required|integer',
+            'location_id' => 'required|integer',
+            'employee_id' => 'required|integer',
+            'items' => 'required|array',
+            'items.*.sku_prefix' => 'required|string',
+            'items.*.sku' => 'required|string',
+            'items.*.name' => 'required|string',
+            'items.*.brand_id' => 'required|integer',
+            'items.*.category_id' => 'required|integer',
+            'items.*.description' => 'nullable|string',
+            'items.*.specs' => 'nullable|string',
+            'items.*.part_no' => 'nullable|string',
+            'items.*.serial_no' => 'nullable|string',
+            'items.*.model_no' => 'nullable|string',
+            'items.*.uom' => 'required|string',
+            'items.*.quantity' => 'required|integer',
+            'items.*.location_id' => 'required|integer',
+            'items.*.employee_id' => 'required|integer',
         ];
     }
 }

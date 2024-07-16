@@ -40,7 +40,7 @@ class StockRequisition extends Model
                 'sr_item',
                 'sr_description',
                 'sr_notes',
-                'user_id'
+                 'user.name'
             ]); 
     }
 

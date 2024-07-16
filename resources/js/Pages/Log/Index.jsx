@@ -8,23 +8,36 @@ export default function Index({logs, auth}) {
 console.log(logs)
 // const activityLogs = logs.data;
 // format the attributes to make it more readable
-const formatAttributes = (attributes) => {
-  return Object.entries(attributes).map(([key, value]) => (
-    <span
-      key={key}
-      className="inline-block px-2 py-1 mr-2 mb-2 text-xs font-semibold text-white bg-main/60 rounded"
-    >
-      <strong>{key}:</strong> {key === 'id' ? Number(value) : String(value)}
-    </span>
-  ));
+const customLabelKey = {
+  'client.name': 'client name',
+  'deliver.dr_no': 'dr_no',
+  'user.name' : 'created by',
+  'updatedBy.name' : 'updated by',
+  'stockrequest.rs_no' : 'rs_no'
+ 
 };
+
+const formatAttributes = (attributes) => {
+  return Object.entries(attributes).map(([key, value]) => {
+    const displayKey = customLabelKey[key] || key; 
+    return (
+      <span
+        key={key}
+        className="inline-block px-2 py-1 mr-2 mb-2 text-xs font-semibold text-white bg-main/60 rounded"
+      >
+        <strong>{displayKey}:</strong> {key === 'id' ? Number(value) : String(value)}
+      </span>
+    );
+  });
+};
+
 
   return (
     <AuthenticatedLayout
     user={auth.user}
     header={
       <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight">Inventory</h2>   
+        <h2 className="font-semibold text-2xl text-blue-600 dark:text-gray-200 leading-tight">Activity Logs</h2>   
       </div>
   }
     >
@@ -45,9 +58,7 @@ const formatAttributes = (attributes) => {
                          
                           </div>
                         </div>
-                    
                         <div>
-                            <h1>Activity Logs</h1>
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
                             <thead className="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                               <tr className="">
@@ -57,16 +68,13 @@ const formatAttributes = (attributes) => {
                               >Log Name </TableHeading>
                                 <TableHeading  className=""  
                               >Description</TableHeading>
-                                {/* <TableHeading  className=""  
-                              >Subject Type</TableHeading> */}
+                              
                                 <TableHeading className="" 
                               >Subject ID</TableHeading>
-                                {/* <TableHeading className=""  
-                              >Causer ID</TableHeading> */}
                                 <TableHeading  className=""  
                               >Properties</TableHeading>
-                              {/* <TableHeading className="" 
-                              >Event</TableHeading> */}
+                                <TableHeading  className=""  
+                              >Action By</TableHeading>
                               <TableHeading className=""  
                               >Created Date</TableHeading>
                                
@@ -77,12 +85,9 @@ const formatAttributes = (attributes) => {
                                          <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`} key={log.id}>
                                             <td  className="w-[50px] py-2 ">{log.id}</td>
                                             <td className="px-6 py-4 whitespace-nowrap ">{log.log_name}</td>
-                                            <td className="w-[300px] py-2 ">{log.description}</td>
-                                            {/* <td className="w-[300px] py-2 ">{log.subject_type}</td> */}
+                                            <td className="w-[200px] py-2 ">{log.description}</td>
                                             <td className="px-6 py-4 whitespace-nowrap ">{log.subject_id}</td>
-                                            {/* <td className="w-[300px] py-2 ">{log.causer_id}</td> */}
-                                            {/* <td className="text-wrap">{JSON.stringify(log.properties)}</td> */}
-                                            <td>
+                                            <td className="px-6 py-4  ">
                                             {log.properties.attributes ? (
                                               formatAttributes(log.properties.attributes)
                                             ) : (
@@ -90,6 +95,7 @@ const formatAttributes = (attributes) => {
                                             )}
                                           </td>
                                             {/* <td className="px-6 py-4 whitespace-nowrap ">{log.event}</td> */}
+                                            <td className="w-[105px] py-2">{log.causer_name}</td>
                                             <td className="px-6 py-4 whitespace-nowrap ">{new Date(log.created_at).toLocaleString()}</td>
                                         </tr>
                                     ))}

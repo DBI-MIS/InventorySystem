@@ -93,27 +93,18 @@ class Item extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Item has been {$eventName}")
             ->logOnly([
                 'id',
+                'category.sku_prefix',
                 'sku',
                 'name',
-                'brand_id',
-                'category_id',
-                'description',
-                'specs',
-                'part_no',
-                'serial_no',
-                'model_no',
-                'uom',
                 'quantity',
                 'qty_out',
-                'location_id',
-                'employee_id',
                 'statuses',
                 'is_done',
-                'remark',
-                'user_id',
-                'updated_by'
-            ]);
-            // ->logOnlyDirty();
+                'user.name',
+                'updatedBy.name'
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
         }
     
         // public function restore()

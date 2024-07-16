@@ -28,9 +28,10 @@ class Brand extends Model
             ->logOnly([
                 'name',
                 'description',
-                'user_id'
+                'user.name'
                
-            ]); 
+            ])
+            ->dontSubmitEmptyLogs();
     }
 
     public function item(){

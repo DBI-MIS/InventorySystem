@@ -28,18 +28,6 @@ class Receiving extends Model
         'employee_id',
         'remarks',
         'status',
-        'sku_prefix',
-        'sku',
-        'name',
-        'brand_id',
-        'category_id',
-        'description',
-        'specs',
-        'part_no',
-        'serial_no',
-        'model_no',
-        'uom',
-        'quantity',
         'user_id'
     
     ];
@@ -51,17 +39,14 @@ class Receiving extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Receiving has been {$eventName}")
             ->logOnly([
                 'mrr_no',
-                'client_id',
-                'si_no',
-                'deliver_id',
-                'address',
-                'location_id',
-                'employee_id',
-                'remarks',
+                'client.name',
+                'deliver.dr_no',
                 'status',
-                'user_id'
+                 'user.name'
                
-            ]); 
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     

@@ -145,6 +145,12 @@ class DeliverablesController extends Controller
      */
     public function show(Deliverables $deliverable)
     {
+
+        // $itemsLog = $deliverable->itemsDeliverables->map(function ($item) {
+        //     return $item->id; }); this is correct!
+            // dd($itemsLog);
+
+
         $deliverable->load('itemsDeliverables'); //Load relationship
     
         return inertia('Deliverables/Show', [

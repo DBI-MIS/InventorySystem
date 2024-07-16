@@ -30,7 +30,7 @@ class Location extends Model
                 'name',
                 'company',
                 'address',
-                'user_id'
+                 'user.name'
                
             ]); 
     }
