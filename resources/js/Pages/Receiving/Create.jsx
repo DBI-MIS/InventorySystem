@@ -50,8 +50,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                 );
                 return { ...selectedItem };
             });
-              
-               
+
             setData({
                 ...data,
                 items: items.map((item) => ({ ...item, items: item.id })),
@@ -72,8 +71,6 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
         part_no: '',
         serial_no: '',
         model_no: '',
-        category_id: '',
-        brand_id: '',
         uom: '',
         quantity:'',
         statuses: '',
@@ -118,42 +115,26 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
      const [isRtl, setIsRtl] = useState(false);
      let skuIds = [];
 
-    // const  handleChange= (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData(prevState => ({
-    //     ...prevState,
-    //     [name]: value
-    //     }));
-    // };
+    const  handleChange= (event) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+        }));
+    };
     useEffect(() => {
         console.log('Current MODAL data:', formData); 
     }, [formData]);
     console.log(data);
 
     console.log("sku ids", skuIds)
-    const handleNewItemSubmit = async (e) => {
+    const handleNewItemSubmit = (e) => {
         e.preventDefault();
         
         
-        //  Inertia.post(route('item.submit'), formData);
-        try {
-            const response = await Inertia.post(route('item.submit'), formData);
-            const newItem = response.data; // Assuming the server returns the newly created item data
-    
-            // Update data.items with the new item
-            setData(prevState => ({
-                ...prevState,
-                items: [...prevState.items, newItem],
-            }));
-    
-            // Close the modal
-            setShowModal(false);
-        } catch (error) {
-            console.error('Error submitting new item:', error);
-            // Handle error, show message, etc.
-        }
-        // post(route("receiving.store"), formData);
-        // post(route("item.store"));
+        // Inertia.post(route('item.submit'), formData)
+        
+        post(route("item.submit"), formData);
             
     //     const newSkus = [...skus, formData.sku];
     // setSkus(newSkus);
@@ -472,7 +453,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                             value={formData.name}
                                                                             className="mt-1 block w-full"
                                                                             isFocused={true}
-                                                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                                            onChange={handleChange}
                                                                         />
                                                                       <InputError message={errors.name} className="mt-2"/>
                                                                 </div>
@@ -481,7 +462,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         <div className=" flex h-[11]">
                                                                             <SelectInput
                                                                                 value={formData.category_id}
-                                                                                onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+                                                                                onChange={handleChange}
                                                                                 id="item_category_id"
                                                                                 name="category_id"
                                                                                 className="mt-1 block w-full">
@@ -501,7 +482,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                             name="brand_id"
                                                                             value={formData.brand_id}
                                                                             className="mt-1 block w-full"
-                                                                            onChange={(e) => setFormData({ ...formData, brand_id: e.target.value })}>
+                                                                            onChange={handleChange}>
                                                                             <option value="">Select Brand </option>
                                                                                 {brands.data.map((brand)=>(
                                                                                     <option value={brand.id} key={brand.id}>{brand.name}</option>
@@ -519,7 +500,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                                 placeholder="Enter Quantity"
                                                                                 value={formData.quantity}
                                                                                 className="mt-1 block w-full"
-                                                                                onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                                                                                onChange={handleChange}
                                                                             />
                                                                             <InputError message={errors.quantity} className="mt-2"/>
                                                                      </div>
@@ -529,7 +510,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                             id="item_uom"
                                                                             name="uom"
                                                                             className="mt-1 block w-full"
-                                                                            onChange={(e) => setFormData({ ...formData, uom: e.target.value })} >
+                                                                            onChange={handleChange} >
                                                                             <option value="">Select UOM </option>
                                                                             <option value="M">Meters</option>
                                                                             <option value="Kg">Kilograms</option>
@@ -551,7 +532,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         value={formData.description}
                                                                         className="mt-1 block w-full resize-none"
                                                                         rows="5"
-                                                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                                                        onChange={handleChange}
                                                                     />
                                                                     <InputError message={errors.description} className="mt-2"/>
                                                                 </div>
@@ -565,7 +546,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         value={formData.specs}
                                                                         className="mt-1 block w-full resize-none"
                                                                         rows="5"
-                                                                        onChange={(e) => setFormData({ ...formData, specs: e.target.value })}
+                                                                        onChange={handleChange}
                                                                     />
                                                                     <InputError message={errors.specs} className="mt-2"/>
                                                                 </div>
@@ -579,7 +560,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         value={formData.remark}
                                                                         className="mt-1 block w-full resize-none"
                                                                         rows="5"
-                                                                        onChange={(e) => setFormData({ ...formData, remark: e.target.value })}
+                                                                        onChange={handleChange}
                                                                     />
                                                                     <InputError message={errors.remark} className="mt-2"/>
                                                                 </div>
@@ -628,7 +609,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                     name="serial_no"
                                                                     value={formData.serial_no}
                                                                     className="mt-1 block w-full"
-                                                                    onChange={(e) => setFormData({ ...formData, serial_no: e.target.value })}
+                                                                    onChange={handleChange}
                                                                  />
                                                                  <InputError message={errors.serial_no} className="mt-2"/>
                                                             </div>
@@ -642,7 +623,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                     placeholder="Enter Model Number"
                                                                     value={formData.model_no}
                                                                     className="mt-1 block w-full"
-                                                                    onChange={(e) => setFormData({ ...formData, model_no: e.target.value })}
+                                                                    onChange={handleChange}
                                                                   />
                                                                  <InputError message={errors.model_no} className="mt-2"/>
                                                             </div>
@@ -656,7 +637,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         placeholder="Enter Part Number"
                                                                         value={formData.part_no}
                                                                         className="mt-1 block w-full"
-                                                                        onChange={(e) => setFormData({ ...formData, part_no: e.target.value })}
+                                                                        onChange={handleChange}
                                                                  />
                                                                   <InputError message={errors.part_no_id} className="mt-2"/>
                                                             </div>
@@ -668,7 +649,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                     name="location_id"
                                                                     className="mt-1 block w-full"
                                                                     value={formData.location_id}
-                                                                    onChange={(e) => setFormData({ ...formData, location_id: e.target.value })}>
+                                                                    onChange={handleChange}>
                                                                      {locations.data.map((location)=>(
                                                                           <option value={location.id} key={location.id}>{location.name}</option>
 
@@ -684,7 +665,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                     name="employee_id"
                                                                     className="mt-1 block w-full"
                                                                     value={formData.employee_id}
-                                                                    onChange={'#'}>
+                                                                    onChange={handleChange}>
                                                                      <option value="">Select Employee</option>
                                                                      {employees.data.map((employee)=>(
                                                                         <option value={employee.id} key={employee.id}>{employee.name}</option>

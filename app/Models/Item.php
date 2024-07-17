@@ -93,8 +93,6 @@ class Item extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Item has been {$eventName}")
             ->logOnly([
                 'id',
-                'category.sku_prefix',
-                'sku',
                 'name',
                 'quantity',
                 'qty_out',
@@ -102,9 +100,8 @@ class Item extends Model
                 'is_done',
                 'user.name',
                 'updatedBy.name'
-            ])
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ]);
+          
         }
     
         // public function restore()

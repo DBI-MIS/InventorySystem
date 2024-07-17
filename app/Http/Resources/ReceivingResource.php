@@ -24,6 +24,7 @@ class ReceivingResource extends JsonResource
         
         return[
             'id' => $this->id,
+            'name' => $this->name,
             'mrr_no'=> $this->mrr_no,
             'group_item_id' => $this->group_item_id,
             'client_id'=> $this->client_id,

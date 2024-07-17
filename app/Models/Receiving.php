@@ -19,6 +19,7 @@ class Receiving extends Model
 
     protected $fillable = [
         'mrr_no',
+        'name',
         'group_item_id', 
         'client_id',
         'si_no',

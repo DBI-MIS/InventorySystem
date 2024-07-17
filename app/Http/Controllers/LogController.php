@@ -20,11 +20,13 @@ class LogController extends Controller
     
         $logs = $query->orderBy($sortField, $sortDirection)->paginate(10);
     
-        // Transform the logs to include causer's name
-        $logs->getCollection()->transform(function ($log) {
-            $log->causer_name = $log->causer ? $log->causer->name : 'Unknown';
-            return $log;
-        });
+           // Transform the logs to include causer's name and route
+            $logs->getCollection()->transform(function ($log) {
+                $log->causer_name = $log->causer ? $log->causer->name : 'Unknown';
+                $log->route = $log->properties['route'] ?? 'Unknown';
+                return $log;
+            });
+
     
         // dd($logs);
         return inertia("Log/Index", [

@@ -4,34 +4,50 @@ import TableHeading from "@/Components/TableHeading";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head} from "@inertiajs/react" ;
 export default function Index({logs, auth}) {
+  console.log("LOGS", logs)
 
-console.log(logs)
-// const activityLogs = logs.data;
-// format the attributes to make it more readable
-const customLabelKey = {
-  'client.name': 'client name',
-  'deliver.dr_no': 'dr_no',
-  'user.name' : 'created by',
-  'updatedBy.name' : 'updated by',
-  'stockrequest.rs_no' : 'rs_no'
- 
-};
+  const customLabelKey = {
+    'client.name': 'client name',
+    'deliver.dr_no': 'dr no',
+    'user.name': 'created by',
+    'updatedBy.name': 'updated by',
+    'stockrequest.rs_no': 'rs_no',
+    'category.sku_prefix (old)' : 'sku prefix',
+    'category.sku_prefix' : 'sku prefix'
+  };
 
-const formatAttributes = (attributes) => {
-  return Object.entries(attributes).map(([key, value]) => {
-    const displayKey = customLabelKey[key] || key; 
+  const formatAttributes = (attributes, oldAttributes) => {
+    const currentAttributes = Object.entries(attributes).map(([key, value]) => {
+      const displayKey = customLabelKey[key] || key;
+      return (
+        <span
+          key={key}
+          className="inline-block px-2 py-1 mr-2 mb-2 text-xs font-semibold text-white bg-main/60 rounded"
+        >
+          <strong>{displayKey}:</strong> {key === 'id' ? Number(value) : String(value)}
+        </span>
+      );
+    });
+
+    const oldAttrs = oldAttributes ? Object.entries(oldAttributes).map(([key, value]) => {
+      const displayKey = customLabelKey[key] || key;
+      return (
+        <span
+          key={key}
+          className="inline-block px-2 py-1 mr-2 mb-2 text-xs font-semibold text-gray-500  bg-main/20 rounded"
+        >
+          <strong>{displayKey} (old):</strong> {key === 'id' ? Number(value) : String(value)}
+        </span>
+      );
+    }) : null;
+
     return (
-      <span
-        key={key}
-        className="inline-block px-2 py-1 mr-2 mb-2 text-xs font-semibold text-white bg-main/60 rounded"
-      >
-        <strong>{displayKey}:</strong> {key === 'id' ? Number(value) : String(value)}
-      </span>
+      <>
+        {currentAttributes}
+        {oldAttrs}
+      </>
     );
-  });
-};
-
-
+  };
   return (
     <AuthenticatedLayout
     user={auth.user}
@@ -73,6 +89,8 @@ const formatAttributes = (attributes) => {
                               >Subject ID</TableHeading>
                                 <TableHeading  className=""  
                               >Properties</TableHeading>
+                              {/* <TableHeading  className=""  
+                              >Pivot Tables</TableHeading> */}
                                 <TableHeading  className=""  
                               >Action By</TableHeading>
                               <TableHeading className=""  
@@ -87,14 +105,28 @@ const formatAttributes = (attributes) => {
                                             <td className="px-6 py-4 whitespace-nowrap ">{log.log_name}</td>
                                             <td className="w-[200px] py-2 ">{log.description}</td>
                                             <td className="px-6 py-4 whitespace-nowrap ">{log.subject_id}</td>
-                                            <td className="px-6 py-4  ">
+                                          {/* <td className="px-6 py-4">
                                             {log.properties.attributes ? (
-                                              formatAttributes(log.properties.attributes)
+                                              formatAttributes(log.properties.attributes, log.properties.old)
                                             ) : (
                                               'No attributes found'
                                             )}
-                                          </td>
-                                            {/* <td className="px-6 py-4 whitespace-nowrap ">{log.event}</td> */}
+                                          </td> */}
+                                           <td className="px-6 py-4">
+                                                {log.event === 'created' || log.event === 'restored' ? (
+                                                  log.properties.attributes ? (
+                                                    formatAttributes(log.properties.attributes, {})
+                                                  ) : (
+                                                    'No attributes found'
+                                                  )
+                                                ) : log.event === 'updated' ? (
+                                                  formatAttributes(log.properties.attributes, log.properties.old)
+                                                ) : log.event === 'deleted' ? (
+                                                  formatAttributes({}, log.properties.old)
+                                                ) : (
+                                                  'No attributes found'
+                                                )}
+                                              </td>
                                             <td className="w-[105px] py-2">{log.causer_name}</td>
                                             <td className="px-6 py-4 whitespace-nowrap ">{new Date(log.created_at).toLocaleString()}</td>
                                         </tr>
