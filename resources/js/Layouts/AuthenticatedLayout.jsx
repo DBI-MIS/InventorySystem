@@ -75,13 +75,15 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Locations</span>
                                 </div>
-
-                                <div class="group relative">
-                                <ResponsiveNavLink href={route('log.index')} active={route().current('log.index')}>
-                                    <NactivityLog className="block h-9 w-auto fill-current " />
-                                 </ResponsiveNavLink>
-                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Activity Logs</span>
-                              </div>
+                                
+                                {(user.role === 'admin' || user.role === 'super_admin') && (
+                                    <div class="group relative">
+                                    <ResponsiveNavLink href={route('log.index')} active={route().current('log.index')}>
+                                        <NactivityLog className="block h-9 w-auto fill-current " />
+                                    </ResponsiveNavLink>
+                                    <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Activity Logs</span>
+                                    </div>
+                                )}
 
 
                                 <div class="group relative">
