@@ -281,109 +281,12 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     // };
     
     const onSubmit = async (e) => {
+
         e.preventDefault();
-    
-        // Separate items into existing (with ID) and new (without ID)
-        const existingItems = [];
-        const newItems = [];
-        console.log("existingItems",existingItems);
-        console.log("newItems",newItems)
-        data.items.forEach(item => {
-            if (item.id) {
-                // Existing item (already has ID)
-                existingItems.push({
-                    id: item.id,
-                    name: item.name,
-                    sku: item.sku,
-                    brand_id: item.brand_id,
-                    category_id: item.category_id,
-                    mrr_no: item.mrr_no,
-                    description: item.description,
-                    specs: item.specs,
-                    part_no: item.part_no,
-                    serial_no: item.serial_no,
-                    model_no: item.model_no,
-                    uom: item.uom,
-                    quantity:item.quantity,
-                    qty_out: item.qty_out,
-                    statuses: item.statuses,
-                    employee_id : item.employee_id,
-                    remark:item.remark,
-                    location_id: item.location_id, // == DBI
-                    user_id: '',
-                });
-            } else {
-                // New item (does not have ID yet)
-                newItems.push({
-                    name: item.name,
-                    sku: item.sku,
-                    brand_id: item.brand_id,
-                    category_id: item.category_id,
-                    mrr_no: item.mrr_no,
-                    description: item.description,
-                    specs: item.specs,
-                    part_no: item.part_no,
-                    serial_no: item.serial_no,
-                    model_no: item.model_no,
-                    uom: item.uom,
-                    quantity:item.quantity,
-                    qty_out: item.qty_out,
-                    statuses: item.statuses,
-                    employee_id : item.employee_id,
-                    remark:item.remark,
-                    location_id: item.location_id, // == DBI
-                    user_id: '',
-                });
-            }
-        });
-    
-        try {
 
-                // Create new items (without ID)
-                if (newItems.length > 0) {
-                    route('item.store', {
-                       method: 'post', // Assuming the method is POST, change if necessary
-                       data: { items: newItems },
-                       preserveScroll: true,
-                       preserveState: true,
-                   });
-               }
-            // Update existing items (with ID)
-            if (existingItems.length > 0) {
-                for (const item of existingItems) {
-                  route('item.update', { item: item.id }, {
-                        method: 'post', // Assuming the method is POST, change if necessary
-                        data: item,
-                        preserveScroll: true,
-                        preserveState: true,
-                    });
-                }
-            }
-    
-        
-    
-            // Post receiving data
             post(route("receiving.store"));
-            
-            // // Optionally reset the form state or perform other actions after successful submission
-            // setData({
-            //     client_id: '',
-            //     mrr_no: '',
-            //     group_item_id: '',
-            //     si_no: '',
-            //     address: '',
-            //     remarks: '',
-            //     items: [],
-            // });
-    
-            console.log('Form submitted successfully');
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            // Handle errors as needed
-        }
+         
     };
-    
-
      useEffect(() => {
         // Set the mrr_no when the component mounts or mrr_no prop changes
         setData(prevData => ({ ...prevData, mrr_no }));
@@ -428,27 +331,6 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                     </SelectInput>
                                     <InputError message={errors.client_id} className="mt-2"/>
                                 </div>
-                                
-
-                                {/* <div className="mt-6 col-span-1">
-                                    <InputLabel htmlFor="receiving_status" value="Status"/>
-                                    <div>
-                                    <select value={status} onChange={handleStatusChange}>
-                                        <option value="pending">Pending</option>
-                                        <option value="processing">Processing</option>
-                                        <option value="done">Done</option>
-                                    </select>
-                                </div>
-                                    <InputError message={errors.status} className="mt-2"/>
-                                </div> */}
-                                {/* <div>
-                                    <label>Status:</label>
-                                    <select value={status} onChange={handleStatusChange}>
-                                        <option value="pending">Pending</option>
-                                        <option value="processing">Processing</option>
-                                        <option value="done">Done</option>
-                                    </select>
-                                </div> */}
                         
                                 <div className="mt-4 col-span-2">
                                     <InputLabel htmlFor="receiving_address" value="Address"/>
@@ -482,9 +364,6 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                             />
                                                         </div>
                                         </div>
-                                       {/* <button type="button" onClick={handleAddSKU}>
-                                            newly created Items
-                                        </button> */}
                                         <div className="mt-6 col-span-1">
                                         <InputLabel htmlFor="receiving_si_no" value="SI No."/>
                                                         <TextInput 
@@ -539,17 +418,17 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                             <button onClick={(e)=>(e.preventDefault(),setShowModal(true))}
                                                 className=" flex flex-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-md rounded-lg text-nowrap  px-16 py-2 text-center mr-5"
                                                 >
-                                                    <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  strokeWidth={1.5}
-                                  stroke="currentColor"
-                                  className="font-bold w-6 h-6"
-                                 >
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                                                    Add Item/s
+                                             <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                                className="font-bold w-6 h-6"
+                                                >
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>
+                                              Add Item/s
                                             </button> 
                                         </div>
                                     </div>
@@ -572,36 +451,34 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                             </tr>
                                         </thead>
                                         <tbody>
-                                    {data.items.map((item) => (
-                                        <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={`${item.sku}-${item.name}`}>
-                                            <td className="w-[60px] py-2 text-sm">{/* Display a suitable identifier, like SKU or combination */}</td>
-                                            <td className="w-[160px] py-2 text-sm">{item.sku_prefix ?? "No Sku Prefix"}-{item.sku ?? "No Sku"}</td>
-                                            <td className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
-                                                {item.name ?? "No Item Name"}
-                                            </td>
-                                            <td className="w-[160px] py-2 text-sm">{item.brand && item.brand.name ? item.brand.name : 'No Brand Name'}</td>
-                                            <td className="w-[160px] py-2 text-sm">{item.category && item.category.name ? item.category.name : "No Category Name"}</td>
-                                            <td className="w-[200px] py-2 text-sm">{item.model_no ?? "No Model Number"}</td>
-                                            <td className="w-[300px] py-2 text-sm">{item.part_no ?? "No Part Number"}</td>
-                                            <td className="w-[160px] py-2">{item.quantity ? (item.quantity + ' ' + (item.uom ?? "No UOM")) : 'No Quantity'}</td>
-                                            <td className="w-[100px] py-2">
-                                                {item.isNew && (
-                                                    <button
-                                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md"
-                                                        onClick={() => handleRemoveItem(item.sku, item.name)} // Pass unique identifier(s) to remove the correct item
-                                                    >
-                                                        Remove
-                                                    </button>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
+                                            {data.items.map((item) => (
+                                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={`${item.sku}-${item.name}`}>
+                                                    <td className="w-[60px] py-2 text-sm">{/* Display a suitable identifier, like SKU or combination */}</td>
+                                                    <td className="w-[160px] py-2 text-sm">{item.sku_prefix ?? "No Sku Prefix"}-{item.sku ?? "No Sku"}</td>
+                                                    <td className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
+                                                        {item.name ?? "No Item Name"}
+                                                    </td>
+                                                    <td className="w-[160px] py-2 text-sm">{item.brand && item.brand.name ? item.brand.name : 'No Brand Name'}</td>
+                                                    <td className="w-[160px] py-2 text-sm">{item.category && item.category.name ? item.category.name : "No Category Name"}</td>
+                                                    <td className="w-[200px] py-2 text-sm">{item.model_no ?? "No Model Number"}</td>
+                                                    <td className="w-[300px] py-2 text-sm">{item.part_no ?? "No Part Number"}</td>
+                                                    <td className="w-[160px] py-2">{item.quantity ? (item.quantity + ' ' + (item.uom ?? "No UOM")) : 'No Quantity'}</td>
+                                                    <td className="w-[100px] py-2">
+                                                        {item.isNew && (
+                                                            <button
+                                                                className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-1 rounded-full"
+                                                                onClick={() => handleRemoveItem(item.sku, item.name)} // unique keys
+                                                            >
+                                                                Remove
+                                                            </button>
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                       </tbody>
 
                                     </table>
                                 </div>
-
-
                         </div>
                         <div className="mt-4 col-span-2">
                                     <InputLabel htmlFor="receiving_remarks" value="Remarks"/>
@@ -896,8 +773,8 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                 
                                                          <div className="mt-4 text-right">
                                                          <button type="button" onClick={() => setShowModal(false)} className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-none hover:bg-gray-200 mr-2">
-                                Cancel
-                            </button>
+                                                            Cancel
+                                                        </button>
                                                              <button type="submit" className="bg-green-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-green-600">
                                                                     Submit
                                                              </button>
