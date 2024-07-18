@@ -188,6 +188,7 @@ class ReceivingController extends Controller
                   // Remove sku_prefix and isNew from item data
                 unset($itemData['sku_prefix']);
                 unset($itemData['isNew']);
+                
                 $itemData['updated_by'] = Auth::id();
                 $itemData['user_id'] = Auth::id();
                 // dd($itemData);

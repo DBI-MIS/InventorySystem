@@ -93,7 +93,7 @@ class DashboardController extends Controller
             ->map(function ($item) {
                 return [
                     'location_id' => $item->location_id,
-                    'location_name' => $item->location->name,
+                    // 'location_name' => $item->location->name,
                     'total_quantity' => $item->total_quantity
                 ];
             });
