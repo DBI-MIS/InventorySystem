@@ -180,13 +180,23 @@ class ReceivingController extends Controller
         $data['user_id'] = Auth::id();
         $receiving =Receiving::create($data);
       
-        $itemreceivingIds = array_map(function ($item) {
-            return (int) $item['id'];
-        }, $items);
-        
-        $receiving->items()->attach($itemreceivingIds);  
-       
-        return redirect()->route('receiving.index')->with('success', "Receiving added successfully");
+          // Get item data
+          $itemData = $request->items;
+
+          // Save item data and collect item IDs
+          $itemIds = [];
+          foreach ($itemData as $item) {
+              $itemResponse = app(ItemController::class)->store(new StoreItemRequest($item));
+              if ($itemResponse->status() === 201) {
+                  $itemIds[] = json_decode($itemResponse->getContent())->id; // Adjust based on your item response
+              }
+          }
+  
+          // Attach items to receiving
+          $receiving->items()->attach($itemIds);
+  
+          return redirect()->route('receiving.index')->with('success', 'Receiving created successfully!');
+      
     }
 
     public function storeItem(StoreItemRequest $request)
@@ -422,50 +432,80 @@ public function show(Receiving $receiving, Request $request)
         $receiving->save();
     }
 
-    //  public function storeItemReceiving(StoreItemReceivingRequest $request)
-    //  {
-    //      $validated = $request->validate();
+    //   public function storeItemReceiving(StoreItemReceivingRequest $request)
+    //   {
+    //       $validated = $request->validate([
+    //          'sku_prefix' => 'required|string',
+    //         'sku' => 'required|string',
+    //         'name' => 'required|string',
+    //         'brand_id' => 'required|integer',
+    //         'category_id' => 'required|integer',
+    //         'description' => 'nullable|string',
+    //         'specs' => 'nullable|string',
+    //         'part_no' => 'nullable|string',
+    //         'serial_no' => 'nullable|string',
+    //         'model_no' => 'nullable|string',
+    //         'uom' => 'required|string',
+    //         'quantity' => 'required|integer',
+    //         'location_id' => 'required|integer',
+    //         'employee_id' => 'required|integer',
+    //         'items' => 'required|array',
+    //         'items.*.sku_prefix' => 'required|string',
+    //         'items.*.sku' => 'required|string',
+    //         'items.*.name' => 'required|string',
+    //         'items.*.brand_id' => 'required|integer',
+    //         'items.*.category_id' => 'required|integer',
+    //         'items.*.description' => 'nullable|string',
+    //         'items.*.specs' => 'nullable|string',
+    //         'items.*.part_no' => 'nullable|string',
+    //         'items.*.serial_no' => 'nullable|string',
+    //         'items.*.model_no' => 'nullable|string',
+    //         'items.*.uom' => 'required|string',
+    //         'items.*.quantity' => 'required|integer',
+    //         'items.*.location_id' => 'required|integer',
+    //         'items.*.employee_id' => 'required|integer',
+    //       ]);
 
-    //      $itemreceived = Receiving::create([
+    //       $itemreceived = Receiving::create([
             
-    //          'sku_prefix' => $validated['sku_prefix'],
-    //              'sku' => $validated['sku'],
-    //              'name' => $validated['name'],
-    //              'brand_id' => $validated['brand_id'],
-    //              'category_id' => $validated['category_id'],
-    //              'description' => $validated['description'],
-    //              'specs' => $validated['specs'],
-    //              'part_no' => $validated['part_no'],
-    //              'serial_no' => $validated['serial_no'],
-    //              'model_no' => $validated['model_no'],
-    //              'uom' => $validated['uom'],
-    //              'quantity' => $validated['quantity'],
-    //              'location_id' => $validated['location_id'],
-    //              'employee_id' => $validated['employee_id'],
+    //           'sku_prefix' => $validated['sku_prefix'],
+    //               'sku' => $validated['sku'],
+    //               'name' => $validated['name'],
+    //               'brand_id' => $validated['brand_id'],
+    //               'category_id' => $validated['category_id'],
+    //               'description' => $validated['description'],
+    //               'specs' => $validated['specs'],
+    //               'part_no' => $validated['part_no'],
+    //               'serial_no' => $validated['serial_no'],
+    //               'model_no' => $validated['model_no'],
+    //               'uom' => $validated['uom'],
+    //               'quantity' => $validated['quantity'],
+    //               'location_id' => $validated['location_id'],
+    //               'employee_id' => $validated['employee_id'],
             
-    //      ]);
+    //       ]);
 
-    //      foreach ($validated['items'] as $item) {
-    //          $newItem = Item::create([
-    //              'sku_prefix' => $item['sku_prefix'],
-    //              'sku' => $item['sku'],
-    //              'name' => $item['name'],
-    //              'brand_id' => $item['brand_id'],
-    //              'category_id' => $item['category_id'],
-    //              'description' => $item['description'],
-    //              'specs' => $item['specs'],
-    //              'part_no' => $item['part_no'],
-    //              'serial_no' => $item['serial_no'],
-    //              'model_no' => $item['model_no'],
-    //              'uom' => $item['uom'],
-    //              'quantity' => $item['quantity'],
-    //              'location_id' => $item['location_id'],
-    //              'employee_id' => $item['employee_id'],
-    //          ]);
-    //          $itemreceived->items()->attach($newItem->id);
-    //      }
-    //      return redirect()->route('receiving.create');
-    //  }
+    //       foreach ($validated['items'] as $item) {
+    //           $newItem = Item::create([
+    //               'sku_prefix' => $item['sku_prefix'],
+    //               'sku' => $item['sku'],
+    //               'name' => $item['name'],
+    //               'brand_id' => $item['brand_id'],
+    //               'category_id' => $item['category_id'],
+    //               'description' => $item['description'],
+    //               'specs' => $item['specs'],
+    //               'part_no' => $item['part_no'],
+    //               'serial_no' => $item['serial_no'],
+    //               'model_no' => $item['model_no'],
+    //               'uom' => $item['uom'],
+    //               'quantity' => $item['quantity'],
+    //               'location_id' => $item['location_id'],
+    //               'employee_id' => $item['employee_id'],
+    //           ]);
+    //           $itemreceived->items()->attach($newItem->id);
+    //       }
+    //       return redirect()->route('receiving.create');
+    //   }
 
     // public function updateItemReceiving(UpdateItemReceivingRequest $request, Receiving $receiving)
     // {

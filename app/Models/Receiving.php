@@ -23,6 +23,7 @@ class Receiving extends Model
         'group_item_id', 
         'client_id',
         'si_no',
+        'dr_no',
         'deliver_id',
         'address',
         'location_id',

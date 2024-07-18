@@ -100,7 +100,8 @@ class Item extends Model
                 'is_done',
                 'user.name',
                 'updatedBy.name'
-            ]);
+            ])
+            ->logOnlyDirty();
           
         }
     

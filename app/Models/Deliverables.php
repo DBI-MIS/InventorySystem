@@ -56,7 +56,8 @@ class Deliverables extends Model
                 'address_id',
                 'status',
                 'user.name'
-            ]);
+            ])
+            ->logOnlyDirty();
             
     }
 

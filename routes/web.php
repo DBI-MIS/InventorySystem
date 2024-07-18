@@ -73,6 +73,7 @@ Route::middleware(['auth', 'verified', ])->group(function(){
         // Route::get('item/{itemId}/restore',[ItemController::class, 'restoreItem'])->name('item.restoreItem');;
         // Route::post('/items', [ItemController::class, 'store'])->name('item.submit');
         // Route::post('/items/store', [ItemController::class, 'store'])->name('items.store');
+        // Route::get('items/{item}', [ItemController::class, 'show'])->name('item.show');
         Route::get('/deliverables/my-deliverable/{deliverableId}', [DeliverablesController::class, 'myDeliverable'])->name('deliverable.myDeliverable');
         Route::get('/stockrequisition/my-stockrequest/{stockrequestId}', [StockRequisitionController::class, 'myStockRequest'])->name('stockrequest.myStockRequest');
         // Route::post('/receiving/storeItemReceiving', [ReceivingController::class, 'storeItemReceiving'])->name('receiving.storeItemReceiving');

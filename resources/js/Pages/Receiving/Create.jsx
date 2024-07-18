@@ -1,3 +1,4 @@
+
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import ModalReceiving from "@/Components/ModalReceiving";
@@ -14,8 +15,6 @@ import { ITEM_STATUS_TEXT_MAP } from "@/constants";
 export default function Create({auth,delivers,mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
     
     console.log(delivers);
-    // console.log(latestItem);
-
     // MAIN FORM OF RECEIVING
    const {data, setData,post,errors} = useForm({
         client_id: '',
@@ -39,25 +38,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     const [selectedOptions, setSelectedOptions] = useState([]);
 
 
-    const handleSelectChange = useCallback(
-        (selectedOptions) => {
-            // setSelectedOptions(latestItem);
-            setSelectedOptions(selectedOptions);
-
-            const items = selectedOptions.map((option) => {
-                const selectedItem = allItems.find(
-                    (item) => item.id === parseInt(option.value)
-                );
-                return { ...selectedItem };
-            });
-
-            setData({
-                ...data,
-                items: items.map((item) => ({ ...item, items: item.id })),
-            });
-        },
-        [newAllItems, setSelectedOptions, setData, data]
-    );
+   
     console.log("SelectedOptions")
     
     const [showModal, setShowModal] = useState(false);
@@ -66,6 +47,8 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
     const [formData, setFormData] = useState({
         name: '',
         description: '',
+        category_id: '',
+        brand_id: '',
         sku: skuu,
         specs: '',
         part_no: '',
@@ -77,6 +60,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
         remark:'',
         location_id: '1', // == DBI depends on factory what id 
         user_id: '',
+        
       });
 
       const statusesOptions = Object.keys(ITEM_STATUS_TEXT_MAP).map((key) => ({
@@ -84,94 +68,95 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
         label: ITEM_STATUS_TEXT_MAP[key],
       }));
 
-      const [skus, setSkus] = useState([]);
-
-      // Load SKUs from localStorage on component mount
-      useEffect(() => {
-        const savedSkus = JSON.parse(localStorage.getItem('savedSkus')) || [];
-        setSkus(savedSkus);
-      }, [])
- 
-    // Function to remove SKU
-    // const handleRemoveSKU = (index) => {
-    //     const newSkus = [...skus];
-    //     newSkus.splice(index, 1);
-    //     setSkus(newSkus);
-    //     localStorage.setItem('savedSkus', JSON.stringify(newSkus));
-    // };
-    console.log("All SKUs:", skus);
-
-        // Function to handle adding SKU
-        //  const handleAddSKU = () => {
-        //     const newSkus = [...skus, formData.sku];
-        //     setSkus(newSkus);
-        //     localStorage.setItem('savedSkus', JSON.stringify(newSkus));
-        //   };
-        //  const statusesOptions =useState(["hi", "hello"]);
      const [isClearable, setIsClearable] = useState(true);
      const [isSearchable, setIsSearchable] = useState(true);
      const [isDisabled, setIsDisabled] = useState(false);
      const [isLoading, setIsLoading] = useState(false);
      const [isRtl, setIsRtl] = useState(false);
-     let skuIds = [];
 
-    const  handleChange= (event) => {
+     const handleSelectChange = useCallback(
+        (selectedOptions) => {
+            setSelectedOptions(selectedOptions);
+
+            const selectedItems = selectedOptions.map((option) => {
+                const selectedItem = allItems.find(
+                    (item) => item.id === parseInt(option.value)
+                );
+                return { ...selectedItem };
+            });
+
+            setData({
+                ...data,
+                items: [...selectedItems, ...data.items.filter(item => !selectedItems.some(selectedItem => selectedItem.id === item.id))]
+            });
+        },
+        [allItems, setSelectedOptions, setData, data]
+    );
+    const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData(prevState => ({
-        ...prevState,
-        [name]: value
+            ...prevState,
+            [name]: value
         }));
     };
+
     useEffect(() => {
         console.log('Current MODAL data:', formData); 
     }, [formData]);
     console.log(data);
 
-    console.log("sku ids", skuIds)
-    const handleNewItemSubmit = (e) => {
+    const handleNewItemSubmit = async (e) => {
         e.preventDefault();
-        
-        
-        // Inertia.post(route('item.submit'), formData)
-        
-        post(route("item.submit"), formData);
-            
-    //     const newSkus = [...skus, formData.sku];
-    // setSkus(newSkus);
-    // localStorage.setItem('savedSkus', JSON.stringify(newSkus));
 
-    // skus.forEach(savedSku => {
-    //     const itemWithSameSKU = items.data.find(item => item.sku === savedSku);
-    //     if (itemWithSameSKU) {
-    //       const { id } = itemWithSameSKU;
-    //       skuIds.push(id); 
-    //     }
-    //   });
-    //   sessionStorage.setItem('skuIds', JSON.stringify(skuIds));
-             
-      };
-      
+        
+        const newItem = { ...formData };
 
-    //   const handleAddSKU = () => {
-    
-    //      skus.forEach(savedSku => {
-    //     const itemWithSameSKU = items.data.find(item => item.sku === savedSku);
-    //     if (itemWithSameSKU) {
-    //       const { id } = itemWithSameSKU;
-    //       console.log(`Item ID with SKU ${savedSku}: ${id}`);
-    //       setSelectedOptions(id);
-    //     } else {
-    //       console.log(`No item found with SKU ${savedSku}`);
-    //     }
-    //   });
-    //   };
+        // Update state to include the new item
+        setData({
+            ...data,
+            items: [...data.items, newItem],
+        });
 
-    //SUBMIT OF MAIN FORM
-    const onSubmit = (e) =>{
-        // alert("hi");
+        // Reset form data after submission
+        setFormData({
+            name: '',
+            category_id: '',
+            brand_id: '',
+            quantity: '',
+            uom: '',
+            description: '',
+            specs: '',
+            remark: '',
+            sku: '',
+            statuses: '',
+            serial_no: '',
+            model_no: '',
+            part_no: '',
+            location_id: '',
+        });
+
+        // Close modal after submission
+        setShowModal(false);
+    };
+
+   
+     
+    const onSubmit = (e) => {
         e.preventDefault();
+
+        post(
+            route("item.store"),
+            { items: data.items },
+            {
+                preserveScroll: true,
+                preserveState: true,
+            }
+        );
+
         post(route("receiving.store"));
-     }
+
+    };
+
 
      useEffect(() => {
         // Set the mrr_no when the component mounts or mrr_no prop changes
@@ -373,9 +358,9 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                     </td>
                                                 <td className="w-[160px] py-2 text-sm">{item.sku_prefix ?? "No Sku Prefix"}-{item.sku ?? "No Sku"}</td>
                                                 <th className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
-                                                    <Link href={route('item.show', item.id)}>
+                                                    {/* <Link href={route('item.show', item.id)}> */}
                                                     {item.name ?? "No Item Name"}
-                                                    </Link>
+                                                    {/* </Link> */}
                                                 </th>
                                                 <td className="w-[160px] py-2 text-sm"> {item.brand && item.brand.name ? item.brand.name : 'No Brand Name'}</td>
                                                  <td className="w-[160px] py-2 text-sm">{item.category && item.category.name ? item.category.name: "No Category Name"}</td>

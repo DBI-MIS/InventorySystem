@@ -70,7 +70,6 @@ class User extends Authenticatable
                'name',
                 'surname',
                 'email',
-                'password',
                 'role',
                 'email_verified_at'
             ]); 

@@ -35,11 +35,6 @@ class StockRequisition extends Model
                 'sr_to',
                 'rs_no',
                 'sr_date',
-                'sr_qty',
-                'sr_unit',
-                'sr_item',
-                'sr_description',
-                'sr_notes',
                  'user.name'
             ]); 
     }

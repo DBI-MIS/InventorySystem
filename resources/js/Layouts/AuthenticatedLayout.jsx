@@ -75,12 +75,12 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Locations</span>
                                 </div>
-                                
+
                                 {(user.role === 'admin' || user.role === 'super_admin') && (
                                     <div class="group relative">
-                                    <ResponsiveNavLink href={route('log.index')} active={route().current('log.index')}>
+                                    <NavLink href={route('log.index')} active={route().current('log.index')}>
                                         <NactivityLog className="block h-9 w-auto fill-current " />
-                                    </ResponsiveNavLink>
+                                    </NavLink>
                                     <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Activity Logs</span>
                                     </div>
                                 )}
@@ -144,15 +144,16 @@ export default function Authenticated({ user, header, children,}) {
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Stock Requisition</span>
                                 </div>
-                               {/* huwag burahin ito |
+                               {/* huwag burahin ito 
+                                                 |
                                                  _
                                                  V */}
-                                {/* <div class="group relative">
+                                <div class="group relative">
                                 <NavLink href={route('sritem.index')} active={route().current('sritem.index')}>
                                     <Srequest className="block h-7 w-auto fill-current  " /> 
                                 </NavLink>
                                 <span class="absolute z-10 top-0 left-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">Stock Requisition Item</span>
-                                </div> */}
+                                </div>
                                 
                                 
                             </div>

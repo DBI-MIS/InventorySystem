@@ -26,7 +26,7 @@ class UpsertItemRequest extends FormRequest
          
         'items' => 'required|array',
         'items.*.id' => 'required|exists:items,id',
-        'items.*.qty_out' => 'required|integer|min:1',
+        'items.*.qty_out' => 'requ0ired|integer|min:1',
          
       ];
       

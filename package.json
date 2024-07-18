@@ -30,6 +30,7 @@
         "react-chartjs-2": "^5.2.0",
         "react-paginate": "^8.2.0",
         "react-pagination": "^1.0.0",
-        "react-select": "^5.8.0"
+        "react-select": "^5.8.0",
+        "xlsx": "^0.18.5"
     }
 }
