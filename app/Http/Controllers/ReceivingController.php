@@ -125,7 +125,7 @@ class ReceivingController extends Controller
           'clients' => ClientResource::collection($clients),
           'delivers' => DeliverablesResource::collection($delivers),
           'mrr_no' =>  $mrr_no,
-            'skuu' =>  $sku,
+            'skuuu' =>  $sku,
         // 'latestItem' => $latestItem
       ]);
     }
@@ -170,30 +170,39 @@ class ReceivingController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(StoreReceivingRequest $request)
+    public function store(StoreReceivingRequest $request,)
     {
-
         $data = $request->validated();
+        // dd($data);
+            $items = $data['items'];
+        // dd($items);//
+            $data['user_id'] = Auth::id();
+                $receiving =Receiving::create($data);
+            
 
-        $items = $data['items'];
-        // dd($items);
-        $data['user_id'] = Auth::id();
-        $receiving =Receiving::create($data);
-      
-          // Get item data
-          $itemData = $request->items;
+        foreach ($items as $itemData) {
+            if (isset($itemData['id'])) {
+                $receiving->items()->attach($itemData['id']);
+            } else {
 
-          // Save item data and collect item IDs
-          $itemIds = [];
-          foreach ($itemData as $item) {
-              $itemResponse = app(ItemController::class)->store(new StoreItemRequest($item));
-              if ($itemResponse->status() === 201) {
-                  $itemIds[] = json_decode($itemResponse->getContent())->id; // Adjust based on your item response
-              }
-          }
+                  // Remove sku_prefix and isNew from item data
+                unset($itemData['sku_prefix']);
+                unset($itemData['isNew']);
+                $itemData['updated_by'] = Auth::id();
+                $itemData['user_id'] = Auth::id();
+                // dd($itemData);
+                $newItem = Item::create($itemData);
+                $receiving->items()->attach($newItem->id);
+                // $receiving->items()->attach($itemData['id']);
+            }
+        }
+        // $itemIds = array_map(function ($item) {
+        //     return (int) $item['id'];
+        // }, $items);
+        // // dd($itemIds);
   
-          // Attach items to receiving
-          $receiving->items()->attach($itemIds);
+        //   // Attach items to receiving
+        //   $receiving->items()->attach($itemIds);
   
           return redirect()->route('receiving.index')->with('success', 'Receiving created successfully!');
       

@@ -12,9 +12,10 @@ import { useCallback, useEffect,  useState} from "react";
 import Select from "react-select"
 import React from "react";
 import { ITEM_STATUS_TEXT_MAP } from "@/constants";
-export default function Create({auth,delivers,mrr_no,items,newItem,clients,categories,employees, locations,skuu,brands,}){
+export default function Create({auth,delivers,mrr_no,items,newItem,clients,categories,employees, locations,skuuu,brands,}){
     
     console.log(delivers);
+    console.log(categories);
     // MAIN FORM OF RECEIVING
    const {data, setData,post,errors} = useForm({
         client_id: '',
@@ -25,6 +26,13 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
         remarks:'',
         items: [],
     })
+    // const [skuu, setSkuu] = useState(skuuu); 
+    //combination of sku and the last 3 digits of mrr_no para unique
+    //if ever may 3 sabay nag create ng mrr sku na kinukuha is yung latest ID and while di pa nassubmit mrr di makukuha yung slatest 
+    const mrrNoSuffix = mrr_no.slice(-3); 
+  
+    const initialSku = `${skuuu}${mrrNoSuffix}`;
+    const [skuu, setSkuu] = useState(initialSku);
 
     console.log("CUrrent Data:" + data)
 
@@ -36,11 +44,6 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
       const [newAllItems, setnewAllItems] = useState([])
     const allItems = items.data.map(item => ({ ...item, id: parseInt(item.id) })); // to be used for checking 
     const [selectedOptions, setSelectedOptions] = useState([]);
-
-
-   
-    console.log("SelectedOptions")
-    
     const [showModal, setShowModal] = useState(false);
     
     // ADD ITEM MODAL FORM
@@ -74,24 +77,100 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
      const [isLoading, setIsLoading] = useState(false);
      const [isRtl, setIsRtl] = useState(false);
 
+     // MODAL VALIDATION INPUTS SINCE NASA STATE SIYA
+     const [formErrors, setFormErrors] = useState({});
+     const validateForm = (formData) => {
+        let errors = {};
+      
+         // Validate Item Name
+        if (!formData.name) {
+            errors.name = 'Item Name is required';
+        } else if (formData.name.length < 3) {
+            errors.name = 'Name should have at least 3 characters';
+        } else if (!/^[a-zA-Z0-9\s!@#$%^&*()_-]+$/.test(formData.name)) {
+            errors.name = ' Name should only contain letters, numbers, spaces, and symbols';
+        }
+        // Validate Category
+        if (!formData.category_id) {
+          errors.category_id = 'Category is required';
+        }
+      
+        // Validate Brand
+        if (!formData.brand_id) {
+          errors.brand_id = 'Brand is required';
+        }
+      
+        // Validate Quantity
+        if (!formData.quantity) {
+          errors.quantity = 'Quantity is required';
+        } else if (formData.quantity <= 0) {
+          errors.quantity = 'Quantity must be greater than zero';
+        }
+      
+        // Validate UOM
+        if (!formData.uom) {
+          errors.uom = 'UOM is required';
+        }
+      
+        // Validate Description
+        if (!formData.description) {
+          errors.description = 'Description is required';
+        }
+      
+        // Validate Specs
+        if (!formData.specs) {
+          errors.specs = 'Specification is required';
+        }
+      
+        // Validate Remark
+        if (!formData.remark) {
+          errors.remark = 'Remark is required';
+        }
+      
+        // Validate SKU
+        if (!formData.sku) {
+          errors.sku = 'SKU is required';
+        }
+      
+        // Validate Statuses
+        if (!formData.statuses) {
+          errors.statuses = 'Status is required';
+        }
+      
+        // Validate Location
+        if (!formData.location_id) {
+          errors.location_id = 'Location is required';
+        }
+      
+        return errors;
+      };
+      
+      // dropdown selection and remove
      const handleSelectChange = useCallback(
         (selectedOptions) => {
             setSelectedOptions(selectedOptions);
 
-            const selectedItems = selectedOptions.map((option) => {
-                const selectedItem = allItems.find(
-                    (item) => item.id === parseInt(option.value)
-                );
-                return { ...selectedItem };
+            const selectedItemIds = selectedOptions.map(option => parseInt(option.value));
+
+            const updatedItems = data.items.filter(item =>
+                selectedItemIds.includes(item.id) || item.isNew // Keep items that are selected or newly added from the modal
+            );
+
+            selectedOptions.forEach(option => {
+                const selectedItem = allItems.find(item => item.id === parseInt(option.value));
+                if (selectedItem && !data.items.some(item => item.id === selectedItem.id)) {
+                    updatedItems.push({ ...selectedItem });
+                }
             });
 
             setData({
                 ...data,
-                items: [...selectedItems, ...data.items.filter(item => !selectedItems.some(selectedItem => selectedItem.id === item.id))]
+                items: updatedItems,
             });
         },
-        [allItems, setSelectedOptions, setData, data]
+        [allItems, data]
     );
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData(prevState => ({
@@ -100,22 +179,66 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
         }));
     };
 
+    // remove function for the items from modal,wala pang id since nasa state silang lahat
+    const handleRemoveItem = (sku, name) => {
+        // unique keys are sku and name substitute for item id
+        const updatedItems = data.items.filter(item => item.sku !== sku || item.name !== name);
+        
+        // Update state of data.items[] with the new items array
+        setData({
+            ...data,
+            items: updatedItems,
+        });
+    };
+    
+    // const handleRemoveItem = (itemId) => {
+    //     console.log('Removing item with id:', itemId);
+    
+    //     const updatedItems = data.items.filter(item => item.id !== itemId);
+    //     console.log('Updated items:', updatedItems);
+    
+    //     setData({
+    //         ...data,
+    //         items: updatedItems,
+    //     });
+    // };
+    
     useEffect(() => {
         console.log('Current MODAL data:', formData); 
     }, [formData]);
     console.log(data);
 
+    // for the submission of modal form
     const handleNewItemSubmit = async (e) => {
+
         e.preventDefault();
 
-        
-        const newItem = { ...formData };
+        const errors = validateForm(formData);
+        //validation checking if none proceed to submit
+        if (Object.keys(errors).length === 0) {
 
-        // Update state to include the new item
+        // Find brand and category to get the brand name and category name - to be visible sa table
+        const selectedBrand = brands.data.find(brand => brand.id === parseInt(formData.brand_id));
+        const selectedCategory = categories.data.find(cat => cat.id === parseInt(formData.category_id));
+
+        // parang ippush or insert sa per item 
+        const newItem = {
+            ...formData,
+            sku_prefix: selectedCategory ? selectedCategory.sku_prefix : '', 
+            brand: selectedBrand ? { id: selectedBrand.id, name: selectedBrand.name } : null,
+            category: selectedCategory ? { id: selectedCategory.id, name: selectedCategory.name } : null,
+            sku: skuu, 
+            isNew: true, //as mark para madistringuish na galing sa modal form
+        };
+
         setData({
             ...data,
             items: [...data.items, newItem],
         });
+
+        // Incrementation for the next item
+        const nextSkuu = generateNextSku(skuu); 
+        setSkuu(nextSkuu);
 
         // Reset form data after submission
         setFormData({
@@ -137,26 +260,129 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
 
         // Close modal after submission
         setShowModal(false);
+    } else {
+
+        setFormErrors(errors);
+      }
     };
 
-   
-     
-    const onSubmit = (e) => {
+    // generate next sku since wala namang auto increment id kasi nasa state
+    const generateNextSku = (currentSku) => {
+        const currentNumber = parseInt(currentSku.slice(0, 6)); 
+        const nextNumber = currentNumber + 1;
+        const nextSku = nextNumber.toString().padStart(6, '0'); 
+        return `${nextSku}${mrrNoSuffix}`; 
+    };
+    // const generateNextSku = (currentSku) => {
+
+    //     const currentNumber = parseInt(currentSku);
+    //     const nextNumber = currentNumber + 1;
+    //     return (nextNumber.toString().padStart(6, '0')); // Format to 6 digits
+    // };
+    
+    const onSubmit = async (e) => {
         e.preventDefault();
-
-        post(
-            route("item.store"),
-            { items: data.items },
-            {
-                preserveScroll: true,
-                preserveState: true,
+    
+        // Separate items into existing (with ID) and new (without ID)
+        const existingItems = [];
+        const newItems = [];
+        console.log("existingItems",existingItems);
+        console.log("newItems",newItems)
+        data.items.forEach(item => {
+            if (item.id) {
+                // Existing item (already has ID)
+                existingItems.push({
+                    id: item.id,
+                    name: item.name,
+                    sku: item.sku,
+                    brand_id: item.brand_id,
+                    category_id: item.category_id,
+                    mrr_no: item.mrr_no,
+                    description: item.description,
+                    specs: item.specs,
+                    part_no: item.part_no,
+                    serial_no: item.serial_no,
+                    model_no: item.model_no,
+                    uom: item.uom,
+                    quantity:item.quantity,
+                    qty_out: item.qty_out,
+                    statuses: item.statuses,
+                    employee_id : item.employee_id,
+                    remark:item.remark,
+                    location_id: item.location_id, // == DBI
+                    user_id: '',
+                });
+            } else {
+                // New item (does not have ID yet)
+                newItems.push({
+                    name: item.name,
+                    sku: item.sku,
+                    brand_id: item.brand_id,
+                    category_id: item.category_id,
+                    mrr_no: item.mrr_no,
+                    description: item.description,
+                    specs: item.specs,
+                    part_no: item.part_no,
+                    serial_no: item.serial_no,
+                    model_no: item.model_no,
+                    uom: item.uom,
+                    quantity:item.quantity,
+                    qty_out: item.qty_out,
+                    statuses: item.statuses,
+                    employee_id : item.employee_id,
+                    remark:item.remark,
+                    location_id: item.location_id, // == DBI
+                    user_id: '',
+                });
             }
-        );
+        });
+    
+        try {
 
-        post(route("receiving.store"));
-
+                // Create new items (without ID)
+                if (newItems.length > 0) {
+                    route('item.store', {
+                       method: 'post', // Assuming the method is POST, change if necessary
+                       data: { items: newItems },
+                       preserveScroll: true,
+                       preserveState: true,
+                   });
+               }
+            // Update existing items (with ID)
+            if (existingItems.length > 0) {
+                for (const item of existingItems) {
+                  route('item.update', { item: item.id }, {
+                        method: 'post', // Assuming the method is POST, change if necessary
+                        data: item,
+                        preserveScroll: true,
+                        preserveState: true,
+                    });
+                }
+            }
+    
+        
+    
+            // Post receiving data
+            post(route("receiving.store"));
+            
+            // // Optionally reset the form state or perform other actions after successful submission
+            // setData({
+            //     client_id: '',
+            //     mrr_no: '',
+            //     group_item_id: '',
+            //     si_no: '',
+            //     address: '',
+            //     remarks: '',
+            //     items: [],
+            // });
+    
+            console.log('Form submitted successfully');
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            // Handle errors as needed
+        }
     };
-
+    
 
      useEffect(() => {
         // Set the mrr_no when the component mounts or mrr_no prop changes
@@ -329,50 +555,53 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                     </div>
                                     <span className="mt-2 text-sm text-gray-600"><b>Note:</b> If items are not available on the lists, you can add new Item.</span>
                                  </div>
-                               
-          
-
                                  <div className="mt-5 min-h-[300px]">
-                                     <h1 className="text-2xl text-center text-blue-800 p-5 font-semibold">LIST OF ITEMS</h1>
-                                     <table className="min-w-full bg-white">
+                                    <h1 className="text-2xl text-center text-blue-800 p-5 font-semibold">LIST OF ITEMS</h1>
+                                    <table className="min-w-full bg-white">
                                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                             <tr>
-                                            <th className="text-left">#</th>
-                                            <th className="text-left">Sku</th>
-                                            <th className="text-left">Name</th>
-                                            <th className="text-left">Brand</th>
-                                            <th className="text-left">Category</th>
-                                            <th className="text-left">Model No.</th>
-                                            <th className="text-left">Part No.</th>
-                                            <th className="text-left">Quantity</th>
+                                                <th className="text-left">#</th>
+                                                <th className="text-left">Sku</th>
+                                                <th className="text-left">Name</th>
+                                                <th className="text-left">Brand</th>
+                                                <th className="text-left">Category</th>
+                                                <th className="text-left">Model No.</th>
+                                                <th className="text-left">Part No.</th>
+                                                <th className="text-left">Quantity</th>
+                                                <th className="text-left">Actions</th> {/* Added Actions column */}
                                             </tr>
-                                        </thead> 
-                   
-                                         <tbody>
-                                         {data.items.map((item,index) => (
-                                         
-                                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={item.id}>
-                                                <td className="w-[60px] py-2 text-sm">
-                                                    {index + 1}
-                                                    {/* {selectedItem.id ?? "No Item ID"} */}
-                                                    </td>
-                                                <td className="w-[160px] py-2 text-sm">{item.sku_prefix ?? "No Sku Prefix"}-{item.sku ?? "No Sku"}</td>
-                                                <th className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
-                                                    {/* <Link href={route('item.show', item.id)}> */}
-                                                    {item.name ?? "No Item Name"}
-                                                    {/* </Link> */}
-                                                </th>
-                                                <td className="w-[160px] py-2 text-sm"> {item.brand && item.brand.name ? item.brand.name : 'No Brand Name'}</td>
-                                                 <td className="w-[160px] py-2 text-sm">{item.category && item.category.name ? item.category.name: "No Category Name"}</td>
-                                                 <td className="w-[200px] py-2 text-sm">{item.model_no ?? "No Model Number"}</td>
-                                                 <td className="w-[300px] py-2 text-sm">{item.part_no ?? "No Part Number"}</td>
-                                                 <td className="w-[160px] py-2 ">{item.quantity ? (item.quantity + ' ' + (item.uom ?? "No UOM")) : 'No Quantity'}</td>
-                                                 </tr>
-                                        ))}
-                                        </tbody>
-                                                                        
-                                     </table>
-                                 </div>
+                                        </thead>
+                                        <tbody>
+                                    {data.items.map((item) => (
+                                        <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={`${item.sku}-${item.name}`}>
+                                            <td className="w-[60px] py-2 text-sm">{/* Display a suitable identifier, like SKU or combination */}</td>
+                                            <td className="w-[160px] py-2 text-sm">{item.sku_prefix ?? "No Sku Prefix"}-{item.sku ?? "No Sku"}</td>
+                                            <td className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
+                                                {item.name ?? "No Item Name"}
+                                            </td>
+                                            <td className="w-[160px] py-2 text-sm">{item.brand && item.brand.name ? item.brand.name : 'No Brand Name'}</td>
+                                            <td className="w-[160px] py-2 text-sm">{item.category && item.category.name ? item.category.name : "No Category Name"}</td>
+                                            <td className="w-[200px] py-2 text-sm">{item.model_no ?? "No Model Number"}</td>
+                                            <td className="w-[300px] py-2 text-sm">{item.part_no ?? "No Part Number"}</td>
+                                            <td className="w-[160px] py-2">{item.quantity ? (item.quantity + ' ' + (item.uom ?? "No UOM")) : 'No Quantity'}</td>
+                                            <td className="w-[100px] py-2">
+                                                {item.isNew && (
+                                                    <button
+                                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md"
+                                                        onClick={() => handleRemoveItem(item.sku, item.name)} // Pass unique identifier(s) to remove the correct item
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+
+                                    </table>
+                                </div>
+
+
                         </div>
                         <div className="mt-4 col-span-2">
                                     <InputLabel htmlFor="receiving_remarks" value="Remarks"/>
@@ -440,7 +669,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                             isFocused={true}
                                                                             onChange={handleChange}
                                                                         />
-                                                                      <InputError message={errors.name} className="mt-2"/>
+                                                                      <InputError message={formErrors.name} className="mt-2"/>
                                                                 </div>
                                                                  <div className=" mt-6  col-span-1">
                                                                         <InputLabel htmlFor="item_category_id" value="Category"/>
@@ -456,8 +685,8 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                                         <option value={category.id} key={category.id}>{category.name}</option>
                                                                                     ))}
                                                                             </SelectInput>
-                                                                            <InputError message={errors.category_id} className="mt-2"/>
                                                                         </div>
+                                                                        <InputError message={formErrors.category_id} className="mt-2"/>
                                                                     </div>
 
                                                                     <div className=" mt-4 col-span-1">
@@ -473,7 +702,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                                     <option value={brand.id} key={brand.id}>{brand.name}</option>
                                                                                 ))}
                                                                         </SelectInput>
-                                                                        <InputError message={errors.brand_id} className="mt-2"/>
+                                                                        <InputError message={formErrors.brand_id} className="mt-2"/>
                                                                      </div>
                                                                 <div className="mt-4 col-span-1 col-start-2 grid grid-cols-2 gap-1">
                                                                     <div className="col-span-1">
@@ -487,7 +716,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                                 className="mt-1 block w-full"
                                                                                 onChange={handleChange}
                                                                             />
-                                                                            <InputError message={errors.quantity} className="mt-2"/>
+                                                                            <InputError message={formErrors.quantity} className="mt-2"/>
                                                                      </div>
                                                                       <div className="col-span-1">
                                                                         <InputLabel htmlFor="item__uom" value="UOM"/>
@@ -505,7 +734,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                             <option value="Set">Set</option>
                                                                             <option value="Sets">Sets</option>
                                                                         </SelectInput>
-                                                                        <InputError message={errors.uom} className="mt-2"/>
+                                                                        <InputError message={formErrors.uom} className="mt-2"/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="mt-4 col-span-2">
@@ -519,7 +748,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         rows="5"
                                                                         onChange={handleChange}
                                                                     />
-                                                                    <InputError message={errors.description} className="mt-2"/>
+                                                                    <InputError message={formErrors.description} className="mt-2"/>
                                                                 </div>
 
                                                                 <div className="mt-4 col-span-2">
@@ -533,7 +762,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         rows="5"
                                                                         onChange={handleChange}
                                                                     />
-                                                                    <InputError message={errors.specs} className="mt-2"/>
+                                                                    <InputError message={formErrors.specs} className="mt-2"/>
                                                                 </div>
 
                                                                 <div className="mt-4 col-span-2">
@@ -547,7 +776,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         rows="5"
                                                                         onChange={handleChange}
                                                                     />
-                                                                    <InputError message={errors.remark} className="mt-2"/>
+                                                                    <InputError message={formErrors.remark} className="mt-2"/>
                                                                 </div>
 
                                                         </div>
@@ -562,6 +791,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         name="sku"
                                                                         readOnly
                                                                         placeholder={skuu}
+                                                                        value={formData.sku=skuu} 
                                                                         className="mt-6 block w-full"
                                                                      />
                                                                 </div>
@@ -582,7 +812,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         name="statuses"
                                                                         options={statusesOptions}
                                                                     />
-                                                                        <InputError message={errors.statuses} className="mt-2"/>
+                                                                        <InputError message={formErrors.statuses} className="mt-2"/>
                                                             </div>
 
                                                             <div className="mt-4 col-span-1">
@@ -596,7 +826,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                     className="mt-1 block w-full"
                                                                     onChange={handleChange}
                                                                  />
-                                                                 <InputError message={errors.serial_no} className="mt-2"/>
+                                                                 <InputError message={formErrors.serial_no} className="mt-2"/>
                                                             </div>
 
                                                             <div className="mt-4 col-span-1">
@@ -610,7 +840,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                     className="mt-1 block w-full"
                                                                     onChange={handleChange}
                                                                   />
-                                                                 <InputError message={errors.model_no} className="mt-2"/>
+                                                                 <InputError message={formErrors.model_no} className="mt-2"/>
                                                             </div>
 
                                                             <div className="mt-4 col-span-1">
@@ -624,7 +854,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
                                                                         className="mt-1 block w-full"
                                                                         onChange={handleChange}
                                                                  />
-                                                                  <InputError message={errors.part_no_id} className="mt-2"/>
+                                                                  <InputError message={formErrors.part_no_id} className="mt-2"/>
                                                             </div>
 
                                                             <div className="mt-4 col-span-1">
@@ -640,7 +870,7 @@ export default function Create({auth,delivers,mrr_no,items,newItem,clients,categ
 
                                                                     ))}
                                                                    </SelectInput>
-                                                                   <InputError message={errors.location_id} className="mt-2"/>
+                                                                   <InputError message={formErrors.location_id} className="mt-2"/>
                                                             </div>
 
                                                             {/* <div className="mt-4 col-span-1">

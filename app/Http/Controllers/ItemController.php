@@ -117,7 +117,7 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        // dd($formData);
+        dd($request);
         $data = $request->validated();
         $data['user_id'] = Auth::id();
         $data['updated_by'] = Auth::id(); //comment this
@@ -226,6 +226,7 @@ class ItemController extends Controller
         if ($response->allowed()) {
             $data = $request->validated();
             $data['updated_by'] = Auth::id();
+            dd($data);
                 $item->update($data);
         
                 return to_route('item.index')
