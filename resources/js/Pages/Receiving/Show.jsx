@@ -1,7 +1,7 @@
 import { RECEIVING_STATUS_CLASS_MAP, RECEIVING_STATUS_TEXT_MAP } from "@/constants";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-export default function Show({ auth, receiving, receiving_items }) {
+export default function Show({ auth, receiving, receiving_items,}) {
     console.log("receiving" + receiving);
     console.log("receiving_items" + receiving_items);
 

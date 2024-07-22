@@ -26,6 +26,7 @@ use App\Models\Location;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -63,6 +64,7 @@ class ReceivingController extends Controller
         // elseif (in_array($userRole, ['user', 'admin','super_admin'])) {
         //     $query->where('status', '!=', 'for_approval');  //if ever ieexclude yung for approval
         // }
+       
 
          $receivings = $query->orderBy($sortField, $sortDirection)
          ->paginate(24);
@@ -71,7 +73,8 @@ class ReceivingController extends Controller
              "receivings" => ReceivingResource::collection($receivings),
              'queryParams' => request()-> query() ?: null,
              'success' => session('success'),
-             'user' => $user
+             'user' => $user,
+            
               ]);
     }
 
@@ -235,9 +238,10 @@ public function show(Receiving $receiving, Request $request)
     //         ->get()
     //     ;
     // }
-
     $receiving->load('items.category'); // Load Relation to Item with relation to Category
     // $user->load('profile.address')
+    $user = auth()->user();
+
 
 // dd($receiving);
     
@@ -246,6 +250,7 @@ public function show(Receiving $receiving, Request $request)
         'queryParams' => $request->query() ?: null,
         'success' => session('success'),
         'receiving_items' => $receiving->items, // Load Relation
+        'userr' => $user
         
     ]);
 }
@@ -268,7 +273,7 @@ public function show(Receiving $receiving, Request $request)
                 foreach ($items as $item) {
                     $item->brand_name = $item->brand->name;
                     $item->category_name = $item->category->name;
-                    $item->sku_prefix = $item->category->sku_prefix;
+                    $item->sku_prefix = $item->sku_prefix;
                 }
                 // dd($receiving);
                 $parsedId = json_decode($receiving, true);

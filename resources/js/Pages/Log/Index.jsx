@@ -5,6 +5,7 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import {Head, router} from "@inertiajs/react" ;
 import * as XLSX from "xlsx";
+import { format } from 'date-fns';
 export default function Index({logs, auth,queryParams}) {
   console.log("LOGS", logs)
   queryParams = queryParams || {};
@@ -30,110 +31,117 @@ export default function Index({logs, auth,queryParams}) {
 
 
   
-  const exportToExcel = () => {
-    const fieldsToInclude = [
-      'id',
-      'log_name',
-      'description',
-      'subject_id',
-      'subject_name',
-      'properties',
-      'created_at',
-      'updated_at',
-      'event',
-      'causer_name',
-      'subject_type',
-    ];
-  
-    const titleMapping = {
-      'id': 'ID',
-      'log_name': 'Log Name',
-      'description': 'Description',
-      'subject_id': 'Subject ID',
-      'subject_name': 'Subject Name',
-      'properties': 'Properties',
-      'created_at': 'Created Date',
-      'updated_at': 'Updated Date',
-      'event': 'Event',
-      'causer_name': 'Performed By',
-      'subject_type': 'Subject Type',
-    };
-  
-    const formatProperties = (properties) => {
-      if (!properties) return '';
-  
-      const flattenedProperties = [];
-  
-      if (properties.attributes) {
-        Object.entries(properties.attributes).forEach(([key, value]) => {
-          flattenedProperties.push(`${key}: ${value}`);
-        });
-      }
-  
-      if (properties.old) {
-        Object.entries(properties.old).forEach(([key, value]) => {
-          flattenedProperties.push(`old.${key}: ${value}`);
-        });
-      }
-  
-      return flattenedProperties.join('\n');
-    };
 
-    // export excel
-  
-    const exportData = logs.data.map(log => {
-      const formattedLog = {};
-  
-      fieldsToInclude.forEach(field => {
-        if (field === 'properties' && log.properties) {
-          formattedLog[field] = formatProperties(log.properties);
-        } else {
-          formattedLog[field] = log[field] !== undefined ? log[field] : '';
-        }
-      });
-  
-      return formattedLog;
-    });
-  
-    const worksheet = XLSX.utils.json_to_sheet(exportData, { header: fieldsToInclude });
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory Activity Logs");
-  
-    // Set custom title labels
-    const headerRange = XLSX.utils.decode_range(worksheet['!ref']);
-    for (let C = headerRange.s.c; C <= headerRange.e.c; ++C) {
-      const cellAddress = XLSX.utils.encode_cell({ c: C, r: 0 });
-      const cell = worksheet[cellAddress];
-      if (cell && cell.v) {
-        cell.v = titleMapping[cell.v] || cell.v;
-      }
-    }
-  
-    const calculateColumnWidths = (data, headers) => {
-      const widths = headers.map(header => header.length);
-  
-      data.forEach(row => {
-        Object.keys(row).forEach((key, index) => {
-          const lines = String(row[key]).split('\n');
-          const maxLength = Math.max(...lines.map(line => line.length));
-          widths[index] = Math.max(widths[index], maxLength);
-        });
-      });
-  
-      worksheet['!cols'] = widths.map(length => ({ wch: length + 2 }));
-    };
-  
-    calculateColumnWidths(exportData, fieldsToInclude);
-  
-    //filename 
-    // const filename = prompt("Enter the filename:", "Activity_Logs.xlsx") || "Activity_Logs.xlsx";
-  //
-    if (exportData.length > 0) {
-      XLSX.writeFile(workbook,"Activity_Logs.xlsx"); // "Activity_Logs.xlsx"
-    } else {
-      console.error("No data to export.");
-    }
+
+const exportToExcel = () => {
+  const fieldsToInclude = [
+    'id',
+    'log_name',
+    'description',
+    'subject_id',
+    'subject_name',
+    'properties',
+    'created_at',
+    'updated_at',
+    'event',
+    'causer_name',
+    'subject_type',
+  ];
+
+  const titleMapping = {
+    'id': 'ID',
+    'log_name': 'Log Name',
+    'description': 'Description',
+    'subject_id': 'Subject ID',
+    'subject_name': 'Subject Name',
+    'properties': 'Properties',
+    'created_at': 'Created Date',
+    'updated_at': 'Updated Date',
+    'event': 'Event',
+    'causer_name': 'Performed By',
+    'subject_type': 'Subject Type',
   };
+
+  const formatProperties = (properties) => {
+    if (!properties) return '';
+
+    const flattenedProperties = [];
+
+    if (properties.attributes) {
+      Object.entries(properties.attributes).forEach(([key, value]) => {
+        flattenedProperties.push(`${key}: ${value}`);
+      });
+    }
+
+    if (properties.old) {
+      Object.entries(properties.old).forEach(([key, value]) => {
+        flattenedProperties.push(`old.${key}: ${value}`);
+      });
+    }
+
+    return flattenedProperties.join('\n');
+  };
+
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), 'MMM dd, yyyy HH:mm:ss');
+  };
+
+  const exportData = logs.data.map(log => {
+    const formattedLog = {};
+
+    fieldsToInclude.forEach(field => {
+      if (field === 'properties' && log.properties) {
+        formattedLog[field] = formatProperties(log.properties);
+      } else if (field === 'created_at' || field === 'updated_at') {
+        formattedLog[field] = log[field] ? formatDate(log[field]) : '';
+      } else {
+        formattedLog[field] = log[field] !== undefined ? log[field] : '';
+      }
+    });
+
+    return formattedLog;
+  });
+
+  const worksheet = XLSX.utils.json_to_sheet(exportData, { header: fieldsToInclude });
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory Activity Logs");
+
+  // Set custom title labels
+  const headerRange = XLSX.utils.decode_range(worksheet['!ref']);
+  for (let C = headerRange.s.c; C <= headerRange.e.c; ++C) {
+    const cellAddress = XLSX.utils.encode_cell({ c: C, r: 0 });
+    const cell = worksheet[cellAddress];
+    if (cell && cell.v) {
+      cell.v = titleMapping[cell.v] || cell.v;
+    }
+  }
+
+  const calculateColumnWidths = (data, headers) => {
+    const widths = headers.map(header => header.length);
+
+    data.forEach(row => {
+      Object.keys(row).forEach((key, index) => {
+        const lines = String(row[key]).split('\n');
+        const maxLength = Math.max(...lines.map(line => line.length));
+        widths[index] = Math.max(widths[index], maxLength);
+      });
+    });
+
+    worksheet['!cols'] = widths.map(length => ({ wch: length + 2 }));
+  };
+
+  calculateColumnWidths(exportData, fieldsToInclude);
+
+  //filename 
+  // const filename = prompt("Enter the filename:", "Activity_Logs.xlsx") || "Activity_Logs.xlsx";
+  //
+  if (exportData.length > 0) {
+    XLSX.writeFile(workbook,"Activity_Logs.xlsx"); // "Activity_Logs.xlsx"
+  } else {
+    console.error("No data to export.");
+  }
+};
+
   
   
   const customLabelKey = {
