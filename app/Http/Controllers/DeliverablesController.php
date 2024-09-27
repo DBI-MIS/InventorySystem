@@ -174,7 +174,7 @@ class DeliverablesController extends Controller
         $stockrequests = StockRequisition::whereDoesntHave('deliverables')->orWhere('id', $drRsNo)->orderBy('rs_no', 'asc')->get();
 
         $deliverable->load('client', 'stockrequest', 'itemsDeliverables');
-        // dd($deliverable->itemsDeliverables);
+        // dd($deliverable->itemsDeliverables)
 
         //  foreach ($items as $item) {
         // if ($item->quantity == $item->qty_out) {

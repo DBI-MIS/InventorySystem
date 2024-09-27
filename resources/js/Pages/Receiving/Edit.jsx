@@ -5,52 +5,27 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import Select from "react-select"
-export default function Edit({auth,existingItems,existingItemIds,receiving,items,clients,delivers}){
-
+export default function Edit({auth,existingItemIds,receiving_items,receiving,items,clients,delivers}){
+  // existingItems
  // data will hold/contain the ff:
  const {data, setData, post ,errors,processing} = useForm({
     client_id: receiving.client_id || "",
-    group_item_id: existingItemIds || "",
     mrr_no: receiving.mrr_no || "",
-    receiving_item_id: receiving.receiving_item_id || "",
+    items: receiving_items || [],
     si_no: receiving.si_no || "",
     deliver_id: receiving.deliver_id || "",
     address: receiving. address || "",
     remarks: receiving. remarks || "",
     _method: "PUT", 
     });
+console.log("TRECEIVINGS", receiving)
 
-
-
-    const [databaseItemIds, setDatabaseItemIds] = useState(Array.isArray(existingItemIds) ? existingItemIds : []);
-    const existingItemss  = items.data.map(item => ({ ...item, id: parseInt(item.id) }));
-    const [notification, setNotification] = useState('');
-    const [allSelectedItemIds, setAllSelectedItemIds] = useState([]);
-    const [receivings, setReceivings] = useState([]);
-   
-    const  options = items.data.map(item => ({ //values from the db
-      value: item.id,
-      label: item.name
-    }));
-   
-
-    const selectedValueItems = databaseItemIds.map(databaseItemId=> ({
-         value: databaseItemId.id,
-         label:  databaseItemId.id,
-     }));
-
-     const [selectedOptions, setSelectedOptions] = useState(allSelectedItemIds);
-     const [selectedItemIds, setSelectedItemIds] = useState(selectedValueItems.map(option => option.value));
-
-    useEffect(() => {
-      setSelectedItemIds(selectedOptions.map(option => option.value));
-    }, [selectedOptions]);
 
     
-
+   
     // const [currentPage, setCurrentPage] = useState(1);
     // const [totalItems, setTotalItems] = useState('');
     // const [totalPages, setTotalPages] = useState('');
@@ -59,52 +34,128 @@ export default function Edit({auth,existingItems,existingItemIds,receiving,items
     // // Get current items based on currentPage
     // const indexOfLastItem = currentPage * itemsPerPage;
     // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-      const handleSelectChange = (selectedOption) => {
-        setSelectedOptions(selectedOption);
-        setCurrentPage(selectedOption)
-        const selectedOptionss =  Array.from(selectedOption, (option) => option.value);
-        setSelectedItemIds(selectedOptionss);
-        setSelectedOptions(selectedOption);
-        //checking values
-        // alert("selectedOptionss" + selectedOptionss);
-      };
+
+    console.log("receiving_items", receiving_items);
+    console.log("data itmes", data.items);
+    console.log("items data", items.data);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+    const [allItems, setAllItems] = useState([]);
+ 
+    const options = items.data.map(item => ({
+      value: item.id,
+      label: item.name
+  }));
+
+  const allListItems = items.data.map(item => ({
+      ...item,
+      id: parseInt(item.id, 10)
+  }));
+
+  useEffect(() => {
+      console.log("CURRENT DATA:", data);
+  }, [data]);
+
+  useEffect(() => {
+      if (receiving_items) {
+          const selectedOptions = receiving_items.map((item) => ({
+              value: item.id,
+              label: item.name,
+          }));
+          setSelectedOptions(selectedOptions);
+      }
+  }, [receiving_items]);
+
+  console.log("SELECTEDOPTIONS", selectedOptions);
+  console.log("ALL LIST ITEMS", allListItems);
+
+  const handleSelectChange = useCallback(
+      (selectedOptions) => {
+          setSelectedOptions(selectedOptions);
+      },
+      [setSelectedOptions]
+  );
+
+  const handleAddSelect = (e) => {
+      e.preventDefault();
+
+      // Map the selected options to the corresponding items from allListItems
+      const newItems = selectedOptions.map((option) => {
+          const selectedItem = allListItems.find(
+              (item) => parseInt(item.id, 10) === parseInt(option.value, 10)
+          );
+
+          if (!selectedItem) {
+              console.error(`Item not found in allListItems for option value: ${option.value}`);
+              return null; // Skip this item
+          }
+
+          return { ...selectedItem };
+      }).filter(item => item !== null); // Filter out any null items
+
+      // Update state with functional setData to avoid race conditions
+      setData(prevData => {
+          const uniqueItems = [
+              ...prevData.items,
+              ...newItems.filter(newItem => !prevData.items.some(existingItem => existingItem.id === newItem.id))
+          ];
+
+          return {
+              ...prevData,
+              items: uniqueItems.map((item) => ({ ...item, items: item.id })),
+          };
+      });
+  };
+
+//  
+//  const handleRemoveItem = (removedItem) => {
+//   const updatedOptions = selectedOptions.filter(option => option.value !== removedItem.value);
+//   setSelectedOptions(updatedOptions);
+
+//  
+//   setData(prevData => {
+//       const updatedItems = prevData.items.filter(item => item.id !== removedItem.value);
+
+//       return {
+//           ...prevData,
+//           items: updatedItems
+//       };
+//   });
+// };
+      
+    //     e.preventDefault();
+    //     // checking if items are already present in the databaseItemIds 
+    //     const newSelectedItemIds = selectedItemIds.filter(id => !databaseItemIds.includes(parseInt(id, 10)));
+    //     if (newSelectedItemIds.length === 0) {
+    //       setNotification('Items are on the tables already!');
+    //       setSelectedOptions([]); 
+    //       return;
+    //     }
+    //     const selectedItems = existingItemIds.filter(item => newSelectedItemIds.includes(item.id.toString()));
+      
+    //     // Update the receivings state with new selected items
+    //     setReceivings(prevReceivings => [...prevReceivings, ...selectedItems]);
+      
+    //     const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
+      
+    //     // Update allSelectedItemIds and databaseItemIds with new selected items
+    //     const newAllSelectedItemIds = [...allSelectedItemIds, ...intSelectedItemIds];
+    //     const newDatabaseItemIds = [...databaseItemIds, ...intSelectedItemIds];
+      
+    //     setAllSelectedItemIds(newAllSelectedItemIds);
+    //     setDatabaseItemIds(newDatabaseItemIds);
+    //     setData('group_item_id', newDatabaseItemIds);
+    //     // setTotalItems(databaseItemIds.length); // Total number of items
+    //     // setTotalPages(Math.ceil(totalItems / itemsPerPage)); // Calculate total pages
+    //     // Clear 
+    //     setSelectedItemIds([]);
+    //     setSelectedOptions([]); 
+    //     setNotification('');
     
-      console.log("selected Item ids" + selectedItemIds)
-      
-      const handleAddSelect = (e) => {
-        e.preventDefault();
-        // checking if items are already present in the databaseItemIds 
-        const newSelectedItemIds = selectedItemIds.filter(id => !databaseItemIds.includes(parseInt(id, 10)));
-        if (newSelectedItemIds.length === 0) {
-          setNotification('Items are on the tables already!');
-          setSelectedOptions([]); 
-          return;
-        }
-        const selectedItems = existingItems.filter(item => newSelectedItemIds.includes(item.id.toString()));
-      
-        // Update the receivings state with new selected items
-        setReceivings(prevReceivings => [...prevReceivings, ...selectedItems]);
-      
-        const intSelectedItemIds = newSelectedItemIds.map(id => parseInt(id, 10));
-      
-        // Update allSelectedItemIds and databaseItemIds with new selected items
-        const newAllSelectedItemIds = [...allSelectedItemIds, ...intSelectedItemIds];
-        const newDatabaseItemIds = [...databaseItemIds, ...intSelectedItemIds];
-      
-        setAllSelectedItemIds(newAllSelectedItemIds);
-        setDatabaseItemIds(newDatabaseItemIds);
-        setData('group_item_id', newDatabaseItemIds);
-        // setTotalItems(databaseItemIds.length); // Total number of items
-        // setTotalPages(Math.ceil(totalItems / itemsPerPage)); // Calculate total pages
-        // Clear 
-        setSelectedItemIds([]);
-        setSelectedOptions([]); 
-        setNotification('');
-      };
-      useEffect(() => {
-        setData('group_item_id', databaseItemIds);
-      }, [databaseItemIds]);
-     ;
+    //   useEffect(() => {
+    //     setData('group_item_id', databaseItemIds);
+    //   }, [databaseItemIds]);
+    //  ;
 // 
   
 const onNextPage = (e) => {
@@ -118,23 +169,23 @@ const onPrevPage = (e) => {
 };
 
       // checking of values
-      console.log("selected Item ids", selectedItemIds);
-      console.log("receivings", receivings);
-      console.log("existing Items", existingItemss);
-      console.log("selectedOptions", selectedOptions);
-      console.log("allSelectedItemIds", allSelectedItemIds);
-      console.log("databaseItemIds", databaseItemIds);
-
+      // console.log("selected Item ids", selectedItemIds);
+      // console.log("receivings", receivings);
+      // // console.log("existing Items", existingItemss);
+      // console.log("selectedOptions", selectedOptions);
+      // console.log("allSelectedItemIds", allSelectedItemIds);
+      // console.log("databaseItemIds", databaseItemIds);
+// 
     //delete button of the existing item on the table
-    const handleRemoveExistingItem = ( selectedItemId, index) => {
-        const remainIds = [...databaseItemIds];
-        remainIds.splice(index, 1);
-        setDatabaseItemIds(remainIds);
-        setAllSelectedItemIds(remainIds);
-    };
-    useEffect(() => {
-        console.log('Current data:', data); 
-    }, [data]);
+    // const handleRemoveExistingItem = ( selectedItemId, index) => {
+    //     const remainIds = [...databaseItemIds];
+    //     remainIds.splice(index, 1);
+    //     setDatabaseItemIds(remainIds);
+    //     setAllSelectedItemIds(remainIds);
+    // };
+    // useEffect(() => {
+    //     console.log('Current data:', data); 
+    // }, [data]);
 
     //submit button
     const onSubmit = (e) =>{
@@ -300,77 +351,60 @@ const onPrevPage = (e) => {
                           </div>
                           
                           {/* WARNING MESSAGE WHEN ADDING DUPLICATE ITEMS */}
-                          <div className="mt-2 mx-2">
+                          {/* <div className="mt-2 mx-2">
                             {notification && (
                               <div className="text-red-600 font-semibold mt-2">
                                 {notification}
                               </div>
                             )}
-                          </div>
+                          </div> */}
                       </div>
-                      <div className="mt-2">
-                          <h1 className="text-2xl text-blue-700 text-center p-5 font-semibold">LIST OF ITEMS</h1>
-                            <table className="min-w-full bg-white">
-                              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                <tr>
-                                  <th className="w-[60px]">#</th>
-                                  <th className="w-[100px]">Sku</th>
-                                  <th className="w-[200px]">Quantity</th>
-                                  <th className="w-[500px] text-left">Name</th>
-                                  <th className="w-[200px] text-left">Brand</th>
-                                  <th className="w-[200px] text-left">Category</th>
-                                  <th className="w-[100px]">Action</th>
-                                </tr>
-                              </thead> 
-                              {/* if group item is null */}
-                              {!databaseItemIds || databaseItemIds.length === 0 && (
-                                <div class="font-md mt-5 text-center text-gray-600 p-4">
-                                  No existing items on Material Receiving Report #  {data.mrr_no}
+                      <div className="mt-5 min-h-[300px]">
+                                    <h1 className="text-2xl text-center text-blue-800 p-5 font-semibold">LIST OF ITEMS</h1>
+                                    <table className="min-w-full bg-white">
+                                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                            <tr>
+                                                <th className="text-left">#</th>
+                                                <th className="text-left">Sku</th>
+                                                <th className="text-left">Name</th>
+                                                <th className="text-left">Brand</th>
+                                                <th className="text-left">Category</th>
+                                                <th className="text-left">Model No.</th>
+                                                <th className="text-left">Part No.</th>
+                                                <th className="text-left">Quantity</th>
+                                                <th className="text-left">Actions</th> {/* Added Actions column */}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {data.items.map((item) => (
+                                                <tr className="bg-white border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700" key={`${item.sku}-${item.name}`}>
+                                                   
+                                                    <td className="w-[60px] py-2 text-sm">{item.id}</td>
+                                                    <td className="w-[160px] py-2 text-sm">{item.category.sku_prefix ?? "No Sku Prefix"}-{item.sku ?? "No Sku"}</td>
+                                                    <td className="w-[300px] py-2 text-gray-600 text-nowrap hover:underline text-left">
+                                                        {item.name ?? "No Item Name"}
+                                                    </td>
+                                                    <td className="w-[160px] py-2 text-sm">{item.brand && item.brand.name ? item.brand.name : 'No Brand Name'}</td>
+                                                    <td className="w-[160px] py-2 text-sm">{item.category && item.category.name ? item.category.name : "No Category Name"}</td>
+                                                    <td className="w-[200px] py-2 text-sm">{item.model_no ?? "No Model Number"}</td>
+                                                    <td className="w-[300px] py-2 text-sm">{item.part_no ?? "No Part Number"}</td>
+                                                    <td className="w-[160px] py-2">{item.quantity ? (item.quantity + ' ' + (item.uom ?? "No UOM")) : 'No Quantity'}</td>
+                                                    <td className="w-[100px] py-2">
+                                                        {item.isNew && (
+                                                            <button
+                                                                className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-1 rounded-full"
+                                                                onClick={() => handleRemoveItem(item.sku, item.name)} // unique keys
+                                                            >
+                                                                Remove
+                                                            </button>
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                       </tbody>
+
+                                    </table>
                                 </div>
-                                )
-                              }
-                              {databaseItemIds && databaseItemIds.length >= 0 && ( 
-                                 <tbody>
-                                    {databaseItemIds.map((selectedItemId,index) => {
-                                      const selectedItem = existingItemss.find(item => item.id === selectedItemId);
-                                        if (selectedItem) {
-                                      return (
-                                        <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/20'} border-b text-gray-600 dark:bg-gray-800 dark:border-gray-700`} key={selectedItem.id}>
-                                          <td className="text-center text-sm p-1">
-                                            {index + 1}
-                                            
-                                            </td>
-                                          <td className="text-center text-sm">{selectedItem.sku_prefix}-{selectedItem.sku}</td>
-                                          <td className="text-center text-sm">{selectedItem.quantity} {selectedItem.uom}</td>
-                                          <th className="text-gray-600 text-nowrap hover:underline text-left">
-                                            <Link href={route('item.show', selectedItem.id)}>
-                                              {selectedItem.name}
-                                            </Link>
-                                          </th>
-                                          <td className="text-left">{selectedItem.brand.name}</td>
-                                          <td className="text-left">{selectedItem.category.name}</td>
-                                          
-                                          <td className="w-[100px] flex flex-row justify-center items-center">
-                                            <button
-                                              onClick={() => handleRemoveExistingItem(selectedItem.id, index)}
-                                              className="text-red-600 mx-1 hover:text-gray-600"
-                                            >
-                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                                  <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
-                                                </svg>
-                                            </button>
-                                          </td>
-                                        </tr>
-                                      );
-                                    } else {
-                                      return null; 
-                                      
-                                    }
-                                  })}
-                                </tbody>
-                              )}                   
-                            </table>
-                      </div>
                       <div className="mt-4 col-span-2">
                                     <InputLabel htmlFor="receiving_remarks" value="Remarks"/>
                                         <TextAreaInput

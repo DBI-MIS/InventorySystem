@@ -79,7 +79,7 @@ console.log("checkallListItems", allListItems);
                 console.log("parsed value:", parseInt(option.value));
                 console.log("Selected Item:", selectedItem);
                 console.log("allListItems:", allListItems);
-
+                console.log("itemss", data.items)
                 if (!selectedItem) {
                     throw new Error("Item not found in allListItems");
                   }

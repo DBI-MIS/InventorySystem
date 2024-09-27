@@ -264,40 +264,38 @@ public function show(Receiving $receiving, Request $request)
         $response = Gate::authorize('update', $receiving);
 
                 if ($response->allowed()) {
-                $items = Item::query()->orderBy('name', 'asc')->get();
-                $clients =  Client::query()->distinct()->orderBy('name', 'asc')->get();
+                    $items = Item::query()->whereNotIn('items.statuses', ['on_process', 'processed'])->orderBy('name', 'asc')->get();
+                    $clients = Client::query()->orderBy('name', 'asc')->get();
                 // $clients = Client::select('name')->distinct()->orderBy('name', 'asc')->get();
                 $delivers = Deliverables::query()->distinct()->orderBy('dr_no', 'asc')->get();
                 // dd($clients);
                 // Fetch brand name and category name for existing items
-                foreach ($items as $item) {
-                    $item->brand_name = $item->brand->name;
-                    $item->category_name = $item->category->name;
-                    $item->sku_prefix = $item->sku_prefix;
-                }
-                // dd($receiving);
-                $parsedId = json_decode($receiving, true);
-            
-                // Access the value of the 'id' key
-                $id = $parsedId['id'];
                 
-                $receiving = Receiving::find($id);
-                $existingItems = $receiving->items;
-                //   dd($existingItems);
-                $sortField = request("sort_field", 'created_at');
-                $sortDirection = request("sort_direction", "desc");
-                $existingItemIds= $receiving->items()->pluck('items.id');
-                // dd($existingItemIds);
-                // Convert array strings => array of integers
-                $existingItemIds = array_map('intval', $existingItemIds->toArray());
+               $receiving->load('items.category', 'items.brand');
+                // dd( $receiving->items);
+                // $parsedId = json_decode($receiving, true);
+            
+                // // Access the value of the 'id' key
+                // $id = $parsedId['id'];
+                
+                // $receiving = Receiving::find($id);
+                // $existingItems = $receiving->items;
+                // //   dd($existingItems);
+                // $sortField = request("sort_field", 'created_at');
+                // $sortDirection = request("sort_direction", "desc");
+                // $existingItemIds= $receiving->items()->pluck('items.id');
+                // // dd($existingItemIds);
+                // // Convert array strings => array of integers
+                // $existingItemIds = array_map('intval', $existingItemIds->toArray());
 
             
             return inertia('Receiving/Edit',[
                 'items' => ItemResource::collection($items),
                 'clients' => ClientResource::collection($clients),
-                    'receiving' => new ReceivingResource($receiving),
-                    'existingItems' =>  $existingItems,
-                    'existingItemIds' => $existingItemIds,
+                    'receiving' => $receiving,
+                    // 'existingItems' =>  $existingItems,
+                    // 'existingItemIds' => $receiving->items,
+                    'receiving_items' => $receiving->items,
                     'delivers' => DeliverablesResource::collection($delivers),
             ]
             );
@@ -314,11 +312,17 @@ public function show(Receiving $receiving, Request $request)
     public function update(UpdateReceivingRequest $request, Receiving $receiving)
     {
         $data = $request->validated();
-        // if existing ang group_item_id
-        if (isset($data['group_item_id'])) {
-           $items = $data['group_item_id'];
-         $receiving->update($data);
-         $receiving->items()->sync($items); 
+        // dd($data);
+            $items = $data['items'];
+        // dd($items);//
+            $data['user_id'] = Auth::id();
+            $receiving->update($data);
+            
+
+        foreach ($items as $itemData) {
+          $itemIds = $receiving->items()->attach($itemData['id']);
+          dd($itemIds);
+          $receiving->items()->sync($itemIds); 
         }
         
         return to_route('receiving.index')
